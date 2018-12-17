@@ -1,0 +1,3 @@
+#!/usr/bin/env node
+
+require('../lib/nof.js')(process.argv.splice(2))
