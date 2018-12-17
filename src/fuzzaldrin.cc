@@ -5,6 +5,7 @@
 namespace {
 
 Options parseOptions(const Element &query, const Napi::Value option_obj) {
+  size_t maxResults = 0;
   bool usePathScoring = true;
   bool useExtensionBonus = false;
   if (option_obj.IsObject()) {
@@ -13,8 +14,10 @@ Options parseOptions(const Element &query, const Napi::Value option_obj) {
       usePathScoring = options["usePathScoring"].ToBoolean();
     if (options.Has("useExtensionBonus"))
       useExtensionBonus = options["useExtensionBonus"].ToBoolean();
+    if (options.Has("maxResults"))
+      maxResults = options["maxResults"].ToNumber().Uint32Value();
   }
-  return Options(query, usePathScoring, useExtensionBonus);
+  return Options(query, maxResults, usePathScoring, useExtensionBonus);
 }
 
 }

@@ -35,7 +35,7 @@ struct Options {
   char pathSeparator = '/';
   const PreparedQuery preparedQuery;
 
-  Options(const string &query, bool usePathScoring=true, bool useExtensionBonus=false) : usePathScoring(usePathScoring), useExtensionBonus(useExtensionBonus), preparedQuery(query, pathSeparator) {}
+  Options(const string &query, size_t maxResults, bool usePathScoring, bool useExtensionBonus) : max_results(maxResults), usePathScoring(usePathScoring), useExtensionBonus(useExtensionBonus), preparedQuery(query, pathSeparator) {}
 };
 
 extern std::string ToLower(const std::string &s);
