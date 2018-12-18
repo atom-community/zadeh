@@ -58,7 +58,7 @@ extern AcronymResult scoreAcronyms(Candidate subject, Candidate subject_lw, Elem
 // Manage the logic of testing if there's a match and calling the main scoring function
 // Also manage scoring a path and optional character.
 
-Score scorer_score(const Candidate &string, const Element &query, Options &options) {
+Score scorer_score(const Candidate &string, const Element &query, const Options &options) {
   // {preparedQuery, allowErrors} = options
   if (!options.allowErrors && !isMatch(string, options.preparedQuery.core_lw, options.preparedQuery.core_up)) {
     return 0;
@@ -108,7 +108,7 @@ bool isMatch(const Candidate &subject, const Element &query_lw, const Element &q
 //
 // Main scoring algorithm
 //
-Score computeScore(Candidate subject, Candidate subject_lw, PreparedQuery preparedQuery) {
+Score computeScore(const Candidate &subject, const Candidate &subject_lw, const PreparedQuery &preparedQuery) {
   auto query = preparedQuery.query;
   auto query_lw = preparedQuery.query_lw;
 

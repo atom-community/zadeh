@@ -47,9 +47,9 @@ console.log("======")
 # > fuzzaldrin-plus-fast@0.0.1 benchmarklarge /home/rajendrant/Downloads/fuzzaldrin-plus-fast
 # > coffee benchmark/benchmark-large.coffee
 #
-# TwoLetter#legacy: 20183.885ms
-# TwoLetter#fuzzaldrin-plus-fast: 6446.460ms
+# TwoLetter#legacy: 20957.743ms
+# TwoLetter#fuzzaldrin-plus-fast: 2503.148ms
 # ======
-# ThreeLetter#legacy: 16236.094ms
-# ThreeLetter#fuzzaldrin-plus-fast: 4823.922ms
+# ThreeLetter#legacy: 16333.060ms
+# ThreeLetter#fuzzaldrin-plus-fast: 1999.369ms
 # ======

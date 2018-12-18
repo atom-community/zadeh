@@ -42,12 +42,12 @@ extern std::string ToLower(const std::string &s);
 extern std::string ToUpper(const std::string &s);
 
 extern bool isMatch(const Candidate &subject, const Element &query_lw, const Element &query_up);
-extern Score computeScore(Candidate subject, Candidate subject_lw, PreparedQuery preparedQuery);
+extern Score computeScore(const Candidate &subject, const Candidate &subject_lw, const PreparedQuery &preparedQuery);
 
-extern Score scorer_score(const Candidate &string, const Element &query, Options &options);
+extern Score scorer_score(const Candidate &string, const Element &query, const Options &options);
 extern Score scoreSize(Score n, Score m);
 
-extern Score path_scorer_score(const Candidate &string, const Element &query, Options &options);
+extern Score path_scorer_score(const Candidate &string, const Element &query, const Options &options);
 extern int countDir(const Candidate &path, int end, char pathSeparator);
 extern Candidate getExtension(const Candidate &str);
 

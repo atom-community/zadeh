@@ -10,7 +10,7 @@ Score file_coeff = 2.5;
 
 };
 
-extern Score scorePath(const Candidate &subject, const Candidate &subject_lw, Score fullPathScore, Options options);
+extern Score scorePath(const Candidate &subject, const Candidate &subject_lw, Score fullPathScore, const Options &options);
 extern int countDir(const Candidate &path, int end, char pathSeparator);
 extern Score getExtensionScore(const Candidate &candidate, const Candidate &ext, int startPos, int endPos, int maxDepth);
 
@@ -33,7 +33,7 @@ string ToUpper(const string &s) {
 // Manage the logic of testing if there's a match and calling the main scoring function
 // Also manage scoring a path and optional character.
 
-Score path_scorer_score(const Candidate &string, const Element &query, Options &options) {
+Score path_scorer_score(const Candidate &string, const Element &query, const Options &options) {
   if (!options.allowErrors && !isMatch(string, options.preparedQuery.core_lw, options.preparedQuery.core_up)) {
     return 0;
   }
@@ -47,7 +47,7 @@ Score path_scorer_score(const Candidate &string, const Element &query, Options &
 //
 // Score adjustment for path
 //
-Score scorePath(const Candidate &subject, const Candidate &subject_lw, Score fullPathScore, Options options) {
+Score scorePath(const Candidate &subject, const Candidate &subject_lw, Score fullPathScore, const Options &options) {
   if (fullPathScore == 0) return 0;
 
   // {preparedQuery, useExtensionBonus, pathSeparator} = options
