@@ -418,22 +418,21 @@ Score scoreExactMatch(const Candidate &subject, const Candidate &subject_lw, con
 AcronymResult emptyAcronymResult(0, 0.1, 0);
 
 AcronymResult scoreAcronyms(Candidate subject, Candidate subject_lw, Element query, Element query_lw) {
-  int m = subject.size();
-  int n = query.size();
+  auto m = subject.size();
+  auto n = query.size();
 
   //a single char is not an acronym
-  if (m<0 || n<0) return emptyAcronymResult;
+  if (m<=1 || n<=1) return emptyAcronymResult;
 
-  int count = 0;
+  size_t count = 0;
   int sepCount = 0;
   int sumPos = 0;
   int sameCase = 0;
 
-  int i = -1;
-  int j = -1;
+  size_t i = string::npos;  // incrementing will become 0
 
   //foreach char of query
-  while (++j < n) {
+  for (size_t j=0; j<n; j++) {
 
     char qj_lw = query_lw[j];
 
