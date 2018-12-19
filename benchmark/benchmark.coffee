@@ -1,7 +1,7 @@
 fs = require 'fs'
 path = require 'path'
 
-fuzzaldrinPlus = require '../src/fuzzaldrin'
+fuzzaldrinPlus = require '../fuzzaldrin'
 # legacyPlus = require 'fuzzaldrin-plus'
 legacy = require 'fuzzaldrin-plus'
 

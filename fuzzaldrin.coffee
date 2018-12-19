@@ -1,4 +1,4 @@
-fuzzaldrinplusfast = require('bindings')('fuzzaldrinplusfast');
+fuzzaldrinplusfast = require('node-gyp-build')(__dirname);
 
 module.exports =
 

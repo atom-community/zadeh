@@ -1,4 +1,4 @@
-fuzzaldrinplusfast = require('../src/fuzzaldrin');
+fuzzaldrinplusfast = require('../fuzzaldrin');
 fuzzaldrinExpected = require 'fuzzaldrin-plus'
 path = require 'path'
 fs = require 'fs'

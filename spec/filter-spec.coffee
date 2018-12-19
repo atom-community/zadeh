@@ -1,5 +1,5 @@
 path = require 'path'
-{filter,score} = require '../src/fuzzaldrin'
+{filter,score} = require '../fuzzaldrin'
 
 bestMatch = (candidates, query, options = {}) ->
 
