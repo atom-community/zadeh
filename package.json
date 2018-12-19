@@ -6,9 +6,9 @@
   "scripts": {
     "install": "node-gyp-build",
     "prebuild": "prebuildify --napi",
-    "test": "node_modules/jasmine-focused/bin/jasmine-focused --coffee --captureExceptions spec",
-    "benchmark": "node_modules/.bin/coffee benchmark/benchmark.coffee",
-    "benchmarklarge": "node_modules/.bin/coffee benchmark/benchmark-large.coffee"
+    "test": "./node_modules/jasmine-focused/bin/jasmine-focused --coffee --captureExceptions spec",
+    "benchmark": "./node_modules/.bin/coffee benchmark/benchmark.coffee",
+    "benchmarklarge": "./node_modules/.bin/coffee benchmark/benchmark-large.coffee"
   },
   "gypfile": true,
   "dependencies": {
