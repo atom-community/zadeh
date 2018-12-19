@@ -2,34 +2,18 @@
 
 #include "fuzzaldrin.h"
 
-namespace {
-
-Options parseOptions(const Element &query, const Napi::Value option_obj) {
-  size_t maxResults = 0;
-  bool usePathScoring = true;
-  bool useExtensionBonus = false;
-  if (option_obj.IsObject()) {
-    const Napi::Object options = option_obj.As<Napi::Object>();
-    if (options.Has("usePathScoring"))
-      usePathScoring = options["usePathScoring"].ToBoolean();
-    if (options.Has("useExtensionBonus"))
-      useExtensionBonus = options["useExtensionBonus"].ToBoolean();
-    if (options.Has("maxResults"))
-      maxResults = options["maxResults"].ToNumber().Uint32Value();
-  }
-  return Options(query, maxResults, usePathScoring, useExtensionBonus);
-}
-
-}
-
 Napi::Value Fuzzaldrin::Filter(const Napi::CallbackInfo& info) {
   Napi::Array res = Napi::Array::New(info.Env());
-  if (info.Length() < 1 || !info[0].IsString()) {
+  if (info.Length() != 4 || !info[0].IsString() || !info[1].IsNumber() ||
+      !info[2].IsBoolean() || !info[3].IsBoolean()) {
     Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
     return res;
   }
   Element query = info[0].As<Napi::String>();
-  Options options = parseOptions(query, info.Length() >= 2 ? info[1] : Napi::Value());
+  size_t maxResults = info[1].As<Napi::Number>().Uint32Value();
+  bool usePathScoring = info[2].As<Napi::Boolean>();
+  bool useExtensionBonus = info[3].As<Napi::Boolean>();
+  Options options(query, maxResults, usePathScoring, useExtensionBonus);
   const auto matches = filter(candidates_, query, options);
 
   for(uint32_t i=0; i<matches.size(); i++) {
@@ -54,12 +38,15 @@ Napi::Value Fuzzaldrin::SetCandidates(const Napi::CallbackInfo& info) {
 }
 
 Napi::Number score(const Napi::CallbackInfo& info) {
-  if (info.Length() < 2 || !info[0].IsString() || !info[1].IsString()) {
+  if (info.Length() != 4 || !info[0].IsString() || !info[1].IsString() ||
+      !info[2].IsBoolean() || !info[3].IsBoolean()) {
     Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
   }
   std::string candidate = info[0].As<Napi::String>();
   std::string query = info[1].As<Napi::String>();
-  Options options = parseOptions(query, info.Length() >= 3 ? info[2] : Napi::Value());
+  bool usePathScoring = info[2].As<Napi::Boolean>();
+  bool useExtensionBonus = info[3].As<Napi::Boolean>();
+  Options options(query, 1, usePathScoring, useExtensionBonus);
   auto scoreProvider = options.usePathScoring ? path_scorer_score : scorer_score;
   auto score = scoreProvider(candidate, query, options);
   return Napi::Number::New(info.Env(), score);
