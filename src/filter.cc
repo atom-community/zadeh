@@ -47,8 +47,9 @@ Candidates sort_priority_queue(CandidateScorePriorityQueue &candidates) {
     candidates.pop();
   }
   std::sort(sorted.begin(), sorted.end());
-  std::transform(sorted.begin(), sorted.end(), std::back_inserter(ret),
-    [] (const auto &item) { return item.candidate; });
+  for(const auto& item : sorted) {
+    ret.push_back(item.candidate);
+  }
   return ret;
 }
 

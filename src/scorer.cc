@@ -143,8 +143,8 @@ Score computeScore(const Candidate &subject, const Candidate &subject_lw, const 
 
 
   // Init
-  Score score_row[n];
-  Score csc_row[n];
+  vector<Score> score_row(n, 0);
+  vector<Score> csc_row(n, 0);
   auto sz = scoreSize(n, m);
 
   auto miss_budget = ceil(miss_coeff * n) + 5;
@@ -152,11 +152,12 @@ Score computeScore(const Candidate &subject, const Candidate &subject_lw, const 
   bool csc_should_rebuild = true;
 
   // Fill with 0
+  /*
   int j = -1;
   while (++j < n) {
     score_row[j] = 0;
     csc_row[j] = 0;
-  }
+  }*/
 
   int i = -1;
   while (++i < m ) {    //foreach char si of subject
