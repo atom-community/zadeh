@@ -16,6 +16,10 @@ testPathScorer = ->
     [path.join('app', 'components', 'admin', 'member', 'modals', 'edit-payment.html'), 'member edit htm'],
     [path.join('matchOptimisticB.htaccess'), 'mob.h', useExtensionBonus: true],
     [path.join('matchOptimisticB_main.html'), 'mob.h', useExtensionBonus: true],
+    ['0\\Diagnostic', 'diag'],
+    ['0\\Diagnostic', 'diag0'],
+    ['0\\0\\0\\diagnostics00', 'diag'],
+    ['0\\0\\0\\diagnostics00', 'diag0'],
   ]
   for test in tests
     test[2] ?= {}
@@ -97,6 +101,6 @@ testBenchmark = ->
   fuzzaldrinExpected.filter filenames, 'da', maxResults: 10
   console.timeEnd('legacy')
 
-# testPathScorer()
+testPathScorer()
 # testFilter()
-testBenchmark()
+# testBenchmark()

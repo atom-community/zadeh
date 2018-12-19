@@ -19,7 +19,8 @@
   "devDependencies": {
     "fuzzaldrin-plus": "^0.6.0",
     "jasmine-node": "^1.16.2",
-    "prebuildify": "^2.6.0"
+    "prebuildify": "^2.6.0",
+    "growl": ">=1.10.0"
   },
   "repository": {
     "type": "git",

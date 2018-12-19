@@ -32,7 +32,11 @@ struct Options {
   bool allowErrors = false;
   bool usePathScoring = true;
   bool useExtensionBonus = false;
+#ifdef _WIN32
+  char pathSeparator = '\\';
+#else
   char pathSeparator = '/';
+#endif
   const PreparedQuery preparedQuery;
 
   Options(const string &query, size_t maxResults, bool usePathScoring, bool useExtensionBonus) : max_results(maxResults), usePathScoring(usePathScoring), useExtensionBonus(useExtensionBonus), preparedQuery(query, pathSeparator) {}

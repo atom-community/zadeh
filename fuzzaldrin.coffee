@@ -37,6 +37,7 @@ module.exports =
     obj.filter(query, options)
 
   score: (candidate, query, options = {}) ->
-    binding.score candidate, query, options
+    options = parseOptions(options)
+    binding.score candidate, query, options.usePathScoring, options.useExtensionBonus
 
   prepareQuery: ->
