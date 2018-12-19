@@ -4,6 +4,8 @@
   "description": "Fuzzaldrin plus - fast using native c bindings",
   "main": "src/fuzzaldrin.coffee",
   "scripts": {
+    "install": "node-gyp-build",
+    "prebuild": "prebuildify --napi",
     "test": "node_modules/jasmine-focused/bin/jasmine-focused --coffee --captureExceptions spec",
     "benchmark": "node_modules/.bin/coffee benchmark/benchmark.coffee",
     "benchmarklarge": "node_modules/.bin/coffee benchmark/benchmark-large.coffee"
@@ -11,7 +13,8 @@
   "gypfile": true,
   "dependencies": {
     "bindings": "~1.2.1",
-    "node-addon-api": "^1.0.0"
+    "node-addon-api": "^1.0.0",
+    "node-gyp-build": "^3.6.0"
   },
   "devDependencies": {
     "fuzzaldrin-plus": "^0.6.0",
