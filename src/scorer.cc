@@ -303,6 +303,7 @@ Score scoreSize(Score n, Score m) {
 }
 
 Score scoreExact(size_t n, size_t m, size_t quality, Score pos) {
+  TRACE(n, m, quality, pos);
   return 2 * n * ( wm * quality + scorePosition(pos) ) * scoreSize(n, m);
 }
 
@@ -401,6 +402,8 @@ Score scoreExactMatch(const Candidate &subject, const Candidate &subject_lw, con
 
   // Test for word start
   bool start = isWordStart(pos, subject, subject_lw);
+  TRACE(query, query_lw);
+  TRACE(pos, n, m, start);
 
   // Heuristic
   // If not a word start, test next occurrence
@@ -415,6 +418,7 @@ Score scoreExactMatch(const Candidate &subject, const Candidate &subject_lw, con
       if (start) pos = pos2;
     }
   }
+  TRACE(start, pos);
 
   //Exact case bonus.
   int i = -1;
@@ -423,8 +427,10 @@ Score scoreExactMatch(const Candidate &subject, const Candidate &subject_lw, con
     if (query[pos + i] == subject[i])
       sameCase++;
   }
+  TRACE(sameCase);
 
   int end = isWordEnd(pos + n - 1, subject, subject_lw, m);
+  TRACE(end);
 
   return scoreExact(n, m, scorePattern(n, n, sameCase, start, end), pos);
 }
