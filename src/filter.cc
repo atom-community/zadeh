@@ -55,7 +55,7 @@ Candidates sort_priority_queue(CandidateScorePriorityQueue &candidates) {
 
 }
 
-Candidates filter(const Candidates &candidates, const Element &query, Options &options) {
+Candidates filter(const Candidates &candidates, const Element &query, const Options &options) {
   CandidateScorePriorityQueue top_k;
   size_t max_results = options.max_results;
   if (!max_results || max_results >= candidates.size())

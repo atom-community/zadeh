@@ -10,6 +10,19 @@ Score file_coeff = 2.5;
 
 };
 
+#define TRACE(...) trace_internal(__FUNCTION__, "(", __LINE__, ")", __VA_ARGS__)
+
+void trace_internal() {
+  std::cout << std::endl;
+}
+
+template<typename Head, typename... Args>
+void trace_internal(const Head& head, const Args&... args )
+{
+    std::cout << head << " ";
+    trace_internal(args...);
+}
+
 extern Score scorePath(const Candidate &subject, const Candidate &subject_lw, Score fullPathScore, const Options &options);
 extern int countDir(const Candidate &path, int end, char pathSeparator);
 extern Score getExtensionScore(const Candidate &candidate, const Candidate &ext, int startPos, int endPos, int maxDepth);
@@ -38,8 +51,11 @@ Score path_scorer_score(const Candidate &string, const Element &query, const Opt
     return 0;
   }
   const auto string_lw = ToLower(string);
+  TRACE(string, query, string_lw);
   auto sc = computeScore(string, string_lw, options.preparedQuery);
+  TRACE(sc);
   sc = scorePath(string, string_lw, sc, options);
+  TRACE(sc);
   return ceil(sc);
 }
 
@@ -56,6 +72,7 @@ Score scorePath(const Candidate &subject, const Candidate &subject_lw, Score ful
   int end = subject.size() - 1;
   while (subject[end] == options.pathSeparator)
     end--;
+  TRACE(end);
 
   // Get position of basePath of subject.
   int basePos = subject.rfind(options.pathSeparator, end);
@@ -68,23 +85,27 @@ Score scorePath(const Candidate &subject, const Candidate &subject_lw, Score ful
     extAdjust += getExtensionScore(subject_lw, options.preparedQuery.ext, basePos, end, 2);
     fullPathScore *= extAdjust;
   }
+  TRACE(fullPathScore, basePos, fileLength, extAdjust);
 
   // no basePath, nothing else to compute.
   if (basePos == -1) return fullPathScore;
 
   // Get the number of folder in query
   int depth = options.preparedQuery.depth;
+  TRACE(depth, options.pathSeparator);
 
   // Get that many folder from subject
   while (basePos > -1 && depth-- > 0) {
     basePos = subject.rfind(options.pathSeparator, basePos - 1);
   }
+  TRACE(basePos);
 
   // Get basePath score, if BaseName is the whole string, no need to recompute
   // We still need to apply the folder depth and filename penalty.
   Score basePathScore = (basePos == -1) ? fullPathScore :
     extAdjust * computeScore(subject.substr(basePos + 1, end + 1), subject_lw.substr(basePos + 1, end + 1), options.preparedQuery);
 
+  TRACE(basePathScore);
   // Final score is linear interpolation between base score and full path score.
   // For low directory depth, interpolation favor base Path then include more of full path as depth increase
   //
@@ -92,6 +113,7 @@ Score scorePath(const Candidate &subject, const Candidate &subject_lw, Score ful
   // That way, more focused basePath match can overcome longer directory path.
 
   Score alpha = 0.5 * tau_depth / ( tau_depth + countDir(subject, end + 1, options.pathSeparator) );
+  TRACE(alpha, subject, end);
   return  alpha * basePathScore + (1 - alpha) * fullPathScore * scoreSize(0, file_coeff * (fileLength));
 }
 

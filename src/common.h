@@ -4,6 +4,8 @@
 #include <cmath>
 #include <algorithm>
 #include <cstring>
+#include <iostream>
+#include <utility>
 
 using namespace std;
 
@@ -55,4 +57,4 @@ extern Score path_scorer_score(const Candidate &string, const Element &query, co
 extern int countDir(const Candidate &path, int end, char pathSeparator);
 extern Candidate getExtension(const Candidate &str);
 
-extern Candidates filter(const Candidates &candidates, const Element &query, Options &options);
+extern Candidates filter(const Candidates &candidates, const Element &query, const Options &options);
