@@ -8,8 +8,6 @@ size_t tau_depth = 20;
 // Full path is also penalized for length of basename. This adjust a scale factor for that penalty.
 Score file_coeff = 2.5;
 
-};
-
 #define TRACE(...) trace_internal(__FUNCTION__, "(", __LINE__, ")", __VA_ARGS__)
 
 void trace_internal() {
@@ -22,6 +20,9 @@ void trace_internal(const Head& head, const Args&... args )
     std::cout << head << " ";
     trace_internal(args...);
 }
+
+};
+
 
 extern Score scorePath(const Candidate &subject, const Candidate &subject_lw, Score fullPathScore, const Options &options);
 extern int countDir(const Candidate &path, int end, char pathSeparator);

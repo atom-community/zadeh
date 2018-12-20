@@ -28,7 +28,20 @@ Score tau_size = 150;
 // This has a direct influence on worst case scenario benchmark.
 float miss_coeff = 0.75; // Max number missed consecutive hit = ceil(miss_coeff*query.length) + 5
 
+#define TRACE(...) trace_internal(__FUNCTION__, "(", __LINE__, ")", __VA_ARGS__)
+
+void trace_internal() {
+  std::cout << std::endl;
 }
+
+template<typename Head, typename... Args>
+void trace_internal(const Head& head, const Args&... args )
+{
+    std::cout << head << " ";
+    trace_internal(args...);
+}
+
+} // namepace
 
 struct AcronymResult {
   Score score;
@@ -109,18 +122,20 @@ bool isMatch(const Candidate &subject, const Element &query_lw, const Element &q
 // Main scoring algorithm
 //
 Score computeScore(const Candidate &subject, const Candidate &subject_lw, const PreparedQuery &preparedQuery) {
-  auto query = preparedQuery.query;
-  auto query_lw = preparedQuery.query_lw;
+  const auto& query = preparedQuery.query;
+  const auto& query_lw = preparedQuery.query_lw;
 
   int m = subject.size();
   int n = query.size();
 
+  TRACE(subject, subject_lw, query, query_lw);
 
   //----------------------------
   // Abbreviations sequence
 
   auto acro = scoreAcronyms(subject, subject_lw, query, query_lw);
   auto acro_score = acro.score;
+  TRACE(acro.score, acro.pos, acro.count);
 
   // Whole query is abbreviation ?
   // => use that as score
@@ -133,6 +148,7 @@ Score computeScore(const Candidate &subject, const Candidate &subject_lw, const 
 
   auto pos = subject_lw.find(query_lw);
   if (pos != std::string::npos) {
+    TRACE(pos, n, m);
     return scoreExactMatch(subject, subject_lw, query, query_lw, pos, n, m);
   }
 
@@ -150,6 +166,7 @@ Score computeScore(const Candidate &subject, const Candidate &subject_lw, const 
   auto miss_budget = ceil(miss_coeff * n) + 5;
   auto miss_left = miss_budget;
   bool csc_should_rebuild = true;
+  TRACE(sz, miss_budget, miss_left, miss_coeff);
 
   // Fill with 0
   /*
@@ -235,6 +252,7 @@ Score computeScore(const Candidate &subject, const Candidate &subject_lw, const 
 
   // get hightest score so far
   auto score = score_row[n - 1];
+  TRACE(score, sz);
   return score * sz;
 }
 
