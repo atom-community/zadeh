@@ -408,7 +408,7 @@ Score scoreExactMatch(const Candidate &subject, const Candidate &subject_lw, con
   int end = isWordEnd(pos + n - 1, subject, subject_lw, m);
 
   Score baseNameStart = 1;
-  if (start && pos>0 && subject[pos-1]=='/') {
+  if (start && pos>0 && (subject[pos-1]=='/' || subject[pos-1]=='\\')) {
     baseNameStart = 1.1;
   }
 
