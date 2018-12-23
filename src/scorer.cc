@@ -28,19 +28,6 @@ Score tau_size = 150;
 // This has a direct influence on worst case scenario benchmark.
 float miss_coeff = 0.75; // Max number missed consecutive hit = ceil(miss_coeff*query.length) + 5
 
-#define TRACE(...) trace_internal(__FUNCTION__, "(", __LINE__, ")", __VA_ARGS__)
-
-void trace_internal() {
-  std::cout << std::endl;
-}
-
-template<typename Head, typename... Args>
-void trace_internal(const Head& head, const Args&... args )
-{
-    std::cout << head << " ";
-    trace_internal(args...);
-}
-
 } // namepace
 
 struct AcronymResult {
@@ -128,14 +115,11 @@ Score computeScore(const Candidate &subject, const Candidate &subject_lw, const 
   int m = subject.size();
   int n = query.size();
 
-  TRACE(subject, subject_lw, query, query_lw);
-
   //----------------------------
   // Abbreviations sequence
 
   auto acro = scoreAcronyms(subject, subject_lw, query, query_lw);
   auto acro_score = acro.score;
-  TRACE(acro.score, acro.pos, acro.count);
 
   // Whole query is abbreviation ?
   // => use that as score
@@ -148,7 +132,6 @@ Score computeScore(const Candidate &subject, const Candidate &subject_lw, const 
 
   auto pos = subject_lw.find(query_lw);
   if (pos != std::string::npos) {
-    TRACE(pos, n, m);
     return scoreExactMatch(subject, subject_lw, query, query_lw, pos, n, m);
   }
 
@@ -166,7 +149,6 @@ Score computeScore(const Candidate &subject, const Candidate &subject_lw, const 
   auto miss_budget = ceil(miss_coeff * n) + 5;
   auto miss_left = miss_budget;
   bool csc_should_rebuild = true;
-  TRACE(sz, miss_budget, miss_left, miss_coeff);
 
   // Fill with 0
   /*
@@ -252,7 +234,6 @@ Score computeScore(const Candidate &subject, const Candidate &subject_lw, const 
 
   // get hightest score so far
   auto score = score_row[n - 1];
-  TRACE(score, sz);
   return score * sz;
 }
 
@@ -303,7 +284,6 @@ Score scoreSize(Score n, Score m) {
 }
 
 Score scoreExact(size_t n, size_t m, size_t quality, Score pos) {
-  TRACE(n, m, quality, pos);
   return 2 * n * ( wm * quality + scorePosition(pos) ) * scoreSize(n, m);
 }
 
@@ -402,8 +382,6 @@ Score scoreExactMatch(const Candidate &subject, const Candidate &subject_lw, con
 
   // Test for word start
   bool start = isWordStart(pos, subject, subject_lw);
-  TRACE(query, query_lw);
-  TRACE(pos, n, m, start);
 
   // Heuristic
   // If not a word start, test next occurrence
@@ -418,7 +396,6 @@ Score scoreExactMatch(const Candidate &subject, const Candidate &subject_lw, con
       if (start) pos = pos2;
     }
   }
-  TRACE(start, pos);
 
   //Exact case bonus.
   int i = -1;
@@ -427,10 +404,8 @@ Score scoreExactMatch(const Candidate &subject, const Candidate &subject_lw, con
     if (query[i] == subject[pos + i])
       sameCase++;
   }
-  TRACE(sameCase);
 
   int end = isWordEnd(pos + n - 1, subject, subject_lw, m);
-  TRACE(end);
 
   Score baseNameStart = 1;
   if (start && pos>0 && subject[pos-1]=='/') {
