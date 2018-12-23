@@ -704,7 +704,7 @@ describe "filtering", ->
 
       candidates = [
         path.join('A Long User Full-Name', 'My Documents', 'file'),
-        path.join('bin', 'lib', 'src', 'test', 'spec', 'file')
+        path.join('bin', 'lib', 'src', 'test', 'spec', 'My Documents', 'file')
       ]
 
       expect(bestMatch(candidates, "file")).toBe candidates[0]

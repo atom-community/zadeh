@@ -424,7 +424,7 @@ Score scoreExactMatch(const Candidate &subject, const Candidate &subject_lw, con
   int i = -1;
   int sameCase = 0;
   while (++i < n) {
-    if (query[pos + i] == subject[i])
+    if (query[i] == subject[pos + i])
       sameCase++;
   }
   TRACE(sameCase);
@@ -432,7 +432,12 @@ Score scoreExactMatch(const Candidate &subject, const Candidate &subject_lw, con
   int end = isWordEnd(pos + n - 1, subject, subject_lw, m);
   TRACE(end);
 
-  return scoreExact(n, m, scorePattern(n, n, sameCase, start, end), pos);
+  Score baseNameStart = 1;
+  if (start && pos>0 && subject[pos-1]=='/') {
+    baseNameStart = 1.1;
+  }
+
+  return scoreExact(n, m, baseNameStart*scorePattern(n, n, sameCase, start, end), pos);
 }
 
 

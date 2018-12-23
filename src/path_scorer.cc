@@ -28,14 +28,14 @@ extern Score scorePath(const Candidate &subject, const Candidate &subject_lw, Sc
 extern int countDir(const Candidate &path, int end, char pathSeparator);
 extern Score getExtensionScore(const Candidate &candidate, const Candidate &ext, int startPos, int endPos, int maxDepth);
 
-string ToLower(const string &s) {
-  string snew = s;
+Element ToLower(const Element &s) {
+  Element snew = s;
   std::transform(s.begin(), s.end(), snew.begin(), ::tolower);
   return snew;
 }
 
-string ToUpper(const string &s) {
-  string snew = s;
+Element ToUpper(const Element &s) {
+  Element snew = s;
   std::transform(s.begin(), s.end(), snew.begin(), ::toupper);
   return snew;
 }

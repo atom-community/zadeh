@@ -9,8 +9,27 @@
 
 using namespace std;
 
-typedef std::string Element;
-typedef std::string Candidate;
+
+#ifdef ENABLE_DEBUG
+// Safe string class that logs error when index is accessed outside the string.
+class SafeString : public std::string {
+public:
+  SafeString() {}
+  SafeString(const std::string &s) : std::string(s) {}
+  const char &operator[] (size_t i) const {
+    if (i >= size())
+      printf("ERROR string index access index=%zu str=%s\n", i, c_str());
+    return at(i);
+  }
+};
+
+typedef SafeString Element;
+typedef SafeString Candidate;
+#else
+typedef string Element;
+typedef string Candidate;
+#endif
+
 typedef std::vector<Candidate> Candidates;
 typedef float Score;
 
@@ -41,11 +60,11 @@ struct Options {
 #endif
   const PreparedQuery preparedQuery;
 
-  Options(const string &query, size_t maxResults, bool usePathScoring, bool useExtensionBonus) : max_results(maxResults), usePathScoring(usePathScoring), useExtensionBonus(useExtensionBonus), preparedQuery(query, pathSeparator) {}
+  Options(const Element &query, size_t maxResults, bool usePathScoring, bool useExtensionBonus) : max_results(maxResults), usePathScoring(usePathScoring), useExtensionBonus(useExtensionBonus), preparedQuery(query, pathSeparator) {}
 };
 
-extern std::string ToLower(const std::string &s);
-extern std::string ToUpper(const std::string &s);
+extern Element ToLower(const Element &s);
+extern Element ToUpper(const Element &s);
 
 extern bool isMatch(const Candidate &subject, const Element &query_lw, const Element &query_up);
 extern Score computeScore(const Candidate &subject, const Candidate &subject_lw, const PreparedQuery &preparedQuery);

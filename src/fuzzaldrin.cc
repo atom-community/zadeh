@@ -9,7 +9,7 @@ Napi::Value Fuzzaldrin::Filter(const Napi::CallbackInfo& info) {
     Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
     return res;
   }
-  Element query = info[0].As<Napi::String>();
+  std::string query = info[0].As<Napi::String>();
   size_t maxResults = info[1].As<Napi::Number>().Uint32Value();
   bool usePathScoring = info[2].As<Napi::Boolean>();
   bool useExtensionBonus = info[3].As<Napi::Boolean>();
@@ -32,7 +32,7 @@ Napi::Value Fuzzaldrin::SetCandidates(const Napi::CallbackInfo& info) {
   candidates_.reserve(candidates.Length());
   for(uint32_t i=0; i<candidates.Length(); i++) {
     Napi::Value val = candidates[i];
-    candidates_.push_back(val.ToString());
+    candidates_.push_back(val.ToString().Utf8Value());
   }
   return Napi::Boolean::New(info.Env(), true);
 }
