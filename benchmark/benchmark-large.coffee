@@ -40,6 +40,20 @@ for query in three_letter_tests
 console.timeEnd('ThreeLetter#fuzzaldrin-plus-fast')
 console.log("======")
 
+console.time('TwoLetter#fuzzaldrin-plus-fast-filter')
+for query in two_letter_tests
+  FuzzaldrinPlusFast.filter lines, query, maxResults: 10
+console.timeEnd('TwoLetter#fuzzaldrin-plus-fast-filter')
+console.log("======")
+
+dict = []
+for e in lines
+  dict.push {key:e, val:e}
+console.time('TwoLetter#Keybased#Filter')
+for query in two_letter_tests
+  FuzzaldrinPlusFast.filter dict, query, maxResults: 10, key: 'key'
+console.timeEnd('TwoLetter#Keybased#Filter')
+console.log("======")
 
 # An exmaple run below
 # npm run benchmarklarge

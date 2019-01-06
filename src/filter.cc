@@ -2,13 +2,16 @@
 #include <queue>
 #include <functional>
 #include <thread>
+#include <limits>
+
+#include "ConcurrentQueue.h"
 
 namespace {
 
 struct CandidateScore {
   Score score;
-  Candidate candidate;
-  CandidateScore(Score score, Candidate candidate) : score(score), candidate(candidate) {}
+  CandidateIndex index;
+  CandidateScore(Score score, size_t thread_id, size_t index) : score(score), index(thread_id, index) {}
 
   bool operator<(const CandidateScore& other) const {
     return score > other.score;
@@ -17,29 +20,54 @@ struct CandidateScore {
 
 typedef std::priority_queue<CandidateScore> CandidateScorePriorityQueue;
 
-void thread_worker_filter(const Candidates &candidates,
-                          size_t start, size_t end,
-                          const Element &query, const Options &options,
-                          size_t max_results,
-                          CandidateScorePriorityQueue &results) {
-  if (start >= end || end >candidates.size())
-    return;
-  for (size_t i = start; i < end; i++) {
+struct ThreadState {
+  ConcurrentQueue<Candidates> input;
+  CandidateScorePriorityQueue results;
+  ThreadState() = default;
+};
+
+void filter_internal(const Candidates &candidates,
+                     size_t thread_id,
+                     size_t start_index,
+                     const Element &query, const Options &options,
+                     size_t max_results,
+                     CandidateScorePriorityQueue &results) {
+  for (size_t i=0; i<candidates.size(); i++) {
     const auto &candidate = candidates[i];
     if(candidate.empty()) continue;
     auto scoreProvider = options.usePathScoring ? path_scorer_score : scorer_score;
     auto score = scoreProvider(candidate, query, options);
     if (score>0) {
-      results.emplace(score, candidate);
+      results.emplace(score, thread_id, start_index+i);
       if (results.size() > max_results)
         results.pop();
     }
   }
 }
 
-Candidates sort_priority_queue(CandidateScorePriorityQueue &candidates) {
+void thread_worker_filter(ThreadState &thread_state, size_t thread_id,
+                          const Candidates *initial_candidates,
+                          const Element &query, const Options &options,
+                          size_t max_results) {
+  size_t start_index = 0;
+  if (initial_candidates) {
+    filter_internal(*initial_candidates, thread_id, 0, query, options, max_results,
+      thread_state.results);
+      start_index += initial_candidates->size();
+  }
+  while (true) {
+    Candidates candidates;
+    thread_state.input.pop(candidates);
+    if(candidates.empty()) break;
+    filter_internal(candidates, thread_id, start_index, query, options, max_results,
+        thread_state.results);
+    start_index += candidates.size();
+  }
+}
+
+CandidateIndexes sort_priority_queue(CandidateScorePriorityQueue &candidates) {
   vector<CandidateScore> sorted;
-  Candidates ret;
+  CandidateIndexes ret;
   sorted.reserve(candidates.size());
   ret.reserve(candidates.size());
   while(!candidates.empty()) {
@@ -48,53 +76,112 @@ Candidates sort_priority_queue(CandidateScorePriorityQueue &candidates) {
   }
   std::sort(sorted.begin(), sorted.end());
   for(const auto& item : sorted) {
-    ret.push_back(item.candidate);
+    ret.push_back(item.index);
   }
   return ret;
 }
 
-}
+}  // namespace
 
-Candidates filter(const Candidates &candidates, const Element &query, const Options &options) {
+CandidateIndexes filter(const vector<Candidates> &candidates, const Element &query, const Options &options) {
   CandidateScorePriorityQueue top_k;
   size_t max_results = options.max_results;
-  if (!max_results || max_results >= candidates.size())
-    max_results = candidates.size();
+  if (!max_results)
+    max_results = std::numeric_limits<size_t>::max();
 
-  if (candidates.size() < 10000) {
-    thread_worker_filter(candidates, 0, candidates.size(), query,
-      options, max_results, top_k);
+  if (candidates.size()==1) {
+    filter_internal(candidates[0], 0, 0, query, options, max_results, top_k);
     return sort_priority_queue(top_k);
   }
 
   // Split the dataset and pass down to multiple threads.
-  const size_t max_threads = 8;
+  const size_t max_threads = candidates.size();
   vector<thread> threads;
-  vector<CandidateScorePriorityQueue> thread_results(max_threads);
-  size_t cur_start = 0;
+  vector<ThreadState> thread_state(max_threads);
   for (size_t i = 0; i < max_threads; i++) {
-    size_t chunk_size = candidates.size() / max_threads;
-    // Distribute remainder among the chunks.
-    if (i < candidates.size() % max_threads) {
-      chunk_size++;
-    }
     threads.emplace_back(
-      thread_worker_filter, ref(candidates),
-        cur_start, cur_start + chunk_size,
-        ref(query), ref(options),
-        max_results, ref(thread_results[i])
-    );
-    cur_start += chunk_size;
+        thread_worker_filter, ref(thread_state[i]), i,
+        &candidates[i],
+        ref(query), ref(options), max_results);
+  }
+  // Push an empty vector for the threads to terminate.
+  for (size_t i = 0; i < max_threads; i++) {
+    Candidates t;
+    thread_state[i].input.push(t);
   }
   // Wait for threads to complete and merge the restuls.
   for (size_t i = 0; i < max_threads; i++) {
     threads[i].join();
-    while(!thread_results[i].empty()) {
-      top_k.emplace(thread_results[i].top());
-      thread_results[i].pop();
+    auto &results = thread_state[i].results;
+    while(!results.empty()) {
+      top_k.emplace(results.top());
+      results.pop();
       if (top_k.size() > max_results)
         top_k.pop();
     }
   }
   return sort_priority_queue(top_k);
+}
+
+Napi::Value filter_with_candidates(Napi::Env env, const Napi::Array &candidates,
+        const std::string &key, const std::string &query, const Options &options) {
+  CandidateScorePriorityQueue top_k;
+  size_t max_results = options.max_results;
+  if (!max_results)
+    max_results = std::numeric_limits<size_t>::max();
+
+  Napi::Array res = Napi::Array::New(env);
+  const size_t max_threads = 8;
+  vector<thread> threads;
+  vector<ThreadState> thread_state(max_threads);
+  vector<size_t> chunks;
+  vector<Candidates> initial_candidates(max_threads);
+  size_t cur_start = 0;
+  for (size_t i = 0; i < max_threads; i++) {
+    size_t chunk_size = candidates.Length() / max_threads;
+    // Distribute remainder among the chunks.
+    if (i < candidates.Length() % max_threads) {
+      chunk_size++;
+    }
+    for(size_t j=0; j<1000 && j<chunk_size; j++) {
+      initial_candidates[i].push_back(candidates[cur_start+j].ToObject().Get(key).ToString());
+    }
+    threads.emplace_back(
+        thread_worker_filter, ref(thread_state[i]), i,
+        &initial_candidates[i],
+        ref(query), ref(options), max_results);
+    cur_start += chunk_size;
+    chunks.push_back(cur_start);
+  }
+  for (size_t i = 0; i < max_threads; i++) {
+    Candidates c;
+    for(size_t j=(i==0)?1000:chunks[i-1]+1000; j<chunks[i]; j++) {
+      c.push_back(candidates[j].ToObject().Get(key).ToString());
+    }
+    thread_state[i].input.push(c);
+  }
+  // Push an empty vector for the threads to terminate.
+  for (size_t i = 0; i < max_threads; i++) {
+    Candidates t;
+    thread_state[i].input.push(t);
+  }
+  // Wait for threads to complete and merge the restuls.
+  for (size_t i = 0; i < max_threads; i++) {
+    threads[i].join();
+    auto &results = thread_state[i].results;
+    while(!results.empty()) {
+      top_k.emplace(results.top());
+      results.pop();
+      if (top_k.size() > max_results)
+        top_k.pop();
+    }
+  }
+  auto indexes = sort_priority_queue(top_k);
+  for(size_t i=0; i<indexes.size(); i++) {
+    size_t ind = indexes[i].index;
+    if (indexes[i].thread_id > 0)
+      ind += chunks[indexes[i].thread_id-1];
+    res[i] = Napi::Number::New(env, ind);
+  }
+  return res;
 }

@@ -7,6 +7,8 @@
 #include <iostream>
 #include <utility>
 
+#include <napi.h>
+
 using namespace std;
 
 
@@ -30,8 +32,15 @@ typedef string Element;
 typedef string Candidate;
 #endif
 
+typedef struct CandidateIndex {
+  size_t thread_id;
+  size_t index;
+  CandidateIndex(size_t thread_id, size_t index) : thread_id(thread_id), index(index) {}
+} CandidateIndex;
+
 typedef std::vector<Candidate> Candidates;
 typedef float Score;
+typedef std::vector<CandidateIndex> CandidateIndexes;
 
 struct Options;
 
@@ -76,4 +85,6 @@ extern Score path_scorer_score(const Candidate &string, const Element &query, co
 extern int countDir(const Candidate &path, int end, char pathSeparator);
 extern Candidate getExtension(const Candidate &str);
 
-extern Candidates filter(const Candidates &candidates, const Element &query, const Options &options);
+extern CandidateIndexes filter(const vector<Candidates> &candidates, const Element &query, const Options &options);
+
+Napi::Value filter_with_candidates(Napi::Env env, const Napi::Array &candidates, const std::string &key, const std::string &query, const Options &options);

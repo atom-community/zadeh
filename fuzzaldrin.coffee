@@ -17,21 +17,12 @@ class FuzzaldrinPlusFast
     @obj = new binding.Fuzzaldrin()
 
   setCandidates: (candidates, options = {}) ->
-    @item_to_val = null
-    if options.key?
-      @item_to_val = {}
-      newcandidates = []
-      for c in candidates
-        newcandidates.push c[options.key]
-        @item_to_val[c[options.key]] = c
-      candidates = newcandidates
     @obj.setCandidates(candidates)
 
   filter: (query, options = {}) ->
     options = parseOptions(options)
-    filtered = @obj.filter query, options.maxResults,
+    @obj.filter query, options.maxResults,
       options.usePathScoring, options.useExtensionBonus
-    return if @item_to_val? then filtered.map((item) => @item_to_val[item]) else filtered
 
 module.exports =
 
@@ -39,9 +30,15 @@ module.exports =
     new FuzzaldrinPlusFast()
 
   filter: (candidates, query, options = {}) ->
-    obj = new FuzzaldrinPlusFast()
-    obj.setCandidates(candidates, options)
-    obj.filter(query, options)
+    if options.key?
+      options = parseOptions(options)
+      filtered = binding.filterWithCandidates query, options.maxResults,
+      options.usePathScoring, options.useExtensionBonus, candidates, options.key
+      return filtered.map((item) => candidates[item])
+    else
+      obj = new FuzzaldrinPlusFast()
+      obj.setCandidates(candidates, options)
+      obj.filter(query, options)
 
   score: (candidate, query, options = {}) ->
     options = parseOptions(options)
