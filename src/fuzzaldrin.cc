@@ -4,8 +4,8 @@
 
 Napi::Value Fuzzaldrin::Filter(const Napi::CallbackInfo& info) {
   Napi::Array res = Napi::Array::New(info.Env());
-  if (info.Length() != 4 || !info[0].IsString() || !info[1].IsNumber() ||
-      !info[2].IsBoolean() || !info[3].IsBoolean()) {
+  if (info.Length() != 5 || !info[0].IsString() || !info[1].IsNumber() ||
+      !info[2].IsBoolean() || !info[3].IsBoolean() || !info[4].IsBoolean()) {
     Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
     return Napi::Boolean();
   }
@@ -13,12 +13,26 @@ Napi::Value Fuzzaldrin::Filter(const Napi::CallbackInfo& info) {
   size_t maxResults = info[1].As<Napi::Number>().Uint32Value();
   bool usePathScoring = info[2].As<Napi::Boolean>();
   bool useExtensionBonus = info[3].As<Napi::Boolean>();
+  bool returnIndexes = info[4].As<Napi::Boolean>();
   Options options(query, maxResults, usePathScoring, useExtensionBonus);
   const auto matches = filter(candidates_, query, options);
 
+  std::vector<size_t> counts;
+  if (returnIndexes) {
+    size_t start = 0;
+    for(const auto &c : candidates_) {
+      counts.push_back(start);
+      start += c.size();
+    }
+  }
+
   for(uint32_t i=0; i<matches.size(); i++) {
     const auto &index = matches[i];
-    res[i] = Napi::String::New(info.Env(), candidates_[index.thread_id][index.index]);
+    if (returnIndexes) {
+      res[i] = Napi::Number::New(info.Env(), counts[index.thread_id] + index.index);
+    } else {
+      res[i] = Napi::String::New(info.Env(), candidates_[index.thread_id][index.index]);
+    }
   }
   return res;
 }
@@ -28,16 +42,15 @@ Napi::Value Fuzzaldrin::SetCandidates(const Napi::CallbackInfo& info) {
     Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
     return Napi::Boolean();
   }
-  const size_t max_threads = 8;
   Napi::Array candidates = info[0].As<Napi::Array>();
   candidates_.clear();
-  candidates_.resize(max_threads);
+  candidates_.resize(kMaxThreads);
   const size_t N = candidates.Length();
   size_t cur_start = 0;
-  for(size_t i=0; i<max_threads; i++) {
-    size_t chunk_size = N / max_threads;
+  for(size_t i=0; i<kMaxThreads; i++) {
+    size_t chunk_size = N / kMaxThreads;
     // Distribute remainder among the chunks.
-    if (i < N % max_threads) {
+    if (i < N % kMaxThreads) {
       chunk_size++;
     }
     for(size_t j=cur_start; j < cur_start+chunk_size; j++) {

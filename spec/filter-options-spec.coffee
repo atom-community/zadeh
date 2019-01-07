@@ -79,10 +79,37 @@ describe "filtering", ->
       ]
       expect(fuzzaldrinplusfast.filter(candidates, 'i', key: 'fname')).toEqual([candidates[3], candidates[2], candidates[1]])
 
-    # This test fails right now
-    # it "candidates with duplicate values when indexed by key are returned properly", ->
-    #   candidates = [
-    #     {uri: '/usr/bin/ls', fname: 'ls'},
-    #     {uri: '/usr/sbin/ls', fname: 'ls'}
-    #   ]
-    #   expect(fuzzaldrinplusfast.filter(candidates, 'l', key: 'fname')).toEqual([candidates[0], candidates[1]])
+    it "candidates with duplicate values when indexed by key are returned properly", ->
+      candidates = [
+        {uri: '/usr/bin/ls', fname: 'ls'},
+        {uri: '/usr/sbin/ls', fname: 'ls'}
+      ]
+      expect(fuzzaldrinplusfast.filter(candidates, 'l', key: 'fname')).toEqual([candidates[0], candidates[1]])
+
+  describe "filtering by creating an object", ->
+    it "with default options", ->
+      obj = fuzzaldrinplusfast.New()
+      obj.setCandidates ['ab', 'abc', 'cd', 'de']
+      expect(obj.filter('a')).toEqual(['ab', 'abc'])
+      expect(obj.filter('b')).toEqual(['ab', 'abc'])
+      expect(obj.filter('c')).toEqual(['cd', 'abc',])
+
+    it "candidates are able to be indexed by a given key", ->
+      candidates = [
+        {uri: '/usr/bin/ls', fname: 'ls'},
+        {uri: '/usr/bin/mkdir', fname: 'mkdir'},
+        {uri: '/usr/sbin/find', fname: 'find'},
+        {uri: '/usr/local/bin/git', fname: 'git'},
+      ]
+      obj = fuzzaldrinplusfast.New()
+      obj.setCandidates candidates, key: 'fname'
+      expect(obj.filter('i')).toEqual([candidates[3], candidates[2], candidates[1]])
+
+    it "candidates with duplicate values when indexed by key are returned properly", ->
+      candidates = [
+        {uri: '/usr/bin/ls', fname: 'ls'},
+        {uri: '/usr/sbin/ls', fname: 'ls'}
+      ]
+      obj = fuzzaldrinplusfast.New()
+      obj.setCandidates candidates, key: 'fname'
+      expect(obj.filter('l')).toEqual([candidates[0], candidates[1]])

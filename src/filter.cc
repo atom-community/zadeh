@@ -3,6 +3,7 @@
 #include <functional>
 #include <thread>
 #include <limits>
+#include <cassert>
 
 #include "ConcurrentQueue.h"
 
@@ -95,22 +96,22 @@ CandidateIndexes filter(const vector<Candidates> &candidates, const Element &que
   }
 
   // Split the dataset and pass down to multiple threads.
-  const size_t max_threads = candidates.size();
+  assert(candidates.size() == kMaxThreads);
   vector<thread> threads;
-  vector<ThreadState> thread_state(max_threads);
-  for (size_t i = 0; i < max_threads; i++) {
+  vector<ThreadState> thread_state(kMaxThreads);
+  for (size_t i = 0; i < kMaxThreads; i++) {
     threads.emplace_back(
         thread_worker_filter, ref(thread_state[i]), i,
         &candidates[i],
         ref(query), ref(options), max_results);
   }
   // Push an empty vector for the threads to terminate.
-  for (size_t i = 0; i < max_threads; i++) {
+  for (size_t i = 0; i < kMaxThreads; i++) {
     Candidates t;
     thread_state[i].input.push(t);
   }
   // Wait for threads to complete and merge the restuls.
-  for (size_t i = 0; i < max_threads; i++) {
+  for (size_t i = 0; i < kMaxThreads; i++) {
     threads[i].join();
     auto &results = thread_state[i].results;
     while(!results.empty()) {
@@ -131,16 +132,15 @@ Napi::Value filter_with_candidates(Napi::Env env, const Napi::Array &candidates,
     max_results = std::numeric_limits<size_t>::max();
 
   Napi::Array res = Napi::Array::New(env);
-  const size_t max_threads = 8;
   vector<thread> threads;
-  vector<ThreadState> thread_state(max_threads);
+  vector<ThreadState> thread_state(kMaxThreads);
   vector<size_t> chunks;
-  vector<Candidates> initial_candidates(max_threads);
+  vector<Candidates> initial_candidates(kMaxThreads);
   size_t cur_start = 0;
-  for (size_t i = 0; i < max_threads; i++) {
-    size_t chunk_size = candidates.Length() / max_threads;
+  for (size_t i = 0; i < kMaxThreads; i++) {
+    size_t chunk_size = candidates.Length() / kMaxThreads;
     // Distribute remainder among the chunks.
-    if (i < candidates.Length() % max_threads) {
+    if (i < candidates.Length() % kMaxThreads) {
       chunk_size++;
     }
     for(size_t j=0; j<1000 && j<chunk_size; j++) {
@@ -153,7 +153,7 @@ Napi::Value filter_with_candidates(Napi::Env env, const Napi::Array &candidates,
     cur_start += chunk_size;
     chunks.push_back(cur_start);
   }
-  for (size_t i = 0; i < max_threads; i++) {
+  for (size_t i = 0; i < kMaxThreads; i++) {
     Candidates c;
     for(size_t j=(i==0)?1000:chunks[i-1]+1000; j<chunks[i]; j++) {
       c.push_back(candidates[j].ToObject().Get(key).ToString());
@@ -161,12 +161,12 @@ Napi::Value filter_with_candidates(Napi::Env env, const Napi::Array &candidates,
     thread_state[i].input.push(c);
   }
   // Push an empty vector for the threads to terminate.
-  for (size_t i = 0; i < max_threads; i++) {
+  for (size_t i = 0; i < kMaxThreads; i++) {
     Candidates t;
     thread_state[i].input.push(t);
   }
   // Wait for threads to complete and merge the restuls.
-  for (size_t i = 0; i < max_threads; i++) {
+  for (size_t i = 0; i < kMaxThreads; i++) {
     threads[i].join();
     auto &results = thread_state[i].results;
     while(!results.empty()) {
