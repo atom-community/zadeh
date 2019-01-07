@@ -5,6 +5,8 @@ FuzzaldrinPlusFast = require '../fuzzaldrin'
 legacy = require 'fuzzaldrin-plus'
 
 lines = fs.readFileSync(path.join(__dirname, 'data-large.txt'), 'utf8').trim().split('\n')
+dict = lines.map((item) => {key:item, val:item})
+
 fuzzaldrinplusfast = FuzzaldrinPlusFast.New()
 fuzzaldrinplusfast.setCandidates lines
 
@@ -46,13 +48,32 @@ for query in two_letter_tests
 console.timeEnd('TwoLetter#fuzzaldrin-plus-fast-filter')
 console.log("======")
 
-dict = []
-for e in lines
-  dict.push {key:e, val:e}
 console.time('TwoLetter#Keybased#Filter')
 for query in two_letter_tests
   FuzzaldrinPlusFast.filter dict, query, maxResults: 10, key: 'key'
 console.timeEnd('TwoLetter#Keybased#Filter')
+console.log("======")
+
+console.time('setCandidates')
+obj = FuzzaldrinPlusFast.New()
+obj.setCandidates lines
+console.timeEnd('setCandidates')
+
+console.time('setCandidates#Keybased')
+obj = FuzzaldrinPlusFast.New()
+obj.setCandidates dict, key: 'Keybased'
+console.timeEnd('setCandidates#Key')
+
+console.time('TwoLetter#Keybased#Filter')
+for query in two_letter_tests
+  obj.filter query, maxResults: 10
+console.timeEnd('TwoLetter#Keybased#Filter')
+console.log("======")
+
+console.time('ThreeLetter#Keybased#Filter')
+for query in three_letter_tests
+  obj.filter query, maxResults: 10
+console.timeEnd('ThreeLetter#Keybased#Filter')
 console.log("======")
 
 # An exmaple run below
