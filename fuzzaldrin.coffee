@@ -50,6 +50,7 @@ module.exports =
     new FuzzaldrinPlusFast()
 
   filter: (candidates, query, options = {}) ->
+    return [] unless query?.length and candidates?.length
     if options.key?
       options = parseOptions(options)
       filtered = binding.filterWithCandidates query, options.maxResults,
@@ -61,6 +62,7 @@ module.exports =
       obj.filter(query, options)
 
   score: (candidate, query, options = {}) ->
+    return 0 unless candidate?.length and query?.length
     options = parseOptions(options)
     binding.score candidate, query, options.usePathScoring, options.useExtensionBonus
 
