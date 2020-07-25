@@ -6,7 +6,8 @@ Query = require('fuzzaldrin-plus/lib/query')
 
 defaultPathSeparator = if process?.platform is "win32" then '\\' else '/'
 
-parseOptions = (options) ->
+preparedQueryCache = null
+parseOptions = (options, query) ->
   options.allowErrors ?= false
   options.usePathScoring ?= true
   options.useExtensionBonus ?= false
@@ -14,6 +15,10 @@ parseOptions = (options) ->
   options.optCharRegEx ?= null
   options.wrap ?= null
   options.maxResults ?= 0
+  options.preparedQuery ?=
+    if preparedQueryCache and preparedQueryCache.query is query
+    then preparedQueryCache
+    else (preparedQueryCache = new Query(query, options))
   return options
 
 class FuzzaldrinPlusFast
@@ -71,3 +76,7 @@ module.exports =
     return [] unless query
     options = parseOptions(options, query)
     return matcher.wrap(string, query, options)
+
+  prepareQuery: (query, options = {}) ->
+    options = parseOptions(options, query)
+    return options.preparedQuery
