@@ -1,5 +1,9 @@
 binding = require('node-gyp-build')(__dirname);
 
+# for missing API
+matcher = require('fuzzaldrin-plus/lib/matcher')
+Query = require('fuzzaldrin-plus/lib/query')
+
 defaultPathSeparator = if process?.platform is "win32" then '\\' else '/'
 
 parseOptions = (options) ->
@@ -55,4 +59,15 @@ module.exports =
     options = parseOptions(options)
     binding.score candidate, query, options.usePathScoring, options.useExtensionBonus
 
-  prepareQuery: ->
+  match: (string, query, options = {}) ->
+    return [] unless string
+    return [] unless query
+    return [0...string.length] if string is query
+    options = parseOptions(options, query)
+    return matcher.match(string, query, options)
+
+  wrap: (string, query, options = {}) ->
+    return [] unless string
+    return [] unless query
+    options = parseOptions(options, query)
+    return matcher.wrap(string, query, options)
