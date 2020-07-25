@@ -407,9 +407,9 @@ Score scoreExactMatch(const Candidate &subject, const Candidate &subject_lw, con
 
   int end = isWordEnd(pos + n - 1, subject, subject_lw, m);
 
-  Score baseNameStart = 1;
+  Score baseNameStart = 1.0;
   if (start && pos>0 && (subject[pos-1]=='/' || subject[pos-1]=='\\')) {
-    baseNameStart = 1.1;
+    baseNameStart = static_cast<Score>(1.1);
   }
 
   return scoreExact(n, m, baseNameStart*scorePattern(n, n, sameCase, start, end), pos);
@@ -420,7 +420,7 @@ Score scoreExactMatch(const Candidate &subject, const Candidate &subject_lw, con
 // Acronym prefix
 //
 
-AcronymResult emptyAcronymResult(0, 0.1, 0);
+AcronymResult emptyAcronymResult(static_cast<Score>(0), static_cast<float>(0.1), static_cast<int>(0));
 
 AcronymResult scoreAcronyms(Candidate subject, Candidate subject_lw, Element query, Element query_lw) {
   auto m = subject.size();
