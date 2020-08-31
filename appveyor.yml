@@ -1,5 +1,5 @@
 # https://www.appveyor.com/docs/appveyor-yml/
-build: false
+build: off
 
 skip_branch_with_pr: true
 skip_non_tags: true
