@@ -62,7 +62,7 @@ console.timeEnd('setCandidates')
 console.time('setCandidates#Keybased')
 obj = FuzzaldrinPlusFast.New()
 obj.setCandidates dict, key: 'Keybased'
-console.timeEnd('setCandidates#Key')
+console.timeEnd('setCandidates#Keybased')
 
 console.time('TwoLetter#Keybased#Filter')
 for query in two_letter_tests
