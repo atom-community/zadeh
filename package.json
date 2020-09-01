@@ -9,6 +9,7 @@
     "test": "jasmine-node --coffee --captureExceptions spec",
     "benchmark": "coffee benchmark/benchmark.coffee",
     "benchmarklarge": "coffee benchmark/benchmark-large.coffee",
+    "benchmarksmall": "node benchmark/benchmark-small.js",
     "bump": "ncu -u"
   },
   "gypfile": true,
