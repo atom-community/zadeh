@@ -43,9 +43,17 @@ Napi::Value Fuzzaldrin::SetCandidates(const Napi::CallbackInfo& info) {
     return Napi::Boolean();
   }
   Napi::Array candidates = info[0].As<Napi::Array>();
-  candidates_.clear();
-  candidates_.resize(kMaxThreads);
   const size_t N = candidates.Length();
+  candidates_.clear();
+  if (N <= 1000) {
+    candidates_.resize(1);
+    for(size_t j=0; j < N; j++) {
+      Napi::Value val = candidates[j];
+      candidates_[0].push_back(val.ToString().Utf8Value());
+    }
+    return Napi::Boolean();
+  }
+  candidates_.resize(kMaxThreads);
   size_t cur_start = 0;
   for(size_t i=0; i<kMaxThreads; i++) {
     size_t chunk_size = N / kMaxThreads;
