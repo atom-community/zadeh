@@ -11,11 +11,15 @@ addons:
 os:
 - osx
 - linux
+- windows
 dist: xenial
+after_script:
+- npm run benchmarklarge
 before_deploy:
 - ARCHIVE_NAME="${TRAVIS_TAG:-latest}-$TRAVIS_OS_NAME-`uname -m`.tar"
 - npm install
 - npm run prebuild
+- npm run benchmarklarge
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ARCH=ia32 npm run prebuild; fi
 - tar --create --verbose --file="$ARCHIVE_NAME" --directory "$TRAVIS_BUILD_DIR/prebuilds"
   .
@@ -28,10 +32,6 @@ deploy:
   on:
     tags: true
     node: node
-  api_key:
-    secure: dnCUJfKUj6KlTv6oRTRe3hmj0U52YPdRHcKiKD8KF6mtbKquhG/F8WWXL5LGdUzT/gUEkF8wOs4MJCOwA2c9VaWfhmNZDdhYcFIdp4PNgWYjq/2mGYKmrrAlOkz5sxAWaB6NoJGoEakTNptsFD/WkKhDI3XIplOfeccxVFxg5slnTtsZ+HLQzdO1YqkXwbuvh5z33Gs0xlC0H3m7tVU1A9sL9/2iaGWLjK59BEn5xQFnMNcrESDAzHPZa3wy8+Kq1JLH6QxTsTFnMHDeKNH8w1rasNt/8JVW/0lFq/JtaTBFnCha+o6StNvuQdgd2Ds9omN8psQ1cMgLupIbmEsxcgKpk6JpBrN9+wpK5XB4eX2h5DXaAarBEcXHfBWesoyyV3Z6GdG92y6KB2+8T7Sx4L0/FrqmSfZzpD3v/mNH2rQfIMRKRFyh7kHEgoj9PXZ8/r/gC2i09/XCfhYIuFPHJOBvpBQlB83bAY3LjMhYCCUgFDoMLZnRXiqtQx4oNDYYCfW/BY/wpHk4KCXvSQcyXSwby3704Ol5r5mtHsv5AnAdJvLedau6eX71JQRPrpXkk9bty067JPfHhNm+KZszxaKJxSSXq/B2Nc+8HyAOadmR+1pmwrm/1aAeNIfx8bN/ZEsIBCKfUkyCOmPkuyDkFJaYLD4NaltNLzs25qnq0JQ=
-env:
-  global:
-    secure: dnCUJfKUj6KlTv6oRTRe3hmj0U52YPdRHcKiKD8KF6mtbKquhG/F8WWXL5LGdUzT/gUEkF8wOs4MJCOwA2c9VaWfhmNZDdhYcFIdp4PNgWYjq/2mGYKmrrAlOkz5sxAWaB6NoJGoEakTNptsFD/WkKhDI3XIplOfeccxVFxg5slnTtsZ+HLQzdO1YqkXwbuvh5z33Gs0xlC0H3m7tVU1A9sL9/2iaGWLjK59BEn5xQFnMNcrESDAzHPZa3wy8+Kq1JLH6QxTsTFnMHDeKNH8w1rasNt/8JVW/0lFq/JtaTBFnCha+o6StNvuQdgd2Ds9omN8psQ1cMgLupIbmEsxcgKpk6JpBrN9+wpK5XB4eX2h5DXaAarBEcXHfBWesoyyV3Z6GdG92y6KB2+8T7Sx4L0/FrqmSfZzpD3v/mNH2rQfIMRKRFyh7kHEgoj9PXZ8/r/gC2i09/XCfhYIuFPHJOBvpBQlB83bAY3LjMhYCCUgFDoMLZnRXiqtQx4oNDYYCfW/BY/wpHk4KCXvSQcyXSwby3704Ol5r5mtHsv5AnAdJvLedau6eX71JQRPrpXkk9bty067JPfHhNm+KZszxaKJxSSXq/B2Nc+8HyAOadmR+1pmwrm/1aAeNIfx8bN/ZEsIBCKfUkyCOmPkuyDkFJaYLD4NaltNLzs25qnq0JQ=
+  api_key: $GITHUB_TOKEN
 after_deploy:
 - npm run benchmarklarge

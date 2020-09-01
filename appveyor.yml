@@ -1,5 +1,5 @@
 # https://www.appveyor.com/docs/appveyor-yml/
-build: false
+build: off
 
 skip_branch_with_pr: true
 skip_non_tags: true
@@ -14,7 +14,7 @@ platform:
   - x64
 
 install:
-  - SET PATH=C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin;%PATH%
+  - SET PATH=C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\bin;%PATH%
   - ps: Install-Product node $env:nodejs_version $env:platform
   - npm install
 
@@ -22,7 +22,6 @@ test_script:
   - node --version
   - npm --version
   - npm test
-  - npm run benchmarklarge
 
 after_test:
   - ps: If ($env:nodejs_version -eq "Current") { npm run prebuild }
@@ -38,7 +37,9 @@ deploy:
     draft: false
     prerelease: true
     auth_token:
-      secure: 74rmS0SqgpyKDqZadG4g9POv2N5KfIXHtMkZPWb8Ksfejm5PM+wdC2YF51Ry5niE
+      secure: CqG+3BexDw134ePx6KfsoUT59aMH3APg5K0gs6jPiV5KuGOxrSrzpRZWTDiyLGed
     on:
       appveyor_repo_tag: true
       nodejs_version: "Current"
+after_deploy:
+  - npm run benchmarklarge
