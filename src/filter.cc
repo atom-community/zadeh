@@ -54,7 +54,7 @@ void thread_worker_filter(ThreadState &thread_state, size_t thread_id,
   if (initial_candidates) {
     filter_internal(*initial_candidates, thread_id, 0, query, options, max_results,
       thread_state.results);
-      start_index += initial_candidates->size();
+    start_index += initial_candidates->size();
   }
   while (true) {
     Candidates candidates;
