@@ -13,9 +13,10 @@
     "clean": "npm run native:clean && npm run js:clean",
     "build": "npm run native:build && npm run js:build",
     "test": "jasmine-node --coffee --captureExceptions spec",
-    "benchmark": "coffee benchmark/benchmark.coffee",
-    "benchmarklarge": "coffee benchmark/benchmark-large.coffee",
-    "benchmarksmall": "node benchmark/benchmark-small.js",
+    "benchmark:regular": "coffee benchmark/benchmark.coffee",
+    "benchmark:large": "coffee benchmark/benchmark-large.coffee",
+    "benchmark:small": "node benchmark/benchmark-small.js",
+    "benchmark": "npm run benchmark:small && npm run benchmark:regular && npm run benchmark:large",
     "bump": "ncu -u",
     "prepare": "npm run build",
     "prepublishOnly": "npm run native:prebuild && npm run js:build"
