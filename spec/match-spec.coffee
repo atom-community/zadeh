@@ -1,4 +1,4 @@
-{match} = require '../fuzzaldrin'
+{match} = require '../dist/fuzzaldrin'
 path = require 'path'
 
 describe "match(string, query)", ->

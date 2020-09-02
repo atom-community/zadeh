@@ -1,4 +1,4 @@
-fuzzaldrinplusfast = require('../fuzzaldrin');
+fuzzaldrinplusfast = require('../dist/fuzzaldrin');
 fuzzaldrinExpected = require 'fuzzaldrin-plus'
 
 score_test = (candidate, query, options={}) ->

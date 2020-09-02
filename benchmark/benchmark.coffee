@@ -7,7 +7,7 @@ try
 catch
   performance = window.performance
 
-fuzzaldrinPlus = require '../fuzzaldrin'
+fuzzaldrinPlus = require '../dist/fuzzaldrin'
 # legacyPlus = require 'fuzzaldrin-plus'
 legacy = require 'fuzzaldrin-plus'
 
