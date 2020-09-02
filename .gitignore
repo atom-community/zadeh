@@ -1,3 +1,7 @@
 build/
 node_modules/
 prebuilds/
+dist/
+.parcel-cache
+fuzzaldrin-dist.js
+fuzzaldrin-dist.js.map

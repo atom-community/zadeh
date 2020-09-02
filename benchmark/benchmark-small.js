@@ -4,7 +4,11 @@ const path = require('path')
 
 const performance = (require('perf_hooks')).performance
 
+<<<<<<< HEAD
 const fuzzaldrinPlus = require('../fuzzaldrin')
+=======
+const fuzzaldrinPlus = require('../fuzzaldrin-dist')
+>>>>>>> upstream/master
 const legacy = require('fuzzaldrin-plus')
 
 const lines = fs.readFileSync(path.join(__dirname, 'data-small.txt'), 'utf8').trim().split('\n')
