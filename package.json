@@ -4,7 +4,7 @@
   "description": "Fuzzaldrin plus - fast using native c bindings",
   "main": "fuzzaldrin.coffee",
   "scripts": {
-    "install": "node-gyp-build",
+    "prepare": "node-gyp-build",
     "prebuild": "prebuildify --napi",
     "test": "jasmine-node --coffee --captureExceptions spec",
     "benchmark": "coffee benchmark/benchmark.coffee",
