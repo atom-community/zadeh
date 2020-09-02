@@ -2,3 +2,4 @@
 benchmark/
 spec/
 build/
+.parcel-cache
