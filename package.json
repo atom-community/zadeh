@@ -21,10 +21,14 @@
     "fuzzaldrin-plus": "^0.6.0"
   },
   "devDependencies": {
+    "babel-preset-atomic": "^1.1.0",
+    "cross-env": "^7.0.2",
     "growl": ">=1.10.5",
     "jasmine-node": "^3.0.0",
+    "npm-check-updates": "8.0.3",
+    "parcel": "^2.0.0-nightly.387",
     "prebuildify": "^4.0.0",
-    "npm-check-updates": "8.0.3"
+    "shx": "^0.3.2"
   },
   "repository": {
     "type": "git",
