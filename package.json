@@ -24,7 +24,7 @@
     "growl": ">=1.10.5",
     "jasmine-node": "^3.0.0",
     "prebuildify": "^4.0.0",
-    "npm-check-updates": "7.0.2"
+    "npm-check-updates": "8.0.3"
   },
   "repository": {
     "type": "git",
