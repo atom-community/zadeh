@@ -1,7 +1,7 @@
 fs = require 'fs'
 path = require 'path'
 
-FuzzaldrinPlusFast = require '../dist/fuzzaldrin'
+FuzzaldrinPlusFast = require '../fuzzaldrin-dist'
 legacy = require 'fuzzaldrin-plus'
 
 lines = fs.readFileSync(path.join(__dirname, 'data-large.txt'), 'utf8').trim().split('\n')

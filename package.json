@@ -2,7 +2,7 @@
   "name": "fuzzaldrin-plus-fast",
   "version": "0.11.2",
   "description": "Fuzzaldrin plus - fast using native c bindings",
-  "main": "dist/fuzzaldrin.js",
+  "main": "fuzzaldrin-dist.js",
   "scripts": {
     "native:clean": "shx rm -rf build prebuilds",
     "native:build": "node-gyp-build",

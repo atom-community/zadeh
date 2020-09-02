@@ -1,4 +1,4 @@
-{score} = require '../dist/fuzzaldrin'
+{score} = require '../fuzzaldrin-dist'
 
 describe "score(string, query)", ->
   it "returns a score", ->
