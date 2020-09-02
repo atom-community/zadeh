@@ -4,14 +4,21 @@
   "description": "Fuzzaldrin plus - fast using native c bindings",
   "main": "dist/fuzzaldrin.js",
   "scripts": {
-    "prepare": "node-gyp-build",
-    "prebuild": "prebuildify --napi",
+    "native:clean": "shx rm -rf build prebuilds",
+    "native:build": "node-gyp-build",
+    "native:prebuild": "prebuildify --napi",
+    "js:clean": "shx rm -rf dist .parcel-cache",
+    "js:dev": "cross-env NODE_ENV=development parcel watch --target main fuzzaldrin.coffee",
+    "js:build": "cross-env NODE_ENV=production parcel build --target main fuzzaldrin.coffee",
+    "clean": "npm run native:clean && npm run js:clean",
+    "build": "npm run native:build && npm run js:build",
     "test": "jasmine-node --coffee --captureExceptions spec",
     "benchmark": "coffee benchmark/benchmark.coffee",
     "benchmarklarge": "coffee benchmark/benchmark-large.coffee",
     "benchmarksmall": "node benchmark/benchmark-small.js",
     "bump": "ncu -u",
-    "prepublishOnly": "npm run prebuild"
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run native:prebuild && npm run js:build"
   },
   "gypfile": true,
   "targets": {
