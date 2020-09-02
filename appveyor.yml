@@ -15,12 +15,12 @@ platform:
 
 install:
   - SET PATH=C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\bin;%PATH%
-  - ps: Install-Product node $env:nodejs_version x64
+  - ps: Install-Product node $env:nodejs_version $env:platform
+  - node --version
+  - npm --version
   - npm install
 
 test_script:
-  - node --version
-  - npm --version
   - npm test
 
 after_test:
