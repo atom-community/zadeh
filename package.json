@@ -2,18 +2,37 @@
   "name": "fuzzaldrin-plus-fast",
   "version": "0.11.2",
   "description": "Fuzzaldrin plus - fast using native c bindings",
-  "main": "fuzzaldrin.coffee",
+  "main": "fuzzaldrin-dist.js",
   "scripts": {
-    "prepare": "node-gyp-build",
-    "prebuild": "prebuildify --napi",
+    "native:clean": "shx rm -rf build prebuilds",
+    "native:build": "node-gyp-build",
+    "native:prebuild": "prebuildify --napi",
+    "js:clean": "shx rm -rf dist .parcel-cache",
+    "js:dev": "cross-env NODE_ENV=development parcel watch --target main fuzzaldrin.coffee",
+    "js:build": "cross-env NODE_ENV=production parcel build --target main fuzzaldrin.coffee",
+    "clean": "npm run native:clean && npm run js:clean",
+    "build": "npm run native:build && npm run js:build",
     "test": "jasmine-node --coffee --captureExceptions spec",
-    "benchmark": "coffee benchmark/benchmark.coffee",
-    "benchmarklarge": "coffee benchmark/benchmark-large.coffee",
-    "benchmarksmall": "node benchmark/benchmark-small.js",
+    "benchmark:regular": "coffee benchmark/benchmark.coffee",
+    "benchmark:large": "coffee benchmark/benchmark-large.coffee",
+    "benchmark:small": "node benchmark/benchmark-small.js",
+    "benchmark": "npm run benchmark:small && npm run benchmark:regular && npm run benchmark:large",
     "bump": "ncu -u",
-    "prepublishOnly": "npm run prebuild"
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run native:prebuild && npm run js:build"
   },
   "gypfile": true,
+  "targets": {
+    "main": {
+      "context": "node",
+      "engines": {
+        "node": ">=6.x"
+      },
+      "includeNodeModules": true,
+      "outputFormat": "commonjs",
+      "isLibrary": true
+    }
+  },
   "dependencies": {
     "bindings": "~1.5.0",
     "node-addon-api": "~3.0.0",
@@ -21,10 +40,14 @@
     "fuzzaldrin-plus": "^0.6.0"
   },
   "devDependencies": {
+    "babel-preset-atomic": "^1.1.0",
+    "cross-env": "^7.0.2",
     "growl": ">=1.10.5",
     "jasmine-node": "^3.0.0",
+    "npm-check-updates": "8.0.3",
+    "parcel": "^2.0.0-nightly.387",
     "prebuildify": "^4.0.0",
-    "npm-check-updates": "8.0.3"
+    "shx": "^0.3.2"
   },
   "repository": {
     "type": "git",
