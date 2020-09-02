@@ -10,7 +10,8 @@
     "benchmark": "coffee benchmark/benchmark.coffee",
     "benchmarklarge": "coffee benchmark/benchmark-large.coffee",
     "benchmarksmall": "node benchmark/benchmark-small.js",
-    "bump": "ncu -u"
+    "bump": "ncu -u",
+    "prepublishOnly": "npm run prebuild"
   },
   "gypfile": true,
   "dependencies": {
