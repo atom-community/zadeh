@@ -15,7 +15,6 @@ platform:
 
 install:
   - SET PATH=C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\bin;%PATH%
-  - ps: Install-Product node $env:nodejs_version $env:platform
   - ps: Install-Product node $env:nodejs_version x64
   - npm install
 
