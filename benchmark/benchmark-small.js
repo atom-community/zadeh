@@ -4,11 +4,7 @@ const path = require('path')
 
 const performance = (require('perf_hooks')).performance
 
-<<<<<<< HEAD
-const fuzzaldrinPlus = require('../fuzzaldrin')
-=======
 const fuzzaldrinPlus = require('../fuzzaldrin-dist')
->>>>>>> upstream/master
 const legacy = require('fuzzaldrin-plus')
 
 const lines = fs.readFileSync(path.join(__dirname, 'data-small.txt'), 'utf8').trim().split('\n')
@@ -33,12 +29,11 @@ function doFilterTest(query) {
   const res_expected = legacy.filter(lines, query)
   const elapsed_legacy = Math.round(performance.now() - startTime)
 
-  /*
-    if (res_actual != res_expected) {
-      console.log(`=== TEST FAILED - query:${query}`)
-      console.log('Actual   : ', res_actual)
-      console.log('Expected : ', res_expected)
-    }*/
+  if (res_actual.length != res_expected.length) {
+    console.error("Results count changed! #{results.length} instead of #{results_legacy.length}")
+    process.exit(1)
+  }
+
   console.log(`Elapsed time - fuzzaldrin-plus-fast: ${elapsed} ms vs. fuzzaldrin-plus: ${elapsed_legacy} ms`)
   if (elapsed > elapsed_legacy) {
     console.error(`====== fuzzaldrin-plus-fast is SLOWER`)
