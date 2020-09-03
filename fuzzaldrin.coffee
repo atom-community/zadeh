@@ -26,23 +26,16 @@ class FuzzaldrinPlusFast
     @obj = new binding.Fuzzaldrin()
 
   setCandidates: (candidates, options = {}) ->
+    @candidates = candidates
     if options.key?
-      @candidates = candidates
-      @candidate_key = options.key
-      candidates = candidates.map((item) => item[@candidate_key])
-    else
-      @candidates = null
-      @candidate_key = null
+      candidates = candidates.map((item) => item[options.key])
     @obj.setCandidates(candidates)
 
   filter: (query, options = {}) ->
     options = parseOptions(options)
-    returnIndexes = @candidate_key?
     res = @obj.filter query, options.maxResults,
-      options.usePathScoring, options.useExtensionBonus, returnIndexes
-    if returnIndexes
-      res = res.map((ind) => @candidates[ind])
-    return res
+      options.usePathScoring, options.useExtensionBonus
+    return res.map((ind) => @candidates[ind])
 
 module.exports =
 
@@ -51,15 +44,9 @@ module.exports =
 
   filter: (candidates, query, options = {}) ->
     return [] unless query?.length and candidates?.length
-    if options.key?
-      options = parseOptions(options)
-      filtered = binding.filterWithCandidates query, options.maxResults,
-      options.usePathScoring, options.useExtensionBonus, candidates, options.key
-      return filtered.map((item) => candidates[item])
-    else
-      obj = new FuzzaldrinPlusFast()
-      obj.setCandidates(candidates, options)
-      obj.filter(query, options)
+    obj = new FuzzaldrinPlusFast()
+    obj.setCandidates(candidates, options)
+    return obj.filter(query, options)
 
   score: (candidate, query, options = {}) ->
     return 0 unless candidate?.length and query?.length
