@@ -12,9 +12,6 @@ os:
 - osx
 - linux
 - windows
-arch:
-- amd64
-- arm64
 after_script:
 - npm run benchmark:small
 before_deploy:
