@@ -12,7 +12,6 @@ os:
 - osx
 - linux
 - windows
-dist: xenial
 after_script:
 - npm run benchmark
 before_deploy:
@@ -33,5 +32,3 @@ deploy:
     tags: true
     node: node
   api_key: $GITHUB_TOKEN
-after_deploy:
-- npm run benchmark
