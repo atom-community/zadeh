@@ -19,7 +19,7 @@ before_deploy:
 - npm install
 - npm run native:prebuild
 - npm run benchmark
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ARCH=ia32 npm run native:prebuild; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run native:prebuild-ia32; fi
 - tar --create --verbose --file="$ARCHIVE_NAME" --directory "$TRAVIS_BUILD_DIR/prebuilds"
   .
 deploy:
