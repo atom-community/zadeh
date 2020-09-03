@@ -1,6 +1,6 @@
 {
   "name": "fuzzaldrin-plus-fast",
-  "version": "0.12.1",
+  "version": "0.12.2",
   "description": "Fuzzaldrin plus - fast using native c bindings",
   "main": "fuzzaldrin-dist.js",
   "scripts": {
