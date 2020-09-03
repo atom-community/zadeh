@@ -25,6 +25,7 @@ test_script:
 
 after_test:
   - ps: If ($env:nodejs_version -eq "Current") { npm run native:prebuild }
+  - ps: If ($env:nodejs_version -eq "Current") { npm run native:prebuild-ia32 }
 
 artifacts:
   - path: prebuilds
