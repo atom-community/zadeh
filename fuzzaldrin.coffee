@@ -58,13 +58,13 @@ module.exports =
     return [] unless query
     return [0...string.length] if string is query
     options = parseOptions(options, query)
-    return matcher.match(string, query, options)
+    return binding.match(string, query, options.pathSeparator)
 
   wrap: (string, query, options = {}) ->
     return [] unless string
     return [] unless query
     options = parseOptions(options, query)
-    return matcher.wrap(string, query, options)
+    return binding.wrap(string, query, options.pathSeparator)
 
   prepareQuery: (query, options = {}) ->
     options = parseOptions(options, query)
