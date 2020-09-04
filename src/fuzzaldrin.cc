@@ -24,8 +24,7 @@ Napi::Value Fuzzaldrin::Filter(const Napi::CallbackInfo& info) {
   }
 
   for(uint32_t i=0; i<matches.size(); i++) {
-    const auto &index = matches[i];
-    res[i] = Napi::Number::New(info.Env(), counts[index.thread_id] + index.index);
+    res[i] = Napi::Number::New(info.Env(), matches[i]);
   }
   return res;
 }
@@ -71,21 +70,6 @@ Napi::Number score(const Napi::CallbackInfo& info) {
   return Napi::Number::New(info.Env(), score);
 }
 
-Napi::Value filterWithCandidates(const Napi::CallbackInfo& info) {
-  if (info.Length() != 6 || !info[0].IsString() ||
-      !info[1].IsNumber() || !info[2].IsBoolean() || !info[3].IsBoolean() ||
-      !info[4].IsArray() || !info[5].IsString()) {
-    Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
-    return Napi::Boolean();
-  }
-  std::string query = info[0].As<Napi::String>();
-  size_t maxResults = info[1].As<Napi::Number>().Uint32Value();
-  bool usePathScoring = info[2].As<Napi::Boolean>();
-  bool useExtensionBonus = info[3].As<Napi::Boolean>();
-  Options options(query, maxResults, usePathScoring, useExtensionBonus);
-  return filter_with_candidates(info.Env(), info[4].As<Napi::Array>(), info[5].As<Napi::String>(), query, options);
-}
-
 Napi::Object Fuzzaldrin::Init(Napi::Env env, Napi::Object exports) {
   Napi::HandleScope scope(env);
 
@@ -96,7 +80,6 @@ Napi::Object Fuzzaldrin::Init(Napi::Env env, Napi::Object exports) {
 
   exports.Set("Fuzzaldrin", func);
   exports.Set("score", Napi::Function::New(env, score));
-  exports.Set("filterWithCandidates", Napi::Function::New(env, filterWithCandidates));
   return exports;
 }
 
