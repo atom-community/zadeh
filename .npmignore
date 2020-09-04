@@ -3,3 +3,5 @@ benchmark/
 spec/
 build/
 .parcel-cache
+.travis.yml
+appveyor.yml

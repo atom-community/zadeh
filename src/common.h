@@ -33,11 +33,7 @@ typedef string Element;
 typedef string Candidate;
 #endif
 
-typedef struct CandidateIndex {
-  size_t thread_id;
-  size_t index;
-  CandidateIndex(size_t thread_id, size_t index) : thread_id(thread_id), index(index) {}
-} CandidateIndex;
+typedef size_t CandidateIndex;
 
 typedef std::vector<Candidate> Candidates;
 typedef float Score;
@@ -87,5 +83,3 @@ extern int countDir(const Candidate &path, int end, char pathSeparator);
 extern Candidate getExtension(const Candidate &str);
 
 extern CandidateIndexes filter(const vector<Candidates> &candidates, const Element &query, const Options &options);
-
-Napi::Value filter_with_candidates(Napi::Env env, const Napi::Array &candidates, const std::string &key, const std::string &query, const Options &options);
