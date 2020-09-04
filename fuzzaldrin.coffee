@@ -1,12 +1,7 @@
 binding = require('node-gyp-build')(__dirname);
 
-# for missing API
-matcher = require('fuzzaldrin-plus/lib/matcher')
-Query = require('fuzzaldrin-plus/lib/query')
-
 defaultPathSeparator = if process?.platform is "win32" then '\\' else '/'
 
-preparedQueryCache = null
 parseOptions = (options, query) ->
   options.allowErrors ?= false
   options.usePathScoring ?= true
@@ -15,10 +10,6 @@ parseOptions = (options, query) ->
   options.optCharRegEx ?= null
   options.wrap ?= null
   options.maxResults ?= 0
-  options.preparedQuery ?=
-    if preparedQueryCache and preparedQueryCache.query is query
-    then preparedQueryCache
-    else (preparedQueryCache = new Query(query, options))
   return options
 
 class FuzzaldrinPlusFast
@@ -67,5 +58,4 @@ module.exports =
     return binding.wrap(string, query, options.pathSeparator)
 
   prepareQuery: (query, options = {}) ->
-    options = parseOptions(options, query)
-    return options.preparedQuery
+    return {}
