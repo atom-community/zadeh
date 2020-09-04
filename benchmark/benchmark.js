@@ -28,7 +28,6 @@ testutils.doFilterTest('~98% of results + Fuzzy match, [Mitigation]', lines, 'nm
 testutils.doFilterTest('~98% of results + Fuzzy match, [Worst case but shorter string]', lines, 'ndem', forceAllMatch)
 
 
-/*
 const query = 'index'
 testutils.start_timer()
 prepared = fuzzaldrinPlus.prepareQuery(query)
@@ -52,5 +51,3 @@ for (const line of lines) {
 }
 console.log(`Matching ${lines.length} results for 'index' took ${testutils.elapsed_time()}ms (legacy)`)
 // replace by `prepQuery ? = scorer.prepQuery(query) to test without cache.
-
-*/
