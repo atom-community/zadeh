@@ -1,12 +1,7 @@
 binding = require('node-gyp-build')(__dirname);
 
-# for missing API
-matcher = require('fuzzaldrin-plus/lib/matcher')
-Query = require('fuzzaldrin-plus/lib/query')
-
 defaultPathSeparator = if process?.platform is "win32" then '\\' else '/'
 
-preparedQueryCache = null
 parseOptions = (options, query) ->
   options.allowErrors ?= false
   options.usePathScoring ?= true
@@ -15,10 +10,6 @@ parseOptions = (options, query) ->
   options.optCharRegEx ?= null
   options.wrap ?= null
   options.maxResults ?= 0
-  options.preparedQuery ?=
-    if preparedQueryCache and preparedQueryCache.query is query
-    then preparedQueryCache
-    else (preparedQueryCache = new Query(query, options))
   return options
 
 class FuzzaldrinPlusFast
@@ -58,14 +49,15 @@ module.exports =
     return [] unless query
     return [0...string.length] if string is query
     options = parseOptions(options, query)
-    return matcher.match(string, query, options)
+    return binding.match(string, query, options.pathSeparator)
 
   wrap: (string, query, options = {}) ->
     return [] unless string
     return [] unless query
     options = parseOptions(options, query)
-    return matcher.wrap(string, query, options)
+    return binding.wrap(string, query, options.pathSeparator)
 
   prepareQuery: (query, options = {}) ->
-    options = parseOptions(options, query)
-    return options.preparedQuery
+    # This is no-op since there is no major benefit by precomputing something
+    # just for the query.
+    return {}

@@ -16,13 +16,6 @@ Napi::Value Fuzzaldrin::Filter(const Napi::CallbackInfo& info) {
   Options options(query, maxResults, usePathScoring, useExtensionBonus);
   const auto matches = filter(candidates_, query, options);
 
-  std::vector<size_t> counts;
-  size_t start = 0;
-  for(const auto &c : candidates_) {
-    counts.push_back(start);
-    start += c.size();
-  }
-
   for(uint32_t i=0; i<matches.size(); i++) {
     res[i] = Napi::Number::New(info.Env(), matches[i]);
   }
@@ -70,6 +63,47 @@ Napi::Number score(const Napi::CallbackInfo& info) {
   return Napi::Number::New(info.Env(), score);
 }
 
+Napi::Array match(const Napi::CallbackInfo& info) {
+  Napi::Array res = Napi::Array::New(info.Env());
+  if (info.Length() != 3 || !info[0].IsString() || !info[1].IsString() ||
+      !info[2].IsString()) {
+    Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
+    return res;
+  }
+  std::string candidate = info[0].As<Napi::String>();
+  std::string query = info[1].As<Napi::String>();
+  std::string pathSeparator = info[2].As<Napi::String>();
+  if (pathSeparator.size() != 1) {
+    Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
+    return res;
+  }
+  Options options(query, pathSeparator[0]);
+  auto matches = matcher_match(candidate, query, options);
+  for(uint32_t i=0; i<matches.size(); i++) {
+    res[i] = Napi::Number::New(info.Env(), matches[i]);
+  }
+  return res;
+}
+
+Napi::String wrap(const Napi::CallbackInfo& info) {
+  if (info.Length() != 3 || !info[0].IsString() || !info[1].IsString() ||
+      !info[2].IsString()) {
+    Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
+    return Napi::String::New(info.Env(), "");
+  }
+  std::string candidate = info[0].As<Napi::String>();
+  std::string query = info[1].As<Napi::String>();
+  std::string pathSeparator = info[2].As<Napi::String>();
+  if (pathSeparator.size() != 1) {
+    Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
+    return Napi::String::New(info.Env(), "");
+  }
+  Options options(query, pathSeparator[0]);
+  std::string res;
+  get_wrap(candidate, query, options, &res);
+  return Napi::String::New(info.Env(), res);
+}
+
 Napi::Object Fuzzaldrin::Init(Napi::Env env, Napi::Object exports) {
   Napi::HandleScope scope(env);
 
@@ -80,6 +114,8 @@ Napi::Object Fuzzaldrin::Init(Napi::Env env, Napi::Object exports) {
 
   exports.Set("Fuzzaldrin", func);
   exports.Set("score", Napi::Function::New(env, score));
+  exports.Set("match", Napi::Function::New(env, match));
+  exports.Set("wrap", Napi::Function::New(env, wrap));
   return exports;
 }
 

@@ -11,13 +11,13 @@ namespace {
 
 // Base point for a single character match
 // This balance making patterns VS position and size penalty.
-int wm = 150;
+const int wm = 150;
 
 // Fading function
 // The character from 0..pos_bonus receive a greater bonus for being at the start of string.
-Score pos_bonus = 20;
+const Score pos_bonus = 20;
 // Full path length at which the whole match score is halved.
-Score tau_size = 150;
+const Score tau_size = 150;
 
 // Miss count
 // When subject[i] is query[j] we register a hit.
@@ -26,30 +26,18 @@ Score tau_size = 150;
 //
 // If a spec with frequent repetition fail, increase this.
 // This has a direct influence on worst case scenario benchmark.
-float miss_coeff = 0.75; // Max number missed consecutive hit = ceil(miss_coeff*query.length) + 5
+const float miss_coeff = 0.75; // Max number missed consecutive hit = ceil(miss_coeff*query.length) + 5
 
 } // namepace
 
-struct AcronymResult {
-  Score score;
-  float pos;
-  int count;
-
-  AcronymResult(Score s, float p, int c) : score(s), pos(p), count(c) {}
-};
-
-extern bool isWordStart(int pos, const Candidate &subject, const Candidate &subject_lw);
 extern bool isWordEnd(int pos, const Candidate &subject, const Candidate &subject_lw, int len);
 extern bool isSeparator(char c);
 extern Score scoreExact(size_t n, size_t m, size_t quality, Score pos);
 
 extern Score scorePattern(int count, int len, bool sameCase, bool start, bool end);
-extern Score scoreCharacter(int i, int j, bool start, Score acro_score, Score csc_score);
-extern Score scoreConsecutives(const Candidate &subject, const Candidate &subject_lw, const Element &query, const Element &query_lw, int i, int j, bool startOfWord);
 extern Score scoreExactMatch(const Candidate &subject, const Candidate &subject_lw, const Element &query, const Element &query_lw, int pos, int n, int m);
 
 extern bool isAcronymFullWord(Candidate subject, Candidate subject_lw, Element query, int nbAcronymInQuery);
-extern AcronymResult scoreAcronyms(Candidate subject, Candidate subject_lw, Element query, Element query_lw);
 
 
 //

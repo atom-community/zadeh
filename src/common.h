@@ -67,12 +67,26 @@ struct Options {
   const PreparedQuery preparedQuery;
 
   Options(const Element &query, size_t maxResults, bool usePathScoring, bool useExtensionBonus) : max_results(maxResults), usePathScoring(usePathScoring), useExtensionBonus(useExtensionBonus), preparedQuery(query, pathSeparator) {}
+  Options(const Element &query, char pathSeparator) : pathSeparator(pathSeparator), preparedQuery(query, pathSeparator) {}
+};
+
+struct AcronymResult {
+  Score score;
+  float pos;
+  int count;
+
+  AcronymResult(Score s, float p, int c) : score(s), pos(p), count(c) {}
 };
 
 extern Element ToLower(const Element &s);
 extern Element ToUpper(const Element &s);
 
 extern bool isMatch(const Candidate &subject, const Element &query_lw, const Element &query_up);
+extern bool isWordStart(int pos, const Candidate &subject, const Candidate &subject_lw);
+extern Score scoreCharacter(int i, int j, bool start, Score acro_score, Score csc_score);
+extern Score scoreConsecutives(const Candidate &subject, const Candidate &subject_lw, const Element &query, const Element &query_lw, int i, int j, bool startOfWord);
+extern AcronymResult scoreAcronyms(Candidate subject, Candidate subject_lw, Element query, Element query_lw);
+
 extern Score computeScore(const Candidate &subject, const Candidate &subject_lw, const PreparedQuery &preparedQuery);
 
 extern Score scorer_score(const Candidate &string, const Element &query, const Options &options);
@@ -83,3 +97,6 @@ extern int countDir(const Candidate &path, int end, char pathSeparator);
 extern Candidate getExtension(const Candidate &str);
 
 extern CandidateIndexes filter(const vector<Candidates> &candidates, const Element &query, const Options &options);
+
+extern std::vector<size_t> matcher_match(const Candidate &string, const Element &query, const Options &options);
+extern void get_wrap(const Candidate &string, const Element &query, const Options &options, std::string *out);
