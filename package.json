@@ -38,15 +38,15 @@
   "dependencies": {
     "bindings": "~1.5.0",
     "node-addon-api": "~3.0.0",
-    "node-gyp-build": "^4.2.3",
-    "fuzzaldrin-plus": "^0.6.0"
+    "node-gyp-build": "^4.2.3"
   },
   "devDependencies": {
     "babel-preset-atomic": "^1.1.0",
     "cross-env": "^7.0.2",
+    "fuzzaldrin-plus": "^0.6.0",
     "growl": ">=1.10.5",
     "jasmine-node": "^3.0.0",
-    "npm-check-updates": "8.0.3",
+    "npm-check-updates": "8.1.0",
     "parcel": "^2.0.0-nightly.387",
     "prebuildify": "^4.0.0",
     "shx": "^0.3.2"
