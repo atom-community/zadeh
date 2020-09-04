@@ -79,6 +79,13 @@ for (const query of two_letter_tests)
     key: 'key'
   })
 console.timeEnd('TwoLetter#Keybased#Filter')
+console.time('ThreeLetter#Keybased#Filter')
+for (const query of three_letter_tests)
+  FuzzaldrinPlusFast.filter(dict, query, {
+    maxResults: 10,
+    key: 'key'
+  })
+console.timeEnd('ThreeLetter#Keybased#Filter')
 console.log("======")
 
 

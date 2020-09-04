@@ -12,6 +12,7 @@
     "js:dev": "cross-env NODE_ENV=development parcel watch --target main fuzzaldrin.coffee",
     "js:build": "cross-env NODE_ENV=production parcel build --target main fuzzaldrin.coffee",
     "clean": "npm run native:clean && npm run js:clean",
+    "install": "node-gyp-build",
     "build": "npm run native:build && npm run js:build",
     "test": "jasmine-node --coffee --captureExceptions spec",
     "benchmark:regular": "node benchmark/benchmark.js",

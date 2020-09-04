@@ -17,3 +17,19 @@ Fuzzaldrin-plus-fast achieves 10x-20x performance improvement over Fuzzaldrin pl
 
 # Is the API the same ?
 API is backward compatible with Fuzzaldrin and Fuzzaldrin-plus. Additional functions are provided to achieve better performance that could suit your needs.
+
+# Info for Developers
+## How to release package to npmjs ?
+
+* Bump up version in package.json.
+* Create new release tag in github, for the bumped version. This should trigger builds in Travis CI, Appveyor and the following binaries will be uploaded to github.
+* Install prebuildify-ci to download prebuilt binaries from github releases
+```
+npm install -g prebuildify-ci
+```
+
+* Download the prebuilt binaries from github and publish.
+```
+prebuildify-ci download
+npm publish
+```
