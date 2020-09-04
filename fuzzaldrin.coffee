@@ -58,4 +58,6 @@ module.exports =
     return binding.wrap(string, query, options.pathSeparator)
 
   prepareQuery: (query, options = {}) ->
+    # This is no-op since there is no major benefit by precomputing something
+    # just for the query.
     return {}
