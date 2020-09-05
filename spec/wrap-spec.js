@@ -13,11 +13,11 @@ describe("wrap(string, query)", () => {
   const queries = [
     "he", "hl", "hw", "el", "eo", "ll", "wo", "ld", "", "helloworld",
   ]
-  it("returns same for hello world", () => {
-    for (const c of candidates) {
-      for (const q of queries) {
+  for (const c of candidates) {
+    for (const q of queries) {
+      it("returns same for " + c, () => {
         expect(wrap(c, q)).toEqual(legacy.wrap(c, q))
-      }
+      })
     }
-  })
+  }
 })
