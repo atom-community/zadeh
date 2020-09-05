@@ -13,6 +13,7 @@ os:
 - linux
 - windows
 after_script:
+- npm run test
 - npm run benchmark:small
 - npm run benchmark:regular
 before_deploy:

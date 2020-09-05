@@ -53,12 +53,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/rajendrant/fuzzaldrin-plus-fast.git"
+    "url": "https://github.com/atom-ide-community/fuzzaldrin-plus-fast.git"
   },
   "author": "Rajendran T",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rajendrant/fuzzaldrin-plus-fast/issues"
+    "url": "https://github.com/atom-ide-community/fuzzaldrin-plus-fast/issues"
   },
-  "homepage": "https://github.com/rajendrant/fuzzaldrin-plus-fast"
+  "homepage": "https://github.com/atom-ide-community/fuzzaldrin-plus-fast"
 }

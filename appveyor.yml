@@ -21,7 +21,9 @@ install:
   - npm install
 
 test_script:
-  - npm test
+  - npm run test
+  - npm run benchmark:small
+  - npm run benchmark:regular
 
 after_test:
   - ps: If ($env:nodejs_version -eq "Current") { npm run native:prebuild }
