@@ -36,44 +36,42 @@ class FuzzaldrinPlusFast {
   }
 }
 
-module.exports = {
-  New: () => new FuzzaldrinPlusFast(),
+export const New = () => new FuzzaldrinPlusFast()
 
-  filter: (candidates, query, options = {}) => {
+export function filter (candidates, query, options = {}) {
     if (!candidates || !query)
       return []
     const obj = new FuzzaldrinPlusFast()
     obj.setCandidates(candidates, options)
     return obj.filter(query, options)
-  },
+}
 
-  score: (candidate, query, options = {}) => {
+export function score (candidate, query, options = {}) {
     if (!candidate || !query)
       return 0
     options = parseOptions(options)
     return binding.score(candidate, query,
       Boolean(options.usePathScoring), Boolean(options.useExtensionBonus))
-  },
+}
 
-  match: (string, query, options = {}) => {
+export function match (string, query, options = {}) {
     if (!string || !query)
       return []
     if (string == query)
       return Array.from(Array(string.length).keys())
     options = parseOptions(options, query)
     return binding.match(string, query, options.pathSeparator)
-  },
+}
 
-  wrap: (string, query, options = {}) => {
+export function wrap (string, query, options = {}) {
     if (!string || !query)
       return []
     options = parseOptions(options, query)
     return binding.wrap(string, query, options.pathSeparator)
-  },
+}
 
-  prepareQuery: (query, options = {}) => {
+export function prepareQuery (query, options = {}) {
     // This is no - op since there is no major benefit by precomputing something
     // just for the query.
     return {}
-  },
 }
