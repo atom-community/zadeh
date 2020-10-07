@@ -24,7 +24,7 @@ void filter_internal(const Candidates &candidates,
                      const Element &query, const Options &options,
                      size_t max_results,
                      CandidateScorePriorityQueue &results) {
-  for (size_t i=0; i<candidates.size(); i++) {
+  for (size_t i=0, len = candidates.size(); i<len; i++) {
     const auto &candidate = candidates[i];
     if(candidate.empty()) continue;
     auto scoreProvider = options.usePathScoring ? path_scorer_score : scorer_score;
@@ -74,7 +74,7 @@ CandidateIndexes filter(const vector<Candidates> &candidates, const Element &que
   vector<thread> threads;
   vector<CandidateScorePriorityQueue> results(candidates.size());
   size_t start_index = 0;
-  for (size_t i = 1; i < candidates.size(); i++) {
+  for (size_t i = 1, len = candidates.size(); i < len; i++) {
     start_index += candidates[i-1].size();
     threads.emplace_back(thread_worker_filter, ref(candidates[i]), start_index,
         ref(query), ref(options), max_results, ref(results[i]));
@@ -82,7 +82,7 @@ CandidateIndexes filter(const vector<Candidates> &candidates, const Element &que
   // Do the work for first thread.
   filter_internal(candidates[0], 0, query, options, max_results, top_k);
   // Wait for threads to complete and merge the restuls.
-  for (size_t i = 1; i < candidates.size(); i++) {
+  for (size_t i = 1, len = candidates.size(); i < len; i++) {
     threads[i-1].join();
     while(!results[i].empty()) {
       top_k.emplace(results[i].top());

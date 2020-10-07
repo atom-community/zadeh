@@ -16,7 +16,7 @@ Napi::Value Fuzzaldrin::Filter(const Napi::CallbackInfo& info) {
   Options options(query, maxResults, usePathScoring, useExtensionBonus);
   const auto matches = filter(candidates_, query, options);
 
-  for(uint32_t i=0; i<matches.size(); i++) {
+  for (uint32_t i = 0, len = matches.size(); i < len; i++) {
     res[i] = Napi::Number::New(info.Env(), matches[i]);
   }
   return res;
@@ -79,7 +79,7 @@ Napi::Array match(const Napi::CallbackInfo& info) {
   }
   Options options(query, pathSeparator[0]);
   auto matches = matcher_match(candidate, query, options);
-  for(uint32_t i=0; i<matches.size(); i++) {
+  for(uint32_t i=0, len=matches.size(); i<len; i++) {
     res[i] = Napi::Number::New(info.Env(), matches[i]);
   }
   return res;
