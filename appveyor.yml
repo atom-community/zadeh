@@ -6,8 +6,10 @@ skip_non_tags: true
 
 environment:
   matrix:
+    - nodejs_version: "10"
+    - nodejs_version: "12"
     - nodejs_version: "Current"
-
+    
 configuration: Release
 platform:
   - x86
