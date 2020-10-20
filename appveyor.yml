@@ -28,8 +28,8 @@ test_script:
   - npm run benchmark:regular
 
 after_test:
-  - ps: If ($env:nodejs_version -eq "Current") { npm run native:prebuild }
-  - ps: If ($env:nodejs_version -eq "Current") { npm run native:prebuild-ia32 }
+  - ps: If ($env:platform -eq "x64") { npm run native:prebuild }
+  - ps: If ($env:platform -eq "x86") { npm run native:prebuild-ia32 }
 
 artifacts:
   - path: prebuilds
