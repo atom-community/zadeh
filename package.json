@@ -6,8 +6,8 @@
   "scripts": {
     "native:clean": "shx rm -rf build prebuilds",
     "native:build": "node-gyp-build",
-    "native:prebuild": "prebuildify --napi --electron-compat --strip",
-    "native:prebuild-ia32": "prebuildify --arch=ia32 --napi --electron-compat --strip",
+    "native:prebuild": "prebuildify --napi -t 12.0.0 -t electron@6.0.0 --strip",
+    "native:prebuild-ia32": "prebuildify --napi --arch=ia32 -t 12.0.0 -t electron@6.0.0 --strip",
     "js:clean": "shx rm -rf dist .parcel-cache",
     "js:dev": "cross-env NODE_ENV=development parcel watch --target main fuzzaldrin.js",
     "js:build": "cross-env NODE_ENV=production parcel build --target main fuzzaldrin.js",
