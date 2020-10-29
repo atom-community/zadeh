@@ -53,6 +53,7 @@ jobs:
         run: npm run native:prebuild-ia32
 
       - name: Upload artifacts
+        if: ${{ contains(matrix.node_version, '12') }}
         uses: actions/upload-artifact@v2.0.1
         with:
           path: ./prebuilds
