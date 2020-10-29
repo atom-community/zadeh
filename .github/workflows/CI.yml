@@ -29,6 +29,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        env:
+          cache-name: |
+            node_modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ matrix.node_version }}-${{ matrix.node_arch }}-${{ hashFiles('package.json') }}
+
       - name: Install Node
         uses: aminya/setup-node@x86
         with:
