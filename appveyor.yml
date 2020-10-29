@@ -41,6 +41,6 @@ deploy:
       secure: CqG+3BexDw134ePx6KfsoUT59aMH3APg5K0gs6jPiV5KuGOxrSrzpRZWTDiyLGed
     on:
       appveyor_repo_tag: true
-      nodejs_version: "Current"
+      nodejs_version: "12"
 after_deploy:
   - npm run benchmark

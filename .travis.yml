@@ -34,7 +34,7 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
-    node: node
+    node: 12
   api_key: $GITHUB_TOKEN
 after_deploy:
 - npm run benchmark
