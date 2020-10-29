@@ -1,0 +1,65 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  Test:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+        node_version:
+          - 10
+          - 12
+          - 14
+        node_arch:
+          - x64
+        include:
+          - os: windows-2016
+            node_version: 12
+            node_arch: x86
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Node
+        uses: aminya/setup-node@x86
+        with:
+          node-version: ${{ matrix.node_version }}
+          node-arch: ${{ matrix.node_arch }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Run benchmarks
+        run: npm run benchmark --verbose
+
+      - name: Prebuildify x64
+        if: ${{ contains(matrix.node_version, '12') && contains(matrix.node_arch, 'x64') }}
+        run: npm run native:prebuild
+
+      - name: Prebuildify x86
+        if: ${{ contains(matrix.node_version, '12') && contains(matrix.node_arch, 'x86') }}
+        run: npm run native:prebuild-ia32
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2.0.1
+        with:
+          path: ./prebuilds
+
+  Skip:
+    if: contains(github.event.head_commit.message, '[skip ci]')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Skip CI 🚫
+        run: echo skip ci
