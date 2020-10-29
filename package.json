@@ -21,7 +21,7 @@
     "benchmark": "npm run benchmark:small && npm run benchmark:regular && npm run benchmark:large",
     "bump": "ncu -u",
     "prepare": "npm run build",
-    "prepublishOnly": "npm run native:prebuild && npm run js:build"
+    "prepublishOnly": "npm run js:build"
   },
   "gypfile": true,
   "targets": {
