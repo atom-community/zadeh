@@ -48,11 +48,11 @@ Returns an array of candidates sorted by best match against the query.
 ```js
 const { filter } = require('fuzzaldrin-plus-fast')
 
-# With an array of strings
+// With an array of strings
 let candidates = ['Call', 'Me', 'Maybe']
 let results = filter(candidates, 'me')  // ['Me', 'Maybe']
 
-# With an array of objects
+// With an array of objects
 candidates = [
   {name: 'Call', id: 1}
   {name: 'Me', id: 2}
