@@ -17,7 +17,97 @@ Fuzzaldrin-plus-fast achieves 10x-20x performance improvement over Fuzzaldrin pl
 * Some miscellaneous improvements provide additional benefit.
 
 # Is the API the same?
-API is backward compatible with Fuzzaldrin and Fuzzaldrin-plus. Additional functions are provided to achieve better performance that could suit your needs.
+API is backward compatible with Fuzzaldrin and Fuzzaldrin-plus. Additional functions are provided to achieve better performance that could suit your needs
+
+# Usage
+
+Installation:
+
+```sh
+npm install fuzzaldrin-plus-fast
+```
+
+To import all the functions:
+```js
+import * as fuzzaldrin from 'fuzzaldrin-plus-fast'
+```
+or
+```js
+const fuzzaldrin = require('fuzzaldrin-plus-fast')
+```
+
+### filter(candidates, query, options = {})
+
+Sort and filter the given candidates by matching them against the given query.
+
+* `candidates` - An array of strings or objects.
+* `query` - A string query to match each candidate against.
+
+Returns an array of candidates sorted by best match against the query.
+
+```js
+const { filter } = require('fuzzaldrin-plus-fast')
+
+# With an array of strings
+let candidates = ['Call', 'Me', 'Maybe']
+let results = filter(candidates, 'me')  // ['Me', 'Maybe']
+
+# With an array of objects
+candidates = [
+  {name: 'Call', id: 1}
+  {name: 'Me', id: 2}
+  {name: 'Maybe', id: 3}
+]
+results = filter(candidates, 'me', key: 'name') // [{name: 'Me', id: 2}, {name: 'Maybe', id: 3}]
+```
+
+### score(string, query, options = {})
+
+Score the given string against the given query.
+
+* `string` - The string the score.
+* `query` - The query to score the string against.
+
+```js
+const { score } = require('fuzzaldrin-plus-fast')
+
+score('Me', 'me')    # 0.17099999999999999
+score('Maybe', 'me') # 0.0693
+```
+
+### match (string, query, options = {})
+Gives an array of indices at which the query matches the given string
+```js
+const { match } = require('fuzzaldrin-plus-fast')
+
+match('Hello World', 'he')    // [0, 1]
+match('Hello World', 'wor')   // [6, 7, 8]
+match('Hello World', 'elwor') // [1, 2, 6, 7, 8]
+```
+
+### wrap (string, query, options = {})
+Gives an HTML/Markdown string that highlights the range for which the match happens
+```js
+wrap("helloworld", "he")  
+```
+<strong class="highlight">he</strong>lloworld
+```js
+wrap("Hello world", "he")
+```
+<strong class="highlight">He</strong>llo world
+
+### options
+In all the above functions, you can pass an optional object with the following keys
+  * `maxResults` - The maximum numbers of results to return.
+  * `usePathScoring`
+  * `pathSeparator`
+
+### New()
+Initializes the native binding
+```js
+const { New } = require('fuzzaldrin-plus-fast')
+New()
+```
 
 # Info for Developers
 ## How to release the package to npm?
