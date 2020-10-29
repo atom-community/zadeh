@@ -98,9 +98,23 @@ wrap("Hello world", "he")
 
 ### options
 In all the above functions, you can pass an optional object with the following keys
-  * `maxResults` - The maximum numbers of results to return.
-  * `usePathScoring`
-  * `pathSeparator`
+```typescript
+{
+    /** only for `filter` function */
+    maxResults?: number
+
+    /** @default false */
+    allowErrors?: boolean
+
+    /** @default true */
+    usePathScoring?: boolean
+
+    /** @default false */
+    useExtensionBonus?: boolean
+
+    pathSeparator?: '/' | '\\' | string
+}
+```
 
 ### New()
 Initializes the native binding
