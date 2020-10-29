@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/atom-ide-community/fuzzaldrin-plus-fast.svg?branch=master)](https://travis-ci.org/atom-ide-community/fuzzaldrin-plus-fast) [![Build Status](https://ci.appveyor.com/api/projects/status/github/atom-ide-community/fuzzaldrin-plus-fast?svg=true)](https://ci.appveyor.com/project/atom-ide-community/fuzzaldrin-plus-fast)
+![CI](https://github.com/atom-ide-community/fuzzaldrin-plus-fast/workflows/CI/badge.svg)
 
 Fast fuzzy-search - the native replacement for `fuzzaldrin-plus`
 
