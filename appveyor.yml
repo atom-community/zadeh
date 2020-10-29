@@ -29,18 +29,20 @@ after_test:
 
 artifacts:
   - path: prebuilds
-    name: $(APPVEYOR_REPO_TAG_NAME)-win-$(PLATFORM)
+    name: win-$(PLATFORM)
     type: zip
 
 deploy:
-  - provider: GitHub
-    artifact: /.*\.zip/
-    draft: false
-    prerelease: true
-    auth_token:
-      secure: CqG+3BexDw134ePx6KfsoUT59aMH3APg5K0gs6jPiV5KuGOxrSrzpRZWTDiyLGed
-    on:
-      appveyor_repo_tag: true
-      nodejs_version: "12"
+  provider: GitHub
+  auth_token:
+    secure: CqG+3BexDw134ePx6KfsoUT59aMH3APg5K0gs6jPiV5KuGOxrSrzpRZWTDiyLGed # your encrypted token from GitHub
+  artifact: /.*\.zip/              # upload all zip files to release assets
+  draft: false
+  prerelease: false
+  on:
+    branch: master                 # release from master branch only
+    APPVEYOR_REPO_TAG: true        # deploy on tag push only
+    nodejs_version: "12"
+
 after_deploy:
   - npm run benchmark
