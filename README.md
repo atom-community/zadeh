@@ -23,14 +23,8 @@ API is backward compatible with Fuzzaldrin and Fuzzaldrin-plus. Additional funct
 ## How to release the package to npm?
 
 * Bump up version in package.json.
-* Create a new release tag in Github, for the bumped version. This should trigger builds in Travis CI, Appveyor and the following binaries will be uploaded to GitHub.
-* Install prebuildify-ci to download prebuilt binaries from GitHub releases
+* Create a new release tag in Github, for the bumped version. This should trigger builds in GitHub Actions. The binaries will be uploaded to the action's page.
+* Manually download the prebuilt binaries from GitHub and publish.
 ```
-npm install -g prebuildify-ci
-```
-
-* Download the prebuilt binaries from GitHub and publish.
-```
-prebuildify-ci download
 npm publish
 ```
