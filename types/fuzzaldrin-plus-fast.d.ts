@@ -23,8 +23,8 @@ export interface IOptions {
 
 export type IFilterOptions<T> = IOptions & {
 
-    // TODO not implemented?
-    // key?: T extends string ? never : keyof T
+    /** The key to use when candidates is an object */
+    key?: T extends string ? never : keyof T
 
     /** The maximum numbers of results to return */
     maxResults?: number
