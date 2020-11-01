@@ -11,9 +11,9 @@ Score file_coeff = 2.5;
 };
 
 
-extern Score scorePath(const Candidate &subject, const Candidate &subject_lw, Score fullPathScore, const Options &options);
-extern int countDir(const Candidate &path, int end, char pathSeparator);
-extern Score getExtensionScore(const Candidate &candidate, const Candidate &ext, int startPos, int endPos, int maxDepth);
+extern Score scorePath(const CandidateString &subject, const CandidateString &subject_lw, Score fullPathScore, const Options &options);
+extern int countDir(const CandidateString &path, int end, char pathSeparator);
+extern Score getExtensionScore(const CandidateString &candidate, const CandidateString &ext, int startPos, int endPos, int maxDepth);
 
 Element ToLower(const Element &s) {
   Element snew = s;
@@ -34,7 +34,7 @@ Element ToUpper(const Element &s) {
 // Manage the logic of testing if there's a match and calling the main scoring function
 // Also manage scoring a path and optional character.
 
-Score path_scorer_score(const Candidate &string, const Element &query, const Options &options) {
+Score path_scorer_score(const CandidateString &string, const Element &query, const Options &options) {
   if (!options.allowErrors && !isMatch(string, options.preparedQuery.core_lw, options.preparedQuery.core_up)) {
     return 0;
   }
@@ -48,7 +48,7 @@ Score path_scorer_score(const Candidate &string, const Element &query, const Opt
 //
 // Score adjustment for path
 //
-Score scorePath(const Candidate &subject, const Candidate &subject_lw, Score fullPathScore, const Options &options) {
+Score scorePath(const CandidateString &subject, const CandidateString &subject_lw, Score fullPathScore, const Options &options) {
   if (fullPathScore == 0) return 0;
 
   // {preparedQuery, useExtensionBonus, pathSeparator} = options
@@ -101,7 +101,7 @@ Score scorePath(const Candidate &subject, const Candidate &subject_lw, Score ful
 // Count number of folder in a path.
 // (consecutive slashes count as a single directory)
 //
-int countDir(const Candidate &path, int end, char pathSeparator) {
+int countDir(const CandidateString &path, int end, char pathSeparator) {
   if (end < 1) return 0;
 
   int count = 0;
@@ -127,13 +127,13 @@ int countDir(const Candidate &path, int end, char pathSeparator) {
 // For example mf.h prefers myFile.h to myfile.html
 // This need special handling because it give point for not having characters (the `tml` in above example)
 //
-Candidate getExtension(const Candidate &str) {
+CandidateString getExtension(const CandidateString &str) {
   auto pos = str.rfind('.');
   return (pos == string::npos) ? "" : str.substr(pos + 1);
 }
 
 
-Score getExtensionScore(const Candidate &candidate, const Candidate &ext, int startPos, int endPos, int maxDepth) {
+Score getExtensionScore(const CandidateString &candidate, const CandidateString &ext, int startPos, int endPos, int maxDepth) {
   // startPos is the position of last slash of candidate, -1 if absent.
 
   if (!ext.size()) return 0;

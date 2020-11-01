@@ -26,18 +26,18 @@ public:
   }
 };
 
-typedef SafeString Element;
-typedef SafeString Candidate;
+using Element = SafeString;
+using CandidateString = SafeString;
 #else
-typedef string Element;
-typedef string Candidate;
+using Element = string;
+using CandidateString = string;
 #endif
 
-typedef size_t CandidateIndex;
+using CandidateIndex = size_t;
 
-typedef std::vector<Candidate> Candidates;
-typedef float Score;
-typedef std::vector<CandidateIndex> CandidateIndexes;
+using CandidateStringsVector = std::vector<CandidateString>;
+using Score = float;
+using CandidateIndexes = std::vector<CandidateIndex>;
 
 struct Options;
 
@@ -81,22 +81,22 @@ struct AcronymResult {
 extern Element ToLower(const Element &s);
 extern Element ToUpper(const Element &s);
 
-extern bool isMatch(const Candidate &subject, const Element &query_lw, const Element &query_up);
-extern bool isWordStart(int pos, const Candidate &subject, const Candidate &subject_lw);
+extern bool isMatch(const CandidateString &subject, const Element &query_lw, const Element &query_up);
+extern bool isWordStart(int pos, const CandidateString &subject, const CandidateString &subject_lw);
 extern Score scoreCharacter(int i, int j, bool start, Score acro_score, Score csc_score);
-extern Score scoreConsecutives(const Candidate &subject, const Candidate &subject_lw, const Element &query, const Element &query_lw, int i, int j, bool startOfWord);
-extern AcronymResult scoreAcronyms(Candidate subject, Candidate subject_lw, Element query, Element query_lw);
+extern Score scoreConsecutives(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, int i, int j, bool startOfWord);
+extern AcronymResult scoreAcronyms(CandidateString subject, CandidateString subject_lw, Element query, Element query_lw);
 
-extern Score computeScore(const Candidate &subject, const Candidate &subject_lw, const PreparedQuery &preparedQuery);
+extern Score computeScore(const CandidateString &subject, const CandidateString &subject_lw, const PreparedQuery &preparedQuery);
 
-extern Score scorer_score(const Candidate &string, const Element &query, const Options &options);
+extern Score scorer_score(const CandidateString &string, const Element &query, const Options &options);
 extern Score scoreSize(Score n, Score m);
 
-extern Score path_scorer_score(const Candidate &string, const Element &query, const Options &options);
-extern int countDir(const Candidate &path, int end, char pathSeparator);
-extern Candidate getExtension(const Candidate &str);
+extern Score path_scorer_score(const CandidateString &string, const Element &query, const Options &options);
+extern int countDir(const CandidateString &path, int end, char pathSeparator);
+extern CandidateString getExtension(const CandidateString &str);
 
-extern CandidateIndexes filter(const vector<Candidates> &candidates, const Element &query, const Options &options);
+extern CandidateIndexes filter(const vector<CandidateStringsVector> &candidates, const Element &query, const Options &options);
 
-extern std::vector<size_t> matcher_match(const Candidate &string, const Element &query, const Options &options);
-extern void get_wrap(const Candidate &string, const Element &query, const Options &options, std::string *out);
+extern std::vector<size_t> matcher_match(const CandidateString &string, const Element &query, const Options &options);
+extern void get_wrap(const CandidateString &string, const Element &query, const Options &options, std::string *out);
