@@ -12,7 +12,6 @@ struct Tree {
 	Napi::Object tree;
 	string dataKey;
 	string childrenKey;
-	bool hasChildren = false;
 
 	vector<CandidateObject> entriesArray;
 
