@@ -65,7 +65,7 @@ struct Tree {
 
 	/** Parse a Tree object from JS */
 	Tree(Napi::CallbackInfo const &info) {
-		if (info.Length() != 3 || !info[0].IsObject() || !info[1].IsString() || !info[2].IsString()) {
+		if (info.Length() != 4 || !info[0].IsObject() || !info[1].IsString() || !info[2].IsString()) {
 			Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
 			// default constructor
 		}
