@@ -32,7 +32,7 @@ struct CandidateObject {
 };
 
 struct Tree {
-	Napi::Object jsTree;
+	Napi::Array jsTreeArray;
 	string dataKey;
 	string childrenKey;
 
@@ -41,7 +41,7 @@ struct Tree {
 	vector<CandidateObject> entriesArray;
 
 	/** Recursive function that fills the entriesArray from the given jsTreeArray */
-	void makeEntriesArray(Napi::Array jsTreeArray, size_t level) {
+	void makeEntriesArray(Napi::Array & jsTreeArray, size_t level) {
 		for (uint32_t iEntry = 0, len = jsTreeArray.Length(); iEntry < len; iEntry++) {
 			auto jsTree = jsTreeArray.Get(iEntry).As<Napi::Object>();
 
@@ -53,7 +53,7 @@ struct Tree {
 			auto mayChildren = getChildren(jsTreeArray, childrenKey);
 			if (mayChildren.has_value()) {
 				// recurse
-				makeEntriesArray(mayChildren.value(), level+1);
+				makeEntriesArray(mayChildren.value(), level + 1);
 			}
 		}
 	}
