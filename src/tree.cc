@@ -26,6 +26,9 @@ struct CandidateObject {
 	CandidateString data;
 	size_t level = 0;
 	uint32_t index = 0;
+
+	CandidateObject(CandidateString data, size_t level, uint32_t index)
+		: data{ data }, level{ level }, index{ index } {};
 };
 
 struct Tree {
