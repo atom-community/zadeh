@@ -31,7 +31,7 @@ struct Tree {
 
 
 /** Get the children of a tree (Napi::Object) */
-std::optional<Napi::Array> getChildren(Napi::Object & jsTree, string & childrenKey) {
+std::optional<Napi::Array> getChildren(Napi::Object const & jsTree, string const & childrenKey) {
 	Napi::Array childrenArray;
 
 	// determine if it has children
