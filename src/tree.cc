@@ -9,7 +9,7 @@ struct CandidateObject {
 
 
 struct Tree {
-	Napi::Object tree;
+	Napi::Object jsTree;
 	string dataKey;
 	string childrenKey;
 
@@ -22,7 +22,7 @@ struct Tree {
 			// default constructor
 		}
 		else {
-			tree = info[0].As<Napi::Object>();
+			jsTree = info[0].As<Napi::Object>();
 			dataKey = info[1].As<Napi::String>();
 			childrenKey = info[2].As<Napi::String>();
 		}
@@ -31,13 +31,13 @@ struct Tree {
 
 
 /** Get the children of a tree (Napi::Object) */
-std::optional<Napi::Array> getChildren(Napi::Object & tree, string & childrenKey) {
+std::optional<Napi::Array> getChildren(Napi::Object & jsTree, string & childrenKey) {
 	Napi::Array childrenArray;
 
 	// determine if it has children
 	bool hasChildren = false;
-	if (tree.HasOwnProperty(childrenKey)) {
-		auto childrenRaw = tree.Get(childrenKey);
+	if (jsTree.HasOwnProperty(childrenKey)) {
+		auto childrenRaw = jsTree.Get(childrenKey);
 		if (childrenRaw.IsArray()) {
 			childrenArray = childrenRaw.As<Napi::Array>();
 			if (childrenArray.Length() != 0) {
