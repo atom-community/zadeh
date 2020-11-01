@@ -1,4 +1,5 @@
 #include <optional>
+#include <variant>
 #include "common.h"
 
 /** Get the children of a jsTree (Napi::Object) */
@@ -25,14 +26,14 @@ std::optional<Napi::Array> getChildren(Napi::Object const& jsTree, string const&
 struct CandidateObject {
 	CandidateString data;
 	size_t level = 0;
-	uint32_t index = 0;
+	int32_t index = -1;
 
 	CandidateObject(CandidateString data, size_t level, uint32_t index)
 		: data{ data }, level{ level }, index{ index } {};
 };
 
 struct Tree {
-	Napi::Array jsTreeArray;
+	std::variant<Napi::Array, Napi::Object> jsTreeArrayOrObject;
 	string dataKey;
 	string childrenKey;
 
@@ -44,17 +45,21 @@ struct Tree {
 	void makeEntriesArray(Napi::Array & jsTreeArray, size_t level) {
 		for (uint32_t iEntry = 0, len = jsTreeArray.Length(); iEntry < len; iEntry++) {
 			auto jsTree = jsTreeArray.Get(iEntry).As<Napi::Object>();
+			makeEntriesArray(jsTree, level, iEntry);
+		}
+	}
 
-			// get the current data
-			CandidateString data = jsTree.Get(dataKey).As<Napi::String>();
-			entriesArray.push_back(CandidateObject(data, level, iEntry));
+	/** 1st argument is a single object */
+	void makeEntriesArray(Napi::Object const &jsTree, size_t const level, uint32_t const iEntry = -1) {
+		// get the current data
+		CandidateString data = jsTree.Get(dataKey).As<Napi::String>();
+		entriesArray.push_back(CandidateObject(data, level, iEntry));
 
-			// add children if any
-			auto mayChildren = getChildren(jsTreeArray, childrenKey);
-			if (mayChildren.has_value()) {
-				// recurse
-				makeEntriesArray(mayChildren.value(), level + 1);
-			}
+		// add children if any
+		auto mayChildren = getChildren(jsTree, childrenKey);
+		if (mayChildren.has_value()) {
+			// recurse
+			makeEntriesArray(mayChildren.value(), level + 1);
 		}
 	}
 
@@ -65,19 +70,21 @@ struct Tree {
 			// default constructor
 		}
 		else {
-			if (info[0].IsArray()) {
-				jsTreeArray = info[0].As<Napi::Array>();
-			}
-			else {
-				// if not Array make a new one and set its only entry
-				jsTreeArray = Napi::Array::New(info.Env(), 1);
-				jsTreeArray.Set(0u, info[0]);
-			}
 
 			dataKey = info[1].As<Napi::String>();
 			childrenKey = info[2].As<Napi::String>();
 
-			makeEntriesArray(jsTreeArray, 0);
+			if (info[0].IsArray()) {
+				jsTreeArrayOrObject = info[0].As<Napi::Array>();
+				makeEntriesArray(std::get<Napi::Array>(jsTreeArrayOrObject), 0);
+			}
+			else {
+				// if the input is a single object skip looping
+				jsTreeArrayOrObject = info[0].As<Napi::Object>();
+				makeEntriesArray(std::get<Napi::Object>(jsTreeArrayOrObject), 0);
+			}
+
+
 		}
 	}
 };
