@@ -37,7 +37,6 @@ using CandidateIndex = size_t;
 
 using CandidateStringsVector = std::vector<CandidateString>;
 using Score = float;
-using CandidateIndexes = std::vector<CandidateIndex>;
 
 struct Options;
 
@@ -96,7 +95,7 @@ extern Score path_scorer_score(const CandidateString &string, const Element &que
 extern int countDir(const CandidateString &path, int end, char pathSeparator);
 extern CandidateString getExtension(const CandidateString &str);
 
-extern CandidateIndexes filter(const vector<CandidateStringsVector> &candidates, const Element &query, const Options &options);
+extern std::vector<CandidateIndex> filter(const vector<CandidateStringsVector> &candidates, const Element &query, const Options &options);
 
 extern std::vector<size_t> matcher_match(const CandidateString &string, const Element &query, const Options &options);
 extern void get_wrap(const CandidateString &string, const Element &query, const Options &options, std::string *out);

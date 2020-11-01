@@ -46,9 +46,9 @@ void thread_worker_filter(const CandidateStringsVector&candidates,
     max_results, results);
 }
 
-CandidateIndexes sort_priority_queue(CandidateScorePriorityQueue &candidates) {
+std::vector<CandidateIndex> sort_priority_queue(CandidateScorePriorityQueue &candidates) {
   vector<CandidateScore> sorted;
-  CandidateIndexes ret;
+  std::vector<CandidateIndex> ret;
   sorted.reserve(candidates.size());
   ret.reserve(candidates.size());
   while(!candidates.empty()) {
@@ -64,7 +64,7 @@ CandidateIndexes sort_priority_queue(CandidateScorePriorityQueue &candidates) {
 
 }  // namespace
 
-CandidateIndexes filter(const vector<CandidateStringsVector> &candidates, const Element &query, const Options &options) {
+std::vector<CandidateIndex> filter(const vector<CandidateStringsVector> &candidates, const Element &query, const Options &options) {
   CandidateScorePriorityQueue top_k;
   size_t max_results = options.max_results;
   if (!max_results)
