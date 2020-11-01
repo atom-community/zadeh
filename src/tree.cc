@@ -65,7 +65,15 @@ struct Tree {
 			// default constructor
 		}
 		else {
-			jsTreeArray = info[0].As<Napi::Array>();
+			if (info[0].IsArray()) {
+				jsTreeArray = info[0].As<Napi::Array>();
+			}
+			else {
+				// if not Array make a new one and set its only entry
+				jsTreeArray = Napi::Array::New(info.Env(), 1);
+				jsTreeArray.Set(0u, info[0]);
+			}
+
 			dataKey = info[1].As<Napi::String>();
 			childrenKey = info[2].As<Napi::String>();
 
