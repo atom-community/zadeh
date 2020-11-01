@@ -16,7 +16,7 @@ class Fuzzaldrin : public Napi::ObjectWrap<Fuzzaldrin> {
   Napi::Value SetCandidates(const Napi::CallbackInfo& info);
 
 private:
-  vector<CandidateStringsVector> candidates_;
+  vector<std::vector<CandidateString>> candidates_;
 };
 
 #endif // FUZZALDRIN_H
