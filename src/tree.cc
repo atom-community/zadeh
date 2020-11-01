@@ -25,7 +25,7 @@ std::optional<Napi::Array> getChildren(Napi::Object const& jsTree, string const&
 struct CandidateObject {
 	CandidateString data;
 	size_t level = 0;
-	size_t index = 0;
+	uint32_t index = 0;
 };
 
 struct Tree {
@@ -43,6 +43,27 @@ struct Tree {
 			jsTree = info[0].As<Napi::Object>();
 			dataKey = info[1].As<Napi::String>();
 			childrenKey = info[2].As<Napi::String>();
+		}
+	}
+
+	/** an array of the CandidateObject which includes the data and its address (index, level) in the tree for each */
+	vector<CandidateObject> entriesArray;
+
+	/** Recursive function that fills the entriesArray from the given jsTreeArray */
+	void makeEntriesArray(Napi::Array jsTreeArray, size_t level) {
+		for (uint32_t iEntry = 0, len = jsTreeArray.Length(); iEntry < len; iEntry++) {
+			auto jsTree = jsTreeArray.Get(iEntry).As<Napi::Object>();
+
+			// get the current data
+			CandidateString data = jsTree.Get(dataKey).As<Napi::String>();
+			entriesArray.push_back(CandidateObject(data, level, iEntry));
+
+			// add children if any
+			auto mayChildren = getChildren(jsTreeArray, childrenKey);
+			if (mayChildren.has_value()) {
+				// recurse
+				makeEntriesArray(mayChildren.value(), level+1);
+			}
 		}
 	}
 };
