@@ -19,7 +19,7 @@ struct CandidateScore {
 
 using CandidateScorePriorityQueue = std::priority_queue<CandidateScore>;
 
-void filter_internal(const Candidates &candidates,
+void filter_internal(const CandidateStringsVector &candidates,
                      size_t start_index,
                      const Element &query, const Options &options,
                      size_t max_results,
@@ -37,7 +37,7 @@ void filter_internal(const Candidates &candidates,
   }
 }
 
-void thread_worker_filter(const Candidates&candidates,
+void thread_worker_filter(const CandidateStringsVector&candidates,
                           size_t start_index,
                           const Element &query, const Options &options,
                           size_t max_results,
@@ -64,7 +64,7 @@ CandidateIndexes sort_priority_queue(CandidateScorePriorityQueue &candidates) {
 
 }  // namespace
 
-CandidateIndexes filter(const vector<Candidates> &candidates, const Element &query, const Options &options) {
+CandidateIndexes filter(const vector<CandidateStringsVector> &candidates, const Element &query, const Options &options) {
   CandidateScorePriorityQueue top_k;
   size_t max_results = options.max_results;
   if (!max_results)
