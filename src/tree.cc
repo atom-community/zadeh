@@ -36,18 +36,6 @@ struct Tree {
 	string dataKey;
 	string childrenKey;
 
-	/** Parse a Tree object from JS */
-	Tree(const Napi::CallbackInfo& info) {
-		if (info.Length() != 3 || !info[0].IsObject() || !info[1].IsString() || !info[2].IsString()) {
-			Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
-			// default constructor
-		}
-		else {
-			jsTree = info[0].As<Napi::Object>();
-			dataKey = info[1].As<Napi::String>();
-			childrenKey = info[2].As<Napi::String>();
-		}
-	}
 
 	/** an array of the CandidateObject which includes the data and its address (index, level) in the tree for each */
 	vector<CandidateObject> entriesArray;
@@ -67,6 +55,21 @@ struct Tree {
 				// recurse
 				makeEntriesArray(mayChildren.value(), level+1);
 			}
+		}
+	}
+
+	/** Parse a Tree object from JS */
+	Tree(const Napi::CallbackInfo& info) {
+		if (info.Length() != 3 || !info[0].IsObject() || !info[1].IsString() || !info[2].IsString()) {
+			Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
+			// default constructor
+		}
+		else {
+			jsTreeArray = info[0].As<Napi::Array>();
+			dataKey = info[1].As<Napi::String>();
+			childrenKey = info[2].As<Napi::String>();
+
+			makeEntriesArray(jsTreeArray, 0);
 		}
 	}
 };
