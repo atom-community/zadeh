@@ -17,7 +17,7 @@ struct CandidateScore {
   }
 };
 
-typedef std::priority_queue<CandidateScore> CandidateScorePriorityQueue;
+using CandidateScorePriorityQueue = std::priority_queue<CandidateScore>;
 
 void filter_internal(const Candidates &candidates,
                      size_t start_index,

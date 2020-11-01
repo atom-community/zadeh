@@ -26,18 +26,18 @@ public:
   }
 };
 
-typedef SafeString Element;
-typedef SafeString Candidate;
+using Element = SafeString;
+using Candidate = SafeString;
 #else
-typedef string Element;
-typedef string Candidate;
+using Element = string;
+using Candidate = string;
 #endif
 
-typedef size_t CandidateIndex;
+using CandidateIndex = size_t;
 
-typedef std::vector<Candidate> Candidates;
-typedef float Score;
-typedef std::vector<CandidateIndex> CandidateIndexes;
+using Candidates = std::vector<Candidate>;
+using Score = float;
+using CandidateIndexes = std::vector<CandidateIndex>;
 
 struct Options;
 
