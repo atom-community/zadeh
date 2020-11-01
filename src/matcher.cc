@@ -15,7 +15,7 @@
 // - we record the best move at each position in a matrix, and finish by a traceback.
 // - we reset consecutive sequence if we do not take the match.
 // - no hit miss limit
-std::vector<size_t> computeMatch(const Candidate &subject, const Candidate &subject_lw, const PreparedQuery &preparedQuery, size_t offset = 0) {
+std::vector<size_t> computeMatch(const CandidateString &subject, const CandidateString &subject_lw, const PreparedQuery &preparedQuery, size_t offset = 0) {
   const auto& query = preparedQuery.query;
   const auto& query_lw = preparedQuery.query_lw;
 
@@ -127,7 +127,7 @@ std::vector<size_t> computeMatch(const Candidate &subject, const Candidate &subj
   return matches;
 }
 
-std::vector<size_t> basenameMatch(const Candidate &subject, const Candidate &subject_lw,
+std::vector<size_t> basenameMatch(const CandidateString &subject, const CandidateString &subject_lw,
   const PreparedQuery &preparedQuery, char pathSeparator) {
   // Skip trailing slashes
   int end = subject.size() - 1;
@@ -192,7 +192,7 @@ std::vector<size_t> mergeMatches(const std::vector<size_t>& a, const std::vector
 }
 
 // Return position of character which matches
-std::vector<size_t> matcher_match(const Candidate &string, const Element &query,
+std::vector<size_t> matcher_match(const CandidateString &string, const Element &query,
              const Options &options) {
   const auto string_lw = ToLower(string);
   auto matches = computeMatch(string, string_lw, options.preparedQuery);
@@ -204,7 +204,7 @@ std::vector<size_t> matcher_match(const Candidate &string, const Element &query,
   return matches;
 }
 
-void get_wrap(const Candidate &string, const Element &query, const Options &options, std::string *out) {
+void get_wrap(const CandidateString &string, const Element &query, const Options &options, std::string *out) {
   std::string tagClass = "highlight";
   std::string tagOpen = "<strong class=\"" + tagClass + "\">";
   std::string tagClose = "</strong>";
