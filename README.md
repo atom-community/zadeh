@@ -58,7 +58,7 @@ candidates = [
   {name: 'Me', id: 2}
   {name: 'Maybe', id: 3}
 ]
-results = filter(candidates, 'me', key: 'name') // [{name: 'Me', id: 2}, {name: 'Maybe', id: 3}]
+results = filter(candidates, 'me', {key: 'name'}) // [{name: 'Me', id: 2}, {name: 'Maybe', id: 3}]
 ```
 
 ### score(string, query, options = {})
@@ -100,6 +100,10 @@ wrap("Hello world", "he")
 In all the above functions, you can pass an optional object with the following keys
 ```typescript
 {
+    /** only for `filter` function */
+    /** The key to use when candidates is an object */
+    key?: T extends string ? never : keyof T
+
     /** only for `filter` function */
     maxResults?: number
 
