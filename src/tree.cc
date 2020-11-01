@@ -1,3 +1,4 @@
+#include <optional>
 #include "common.h"
 
 struct CandidateObject {
@@ -13,6 +14,8 @@ struct Tree {
 	string childrenKey;
 	bool hasChildren = false;
 
+	vector<CandidateObject> entriesArray;
+
 	/** Parse a Tree object from JS */
 	Tree(const Napi::CallbackInfo& info) {
 		if (info.Length() != 3 || !info[0].IsObject() || !info[1].IsString() || !info[2].IsString()) {
@@ -24,6 +27,26 @@ struct Tree {
 			dataKey = info[1].As<Napi::String>();
 			childrenKey = info[2].As<Napi::String>();
 		}
-	};
-
+	}
 };
+
+
+/** Get the children of a tree (Napi::Object) */
+std::optional<Napi::Array> getChildren(Napi::Object & tree, string & childrenKey) {
+	Napi::Array childrenArray;
+
+	// determine if it has children
+	bool hasChildren = false;
+	if (tree.HasOwnProperty(childrenKey)) {
+		auto childrenRaw = tree.Get(childrenKey);
+		if (childrenRaw.IsArray()) {
+			childrenArray = childrenRaw.As<Napi::Array>();
+			if (childrenArray.Length() != 0) {
+				hasChildren = true;
+			}
+		}
+	}
+	if (hasChildren)
+		return childrenArray;
+	return {};
+}
