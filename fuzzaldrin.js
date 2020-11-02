@@ -34,6 +34,12 @@ class FuzzaldrinPlusFast {
       Boolean(options.usePathScoring), Boolean(options.useExtensionBonus))
     return res.map((ind) => this.candidates[ind])
   }
+
+  filterTree(candidatesTrees, query, dataKey = "data", childrenKey = "children", options = {}) {
+    options = parseOptions(options)
+    return this.obj.filterTree(candidatesTrees, query, dataKey, childrenKey, options.maxResults,
+      Boolean(options.usePathScoring), Boolean(options.useExtensionBonus))
+  }
 }
 
 export const New = () => new FuzzaldrinPlusFast()
@@ -44,6 +50,14 @@ export function filter (candidates, query, options = {}) {
     const obj = new FuzzaldrinPlusFast()
     obj.setCandidates(candidates, options)
     return obj.filter(query, options)
+}
+
+
+export function filterTree(candidatesTrees, query, dataKey = "data", childrenKey = "children", options = {}) {
+    if (!candidatesTrees || !query)
+      return []
+    const obj = new FuzzaldrinPlusFast()
+    return obj.filterTree(candidatesTrees, query, dataKey, childrenKey, options)
 }
 
 export function score (candidate, query, options = {}) {

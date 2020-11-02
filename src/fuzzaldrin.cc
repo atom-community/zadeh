@@ -68,7 +68,7 @@ void Fuzzaldrin::SetCandidates(vector<CandidateObject> const &candidates) {
 }
 
 /** (tree: Array<object>, query: string, dataKey: string, childrenKey: string, options: Options) */
-Napi::Array Fuzzaldrin::FilterTree(const Napi::CallbackInfo& info) {
+Napi::Value Fuzzaldrin::FilterTree(const Napi::CallbackInfo& info) {
 
     // parse arguments
     if (info.Length() != 7 
@@ -174,6 +174,7 @@ Napi::Object Fuzzaldrin::Init(Napi::Env env, Napi::Object exports) {
 
   Napi::Function func = DefineClass(env, "Fuzzaldrin", {
     InstanceMethod("filter", &Fuzzaldrin::Filter),
+    InstanceMethod("filterTree", &Fuzzaldrin::FilterTree),
     InstanceMethod("setCandidates", &Fuzzaldrin::SetCandidates)
   });
 
