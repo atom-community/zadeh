@@ -230,7 +230,7 @@ void get_wrap(const CandidateString &string, const Element &query, const Options
     auto matchPositions = matcher_match(string, query, options);
 
     // If no match return as is
-    if (matchPositions.size() == 0) {
+    if (matchPositions.empty()) {
         *out = string;
         return;
     }
