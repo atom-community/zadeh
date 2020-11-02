@@ -13,8 +13,8 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - ubuntu-latest
-          - macos-latest
+          - ubuntu-20.04
+          - macos-11.0
           - windows-latest
         node_version:
           - 10
@@ -26,6 +26,10 @@ jobs:
           - os: windows-2016
             node_version: 12
             node_arch: x86
+          - os: ubuntu-16.04
+            node_version: 12
+          - os: macos-10.15
+            node_version: 12
     steps:
       - uses: actions/checkout@v2
 
