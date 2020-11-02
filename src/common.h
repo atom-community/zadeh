@@ -48,7 +48,7 @@ struct PreparedQuery {
     Element core_up;
     int depth = 0;
     Element ext;
-    std::set<char> charCodes;
+    std::set<char> charCodes{};
 
     PreparedQuery(const Element &q, char pathSeparator);
 };
@@ -95,7 +95,7 @@ extern Score path_scorer_score(const CandidateString &string, const Element &que
 extern int countDir(const CandidateString &path, int end, char pathSeparator);
 extern CandidateString getExtension(const CandidateString &str);
 
-extern std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &candidates, const Element &query, const Options &options);
+extern const std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &candidates, const Element &query, const Options &options);
 
 extern std::vector<size_t> matcher_match(const CandidateString &string, const Element &query, const Options &options);
 extern void get_wrap(const CandidateString &string, const Element &query, const Options &options, std::string *out);

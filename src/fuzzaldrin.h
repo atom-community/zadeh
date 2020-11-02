@@ -12,7 +12,7 @@
 class Fuzzaldrin : public Napi::ObjectWrap<Fuzzaldrin> {
   public:
     static Napi::Object Init(Napi::Env env, Napi::Object exports);
-    Fuzzaldrin(const Napi::CallbackInfo &info) : Napi::ObjectWrap<Fuzzaldrin>(info) {}
+    explicit Fuzzaldrin(const Napi::CallbackInfo &info) : Napi::ObjectWrap<Fuzzaldrin>(info) {}
 
     Napi::Value Filter(const Napi::CallbackInfo &info);
     Napi::Value SetCandidates(const Napi::CallbackInfo &info);
@@ -21,7 +21,7 @@ class Fuzzaldrin : public Napi::ObjectWrap<Fuzzaldrin> {
     Napi::Value FilterTree(const Napi::CallbackInfo &info);
 
   private:
-    vector<std::vector<CandidateString>> candidates_;
+    vector<std::vector<CandidateString>> candidates_{};
 };
 
 #endif// FUZZALDRIN_H

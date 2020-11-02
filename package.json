@@ -6,6 +6,8 @@
   "types": "./types/fuzzaldrin-plus-fast.d.ts",
   "scripts": {
     "format": "clang-format -i src/*.cc src/*.h",
+    "tidy": "clang-tidy src/*.cc src/*.h",
+    "tidy:fix": "clang-tidy src/*.cc src/*.h --fix --fix-errors",
     "native:clean": "shx rm -rf build prebuilds",
     "native:build": "node-gyp-build",
     "native:prebuild": "prebuildify --napi -t 12.0.0 -t electron@6.0.0 --strip",

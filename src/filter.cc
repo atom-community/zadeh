@@ -28,7 +28,7 @@ void filter_internal(const std::vector<CandidateString> &candidates,
     for (size_t i = 0, len = candidates.size(); i < len; i++) {
         const auto &candidate = candidates[i];
         if (candidate.empty()) continue;
-        auto scoreProvider = options.usePathScoring ? path_scorer_score : scorer_score;
+        const auto scoreProvider = options.usePathScoring ? path_scorer_score : scorer_score;
         auto score = scoreProvider(candidate, query, options);
         if (score > 0) {
             results.emplace(score, start_index + i);
@@ -47,7 +47,7 @@ void thread_worker_filter(const std::vector<CandidateString> &candidates,
     filter_internal(candidates, start_index, query, options, max_results, results);
 }
 
-std::vector<CandidateIndex> sort_priority_queue(CandidateScorePriorityQueue &candidates) {
+const std::vector<CandidateIndex> sort_priority_queue(CandidateScorePriorityQueue &candidates) {
     vector<CandidateScore> sorted;
     std::vector<CandidateIndex> ret;
     sorted.reserve(candidates.size());
@@ -65,11 +65,12 @@ std::vector<CandidateIndex> sort_priority_queue(CandidateScorePriorityQueue &can
 
 }// namespace
 
-std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &candidates, const Element &query, const Options &options) {
+const std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &candidates, const Element &query, const Options &options) {
     CandidateScorePriorityQueue top_k;
-    size_t max_results = options.max_results;
-    if (!max_results)
+    auto max_results = options.max_results;
+    if (max_results == 0u) {
         max_results = std::numeric_limits<size_t>::max();
+    }
 
     // Split the dataset and pass down to multiple threads.
     vector<thread> threads;

@@ -15,7 +15,7 @@ PreparedQuery::PreparedQuery(const Element &q, char pathSeparator) : query(q), q
 
 
 Element coreChars(Element query) {
-    for (char ch : " _-:/\\") {
+    for (auto ch : " _-:/\\") {
         query.erase(std::remove(query.begin(), query.end(), ch), query.end());
     }
     return query;
@@ -23,8 +23,8 @@ Element coreChars(Element query) {
 
 std::set<char> getCharCodes(const Element &str) {
     std::set<char> charCodes;
-    int len = str.size();
-    int i = -1;
+    const int len = str.size();
+    auto i = -1;
 
     // create map
     while (++i < len)
