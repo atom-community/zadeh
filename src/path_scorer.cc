@@ -96,7 +96,7 @@ Score scorePath(const CandidateString &subject, const CandidateString &subject_l
     // A penalty based on the size of the basePath is applied to fullPathScore
     // That way, more focused basePath match can overcome longer directory path.
 
-    const Score alpha = 0.5 * tau_depth / (tau_depth + countDir(subject, end + 1, options.pathSeparator));
+    const Score alpha = (0.5 * tau_depth) / (tau_depth + countDir(subject, end + 1, options.pathSeparator));
     return alpha * basePathScore + (1 - alpha) * fullPathScore * scoreSize(0, file_coeff * fileLength);
 }
 
@@ -114,12 +114,12 @@ int countDir(const CandidateString &path, const size_t end, const char pathSepar
     auto i = -1;
 
     //skip slash at the start so `foo/bar` and `/foo/bar` have the same depth.
-    while (++i < end && path[i] == pathSeparator) { }
+    while (++i < end && path[i] == pathSeparator) {}
 
     while (++i < end) {
         if (path[i] == pathSeparator) {
             count++;//record first slash, but then skip consecutive ones
-            while (++i < end && path[i] == pathSeparator) { }
+            while (++i < end && path[i] == pathSeparator) {}
         }
     }
 
