@@ -19,6 +19,7 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
     const auto &query = preparedQuery.query;
     const auto &query_lw = preparedQuery.query_lw;
 
+    // TODO making these two auto breaks the code. There are a lot of narrowing conversions in this file
     const int m = subject.size();
     const int n = query.size();
 
@@ -130,7 +131,7 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
 
 std::vector<size_t> basenameMatch(const CandidateString &subject, const CandidateString &subject_lw, const PreparedQuery &preparedQuery, char pathSeparator) {
     // Skip trailing slashes
-    int end = subject.size() - 1;
+    auto end = subject.size() - 1;
     while (subject[end] == pathSeparator) {
         end--;
     }
@@ -167,8 +168,8 @@ std::vector<size_t> basenameMatch(const CandidateString &subject, const Candidat
 // (Assume sequences are sorted, matches are sorted by construction.)
 //
 std::vector<size_t> mergeMatches(const std::vector<size_t> &a, const std::vector<size_t> &b) {
-    const int m = a.size();
-    const int n = b.size();
+    const auto m = a.size();
+    const auto n = b.size();
 
     if (n == 0) return a;
     if (m == 0) return b;
@@ -206,9 +207,9 @@ std::vector<size_t> matcher_match(const CandidateString &string, const Element &
 }
 
 void get_wrap(const CandidateString &string, const Element &query, const Options &options, std::string *out) {
-    const std::string tagClass = "highlight";
-    const auto tagOpen = "<strong class=\"" + tagClass + "\">";
-    const std::string tagClose = "</strong>";
+    const auto tagClass = "highlight"s;
+    const auto tagOpen = "<strong class=\""s + tagClass + "\">"s;
+    const auto tagClose = "</strong>"s;
 
     if (string == query) {
         *out = tagOpen + string + tagClose;
