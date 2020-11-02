@@ -68,6 +68,10 @@ jobs:
         with:
           path: ./prebuilds
 
+      - name: Tidy
+        if: ${{ contains(matrix.node_version, '12') && contains(matrix.os, 'ubuntu') }}
+        run: npm run tidy
+
   Skip:
     if: contains(github.event.head_commit.message, '[skip ci]')
     runs-on: ubuntu-latest
