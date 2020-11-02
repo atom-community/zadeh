@@ -53,7 +53,7 @@ struct Tree {
 	/** 1st argument is a single object */
 	void makeEntriesArray(Napi::Object const &jsTree, size_t const level, int32_t const iEntry = -1) {
 		// get the current data
-		CandidateString data = jsTree.Get(dataKey).As<Napi::String>();
+		CandidateString data = jsTree.Get(dataKey).ToString().Utf8Value();
 		entriesArray.push_back(CandidateObject(data, level, iEntry));
 
 		// add children if any
