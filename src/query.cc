@@ -27,7 +27,8 @@ std::set<char> getCharCodes(const Element &str) {
     auto i = -1;
 
     // create map
-    while (++i < len)
+    while (++i < len) {
         charCodes.insert(str[i]);
+    }
     return charCodes;
 }
