@@ -81,15 +81,15 @@ extern Element ToLower(const Element &s);
 extern Element ToUpper(const Element &s);
 
 extern bool isMatch(const CandidateString &subject, const Element &query_lw, const Element &query_up);
-extern bool isWordStart(int pos, const CandidateString &subject, const CandidateString &subject_lw);
-extern Score scoreCharacter(int i, int j, bool start, Score acro_score, Score csc_score);
-extern Score scoreConsecutives(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, int i, int j, bool startOfWord);
-extern AcronymResult scoreAcronyms(CandidateString subject, CandidateString subject_lw, Element query, Element query_lw);
+extern bool isWordStart(const int pos, const CandidateString &subject, const CandidateString &subject_lw);
+extern Score scoreCharacter(const int i, const int j, const bool start, const Score acro_score, const Score csc_score);
+extern Score scoreConsecutives(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, int i, int j, const bool startOfWord);
+extern AcronymResult scoreAcronyms(const CandidateString subject, const CandidateString subject_lw, const Element query, const Element query_lw);
 
 extern Score computeScore(const CandidateString &subject, const CandidateString &subject_lw, const PreparedQuery &preparedQuery);
 
 extern Score scorer_score(const CandidateString &string, const Element &query, const Options &options);
-extern Score scoreSize(Score n, Score m);
+extern Score scoreSize(const Score n, const Score m);
 
 extern Score path_scorer_score(const CandidateString &string, const Element &query, const Options &options);
 extern int countDir(const CandidateString &path, const size_t end, const char pathSeparator);

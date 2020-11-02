@@ -30,14 +30,14 @@ const float miss_coeff = 0.75;// Max number missed consecutive hit = ceil(miss_c
 
 }// namespace
 
-extern bool isWordEnd(int pos, const CandidateString &subject, const CandidateString &subject_lw, int len);
-extern bool isSeparator(char c);
-extern Score scoreExact(size_t n, size_t m, size_t quality, Score pos);
+extern bool isWordEnd(const int pos, const CandidateString &subject, const CandidateString &subject_lw, const int len);
+extern bool isSeparator(const char c);
+extern Score scoreExact(const size_t n, const size_t m, const size_t quality, const Score pos);
 
 extern Score scorePattern(int count, int len, bool sameCase, bool start, bool end);
-extern Score scoreExactMatch(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, int pos, int n, int m);
+extern Score scoreExactMatch(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, int pos, const int n, const int m);
 
-extern bool isAcronymFullWord(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, int nbAcronymInQuery);
+extern bool isAcronymFullWord(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const int nbAcronymInQuery);
 
 
 //
@@ -61,8 +61,8 @@ Score scorer_score(const CandidateString &string, const Element &query, const Op
 // Are all (non optional)characters of query in subject, in proper order ?
 //
 bool isMatch(const CandidateString &subject, const Element &query_lw, const Element &query_up) {
-    const int m = subject.size();
-    const int n = query_lw.size();
+    const auto m = subject.size();
+    const auto n = query_lw.size();
 
     if (m == 0 || n > m) {
         return false;
@@ -104,8 +104,8 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
     const auto &query = preparedQuery.query;
     const auto &query_lw = preparedQuery.query_lw;
 
-    const int m = subject.size();
-    const int n = query.size();
+    const auto m = subject.size();
+    const auto n = query.size();
 
     //----------------------------
     // Abbreviations sequence
@@ -238,7 +238,7 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
 // Is the character at the start of a word, end of the word, or a separator ?
 // Fortunately those small function inline well.
 //
-bool isWordStart(int pos, const CandidateString &subject, const CandidateString &subject_lw) {
+bool isWordStart(const int pos, const CandidateString &subject, const CandidateString &subject_lw) {
     if (pos == 0) {
         return true;// match is FIRST char ( place a virtual token separator before first char of string)
     }
@@ -248,7 +248,7 @@ bool isWordStart(int pos, const CandidateString &subject, const CandidateString 
            curr_s != subject_lw[pos] && prev_s == subject_lw[pos - 1];// match is Capital in camelCase (preceded by lowercase)
 }
 
-bool isWordEnd(int pos, const CandidateString &subject, const CandidateString &subject_lw, int len) {
+bool isWordEnd(const int pos, const CandidateString &subject, const CandidateString &subject_lw, const int len) {
     if (pos == len - 1) {
         return true;// last char of string
     }
@@ -258,14 +258,14 @@ bool isWordEnd(int pos, const CandidateString &subject, const CandidateString &s
            curr_s == subject_lw[pos] && next_s != subject_lw[pos + 1];// match is lowercase, followed by uppercase
 }
 
-bool isSeparator(char c) {
+bool isSeparator(const char c) {
     return c == ' ' || c == '.' || c == '-' || c == '_' || c == '/' || c == '\\';
 }
 
 //
 // Scoring helper
 //
-Score scorePosition(Score pos) {
+Score scorePosition(const Score pos) {
     if (pos < pos_bonus) {
         const auto sc = pos_bonus - pos;
         return 100 + sc * sc;
@@ -273,12 +273,12 @@ Score scorePosition(Score pos) {
     return fmax(100 + pos_bonus - pos, 0);
 }
 
-Score scoreSize(Score n, Score m) {
+Score scoreSize(const Score n, const Score m) {
     // Size penalty, use the difference of size (m-n)
     return tau_size / (tau_size + fabs(m - n));
 }
 
-Score scoreExact(size_t n, size_t m, size_t quality, Score pos) {
+Score scoreExact(const size_t n, const size_t m, const size_t quality, const Score pos) {
     return 2 * n * (wm * quality + scorePosition(pos)) * scoreSize(n, m);
 }
 
@@ -289,7 +289,7 @@ Score scoreExact(size_t n, size_t m, size_t quality, Score pos) {
 // and structural quality of the pattern on the overall string (word boundary)
 //
 
-Score scorePattern(int count, int len, int sameCase, bool start, bool end) {
+Score scorePattern(const int count, const int len, const int sameCase, const bool start, const bool end) {
     auto sz = count;
 
     auto bonus = 6;// to ensure consecutive length dominate score, this should be as large other bonus combined
@@ -324,7 +324,7 @@ Score scorePattern(int count, int len, int sameCase, bool start, bool end) {
 //
 // Compute the bonuses for two chars that are confirmed to matches in a case-insensitive way
 //
-Score scoreCharacter(int i, int j, bool start, Score acro_score, Score csc_score) {
+Score scoreCharacter(const int i, const int j, const bool start, const Score acro_score, const Score csc_score) {
 
     // start of string / position of match bonus
     const auto posBonus = scorePosition(i);
@@ -343,7 +343,7 @@ Score scoreCharacter(int i, int j, bool start, Score acro_score, Score csc_score
 //
 // Forward search for a sequence of consecutive character.
 //
-Score scoreConsecutives(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, int i, int j, bool startOfWord) {
+Score scoreConsecutives(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, int i, int j, const bool startOfWord) {
     const auto m = subject.size();
     const auto n = query.size();
 
@@ -388,7 +388,7 @@ Score scoreConsecutives(const CandidateString &subject, const CandidateString &s
 //
 // Compute the score of an exact match at position pos.
 //
-Score scoreExactMatch(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, int pos, int n, int m) {
+Score scoreExactMatch(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, int pos, const int n, const int m) {
 
     // Test for word start
     auto start = isWordStart(pos, subject, subject_lw);
@@ -435,7 +435,7 @@ Score scoreExactMatch(const CandidateString &subject, const CandidateString &sub
 
 AcronymResult emptyAcronymResult(static_cast<Score>(0), static_cast<float>(0.1), static_cast<int>(0));
 
-AcronymResult scoreAcronyms(CandidateString subject, CandidateString subject_lw, Element query, Element query_lw) {
+AcronymResult scoreAcronyms(const CandidateString subject, const CandidateString subject_lw, const Element query, const Element query_lw) {
     const auto m = subject.size();
     const auto n = query.size();
 
@@ -512,7 +512,7 @@ AcronymResult scoreAcronyms(CandidateString subject, CandidateString subject_lw,
 //
 // This method check for (b) assuming (a) has been checked before entering.
 
-bool isAcronymFullWord(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, int nbAcronymInQuery) {
+bool isAcronymFullWord(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const int nbAcronymInQuery) {
     const int m = subject.size();
     const int n = query.size();
     auto count = 0;
