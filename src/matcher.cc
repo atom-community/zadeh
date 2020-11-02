@@ -32,7 +32,7 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
     vector<Score> csc_row(n, 0);
 
     // Directions constants
-    enum Direction {
+    enum class Direction {
         STOP,
         UP,
         LEFT,
@@ -40,7 +40,7 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
     };
 
     // Traceback matrix
-    std::vector<Direction> trace(m * n, STOP);
+    std::vector<Direction> trace(m * n, Direction::STOP);
     auto pos = -1;
 
     auto i = -1;
@@ -74,16 +74,16 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
 
             // In case of equality, moving UP get us closer to the start of the candidate string.
             if (score > score_up) {
-                move = LEFT;
+                move = Direction::LEFT;
             } else {
                 score = score_up;
-                move = UP;
+                move = Direction::UP;
             }
 
             // Only take alignment if it's the absolute best option.
             if (align > score) {
                 score = align;
-                move = DIAGONAL;
+                move = Direction::DIAGONAL;
             } else {
                 // If we do not take this character, break consecutive sequence.
                 // (when consecutive is 0, it'll be recomputed)
@@ -92,7 +92,7 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
 
             score_row[j] = score;
             csc_row[j] = csc_score;
-            trace[++pos] = score > 0 ? move : STOP;
+            trace[++pos] = score > 0 ? move : Direction::STOP;
         }
     }
 
@@ -108,15 +108,15 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
 
     while (backtrack && i >= 0 && j >= 0) {
         switch (trace[pos]) {
-        case UP:
+        case Direction::UP:
             i--;
             pos -= n;
             break;
-        case LEFT:
+        case Direction::LEFT:
             j--;
             pos--;
             break;
-        case DIAGONAL:
+        case Direction::DIAGONAL:
             matches.push_back(i + offset);
             j--;
             i--;
