@@ -5,6 +5,7 @@
   "main": "fuzzaldrin-dist.js",
   "types": "./types/fuzzaldrin-plus-fast.d.ts",
   "scripts": {
+    "format": "clang-format -i src/*.cc src/*.h",
     "native:clean": "shx rm -rf build prebuilds",
     "native:build": "node-gyp-build",
     "native:prebuild": "prebuildify --napi -t 12.0.0 -t electron@6.0.0 --strip",
