@@ -50,7 +50,7 @@ struct PreparedQuery {
     Element ext;
     std::set<char> charCodes{};
 
-    PreparedQuery(const Element &q, char pathSeparator);
+    PreparedQuery(const Element &q, const char pathSeparator);
 };
 
 struct Options {
