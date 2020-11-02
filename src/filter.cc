@@ -68,8 +68,9 @@ std::vector<CandidateIndex> sort_priority_queue(CandidateScorePriorityQueue &can
 std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &candidates, const Element &query, const Options &options) {
     CandidateScorePriorityQueue top_k;
     size_t max_results = options.max_results;
-    if (!max_results)
+    if (max_results == 0u) {
         max_results = std::numeric_limits<size_t>::max();
+    }
 
     // Split the dataset and pass down to multiple threads.
     vector<thread> threads;

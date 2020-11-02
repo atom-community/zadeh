@@ -132,8 +132,9 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
 std::vector<size_t> basenameMatch(const CandidateString &subject, const CandidateString &subject_lw, const PreparedQuery &preparedQuery, char pathSeparator) {
     // Skip trailing slashes
     int end = subject.size() - 1;
-    while (subject[end] == pathSeparator)
+    while (subject[end] == pathSeparator) {
         end--;
+    }
 
     // Get position of basePath of subject.
     size_t basePos = subject.rfind(pathSeparator, end);
@@ -261,8 +262,9 @@ void get_wrap(const CandidateString &string, const Element &query, const Options
     }
 
     // Get string after last match
-    if (strPos <= string.size() - 1)
+    if (strPos <= string.size() - 1) {
         output += string.substr(strPos);
+    }
 
     // return wrapped text
     *out = output;

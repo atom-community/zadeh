@@ -48,7 +48,7 @@ struct PreparedQuery {
     Element core_up;
     int depth = 0;
     Element ext;
-    std::set<char> charCodes;
+    std::set<char> charCodes{};
 
     PreparedQuery(const Element &q, char pathSeparator);
 };

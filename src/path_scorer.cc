@@ -12,7 +12,7 @@ Score file_coeff = 2.5;
 
 
 extern Score scorePath(const CandidateString &subject, const CandidateString &subject_lw, Score fullPathScore, const Options &options);
-extern int countDir(const CandidateString &path, int end, char pathSeparator);
+
 extern Score getExtensionScore(const CandidateString &candidate, const CandidateString &ext, int startPos, int endPos, int maxDepth);
 
 Element ToLower(const Element &s) {
@@ -49,14 +49,17 @@ Score path_scorer_score(const CandidateString &string, const Element &query, con
 // Score adjustment for path
 //
 Score scorePath(const CandidateString &subject, const CandidateString &subject_lw, Score fullPathScore, const Options &options) {
-    if (fullPathScore == 0) return 0;
+    if (fullPathScore == 0) {
+        return 0;
+    }
 
     // {preparedQuery, useExtensionBonus, pathSeparator} = options
 
     // Skip trailing slashes
     int end = subject.size() - 1;
-    while (subject[end] == options.pathSeparator)
+    while (subject[end] == options.pathSeparator) {
         end--;
+    }
 
     // Get position of basePath of subject.
     int basePos = subject.rfind(options.pathSeparator, end);
@@ -71,7 +74,9 @@ Score scorePath(const CandidateString &subject, const CandidateString &subject_l
     }
 
     // no basePath, nothing else to compute.
-    if (basePos == -1) return fullPathScore;
+    if (basePos == -1) {
+        return fullPathScore;
+    }
 
     // Get the number of folder in query
     int depth = options.preparedQuery.depth;
@@ -101,20 +106,24 @@ Score scorePath(const CandidateString &subject, const CandidateString &subject_l
 // (consecutive slashes count as a single directory)
 //
 int countDir(const CandidateString &path, int end, char pathSeparator) {
-    if (end < 1) return 0;
+    if (end < 1) {
+        return 0;
+    }
 
     int count = 0;
     int i = -1;
 
     //skip slash at the start so `foo/bar` and `/foo/bar` have the same depth.
-    while (++i < end && path[i] == pathSeparator)
+    while (++i < end && path[i] == pathSeparator) {
         continue;
+    }
 
     while (++i < end) {
         if (path[i] == pathSeparator) {
             count++;//record first slash, but then skip consecutive ones
-            while (++i < end && path[i] == pathSeparator)
+            while (++i < end && path[i] == pathSeparator) {
                 continue;
+            }
         }
     }
 
@@ -135,11 +144,15 @@ CandidateString getExtension(const CandidateString &str) {
 Score getExtensionScore(const CandidateString &candidate, const CandidateString &ext, int startPos, int endPos, int maxDepth) {
     // startPos is the position of last slash of candidate, -1 if absent.
 
-    if (!ext.size()) return 0;
+    if (ext.empty()) {
+        return 0;
+    }
 
     // Check that (a) extension exist, (b) it is after the start of the basename
     int pos = candidate.rfind('.', endPos);
-    if (pos <= startPos) return 0;// (note that startPos >= -1)
+    if (pos <= startPos) {
+        return 0;// (note that startPos >= -1)
+    }
 
     int n = ext.size();
     int m = endPos - pos;
@@ -154,8 +167,9 @@ Score getExtensionScore(const CandidateString &candidate, const CandidateString 
     pos++;
     int matched = -1;
     while (++matched < n) {
-        if (candidate[pos + matched] != ext[matched])
+        if (candidate[pos + matched] != ext[matched]) {
             break;
+        }
     }
 
     // if nothing found, try deeper for multiple extensions, with some penalty for depth
