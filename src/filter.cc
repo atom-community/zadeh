@@ -27,13 +27,16 @@ void filter_internal(const std::vector<CandidateString> &candidates,
   CandidateScorePriorityQueue &results) {
     for (size_t i = 0, len = candidates.size(); i < len; i++) {
         const auto &candidate = candidates[i];
-        if (candidate.empty()) continue;
+        if (candidate.empty()) {
+            continue;
+        }
         const auto scoreProvider = options.usePathScoring ? path_scorer_score : scorer_score;
         auto score = scoreProvider(candidate, query, options);
         if (score > 0) {
             results.emplace(score, start_index + i);
-            if (results.size() > max_results)
+            if (results.size() > max_results) {
                 results.pop();
+            }
         }
     }
 }
@@ -88,8 +91,9 @@ const std::vector<CandidateIndex> filter(const vector<std::vector<CandidateStrin
         while (!results[i].empty()) {
             top_k.emplace(results[i].top());
             results[i].pop();
-            if (top_k.size() > max_results)
+            if (top_k.size() > max_results) {
                 top_k.pop();
+            }
         }
     }
     return sort_priority_queue(top_k);
