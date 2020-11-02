@@ -245,7 +245,7 @@ bool isWordStart(const int pos, const CandidateString &subject, const CandidateS
     const auto curr_s = subject[pos];
     const auto prev_s = subject[pos - 1];
     return isSeparator(prev_s) ||// match FOLLOW a separator
-           curr_s != subject_lw[pos] && prev_s == subject_lw[pos - 1];// match is Capital in camelCase (preceded by lowercase)
+           ((curr_s != subject_lw[pos]) && (prev_s == subject_lw[pos - 1]));// match is Capital in camelCase (preceded by lowercase)
 }
 
 bool isWordEnd(const int pos, const CandidateString &subject, const CandidateString &subject_lw, const int len) {
@@ -255,7 +255,7 @@ bool isWordEnd(const int pos, const CandidateString &subject, const CandidateStr
     const auto curr_s = subject[pos];
     const auto next_s = subject[pos + 1];
     return isSeparator(next_s) ||// match IS FOLLOWED BY a separator
-           curr_s == subject_lw[pos] && next_s != subject_lw[pos + 1];// match is lowercase, followed by uppercase
+           ((curr_s == subject_lw[pos]) && (next_s != subject_lw[pos + 1]));// match is lowercase, followed by uppercase
 }
 
 bool isSeparator(const char c) {
