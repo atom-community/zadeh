@@ -41,13 +41,23 @@ describe("filterTree", () => {
 
     expect(DeepEqual(
         filterTree(candidates, "ye", "data", "children"),
+        process.platform !== "darwin"
+        ?
         [
           { data: 'eye', index: 2, level: 0 },
           { data: 'bye1', index: 0, level: 0 },
           { data: 'Bye2', index: 1, level: 0 },
           { data: '_bye4', index: 0, level: 1 }
         ]
+        :
+        [
+          { data: 'eye', index: 2, level: 0 },
+          { data: 'Bye2', index: 1, level: 0 },
+          { data: 'bye1', index: 0, level: 0 },
+          { data: '_bye4', index: 0, level: 1 }
+        ]
       )).toBe(true)
+
 
     // test maxResults
     expect(DeepEqual(
@@ -58,15 +68,23 @@ describe("filterTree", () => {
         ]
       )).toBe(true)
 
+
     expect(DeepEqual(
         filterTree(candidates, "ye", "data", "children", {maxResults: 3}),
+        process.platform !== "darwin"
+        ?
         [
           { data: 'eye', index: 2, level: 0 },
           { data: 'bye1', index: 0, level: 0 },
           { data: 'Bye2', index: 1, level: 0 },
         ]
+        :
+        [
+          { data: 'eye', index: 2, level: 0 },
+          { data: 'Bye2', index: 1, level: 0 },
+          { data: 'bye1', index: 0, level: 0 }
+        ]
       )).toBe(true)
-
 
   })
 
