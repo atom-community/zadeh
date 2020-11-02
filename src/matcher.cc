@@ -32,17 +32,19 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
     vector<Score> csc_row(n, 0);
 
     // Directions constants
-    enum Direction { STOP,
+    enum Direction {
+        STOP,
         UP,
         LEFT,
-        DIAGONAL };
+        DIAGONAL
+    };
 
     // Traceback matrix
     std::vector<Direction> trace(m * n, STOP);
     auto pos = -1;
 
     auto i = -1;
-    while (++i < m) {//foreach char si of subject
+    while (++i < m) {//foreach char is of subject
         Score score = 0;
         Score score_up = 0;
         Score csc_diag = 0;
@@ -140,8 +142,9 @@ std::vector<size_t> basenameMatch(const CandidateString &subject, const Candidat
     auto basePos = subject.rfind(pathSeparator, end);
 
     // If no PathSeparator, no base path exist.
-    if (basePos == std::string::npos)
+    if (basePos == std::string::npos) {
         return std::vector<size_t>();
+    }
 
     // Get the number of folder in query
     auto depth = preparedQuery.depth;
@@ -149,8 +152,9 @@ std::vector<size_t> basenameMatch(const CandidateString &subject, const Candidat
     // Get that many folder from subject
     while (depth-- > 0) {
         basePos = subject.rfind(pathSeparator, basePos - 1);
-        if (basePos == std::string::npos)// consumed whole subject ?
+        if (basePos == std::string::npos) {// consumed whole subject ?
             return std::vector<size_t>();
+        }
     }
 
     // Get basePath match
@@ -171,8 +175,12 @@ std::vector<size_t> mergeMatches(const std::vector<size_t> &a, const std::vector
     const auto m = a.size();
     const auto n = b.size();
 
-    if (n == 0) return a;
-    if (m == 0) return b;
+    if (n == 0) {
+        return a;
+    }
+    if (m == 0) {
+        return b;
+    }
 
     auto i = -1;
     auto j = 0;
@@ -183,14 +191,16 @@ std::vector<size_t> mergeMatches(const std::vector<size_t> &a, const std::vector
         auto ai = a[i];
 
         while (bj <= ai && ++j < n) {
-            if (bj < ai)
+            if (bj < ai) {
                 out.push_back(bj);
+            }
             bj = b[j];
         }
         out.push_back(ai);
     }
-    while (j < n)
+    while (j < n) {
         out.push_back(b[j++]);
+    }
     return out;
 }
 
