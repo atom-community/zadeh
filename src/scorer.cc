@@ -209,8 +209,9 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
                     // If budget is exhausted exit
                     // Each character of query have it's score history stored in score_row
                     // To get full query score use last item of row.
-                    if (record_miss && --miss_left <= 0)
+                    if (record_miss && --miss_left <= 0) {
                         return fmax(score, score_row[n - 1]) * sz;
+                    }
 
                     record_miss = false;
                 }
@@ -225,7 +226,7 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
         }
     }
 
-    // get hightest score so far
+    // get highest score so far
     const auto score = score_row[n - 1];
     return score * sz;
 }
