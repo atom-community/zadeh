@@ -38,27 +38,26 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
 
     // Traceback matrix
     std::vector<Direction> trace(m * n, STOP);
-    int pos = -1;
+    auto pos = -1;
 
-    int i = -1;
+    auto i = -1;
     while (++i < m) {//foreach char si of subject
         Score score = 0;
         Score score_up = 0;
         Score csc_diag = 0;
-        char si_lw = subject_lw[i];
+        const auto si_lw = subject_lw[i];
 
-        int j = -1;//0..n-1
+        auto j = -1;//0..n-1
         while (++j < n) {//foreach char qj of query
             // reset score
             Score csc_score = 0;
             Score align = 0;
-            Score score_diag = score_up;
+            const auto score_diag = score_up;
             Direction move;
 
             //Compute a tentative match
             if (query_lw[j] == si_lw) {
-
-                auto start = isWordStart(i, subject, subject_lw);
+                const auto start = isWordStart(i, subject, subject_lw);
 
                 // Forward search for a sequence of consecutive char
                 csc_score = csc_diag > 0 ? csc_diag : scoreConsecutives(subject, subject_lw, query, query_lw, i, j, start);
@@ -99,9 +98,9 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
     // and collect matches (diagonals)
 
     i = m - 1;
-    int j = n - 1;
+    auto j = n - 1;
     pos = i * n + j;
-    bool backtrack = true;
+    auto backtrack = true;
     std::vector<size_t> matches;
 
     while (backtrack && i >= 0 && j >= 0) {
@@ -137,14 +136,14 @@ std::vector<size_t> basenameMatch(const CandidateString &subject, const Candidat
     }
 
     // Get position of basePath of subject.
-    size_t basePos = subject.rfind(pathSeparator, end);
+    auto basePos = subject.rfind(pathSeparator, end);
 
     // If no PathSeparator, no base path exist.
     if (basePos == std::string::npos)
         return std::vector<size_t>();
 
     // Get the number of folder in query
-    int depth = preparedQuery.depth;
+    auto depth = preparedQuery.depth;
 
     // Get that many folder from subject
     while (depth-- > 0) {
@@ -174,13 +173,13 @@ std::vector<size_t> mergeMatches(const std::vector<size_t> &a, const std::vector
     if (n == 0) return a;
     if (m == 0) return b;
 
-    int i = -1;
-    int j = 0;
-    size_t bj = b[j];
+    auto i = -1;
+    auto j = 0;
+    auto bj = b[j];
     std::vector<size_t> out;
 
     while (++i < m) {
-        size_t ai = a[i];
+        auto ai = a[i];
 
         while (bj <= ai && ++j < n) {
             if (bj < ai)
@@ -229,9 +228,8 @@ void get_wrap(const CandidateString &string, const Element &query, const Options
     std::string output;
     size_t matchIndex = 0;
     size_t strPos = 0;
-    size_t matchPos;
     while (matchIndex < matchPositions.size()) {
-        matchPos = matchPositions[matchIndex];
+        auto matchPos = matchPositions[matchIndex];
         matchIndex++;
 
         // Get text before the current match position

@@ -68,18 +68,18 @@ bool isMatch(const CandidateString &subject, const Element &query_lw, const Elem
         return false;
     }
 
-    int i = -1;
-    int j = -1;
+    auto i = -1;
+    auto j = -1;
 
     // foreach char of query
     while (++j < n) {
-        char qj_lw = query_lw[j];
-        char qj_up = query_up[j];
+        const auto qj_lw = query_lw[j];
+        const auto qj_up = query_up[j];
 
         // continue walking the subject from where we have left with previous query char
         // until we have found a character that is either lowercase or uppercase query.
         while (++i < m) {
-            char si = subject[i];
+            const auto si = subject[i];
             if (si == qj_lw || si == qj_up) {
                 break;
             }
@@ -141,7 +141,7 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
 
     const auto miss_budget = ceil(miss_coeff * n) + 5;
     auto miss_left = miss_budget;
-    bool csc_should_rebuild = true;
+    auto csc_should_rebuild = true;
 
     // Fill with 0
     /*
@@ -151,16 +151,16 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
     csc_row[j] = 0;
   }*/
 
-    int i = -1;
+    auto i = -1;
     while (++i < m) {//foreach char si of subject
-        char si_lw = subject_lw[i];
+        auto si_lw = subject_lw[i];
 
         // if si_lw is not in query
         if (preparedQuery.charCodes.find(si_lw) == preparedQuery.charCodes.end()) {
             // reset csc_row and move to next subject char
             // unless we just cleaned it then keep cleaned version.
             if (csc_should_rebuild) {
-                int j = -1;
+                auto j = -1;
                 while (++j < n) {
                     csc_row[j] = 0;
                 }
@@ -172,16 +172,16 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
         Score score = 0;
         Score score_diag = 0;
         Score csc_diag = 0;
-        bool record_miss = true;
+        auto record_miss = true;
         csc_should_rebuild = true;
 
-        int j = -1;//0..n-1
+        auto j = -1;//0..n-1
         while (++j < n) {//foreach char qj of query
 
             // What is the best gap ?
             // score_up contain the score of a gap in subject.
             // score_left = last iteration of score, -> gap in query.
-            Score score_up = score_row[j];
+            const auto score_up = score_row[j];
             if (score_up > score) {
                 score = score_up;
             }
@@ -241,8 +241,8 @@ bool isWordStart(int pos, const CandidateString &subject, const CandidateString 
     if (pos == 0) {
         return true;// match is FIRST char ( place a virtual token separator before first char of string)
     }
-    char curr_s = subject[pos];
-    char prev_s = subject[pos - 1];
+    const auto curr_s = subject[pos];
+    const auto prev_s = subject[pos - 1];
     return isSeparator(prev_s) ||// match FOLLOW a separator
            (curr_s != subject_lw[pos] && prev_s == subject_lw[pos - 1]);// match is Capital in camelCase (preceded by lowercase)
 }
@@ -251,8 +251,8 @@ bool isWordEnd(int pos, const CandidateString &subject, const CandidateString &s
     if (pos == len - 1) {
         return true;// last char of string
     }
-    char curr_s = subject[pos];
-    char next_s = subject[pos + 1];
+    const auto curr_s = subject[pos];
+    const auto next_s = subject[pos + 1];
     return isSeparator(next_s) ||// match IS FOLLOWED BY a separator
            (curr_s == subject_lw[pos] && next_s != subject_lw[pos + 1]);// match is lowercase, followed by uppercase
 }
@@ -266,7 +266,7 @@ bool isSeparator(char c) {
 //
 Score scorePosition(Score pos) {
     if (pos < pos_bonus) {
-        Score sc = pos_bonus - pos;
+        const auto sc = pos_bonus - pos;
         return 100 + sc * sc;
     }
     return fmax(100 + pos_bonus - pos, 0);
@@ -291,7 +291,7 @@ Score scoreExact(size_t n, size_t m, size_t quality, Score pos) {
 Score scorePattern(int count, int len, int sameCase, bool start, bool end) {
     auto sz = count;
 
-    int bonus = 6;// to ensure consecutive length dominate score, this should be as large other bonus combined
+    auto bonus = 6;// to ensure consecutive length dominate score, this should be as large other bonus combined
     if (sameCase == count) {
         bonus += 2;
     }
@@ -326,7 +326,7 @@ Score scorePattern(int count, int len, int sameCase, bool start, bool end) {
 Score scoreCharacter(int i, int j, bool start, Score acro_score, Score csc_score) {
 
     // start of string / position of match bonus
-    Score posBonus = scorePosition(i);
+    const auto posBonus = scorePosition(i);
 
     // match IS a word boundary
     // choose between taking part of consecutive characters or consecutive acronym
@@ -348,11 +348,10 @@ Score scoreConsecutives(const CandidateString &subject, const CandidateString &s
 
     int mi = m - i;
     int nj = n - j;
-    int k = mi < nj ? mi : nj;
     const auto k = mi < nj ? mi : nj;
 
-    int sameCase = 0;
-    int sz = 0;//sz will be one more than the last qi is sj
+    auto sameCase = 0;
+    auto sz = 0;//sz will be one more than the last qi is sj
 
     // query_lw[i] is subject_lw[j] has been checked before entering now do case sensitive check.
     if (query[j] == subject[i]) {
@@ -391,7 +390,7 @@ Score scoreConsecutives(const CandidateString &subject, const CandidateString &s
 Score scoreExactMatch(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, int pos, int n, int m) {
 
     // Test for word start
-    bool start = isWordStart(pos, subject, subject_lw);
+    auto start = isWordStart(pos, subject, subject_lw);
 
     // Heuristic
     // If not a word start, test next occurrence
@@ -410,15 +409,15 @@ Score scoreExactMatch(const CandidateString &subject, const CandidateString &sub
     }
 
     //Exact case bonus.
-    int i = -1;
-    int sameCase = 0;
+    auto i = -1;
+    auto sameCase = 0;
     while (++i < n) {
         if (query[i] == subject[pos + i]) {
             sameCase++;
         }
     }
 
-    int end = static_cast<int>(isWordEnd(pos + n - 1, subject, subject_lw, m));
+    const auto end = static_cast<int>(isWordEnd(pos + n - 1, subject, subject_lw, m));
 
     Score baseNameStart = 1.0;
     if (start && pos > 0 && (subject[pos - 1] == '/' || subject[pos - 1] == '\\')) {
@@ -445,16 +444,15 @@ AcronymResult scoreAcronyms(CandidateString subject, CandidateString subject_lw,
     }
 
     size_t count = 0;
-    int sepCount = 0;
-    int sumPos = 0;
-    int sameCase = 0;
+    auto sepCount = 0;
+    auto sumPos = 0;
+    auto sameCase = 0;
 
-    size_t i = string::npos;// incrementing will become 0
+    auto i = string::npos;// incrementing will become 0
 
     //foreach char of query
     for (size_t j = 0; j < n; j++) {
-
-        char qj_lw = query_lw[j];
+        const auto qj_lw = query_lw[j];
 
         // Separator will not score point but will continue the prefix when present.
         // Test that the separator is in the candidate and advance cursor to that position.
@@ -498,7 +496,7 @@ AcronymResult scoreAcronyms(CandidateString subject, CandidateString subject_lw,
 
     // Acronym are scored as start-of-word
     // Unless the acronym is a 1:1 match with candidate then it is upgraded to full-word.
-    bool fullWord = count == n ? isAcronymFullWord(subject, subject_lw, query, count) : false;
+    const auto fullWord = count == n ? isAcronymFullWord(subject, subject_lw, query, count) : false;
     const auto score = scorePattern(count, n, sameCase, true, fullWord);
 
     return AcronymResult(score, Score(sumPos) / count, count + sepCount);
@@ -525,7 +523,7 @@ bool isAcronymFullWord(const CandidateString &subject, const CandidateString &su
         return false;
     }
 
-    int i = -1;
+    auto i = -1;
     while (++i < m) {
         //For each char of subject
         //Test if we have an acronym, if so increase acronym count.

@@ -16,13 +16,13 @@ extern Score scorePath(const CandidateString &subject, const CandidateString &su
 extern Score getExtensionScore(const CandidateString &candidate, const CandidateString &ext, int startPos, int endPos, int maxDepth);
 
 Element ToLower(const Element &s) {
-    Element snew = s;
+    auto snew = s;
     std::transform(s.begin(), s.end(), snew.begin(), ::tolower);
     return snew;
 }
 
 Element ToUpper(const Element &s) {
-    Element snew = s;
+    auto snew = s;
     std::transform(s.begin(), s.end(), snew.begin(), ::toupper);
     return snew;
 }
@@ -63,7 +63,7 @@ Score scorePath(const CandidateString &subject, const CandidateString &subject_l
 
     // Get position of basePath of subject.
     int basePos = subject.rfind(options.pathSeparator, end);
-    int fileLength = end - basePos;
+    const auto fileLength = end - basePos;
 
     // Get a bonus for matching extension
     Score extAdjust = 1.0;
@@ -79,7 +79,7 @@ Score scorePath(const CandidateString &subject, const CandidateString &subject_l
     }
 
     // Get the number of folder in query
-    int depth = options.preparedQuery.depth;
+    auto depth = options.preparedQuery.depth;
 
     // Get that many folder from subject
     while (basePos > -1 && depth-- > 0) {
@@ -88,7 +88,7 @@ Score scorePath(const CandidateString &subject, const CandidateString &subject_l
 
     // Get basePath score, if BaseName is the whole string, no need to recompute
     // We still need to apply the folder depth and filename penalty.
-    Score basePathScore = (basePos == -1) ? fullPathScore : extAdjust * computeScore(subject.substr(basePos + 1, end + 1), subject_lw.substr(basePos + 1, end + 1), options.preparedQuery);
+    const auto basePathScore = basePos == -1 ? fullPathScore : extAdjust * computeScore(subject.substr(basePos + 1, end + 1), subject_lw.substr(basePos + 1, end + 1), options.preparedQuery);
 
     // Final score is linear interpolation between base score and full path score.
     // For low directory depth, interpolation favor base Path then include more of full path as depth increase
@@ -110,8 +110,8 @@ int countDir(const CandidateString &path, int end, char pathSeparator) {
         return 0;
     }
 
-    int count = 0;
-    int i = -1;
+    auto count = 0;
+    auto i = -1;
 
     //skip slash at the start so `foo/bar` and `/foo/bar` have the same depth.
     while (++i < end && path[i] == pathSeparator) {
@@ -155,7 +155,7 @@ Score getExtensionScore(const CandidateString &candidate, const CandidateString 
     }
 
     int n = ext.size();
-    int m = endPos - pos;
+    auto m = endPos - pos;
 
     // n contain the smallest of both extension length, m the largest.
     if (m < n) {
@@ -165,7 +165,7 @@ Score getExtensionScore(const CandidateString &candidate, const CandidateString 
 
     //place cursor after dot & count number of matching characters in extension
     pos++;
-    int matched = -1;
+    auto matched = -1;
     while (++matched < n) {
         if (candidate[pos + matched] != ext[matched]) {
             break;

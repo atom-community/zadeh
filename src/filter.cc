@@ -67,7 +67,7 @@ const std::vector<CandidateIndex> sort_priority_queue(CandidateScorePriorityQueu
 
 const std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &candidates, const Element &query, const Options &options) {
     CandidateScorePriorityQueue top_k;
-    size_t max_results = options.max_results;
+    auto max_results = options.max_results;
     if (max_results == 0u) {
         max_results = std::numeric_limits<size_t>::max();
     }
