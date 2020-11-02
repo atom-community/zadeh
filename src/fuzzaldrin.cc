@@ -49,24 +49,66 @@ Napi::Value Fuzzaldrin::SetCandidates(const Napi::CallbackInfo& info) {
   return Napi::Boolean();
 }
 
-Napi::Value Fuzzaldrin::SetCandidateTrees(const Napi::CallbackInfo& info) {
-    if (info.Length() != 4 || !info[0].IsObject() || !info[1].IsString() || !info[2].IsString()) {
-        Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
-        return Napi::Boolean();
+void Fuzzaldrin::SetCandidates(vector<CandidateObject> const &candidates) {
+    const size_t N = candidates.size(); // different
+    const size_t num_chunks = (N < 1000 * kMaxThreads) ? (N / 1000 + 1) : kMaxThreads;
+    candidates_.clear();
+    candidates_.resize(num_chunks);
+    size_t cur_start = 0;
+    for (size_t i = 0; i < num_chunks; i++) {
+        size_t chunk_size = N / num_chunks;
+        // Distribute remainder among the chunks.
+        if (i < N % num_chunks) {
+            chunk_size++;
+        }
+        for (size_t j = cur_start; j < cur_start + chunk_size; j++) {
+            candidates_[i].push_back(candidates[j].data); // different
+        }
+        cur_start += chunk_size;
     }
-    auto const jsTreeArrayOrObject = info[0].As<Napi::Object>();
+}
+
+Napi::Array Fuzzaldrin::FilterTree(const Napi::CallbackInfo& info) {
+
+    // parse arguments
+    if (info.Length() != 5 || !info[0].IsArray()
+        || !info[1].IsString() || !info[2].IsString() || !info[3].IsString() 
+        || !info[4].IsNumber() || !info[5].IsBoolean() || !info[6].IsBoolean()
+        ) {
+        Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
+        return Napi::Array::New(info.Env());
+    }
+    auto const jsTreeArray = info[0].As<Napi::Array>();
     string const dataKey = info[1].As<Napi::String>();
     string const childrenKey = info[2].As<Napi::String>();
 
-    if (jsTreeArrayOrObject.IsArray()) {
-        auto tree = Tree(jsTreeArrayOrObject.As<Napi::Array>(), dataKey, childrenKey);
-    }
-    else {
-        auto tree = Tree(jsTreeArrayOrObject.As<Napi::Object>(), dataKey, childrenKey);
-    }
+    std::string query = info[0].As<Napi::String>();
+    size_t maxResults = info[1].As<Napi::Number>().Uint32Value();
+    bool usePathScoring = info[2].As<Napi::Boolean>();
+    bool useExtensionBonus = info[3].As<Napi::Boolean>();
 
-    return Napi::Boolean();
+    // create Tree and set candidates
+    auto tree = Tree(jsTreeArray, dataKey, childrenKey);
+    Fuzzaldrin::SetCandidates(tree.entriesArray);
+
+    // create options
+    Options options(query, maxResults, usePathScoring, useExtensionBonus);
+    const auto matches = filter(candidates_, query, options);
+
+    Napi::Array filteredCandidateObjects = Napi::Array::New(info.Env()); // array of objects
+    for (uint32_t i = 0, len = matches.size(); i < len; i++) {
+        auto entry = tree.entriesArray[matches[i]];
+        auto obj = Napi::Object::New(info.Env());
+
+        obj.Set("data", entry.data);
+        obj.Set("index", entry.index);
+        obj.Set("level", entry.level);
+
+        filteredCandidateObjects[i] = obj;
+    }
+    return filteredCandidateObjects;
 }
+
 
 
 Napi::Number score(const Napi::CallbackInfo& info) {
