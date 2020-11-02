@@ -71,7 +71,7 @@ void Fuzzaldrin::SetCandidates(vector<CandidateObject> const &candidates) {
 Napi::Value Fuzzaldrin::FilterTree(const Napi::CallbackInfo& info) {
 
     // parse arguments
-    if (info.Length() != 7 
+    if (info.Length() != 7
         || !info[0].IsArray()
         || !info[1].IsString() || !info[2].IsString() || !info[3].IsString()
         || !info[4].IsNumber() || !info[5].IsBoolean() || !info[6].IsBoolean()
@@ -97,11 +97,13 @@ Napi::Value Fuzzaldrin::FilterTree(const Napi::CallbackInfo& info) {
     Options options(query, maxResults, usePathScoring, useExtensionBonus);
     const auto matches = filter(candidates_, query, options);
 
-    Napi::Array filteredCandidateObjects = Napi::Array::New(info.Env()); // array of objects
+    // filter
+    Napi::Array filteredCandidateObjects = Napi::Array::New(info.Env()); // array of candidate objects (with their address in index and level)
     for (uint32_t i = 0, len = matches.size(); i < len; i++) {
-        auto entry = tree.entriesArray[matches[i]];
-        auto obj = Napi::Object::New(info.Env());
+        auto entry = tree.entriesArray[matches[i]]; //
 
+        // create {data, index, level}
+        auto obj = Napi::Object::New(info.Env());
         obj.Set("data", entry.data);
         obj.Set("index", entry.index);
         obj.Set("level", entry.level);

@@ -64,7 +64,7 @@ struct Tree {
 		}
 	}
 
-	/** Parse a Tree object from JS */
+	/** create a Tree object and make an entries array */
 	Tree(T const _jsTreeArrayOrObject, string const _dataKey, string const _childrenKey) {
 		dataKey = _dataKey;
 		childrenKey = _childrenKey;

@@ -44,6 +44,24 @@ export function filter<T>(
     options?: IFilterOptions<T>
 ): T[]
 
+
+/** Sort and filter the given Tree candidates by matching them against the given query.
+* A tree object is an object which each entry stores the data in its dataKey and it has (may have) some children (with the similar structure) in its childrenKey
+* @param candidates An array of tree objects.
+* @param query A string query to match each candidate against.
+* @param dataKey the key of the object (and its children) which holds the data
+* @param childrenKey the key of the object (and its children) which hold the children
+* @param options options
+* @return returns an array of candidates sorted by best match against the query.
+ */
+export function filterTree<T>(
+    candidates: T[],
+    query: string,
+    dataKey: string,
+    childrenKey: string,
+    options?: IFilterOptions<T>
+): T[]
+
 /** Score the given string against the given query.
 * @param str The string the score.
 * @param query The query to score the string against.
