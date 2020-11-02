@@ -19,12 +19,12 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
     const auto &query = preparedQuery.query;
     const auto &query_lw = preparedQuery.query_lw;
 
-    int m = subject.size();
-    int n = query.size();
+    const int m = subject.size();
+    const int n = query.size();
 
     // this is like the consecutive bonus, but for camelCase / snake_case initials
-    auto acro = scoreAcronyms(subject, subject_lw, query, query_lw);
-    auto acro_score = acro.score;
+    const auto acro = scoreAcronyms(subject, subject_lw, query, query_lw);
+    const auto acro_score = acro.score;
 
     // Init
     vector<Score> score_row(n, 0);
@@ -168,8 +168,8 @@ std::vector<size_t> basenameMatch(const CandidateString &subject, const Candidat
 // (Assume sequences are sorted, matches are sorted by construction.)
 //
 std::vector<size_t> mergeMatches(const std::vector<size_t> &a, const std::vector<size_t> &b) {
-    int m = a.size();
-    int n = b.size();
+    const int m = a.size();
+    const int n = b.size();
 
     if (n == 0) return a;
     if (m == 0) return b;
@@ -200,16 +200,16 @@ std::vector<size_t> matcher_match(const CandidateString &string, const Element &
     auto matches = computeMatch(string, string_lw, options.preparedQuery);
 
     if (string.find(options.pathSeparator) != std::string::npos) {
-        auto baseMatches = basenameMatch(string, string_lw, options.preparedQuery, options.pathSeparator);
+        const auto baseMatches = basenameMatch(string, string_lw, options.preparedQuery, options.pathSeparator);
         return mergeMatches(matches, baseMatches);
     }
     return matches;
 }
 
 void get_wrap(const CandidateString &string, const Element &query, const Options &options, std::string *out) {
-    std::string tagClass = "highlight";
-    std::string tagOpen = "<strong class=\"" + tagClass + "\">";
-    std::string tagClose = "</strong>";
+    const std::string tagClass = "highlight";
+    const auto tagOpen = "<strong class=\"" + tagClass + "\">";
+    const std::string tagClose = "</strong>";
 
     if (string == query) {
         *out = tagOpen + string + tagClose;

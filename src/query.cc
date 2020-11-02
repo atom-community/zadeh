@@ -23,8 +23,8 @@ Element coreChars(Element query) {
 
 std::set<char> getCharCodes(const Element &str) {
     std::set<char> charCodes;
-    int len = str.size();
     int i = -1;
+    const int len = str.size();
 
     // create map
     while (++i < len)

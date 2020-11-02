@@ -52,7 +52,7 @@ Score scorer_score(const CandidateString &string, const Element &query, const Op
         return 0;
     }
     const auto string_lw = ToLower(string);
-    auto score = computeScore(string, string_lw, options.preparedQuery);
+    const auto score = computeScore(string, string_lw, options.preparedQuery);
     return ceil(score);
 }
 
@@ -61,8 +61,8 @@ Score scorer_score(const CandidateString &string, const Element &query, const Op
 // Are all (non optional)characters of query in subject, in proper order ?
 //
 bool isMatch(const CandidateString &subject, const Element &query_lw, const Element &query_up) {
-    int m = subject.size();
-    int n = query_lw.size();
+    const int m = subject.size();
+    const int n = query_lw.size();
 
     if ((m == 0) || n > m) {
         return false;
@@ -104,14 +104,14 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
     const auto &query = preparedQuery.query;
     const auto &query_lw = preparedQuery.query_lw;
 
-    int m = subject.size();
-    int n = query.size();
+    const int m = subject.size();
+    const int n = query.size();
 
     //----------------------------
     // Abbreviations sequence
 
-    auto acro = scoreAcronyms(subject, subject_lw, query, query_lw);
-    auto acro_score = acro.score;
+    const auto acro = scoreAcronyms(subject, subject_lw, query, query_lw);
+    const auto acro_score = acro.score;
 
     // Whole query is abbreviation ?
     // => use that as score
@@ -123,7 +123,7 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
     // Exact Match ?
     // => use that as score
 
-    auto pos = subject_lw.find(query_lw);
+    const auto pos = subject_lw.find(query_lw);
     if (pos != std::string::npos) {
         return scoreExactMatch(subject, subject_lw, query, query_lw, pos, n, m);
     }
@@ -137,9 +137,9 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
     // Init
     vector<Score> score_row(n, 0);
     vector<Score> csc_row(n, 0);
-    auto sz = scoreSize(n, m);
+    const auto sz = scoreSize(n, m);
 
-    auto miss_budget = ceil(miss_coeff * n) + 5;
+    const auto miss_budget = ceil(miss_coeff * n) + 5;
     auto miss_left = miss_budget;
     bool csc_should_rebuild = true;
 
@@ -191,14 +191,13 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
 
             //Compute a tentative match
             if (query_lw[j] == si_lw) {
-
-                auto start = isWordStart(i, subject, subject_lw);
+                const auto start = isWordStart(i, subject, subject_lw);
 
                 // Forward search for a sequence of consecutive char
                 csc_score = csc_diag > 0 ? csc_diag : scoreConsecutives(subject, subject_lw, query, query_lw, i, j, start);
 
                 // Determine bonus for matching A[i] with B[j]
-                Score align = score_diag + scoreCharacter(i, j, start, acro_score, csc_score);
+                const auto align = score_diag + scoreCharacter(i, j, start, acro_score, csc_score);
 
                 //Are we better using this match or taking the best gap (currently stored in score)?
                 if (align > score) {
@@ -227,7 +226,7 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
     }
 
     // get hightest score so far
-    auto score = score_row[n - 1];
+    const auto score = score_row[n - 1];
     return score * sz;
 }
 
@@ -344,12 +343,13 @@ Score scoreCharacter(int i, int j, bool start, Score acro_score, Score csc_score
 // Forward search for a sequence of consecutive character.
 //
 Score scoreConsecutives(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, int i, int j, bool startOfWord) {
-    auto m = subject.size();
-    auto n = query.size();
+    const auto m = subject.size();
+    const auto n = query.size();
 
     int mi = m - i;
     int nj = n - j;
     int k = mi < nj ? mi : nj;
+    const auto k = mi < nj ? mi : nj;
 
     int sameCase = 0;
     int sz = 0;//sz will be one more than the last qi is sj
@@ -400,7 +400,7 @@ Score scoreExactMatch(const CandidateString &subject, const CandidateString &sub
     // - Testing 2 instances is somewhere between testing only one and testing every instances.
 
     if (!start) {
-        auto pos2 = subject_lw.find(query_lw, pos + 1);
+        const auto pos2 = subject_lw.find(query_lw, pos + 1);
         if (pos2 != string::npos) {
             start = isWordStart(pos2, subject, subject_lw);
             if (start) {
@@ -436,8 +436,8 @@ Score scoreExactMatch(const CandidateString &subject, const CandidateString &sub
 AcronymResult emptyAcronymResult(static_cast<Score>(0), static_cast<float>(0.1), static_cast<int>(0));
 
 AcronymResult scoreAcronyms(CandidateString subject, CandidateString subject_lw, Element query, Element query_lw) {
-    auto m = subject.size();
-    auto n = query.size();
+    const auto m = subject.size();
+    const auto n = query.size();
 
     //a single char is not an acronym
     if (m <= 1 || n <= 1) {
@@ -499,7 +499,7 @@ AcronymResult scoreAcronyms(CandidateString subject, CandidateString subject_lw,
     // Acronym are scored as start-of-word
     // Unless the acronym is a 1:1 match with candidate then it is upgraded to full-word.
     bool fullWord = count == n ? isAcronymFullWord(subject, subject_lw, query, count) : false;
-    auto score = scorePattern(count, n, sameCase, true, fullWord);
+    const auto score = scorePattern(count, n, sameCase, true, fullWord);
 
     return AcronymResult(score, Score(sumPos) / count, count + sepCount);
 }
@@ -514,9 +514,9 @@ AcronymResult scoreAcronyms(CandidateString subject, CandidateString subject_lw,
 // This method check for (b) assuming (a) has been checked before entering.
 
 bool isAcronymFullWord(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, int nbAcronymInQuery) {
-    int m = subject.size();
-    int n = query.size();
-    int count = 0;
+    const int m = subject.size();
+    const int n = query.size();
+    auto count = 0;
 
     // Heuristic:
     // Assume one acronym every (at most) 12 character on average

@@ -8,11 +8,11 @@ Napi::Value Fuzzaldrin::Filter(const Napi::CallbackInfo &info) {
         Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
         return Napi::Boolean();
     }
-    std::string query = info[0].As<Napi::String>();
-    size_t maxResults = info[1].As<Napi::Number>().Uint32Value();
-    bool usePathScoring = info[2].As<Napi::Boolean>();
-    bool useExtensionBonus = info[3].As<Napi::Boolean>();
-    Options options(query, maxResults, usePathScoring, useExtensionBonus);
+    const std::string query = info[0].As<Napi::String>();
+    const size_t maxResults = info[1].As<Napi::Number>().Uint32Value();
+    const bool usePathScoring = info[2].As<Napi::Boolean>();
+    const bool useExtensionBonus = info[3].As<Napi::Boolean>();
+    const Options options(query, maxResults, usePathScoring, useExtensionBonus);
     const auto matches = filter(candidates_, query, options);
 
     for (uint32_t i = 0, len = matches.size(); i < len; i++) {
@@ -116,13 +116,13 @@ Napi::Number score(const Napi::CallbackInfo &info) {
     if (info.Length() != 4 || !info[0].IsString() || !info[1].IsString() || !info[2].IsBoolean() || !info[3].IsBoolean()) {
         Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
     }
-    std::string candidate = info[0].As<Napi::String>();
-    std::string query = info[1].As<Napi::String>();
-    bool usePathScoring = info[2].As<Napi::Boolean>();
-    bool useExtensionBonus = info[3].As<Napi::Boolean>();
-    Options options(query, 1, usePathScoring, useExtensionBonus);
-    auto scoreProvider = options.usePathScoring ? path_scorer_score : scorer_score;
-    auto score = scoreProvider(candidate, query, options);
+    const std::string candidate = info[0].As<Napi::String>();
+    const std::string query = info[1].As<Napi::String>();
+    const bool usePathScoring = info[2].As<Napi::Boolean>();
+    const bool useExtensionBonus = info[3].As<Napi::Boolean>();
+    const Options options(query, 1, usePathScoring, useExtensionBonus);
+    const auto scoreProvider = options.usePathScoring ? path_scorer_score : scorer_score;
+    const auto score = scoreProvider(candidate, query, options);
     return Napi::Number::New(info.Env(), score);
 }
 

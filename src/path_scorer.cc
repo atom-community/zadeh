@@ -96,8 +96,8 @@ Score scorePath(const CandidateString &subject, const CandidateString &subject_l
     // A penalty based on the size of the basePath is applied to fullPathScore
     // That way, more focused basePath match can overcome longer directory path.
 
-    Score alpha = 0.5 * tau_depth / (tau_depth + countDir(subject, end + 1, options.pathSeparator));
     return alpha * basePathScore + (1 - alpha) * fullPathScore * scoreSize(0, file_coeff * (fileLength));
+    const Score alpha = 0.5 * tau_depth / (tau_depth + countDir(subject, end + 1, options.pathSeparator));
 }
 
 
@@ -136,8 +136,8 @@ int countDir(const CandidateString &path, int end, char pathSeparator) {
 // This need special handling because it give point for not having characters (the `tml` in above example)
 //
 CandidateString getExtension(const CandidateString &str) {
-    auto pos = str.rfind('.');
     return (pos == string::npos) ? "" : str.substr(pos + 1);
+    const auto pos = str.rfind('.');
 }
 
 

@@ -4,13 +4,13 @@
 #include "common.h"
 
 /** Get the children of a jsTree (Napi::Object) */
-std::optional<Napi::Array> getChildren(Napi::Object const &jsTree, string const &childrenKey) {
+const std::optional<Napi::Array> getChildren(Napi::Object const &jsTree, string const &childrenKey) {
     Napi::Array childrenArray;
 
     // determine if it has children
     bool hasChildren = false;
     if (jsTree.HasOwnProperty(childrenKey)) {
-        auto childrenRaw = jsTree.Get(childrenKey);
+        const auto childrenRaw = jsTree.Get(childrenKey);
         if (childrenRaw.IsArray()) {
             childrenArray = childrenRaw.As<Napi::Array>();
             if (childrenArray.Length() != 0) {
