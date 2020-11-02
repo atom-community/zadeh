@@ -43,6 +43,7 @@
   "devDependencies": {
     "babel-preset-atomic": "^3.0.0",
     "cross-env": "^7.0.2",
+    "deep-equal": "^2.0.4",
     "fuzzaldrin-plus": "^0.6.0",
     "growl": ">=1.10.5",
     "jasmine-node": "^3.0.0",
