@@ -89,7 +89,7 @@ Napi::Value Fuzzaldrin::FilterTree(const Napi::CallbackInfo &info) {
 
     // create Tree and set candidates
     auto tree = Tree(jsTreeArray, dataKey, childrenKey);
-    Fuzzaldrin::SetCandidates(tree.entriesArray);
+    SetCandidates(tree.entriesArray);
 
     // create options
     Options options(query, maxResults, usePathScoring, useExtensionBonus);
