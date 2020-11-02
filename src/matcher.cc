@@ -89,7 +89,7 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
 
             score_row[j] = score;
             csc_row[j] = csc_score;
-            trace[++pos] = (score > 0) ? move : STOP;
+            trace[++pos] = score > 0 ? move : STOP;
         }
     }
 
