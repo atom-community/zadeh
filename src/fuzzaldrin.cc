@@ -98,7 +98,7 @@ Napi::Value Fuzzaldrin::FilterTree(const Napi::CallbackInfo &info) {
     // filter
     auto filteredCandidateObjects = Napi::Array::New(info.Env());// array of candidate objects (with their address in index and level)
     for (uint32_t i = 0, len = matches.size(); i < len; i++) {
-        auto entry = tree.entriesArray[matches[i]];//
+        auto &entry = tree.entriesArray[matches[i]];//
 
         // create {data, index, level}
         auto obj = Napi::Object::New(info.Env());
