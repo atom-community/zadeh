@@ -499,7 +499,7 @@ AcronymResult scoreAcronyms(CandidateString subject, CandidateString subject_lw,
     const auto fullWord = count == n ? isAcronymFullWord(subject, subject_lw, query, count) : false;
     const auto score = scorePattern(count, n, sameCase, true, fullWord);
 
-    return AcronymResult(score, Score(sumPos) / count, count + sepCount);
+    return AcronymResult(score, static_cast<Score>(sumPos) / count, count + sepCount);
 }
 
 

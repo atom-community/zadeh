@@ -178,5 +178,5 @@ Score getExtensionScore(const CandidateString &candidate, const CandidateString 
     }
 
     // cannot divide by zero because m is the largest extension length and we return if either is 0
-    return Score(matched) / m;
+    return static_cast<Score>(matched) / m;
 }
