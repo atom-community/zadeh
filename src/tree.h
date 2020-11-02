@@ -4,7 +4,7 @@
 #include "common.h"
 
 /** Get the children of a jsTree (Napi::Object) */
-const std::optional<Napi::Array> getChildren(Napi::Object const &jsTree, string const &childrenKey) {
+std::optional<Napi::Array> getChildren(Napi::Object const &jsTree, string const &childrenKey) {
     Napi::Array childrenArray;
 
     // determine if it has children
