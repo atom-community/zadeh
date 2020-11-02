@@ -3,10 +3,10 @@
 namespace {
 
 // Directory depth at which the full path influence is halved.
-size_t tau_depth = 20;
+const size_t tau_depth = 20;
 
 // Full path is also penalized for length of basename. This adjust a scale factor for that penalty.
-Score file_coeff = 2.5;
+const Score file_coeff = 2.5;
 
 };// namespace
 
@@ -56,7 +56,7 @@ Score scorePath(const CandidateString &subject, const CandidateString &subject_l
     // {preparedQuery, useExtensionBonus, pathSeparator} = options
 
     // Skip trailing slashes
-    int end = subject.size() - 1;
+    auto end = subject.size() - 1;
     while (subject[end] == options.pathSeparator) {
         end--;
     }
@@ -105,7 +105,7 @@ Score scorePath(const CandidateString &subject, const CandidateString &subject_l
 // Count number of folder in a path.
 // (consecutive slashes count as a single directory)
 //
-int countDir(const CandidateString &path, int end, char pathSeparator) {
+int countDir(const CandidateString &path, const size_t end, const char pathSeparator) {
     if (end < 1) {
         return 0;
     }
