@@ -57,7 +57,14 @@ Napi::Value Fuzzaldrin::SetCandidateTrees(const Napi::CallbackInfo& info) {
     auto const jsTreeArrayOrObject = info[0].As<Napi::Object>();
     string const dataKey = info[1].As<Napi::String>();
     string const childrenKey = info[2].As<Napi::String>();
-    auto tree = Tree(jsTreeArrayOrObject, dataKey, childrenKey);
+
+    if (jsTreeArrayOrObject.IsArray()) {
+        auto tree = Tree(jsTreeArrayOrObject.As<Napi::Array>(), dataKey, childrenKey);
+    }
+    else {
+        auto tree = Tree(jsTreeArrayOrObject.As<Napi::Object>(), dataKey, childrenKey);
+    }
+
     return Napi::Boolean();
 }
 

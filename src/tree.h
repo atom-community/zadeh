@@ -1,9 +1,10 @@
 #include <variant>
 
+template <typename T>
 struct Tree {
-	std::variant<Napi::Array, Napi::Object> jsTreeArrayOrObject;
+	T jsTreeArrayOrObject;
 	string dataKey;
 	string childrenKey;
 
-	Tree(Napi::Object const _jsTreeArrayOrObject, string const _dataKey, string const _childrenKey) {};
+	Tree(T const _jsTreeArrayOrObject, string const _dataKey, string const _childrenKey) {};
 };

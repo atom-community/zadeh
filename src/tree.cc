@@ -33,8 +33,9 @@ struct CandidateObject {
 		: data{ data }, level{ level }, index{ index } {};
 };
 
+template <typename T>
 struct Tree {
-	std::variant<Napi::Array, Napi::Object> jsTreeArrayOrObject;
+	T jsTreeArrayOrObject;
 	string dataKey;
 	string childrenKey;
 
@@ -65,17 +66,10 @@ struct Tree {
 	}
 
 	/** Parse a Tree object from JS */
-	Tree(Napi::Object const _jsTreeArrayOrObject, string const _dataKey, string const _childrenKey) {
+	Tree(T const _jsTreeArrayOrObject, string const _dataKey, string const _childrenKey) {
 		dataKey = _dataKey;
 		childrenKey = _childrenKey;
-		if (_jsTreeArrayOrObject.IsArray()) {
-			jsTreeArrayOrObject = _jsTreeArrayOrObject.As<Napi::Array>();
-			makeEntriesArray(std::get<Napi::Array>(jsTreeArrayOrObject), 0);
-		}
-		else {
-			// if the input is a single object skip looping
-			jsTreeArrayOrObject = _jsTreeArrayOrObject.As<Napi::Object>();
-			makeEntriesArray(std::get<Napi::Object>(jsTreeArrayOrObject), 0);
-		}
+		jsTreeArrayOrObject = _jsTreeArrayOrObject;
+		makeEntriesArray(jsTreeArrayOrObject, 0);
 	}
 };
