@@ -1,3 +1,4 @@
+#pragma once
 #include <napi.h>
 
 #include "fuzzaldrin.h"
@@ -47,6 +48,19 @@ Napi::Value Fuzzaldrin::SetCandidates(const Napi::CallbackInfo& info) {
   }
   return Napi::Boolean();
 }
+
+Napi::Value Fuzzaldrin::SetCandidateTrees(const Napi::CallbackInfo& info) {
+    if (info.Length() != 4 || !info[0].IsObject() || !info[1].IsString() || !info[2].IsString()) {
+        Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
+        return Napi::Boolean();
+    }
+    auto const jsTreeArrayOrObject = info[0].As<Napi::Object>();
+    string const dataKey = info[1].As<Napi::String>();
+    string const childrenKey = info[2].As<Napi::String>();
+    auto tree = Tree(jsTreeArrayOrObject, dataKey, childrenKey);
+    return Napi::Boolean();
+}
+
 
 Napi::Number score(const Napi::CallbackInfo& info) {
   if (info.Length() != 4 || !info[0].IsString() || !info[1].IsString() ||

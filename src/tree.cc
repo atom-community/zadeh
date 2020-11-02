@@ -1,3 +1,4 @@
+#pragma once
 #include <optional>
 #include <variant>
 #include "common.h"
@@ -44,7 +45,7 @@ struct Tree {
 	/** Recursive function that fills the entriesArray from the given jsTreeArray */
 	void makeEntriesArray(Napi::Array const &jsTreeArray, size_t const level) {
 		for (uint32_t iEntry = 0, len = jsTreeArray.Length(); iEntry < len; iEntry++) {
-			auto jsTree = jsTreeArray.Get(iEntry).As<Napi::Object>();
+			auto jsTree = jsTreeArray[iEntry].As<Napi::Object>();
 			makeEntriesArray(jsTree, level, iEntry);
 		}
 	}
@@ -64,27 +65,17 @@ struct Tree {
 	}
 
 	/** Parse a Tree object from JS */
-	Tree(Napi::CallbackInfo const &info) {
-		if (info.Length() != 4 || !info[0].IsObject() || !info[1].IsString() || !info[2].IsString()) {
-			Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
-			// default constructor
+	Tree(Napi::Object const _jsTreeArrayOrObject, string const _dataKey, string const _childrenKey) {
+		dataKey = _dataKey;
+		childrenKey = _childrenKey;
+		if (_jsTreeArrayOrObject.IsArray()) {
+			jsTreeArrayOrObject = _jsTreeArrayOrObject.As<Napi::Array>();
+			makeEntriesArray(std::get<Napi::Array>(jsTreeArrayOrObject), 0);
 		}
 		else {
-
-			dataKey = info[1].As<Napi::String>();
-			childrenKey = info[2].As<Napi::String>();
-
-			if (info[0].IsArray()) {
-				jsTreeArrayOrObject = info[0].As<Napi::Array>();
-				makeEntriesArray(std::get<Napi::Array>(jsTreeArrayOrObject), 0);
-			}
-			else {
-				// if the input is a single object skip looping
-				jsTreeArrayOrObject = info[0].As<Napi::Object>();
-				makeEntriesArray(std::get<Napi::Object>(jsTreeArrayOrObject), 0);
-			}
-
-
+			// if the input is a single object skip looping
+			jsTreeArrayOrObject = _jsTreeArrayOrObject.As<Napi::Object>();
+			makeEntriesArray(std::get<Napi::Object>(jsTreeArrayOrObject), 0);
 		}
 	}
 };
