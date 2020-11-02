@@ -1,3 +1,4 @@
+#pragma once
 #ifndef FUZZALDRIN_H
 #define FUZZALDRIN_H
 
