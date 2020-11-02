@@ -67,24 +67,27 @@ void Fuzzaldrin::SetCandidates(vector<CandidateObject> const &candidates) {
     }
 }
 
+/** (tree: Array<object>, query: string, dataKey: string, childrenKey: string, options: Options) */
 Napi::Array Fuzzaldrin::FilterTree(const Napi::CallbackInfo& info) {
 
     // parse arguments
-    if (info.Length() != 5 || !info[0].IsArray()
-        || !info[1].IsString() || !info[2].IsString() || !info[3].IsString() 
+    if (info.Length() != 7 
+        || !info[0].IsArray()
+        || !info[1].IsString() || !info[2].IsString() || !info[3].IsString()
         || !info[4].IsNumber() || !info[5].IsBoolean() || !info[6].IsBoolean()
         ) {
         Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
         return Napi::Array::New(info.Env());
     }
     auto const jsTreeArray = info[0].As<Napi::Array>();
-    string const dataKey = info[1].As<Napi::String>();
-    string const childrenKey = info[2].As<Napi::String>();
+    std::string query = info[1].As<Napi::String>();
 
-    std::string query = info[0].As<Napi::String>();
-    size_t maxResults = info[1].As<Napi::Number>().Uint32Value();
-    bool usePathScoring = info[2].As<Napi::Boolean>();
-    bool useExtensionBonus = info[3].As<Napi::Boolean>();
+    string const dataKey = info[2].As<Napi::String>();
+    string const childrenKey = info[3].As<Napi::String>();
+
+    size_t maxResults = info[4].As<Napi::Number>().Uint32Value();
+    bool usePathScoring = info[5].As<Napi::Boolean>();
+    bool useExtensionBonus = info[6].As<Napi::Boolean>();
 
     // create Tree and set candidates
     auto tree = Tree(jsTreeArray, dataKey, childrenKey);
