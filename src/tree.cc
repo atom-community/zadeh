@@ -1,4 +1,3 @@
-#pragma once
 #include <optional>
 #include <variant>
 #include "common.h"

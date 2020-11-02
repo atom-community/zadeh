@@ -1,4 +1,3 @@
-#pragma once
 #include <napi.h>
 
 #include "fuzzaldrin.h"
