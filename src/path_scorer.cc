@@ -114,16 +114,12 @@ int countDir(const CandidateString &path, int end, char pathSeparator) {
     auto i = -1;
 
     //skip slash at the start so `foo/bar` and `/foo/bar` have the same depth.
-    while (++i < end && path[i] == pathSeparator) {
-        continue;
-    }
+    while (++i < end && path[i] == pathSeparator) { }
 
     while (++i < end) {
         if (path[i] == pathSeparator) {
             count++;//record first slash, but then skip consecutive ones
-            while (++i < end && path[i] == pathSeparator) {
-                continue;
-            }
+            while (++i < end && path[i] == pathSeparator) { }
         }
     }
 
