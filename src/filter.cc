@@ -50,7 +50,7 @@ void thread_worker_filter(const std::vector<CandidateString> &candidates,
     filter_internal(candidates, start_index, query, options, max_results, results);
 }
 
-const std::vector<CandidateIndex> sort_priority_queue(CandidateScorePriorityQueue &candidates) {
+const std::vector<CandidateIndex> sort_priority_queue(CandidateScorePriorityQueue &&candidates) {
     vector<CandidateScore> sorted;
     std::vector<CandidateIndex> ret;
     sorted.reserve(candidates.size());
@@ -96,5 +96,5 @@ const std::vector<CandidateIndex> filter(const vector<std::vector<CandidateStrin
             }
         }
     }
-    return sort_priority_queue(top_k);
+    return sort_priority_queue(move(top_k));
 }
