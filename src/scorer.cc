@@ -254,12 +254,13 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
 // Is the character at the start of a word, end of the word, or a separator ?
 // Fortunately those small function inline well.
 //
-bool isWordStart(const size_t pos, const CandidateString &subject, const CandidateString &subject_lw) {
-    if (pos == 0) {
+bool isWordStart(const size_t pos, const CandidateString &subject, const CandidateString &subject_lw) noexcept {
+    if (pos == 0u) {
         return true;// match is FIRST char ( place a virtual token separator before first char of string)
     }
+    // assert(pos > 0u);
     const auto curr_s = subject[pos];
-    const auto prev_s = subject[pos - 1];
+    const auto prev_s = subject[pos - 1];//inbounds
     return isSeparator(prev_s) ||// match FOLLOW a separator
            ((curr_s != subject_lw[pos]) && (prev_s == subject_lw[pos - 1]));// match is Capital in camelCase (preceded by lowercase)
 }
