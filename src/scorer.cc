@@ -435,7 +435,7 @@ Score scoreExactMatch(const CandidateString &subject, const CandidateString &sub
 
 AcronymResult emptyAcronymResult(static_cast<Score>(0), static_cast<float>(0.1), static_cast<int>(0));
 
-AcronymResult scoreAcronyms(const CandidateString subject, const CandidateString subject_lw, const Element query, const Element query_lw) {
+AcronymResult scoreAcronyms(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw) {
     const auto m = subject.size();
     const auto n = query.size();
 
