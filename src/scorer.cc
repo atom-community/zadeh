@@ -34,7 +34,7 @@ extern bool isWordEnd(const int pos, const CandidateString &subject, const Candi
 extern bool isSeparator(const char c);
 extern Score scoreExact(const size_t n, const size_t m, const size_t quality, const Score pos);
 
-extern Score scorePattern(const int count, const int len, const int sameCase, const bool start, const bool end) noexcept;
+extern Score scorePattern(const size_t count, const size_t len, const int sameCase, const bool start, const bool end) noexcept;
 extern Score scoreExactMatch(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, int pos, const size_t n, const size_t m);
 
 extern bool isAcronymFullWord(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const unsigned nbAcronymInQuery);
@@ -296,7 +296,7 @@ Score scoreExact(const size_t n, const size_t m, const size_t quality, const Sco
 // and structural quality of the pattern on the overall string (word boundary)
 //
 
-Score scorePattern(const int count, const int len, const int sameCase, const bool start, const bool end) noexcept {
+Score scorePattern(const size_t count, const size_t len, const int sameCase, const bool start, const bool end) noexcept {
     auto sz = count;
 
     auto bonus = 6;// to ensure consecutive length dominate score, this should be as large other bonus combined
