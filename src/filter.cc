@@ -7,11 +7,12 @@
 namespace {
 
 struct CandidateScore {
+    // TODO non const
     Score score;
     CandidateIndex index;
-    CandidateScore(Score score, size_t index) : score(score), index(index) {}
+    CandidateScore(const Score score_, const size_t index_) noexcept : score(score_), index(index_) {}
 
-    bool operator<(const CandidateScore &other) const {
+    bool operator<(const CandidateScore &other) const noexcept {
         return score > other.score;
     }
 };
