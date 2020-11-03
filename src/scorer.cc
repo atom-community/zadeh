@@ -31,7 +31,7 @@ constexpr float miss_coeff = 0.75;// Max number missed consecutive hit = ceil(mi
 }// namespace
 
 extern bool isWordEnd(const size_t pos, const CandidateString &subject, const CandidateString &subject_lw, const size_t len);
-extern bool isSeparator(const char c);
+extern bool isSeparator(const char c) noexcept;
 extern Score scoreExact(const size_t n, const size_t m, const size_t quality, const Score pos);
 
 extern Score scorePattern(const size_t count, const size_t len, const size_t sameCase, const bool start, const bool end) noexcept;
@@ -274,7 +274,7 @@ bool isWordEnd(const size_t pos, const CandidateString &subject, const Candidate
            ((curr_s == subject_lw[pos]) && (next_s != subject_lw[pos + 1]));// match is lowercase, followed by uppercase
 }
 
-bool isSeparator(const char c) {
+bool isSeparator(const char c) noexcept {
     return c == ' ' || c == '.' || c == '-' || c == '_' || c == '/' || c == '\\';
 }
 
