@@ -281,7 +281,7 @@ bool isSeparator(const char c) noexcept {
 //
 // Scoring helper
 //
-Score scorePosition(const Score pos) {
+Score scorePosition(const Score pos) noexcept {
     if (pos < pos_bonus) {
         const auto sc = pos_bonus - pos;
         return 100 + sc * sc;
