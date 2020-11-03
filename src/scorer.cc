@@ -254,7 +254,7 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
 // Is the character at the start of a word, end of the word, or a separator ?
 // Fortunately those small function inline well.
 //
-bool isWordStart(const int pos, const CandidateString &subject, const CandidateString &subject_lw) {
+bool isWordStart(const size_t pos, const CandidateString &subject, const CandidateString &subject_lw) {
     if (pos == 0) {
         return true;// match is FIRST char ( place a virtual token separator before first char of string)
     }
