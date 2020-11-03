@@ -1,6 +1,5 @@
 #pragma once
 #include <optional>
-#include <variant>
 #include "common.h"
 
 /** Get the children of a jsTree (Napi::Object) */
