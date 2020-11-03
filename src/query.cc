@@ -23,12 +23,14 @@ Element coreChars(Element query) {
 
 std::set<char> getCharCodes(const Element &str) {
     std::set<char> charCodes;
-    const int len = str.size();
-    auto i = -1;
+    const auto len = str.size();
+    auto i = 0u;
 
     // create map
-    while (++i < len) {
-        charCodes.insert(str[i]);
+    while (i < len) {
+        // assert(i>=0); // fuzz: if len==0, does not enter while and i==0
+        charCodes.insert(str[i]);//inbounds
+        ++i;
     }
     return charCodes;
 }
