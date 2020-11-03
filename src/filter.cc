@@ -3,7 +3,6 @@
 #include <functional>
 #include <thread>
 #include <limits>
-#include <cassert>
 
 namespace {
 
