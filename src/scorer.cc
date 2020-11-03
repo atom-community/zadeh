@@ -451,7 +451,7 @@ AcronymResult scoreAcronyms(const CandidateString &subject, const CandidateStrin
         return emptyAcronymResult;
     }
 
-    size_t count = 0;
+    auto count = 0u;
     auto sepCount = 0;
     auto sumPos = 0;
     auto sameCase = 0;
@@ -459,8 +459,8 @@ AcronymResult scoreAcronyms(const CandidateString &subject, const CandidateStrin
     auto i = string::npos;// incrementing will become 0
 
     //foreach char of query
-    for (size_t j = 0; j < n; j++) {
-        const auto qj_lw = query_lw[j];
+    for (auto j = 0u; j < n; j++) {
+        const auto qj_lw = query_lw[j];// TODO bounds
 
         // Separator will not score point but will continue the prefix when present.
         // Test that the separator is in the candidate and advance cursor to that position.
@@ -480,7 +480,7 @@ AcronymResult scoreAcronyms(const CandidateString &subject, const CandidateStrin
 
         while (++i < m) {
             if (qj_lw == subject_lw[i] && isWordStart(i, subject, subject_lw)) {
-                if (query[j] == subject[i]) {
+                if (query[j] == subject[i]) {// TODO bounds
                     sameCase++;
                 }
                 sumPos += i;
