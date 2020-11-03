@@ -3,10 +3,10 @@
 namespace {
 
 // Directory depth at which the full path influence is halved.
-const size_t tau_depth = 20;
+constexpr size_t tau_depth = 20;
 
 // Full path is also penalized for length of basename. This adjust a scale factor for that penalty.
-const Score file_coeff = 2.5;
+constexpr Score file_coeff = 2.5;
 
 };// namespace
 
