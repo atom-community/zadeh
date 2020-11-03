@@ -15,7 +15,7 @@ PreparedQuery::PreparedQuery(const Element &q, const char pathSeparator) : query
 
 
 Element coreChars(Element query) {
-    for (auto ch : " _-:/\\") {
+    for (const auto ch : " _-:/\\") {
         query.erase(std::remove(query.begin(), query.end(), ch), query.end());
     }
     return query;
