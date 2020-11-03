@@ -105,21 +105,25 @@ Score scorePath(const CandidateString &subject, const CandidateString &subject_l
 // Count number of folder in a path.
 // (consecutive slashes count as a single directory)
 //
-int countDir(const CandidateString &path, const size_t end, const char pathSeparator) {
-    if (end < 1) {
+int countDir(const CandidateString &path, const size_t end, const char pathSeparator) noexcept {
+    if (end < 1u) {
         return 0;
     }
 
-    auto count = 0;
-    auto i = -1;
+    auto count = 0u;
+    auto i = 0u;
 
     //skip slash at the start so `foo/bar` and `/foo/bar` have the same depth.
-    while (++i < end && path[i] == pathSeparator) {}
+    while ((i < end) && (path[i] == pathSeparator)) {//inbounds
+        // assert(i>=0); fuzz: if end==0, it does not enter while and i==0
+        ++i;
+    }
 
     while (++i < end) {
-        if (path[i] == pathSeparator) {
+        // assert(i>=0); fuzz: if end==0, it does not enter while and i==0
+        if (path[i] == pathSeparator) {//inbounds
             count++;//record first slash, but then skip consecutive ones
-            while (++i < end && path[i] == pathSeparator) {}
+            while ((++i < end) && (path[i] == pathSeparator)) {}
         }
     }
 

@@ -92,7 +92,7 @@ extern Score scorer_score(const CandidateString &string, const Element &query, c
 extern Score scoreSize(const Score n, const Score m);
 
 extern Score path_scorer_score(const CandidateString &string, const Element &query, const Options &options);
-extern int countDir(const CandidateString &path, const size_t end, const char pathSeparator);
+extern int countDir(const CandidateString &path, const size_t end, const char pathSeparator) noexcept;
 extern CandidateString getExtension(const CandidateString &str);
 
 extern const std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &candidates, const Element &query, const Options &options);
