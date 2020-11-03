@@ -426,12 +426,14 @@ Score scoreExactMatch(const CandidateString &subject, const CandidateString &sub
     }
 
     //Exact case bonus.
-    auto i = -1;
+    auto i = 0u;
     auto sameCase = 0u;
-    while (++i < n) {
+    while (i < n) {
+        // assert(i>=0); // fuzz: if n==0, does not enter while and i==0u
         if (query[i] == subject[pos + i]) {
             sameCase++;
         }
+        ++i;
     }
 
     const auto end = static_cast<int>(isWordEnd(pos + n - 1, subject, subject_lw, m));
