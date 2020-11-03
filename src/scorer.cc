@@ -68,27 +68,34 @@ bool isMatch(const CandidateString &subject, const Element &query_lw, const Elem
         return false;
     }
 
-    auto i = -1;
-    auto j = -1;
+    auto i = 0u;
+    auto j = 0u;
 
     // foreach char of query
-    while (++j < n) {
-        const auto qj_lw = query_lw[j];
-        const auto qj_up = query_up[j];
+    while (j < n) {
+        // assert(j >= 0); // fuzz: if n==0, j becomes 0
+        const auto qj_lw = query_lw[j];// inbounds
+        const auto qj_up = query_up[j];// TODO bounds
 
         // continue walking the subject from where we have left with previous query char
         // until we have found a character that is either lowercase or uppercase query.
-        while (++i < m) {
-            const auto si = subject[i];
+        while (i < m) {
+            // assert(j >= 0); // fuzz: if m==0, i becomes 0
+            const auto si = subject[i];// inbounds
             if (si == qj_lw || si == qj_up) {
                 break;
             }
+
+            ++i;
         }
 
         // if we passed the last char, query is not in subject
         if (i == m) {
+            //assert(i >= 0); // fuzz: if m==0, i is 0
             return false;
         }
+
+        ++j;
     }
 
     // Found every char of query in subject in proper order, match is positive
