@@ -1,4 +1,6 @@
-#pragma once
+#ifndef fuzzaldrin_tree_h__
+#define fuzzaldrin_tree_h__
+
 #include <optional>
 #include "common.h"
 
@@ -70,3 +72,5 @@ struct Tree {
         makeEntriesArray(jsTreeArrayOrObject_, 0);
     }
 };
+
+#endif// tree_h__

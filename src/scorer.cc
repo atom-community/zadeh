@@ -31,7 +31,7 @@ constexpr float miss_coeff = 0.75;// Max number missed consecutive hit = ceil(mi
 }// namespace
 
 extern bool isWordEnd(const size_t pos, const CandidateString &subject, const CandidateString &subject_lw, const size_t len);
-extern bool isSeparator(const char c);
+extern bool isSeparator(const char c) noexcept;
 extern Score scoreExact(const size_t n, const size_t m, const size_t quality, const Score pos);
 
 extern Score scorePattern(const size_t count, const size_t len, const size_t sameCase, const bool start, const bool end) noexcept;
@@ -66,6 +66,9 @@ bool isMatch(const CandidateString &subject, const Element &query_lw, const Elem
 
     if (m == 0 || n > m) {
         return false;
+    }
+    if (query_up.empty()) {// TODO will query_up be ever empty?
+        // TODO don't know what to do. return true; seems to pass the tests
     }
 
     auto i = 0u;
@@ -254,12 +257,13 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
 // Is the character at the start of a word, end of the word, or a separator ?
 // Fortunately those small function inline well.
 //
-bool isWordStart(const size_t pos, const CandidateString &subject, const CandidateString &subject_lw) {
-    if (pos == 0) {
+bool isWordStart(const size_t pos, const CandidateString &subject, const CandidateString &subject_lw) noexcept {
+    if (pos == 0u) {
         return true;// match is FIRST char ( place a virtual token separator before first char of string)
     }
+    // assert(pos > 0u);
     const auto curr_s = subject[pos];
-    const auto prev_s = subject[pos - 1];
+    const auto prev_s = subject[pos - 1];//inbounds
     return isSeparator(prev_s) ||// match FOLLOW a separator
            ((curr_s != subject_lw[pos]) && (prev_s == subject_lw[pos - 1]));// match is Capital in camelCase (preceded by lowercase)
 }
@@ -274,14 +278,14 @@ bool isWordEnd(const size_t pos, const CandidateString &subject, const Candidate
            ((curr_s == subject_lw[pos]) && (next_s != subject_lw[pos + 1]));// match is lowercase, followed by uppercase
 }
 
-bool isSeparator(const char c) {
+bool isSeparator(const char c) noexcept {
     return c == ' ' || c == '.' || c == '-' || c == '_' || c == '/' || c == '\\';
 }
 
 //
 // Scoring helper
 //
-Score scorePosition(const Score pos) {
+Score scorePosition(const Score pos) noexcept {
     if (pos < pos_bonus) {
         const auto sc = pos_bonus - pos;
         return 100 + sc * sc;
@@ -290,6 +294,7 @@ Score scorePosition(const Score pos) {
 }
 
 Score scoreSize(const Score n, const Score m) {
+    // TODO will the denominator will be ever 0?
     // Size penalty, use the difference of size (m-n)
     return tau_size / (tau_size + fabs(m - n));
 }

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef fuzzaldrin_common_h__
+#define fuzzaldrin_common_h__
+
 #include <vector>
 #include <set>
 #include <string>
@@ -81,7 +83,7 @@ extern Element ToLower(const Element &s);
 extern Element ToUpper(const Element &s);
 
 extern bool isMatch(const CandidateString &subject, const Element &query_lw, const Element &query_up);
-extern bool isWordStart(const size_t pos, const CandidateString &subject, const CandidateString &subject_lw);
+extern bool isWordStart(const size_t pos, const CandidateString &subject, const CandidateString &subject_lw) noexcept;
 extern Score scoreCharacter(const int i, const int j, const bool start, const Score acro_score, const Score csc_score);
 extern Score scoreConsecutives(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, unsigned i, unsigned j, const bool startOfWord);
 extern AcronymResult scoreAcronyms(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw);
@@ -92,10 +94,12 @@ extern Score scorer_score(const CandidateString &string, const Element &query, c
 extern Score scoreSize(const Score n, const Score m);
 
 extern Score path_scorer_score(const CandidateString &string, const Element &query, const Options &options);
-extern int countDir(const CandidateString &path, const size_t end, const char pathSeparator);
+extern int countDir(const CandidateString &path, const size_t end, const char pathSeparator) noexcept;
 extern CandidateString getExtension(const CandidateString &str);
 
 extern const std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &candidates, const Element &query, const Options &options);
 
 extern std::vector<size_t> matcher_match(const CandidateString &string, const Element &query, const Options &options);
 extern void get_wrap(const CandidateString &string, const Element &query, const Options &options, std::string *out);
+
+#endif// fuzzaldrin_common_h__

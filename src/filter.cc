@@ -3,16 +3,16 @@
 #include <functional>
 #include <thread>
 #include <limits>
-#include <cassert>
 
 namespace {
 
 struct CandidateScore {
+    // TODO non const
     Score score;
     CandidateIndex index;
-    CandidateScore(Score score, size_t index) : score(score), index(index) {}
+    CandidateScore(const Score score_, const size_t index_) noexcept : score(score_), index(index_) {}
 
-    bool operator<(const CandidateScore &other) const {
+    bool operator<(const CandidateScore &other) const noexcept {
         return score > other.score;
     }
 };
@@ -50,7 +50,7 @@ void thread_worker_filter(const std::vector<CandidateString> &candidates,
     filter_internal(candidates, start_index, query, options, max_results, results);
 }
 
-const std::vector<CandidateIndex> sort_priority_queue(CandidateScorePriorityQueue &candidates) {
+const std::vector<CandidateIndex> sort_priority_queue(CandidateScorePriorityQueue &&candidates) {
     vector<CandidateScore> sorted;
     std::vector<CandidateIndex> ret;
     sorted.reserve(candidates.size());
@@ -96,5 +96,5 @@ const std::vector<CandidateIndex> filter(const vector<std::vector<CandidateStrin
             }
         }
     }
-    return sort_priority_queue(top_k);
+    return sort_priority_queue(move(top_k));
 }
