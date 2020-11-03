@@ -35,7 +35,7 @@ extern bool isSeparator(const char c);
 extern Score scoreExact(const size_t n, const size_t m, const size_t quality, const Score pos);
 
 extern Score scorePattern(const int count, const int len, const int sameCase, const bool start, const bool end) noexcept;
-extern Score scoreExactMatch(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, int pos, const int n, const int m);
+extern Score scoreExactMatch(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, int pos, const size_t n, const int m);
 
 extern bool isAcronymFullWord(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const unsigned nbAcronymInQuery);
 
@@ -359,7 +359,7 @@ Score scoreConsecutives(const CandidateString &subject, const CandidateString &s
     const auto k = mi < nj ? mi : nj;
 
     auto sameCase = 0;
-    auto sz = 0;//sz will be one more than the last qi is sj
+    auto sz = 0u;//sz will be one more than the last qi is sj
 
     // query_lw[i] is subject_lw[j] has been checked before entering now do case sensitive check.
     if (query[j] == subject[i]) {
@@ -395,7 +395,7 @@ Score scoreConsecutives(const CandidateString &subject, const CandidateString &s
 //
 // Compute the score of an exact match at position pos.
 //
-Score scoreExactMatch(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, int pos, const int n, const int m) {
+Score scoreExactMatch(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, int pos, const size_t n, const int m) {
 
     // Test for word start
     auto start = isWordStart(pos, subject, subject_lw);
