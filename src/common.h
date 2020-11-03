@@ -12,7 +12,7 @@
 
 using namespace std;
 
-static const size_t kMaxThreads = 16;
+constexpr size_t kMaxThreads = 16;
 
 #ifdef ENABLE_DEBUG
 // Safe string class that logs error when index is accessed outside the string.

@@ -11,13 +11,13 @@ namespace {
 
 // Base point for a single character match
 // This balance making patterns VS position and size penalty.
-const int wm = 150;
+constexpr int wm = 150;
 
 // Fading function
 // The character from 0..pos_bonus receive a greater bonus for being at the start of string.
-const Score pos_bonus = 20;
+constexpr Score pos_bonus = 20;
 // Full path length at which the whole match score is halved.
-const Score tau_size = 150;
+constexpr Score tau_size = 150;
 
 // Miss count
 // When subject[i] is query[j] we register a hit.
@@ -26,7 +26,7 @@ const Score tau_size = 150;
 //
 // If a spec with frequent repetition fail, increase this.
 // This has a direct influence on worst case scenario benchmark.
-const float miss_coeff = 0.75;// Max number missed consecutive hit = ceil(miss_coeff*query.length) + 5
+constexpr float miss_coeff = 0.75;// Max number missed consecutive hit = ceil(miss_coeff*query.length) + 5
 
 }// namespace
 
