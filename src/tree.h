@@ -17,14 +17,15 @@ std::optional<Napi::Array> getChildren(const Napi::Object &jsTree, const string 
             }
         }
     }
-    if (hasChildren)
+    if (hasChildren) {
         return childrenArray;
+    }
     return {};
 }
 
 
 struct CandidateObject {
-    const CandidateString data;
+    const CandidateString data;// TODO copy
     const size_t level = 0;
     const size_t index = 0;
 
