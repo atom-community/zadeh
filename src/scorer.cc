@@ -37,7 +37,7 @@ extern Score scoreExact(const size_t n, const size_t m, const size_t quality, co
 extern Score scorePattern(const int count, const int len, const int sameCase, const bool start, const bool end) noexcept;
 extern Score scoreExactMatch(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, int pos, const int n, const int m);
 
-extern bool isAcronymFullWord(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const int nbAcronymInQuery);
+extern bool isAcronymFullWord(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const unsigned nbAcronymInQuery);
 
 
 //
@@ -73,14 +73,14 @@ bool isMatch(const CandidateString &subject, const Element &query_lw, const Elem
 
     // foreach char of query
     while (j < n) {
-        // assert(j >= 0); // fuzz: if n==0, j becomes 0
+        // assert(j >= 0); // fuzz: if n==0, does not enter while and j==0
         const auto qj_lw = query_lw[j];// inbounds
         const auto qj_up = query_up[j];// TODO bounds
 
         // continue walking the subject from where we have left with previous query char
         // until we have found a character that is either lowercase or uppercase query.
         while (i < m) {
-            // assert(j >= 0); // fuzz: if m==0, i becomes 0
+            // assert(j >= 0); // fuzz: if m==0, does not enter while and i==0
             const auto si = subject[i];// inbounds
             if (si == qj_lw || si == qj_up) {
                 break;
@@ -519,27 +519,30 @@ AcronymResult scoreAcronyms(const CandidateString &subject, const CandidateStrin
 //
 // This method check for (b) assuming (a) has been checked before entering.
 
-bool isAcronymFullWord(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const int nbAcronymInQuery) {
-    const int m = subject.size();
-    const int n = query.size();
-    auto count = 0;
+bool isAcronymFullWord(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const unsigned nbAcronymInQuery) {
+    const auto m = subject.size();
+    const auto n = query.size();
+    auto count = 0u;
 
     // Heuristic:
     // Assume one acronym every (at most) 12 character on average
     // This filter out long paths, but then they can match on the filename.
-    if (m > 12 * n) {
+    if (m > 12u * n) {
         return false;
     }
 
-    auto i = -1;
-    while (++i < m) {
+    auto i = 0u;
+    while (i < m) {
+        // assert(i>=0); // fuzz: if m==0, i==0
         //For each char of subject
         //Test if we have an acronym, if so increase acronym count.
         //If the acronym count is more than nbAcronymInQuery (number of non separator char in query)
         //Then we do not have 1:1 relationship.
-        if (isWordStart(i, subject, subject_lw) && ++count > nbAcronymInQuery) {
+        if (isWordStart(i, subject, subject_lw) && (++count > nbAcronymInQuery)) {
             return false;
         }
+
+        ++i;
     }
 
     return true;
