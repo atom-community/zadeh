@@ -34,13 +34,11 @@ struct CandidateObject {
 
 template<typename T>
 struct Tree {
-    T jsTreeArrayOrObject;
-    string dataKey;
-    string childrenKey;
-
-
+    const string &dataKey;
+    const string &childrenKey;
     /** an array of the CandidateObject which includes the data and its address (index, level) in the tree for each */
     vector<CandidateObject> entriesArray;
+
 
     /** Recursive function that fills the entriesArray from the given jsTreeArray */
     void makeEntriesArray(const Napi::Array &jsTreeArray, const size_t level) {
@@ -65,10 +63,9 @@ struct Tree {
     }
 
     /** create a Tree object and make an entries array */
-    Tree(T const _jsTreeArrayOrObject, string const _dataKey, string const _childrenKey) {
-        dataKey = _dataKey;
-        childrenKey = _childrenKey;
-        jsTreeArrayOrObject = _jsTreeArrayOrObject;
-        makeEntriesArray(jsTreeArrayOrObject, 0);
+    Tree(const T &jsTreeArrayOrObject_, const string &dataKey_, const string &childrenKey_)
+      : dataKey{ dataKey_ },
+        childrenKey{ childrenKey_ } {
+        makeEntriesArray(jsTreeArrayOrObject_, 0);
     }
 };
