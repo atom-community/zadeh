@@ -4,7 +4,7 @@
 #include "common.h"
 
 /** Get the children of a jsTree (Napi::Object) */
-std::optional<Napi::Array> getChildren(Napi::Object const &jsTree, string const &childrenKey) {
+std::optional<Napi::Array> getChildren(const Napi::Object &jsTree, const string &childrenKey) {
     Napi::Array childrenArray;
 
     // determine if it has children
@@ -44,7 +44,7 @@ struct Tree {
     vector<CandidateObject> entriesArray;
 
     /** Recursive function that fills the entriesArray from the given jsTreeArray */
-    void makeEntriesArray(Napi::Array const &jsTreeArray, size_t const level) {
+    void makeEntriesArray(const Napi::Array &jsTreeArray, const size_t level) {
         for (uint32_t iEntry = 0, len = jsTreeArray.Length(); iEntry < len; iEntry++) {
             auto jsTree = jsTreeArray[iEntry].As<Napi::Object>();
             makeEntriesArray(jsTree, level, iEntry);
@@ -52,7 +52,7 @@ struct Tree {
     }
 
     /** 1st argument is a single object */
-    void makeEntriesArray(Napi::Object const &jsTree, size_t const level, int32_t const iEntry = -1) {
+    void makeEntriesArray(const Napi::Object &jsTree, const size_t level, const int32_t iEntry = -1) {
         // get the current data
         const auto data = jsTree.Get(dataKey).ToString().Utf8Value();
         entriesArray.push_back(CandidateObject(data, level, iEntry));
