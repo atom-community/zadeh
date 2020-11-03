@@ -24,12 +24,12 @@ std::optional<Napi::Array> getChildren(const Napi::Object &jsTree, const string 
 
 
 struct CandidateObject {
-    CandidateString data;
+    const CandidateString data;
     const size_t level = 0;
-    const int32_t index = -1;
+    const size_t index = 0;
 
-    CandidateObject(CandidateString const data, size_t const level, int32_t const index)
-      : data{ data }, level{ level }, index{ index } {};
+    CandidateObject(const CandidateString data_, const size_t level_, const size_t index_) noexcept
+      : data{ data_ }, level{ level_ }, index{ index_ } {};
 };
 
 template<typename T>
@@ -49,7 +49,7 @@ struct Tree {
     }
 
     /** 1st argument is a single object */
-    void makeEntriesArray(const Napi::Object &jsTree, const size_t level, const int32_t iEntry = -1) {
+    void makeEntriesArray(const Napi::Object &jsTree, const size_t level, const size_t iEntry = -1) {
         // get the current data
         const auto &data = jsTree.Get(dataKey).ToString().Utf8Value();
         entriesArray.emplace_back(CandidateObject(data, level, iEntry));
