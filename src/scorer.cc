@@ -30,7 +30,7 @@ constexpr float miss_coeff = 0.75;// Max number missed consecutive hit = ceil(mi
 
 }// namespace
 
-extern bool isWordEnd(const int pos, const CandidateString &subject, const CandidateString &subject_lw, const int len);
+extern bool isWordEnd(const size_t pos, const CandidateString &subject, const CandidateString &subject_lw, const size_t len);
 extern bool isSeparator(const char c);
 extern Score scoreExact(const size_t n, const size_t m, const size_t quality, const Score pos);
 
@@ -264,8 +264,8 @@ bool isWordStart(const size_t pos, const CandidateString &subject, const Candida
            ((curr_s != subject_lw[pos]) && (prev_s == subject_lw[pos - 1]));// match is Capital in camelCase (preceded by lowercase)
 }
 
-bool isWordEnd(const int pos, const CandidateString &subject, const CandidateString &subject_lw, const int len) {
-    if (pos == len - 1) {
+bool isWordEnd(const size_t pos, const CandidateString &subject, const CandidateString &subject_lw, const size_t len) {
+    if (pos == len - 1u) {
         return true;// last char of string
     }
     const auto curr_s = subject[pos];
@@ -436,7 +436,7 @@ Score scoreExactMatch(const CandidateString &subject, const CandidateString &sub
         ++i;
     }
 
-    const auto end = static_cast<int>(isWordEnd(pos + n - 1, subject, subject_lw, m));
+    const auto end = static_cast<int>(isWordEnd(pos + n - 1u, subject, subject_lw, m));
 
     Score baseNameStart = 1.0;
     if (start && pos > 0 && (subject[pos - 1] == '/' || subject[pos - 1] == '\\')) {
