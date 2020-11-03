@@ -25,8 +25,8 @@ std::optional<Napi::Array> getChildren(const Napi::Object &jsTree, const string 
 
 struct CandidateObject {
     CandidateString data;
-    size_t level = 0;
-    int32_t index = -1;
+    const size_t level = 0;
+    const int32_t index = -1;
 
     CandidateObject(CandidateString const data, size_t const level, int32_t const index)
       : data{ data }, level{ level }, index{ index } {};
