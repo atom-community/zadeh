@@ -80,7 +80,7 @@ bool isMatch(const CandidateString &subject, const Element &query_lw, const Elem
         // continue walking the subject from where we have left with previous query char
         // until we have found a character that is either lowercase or uppercase query.
         while (i < m) {
-            // assert(j >= 0); // fuzz: if m==0, does not enter while and i==0
+            // assert(i >= 0); // fuzz: if m==0, does not enter while and i==0
             const auto si = subject[i];// inbounds
             if (si == qj_lw || si == qj_up) {
                 break;
@@ -544,7 +544,7 @@ bool isAcronymFullWord(const CandidateString &subject, const CandidateString &su
 
     auto i = 0u;
     while (i < m) {
-        // assert(i>=0); // fuzz: if m==0, i==0
+        // assert(i>=0); // fuzz: if m==0, does not enter while and i==0
         //For each char of subject
         //Test if we have an acronym, if so increase acronym count.
         //If the acronym count is more than nbAcronymInQuery (number of non separator char in query)
