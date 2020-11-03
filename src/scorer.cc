@@ -67,6 +67,9 @@ bool isMatch(const CandidateString &subject, const Element &query_lw, const Elem
     if (m == 0 || n > m) {
         return false;
     }
+    if (query_up.empty()) {// TODO will query_up be ever empty?
+        // TODO don't know what to do. return true; seems to pass the tests
+    }
 
     auto i = 0u;
     auto j = 0u;
