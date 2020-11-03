@@ -354,8 +354,8 @@ Score scoreConsecutives(const CandidateString &subject, const CandidateString &s
     const auto m = subject.size();
     const auto n = query.size();
 
-    int mi = m - i;
-    int nj = n - j;
+    const int mi = m - i;
+    const int nj = n - j;
     const auto k = mi < nj ? mi : nj;
 
     auto sameCase = 0;
