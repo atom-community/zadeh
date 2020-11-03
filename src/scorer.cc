@@ -34,8 +34,8 @@ extern bool isWordEnd(const int pos, const CandidateString &subject, const Candi
 extern bool isSeparator(const char c);
 extern Score scoreExact(const size_t n, const size_t m, const size_t quality, const Score pos);
 
-extern Score scorePattern(const size_t count, const size_t len, const int sameCase, const bool start, const bool end) noexcept;
-extern Score scoreExactMatch(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, int pos, const size_t n, const size_t m);
+extern Score scorePattern(const size_t count, const size_t len, const size_t sameCase, const bool start, const bool end) noexcept;
+extern Score scoreExactMatch(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, size_t pos, const size_t n, const size_t m);
 
 extern bool isAcronymFullWord(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const unsigned nbAcronymInQuery);
 
@@ -305,7 +305,7 @@ Score scoreExact(const size_t n, const size_t m, const size_t quality, const Sco
 // and structural quality of the pattern on the overall string (word boundary)
 //
 
-Score scorePattern(const size_t count, const size_t len, const int sameCase, const bool start, const bool end) noexcept {
+Score scorePattern(const size_t count, const size_t len, const size_t sameCase, const bool start, const bool end) noexcept {
     auto sz = count;
 
     auto bonus = 6;// to ensure consecutive length dominate score, this should be as large other bonus combined
@@ -367,7 +367,7 @@ Score scoreConsecutives(const CandidateString &subject, const CandidateString &s
     const int nj = n - j;
     const auto k = mi < nj ? mi : nj;
 
-    auto sameCase = 0;
+    auto sameCase = 0u;
     auto sz = 0u;//sz will be one more than the last qi is sj
 
     // query_lw[i] is subject_lw[j] has been checked before entering now do case sensitive check.
@@ -404,7 +404,7 @@ Score scoreConsecutives(const CandidateString &subject, const CandidateString &s
 //
 // Compute the score of an exact match at position pos.
 //
-Score scoreExactMatch(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, int pos, const size_t n, const size_t m) {
+Score scoreExactMatch(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, size_t pos, const size_t n, const size_t m) {
 
     // Test for word start
     auto start = isWordStart(pos, subject, subject_lw);
@@ -427,7 +427,7 @@ Score scoreExactMatch(const CandidateString &subject, const CandidateString &sub
 
     //Exact case bonus.
     auto i = -1;
-    auto sameCase = 0;
+    auto sameCase = 0u;
     while (++i < n) {
         if (query[i] == subject[pos + i]) {
             sameCase++;
