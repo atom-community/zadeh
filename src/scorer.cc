@@ -294,6 +294,7 @@ Score scorePosition(const Score pos) noexcept {
 }
 
 Score scoreSize(const Score n, const Score m) {
+    // TODO will the denominator will be ever 0?
     // Size penalty, use the difference of size (m-n)
     return tau_size / (tau_size + fabs(m - n));
 }
