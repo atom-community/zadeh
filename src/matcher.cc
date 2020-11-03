@@ -19,6 +19,7 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
     const auto &query = preparedQuery.query;
     const auto &query_lw = preparedQuery.query_lw;
 
+    // TODO making these two auto breaks the code. There are a lot of narrowing conversions in this file
     const int m = subject.size();
     const int n = query.size();
 
@@ -31,17 +32,19 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
     vector<Score> csc_row(n, 0);
 
     // Directions constants
-    enum Direction { STOP,
+    enum class Direction {
+        STOP,
         UP,
         LEFT,
-        DIAGONAL };
+        DIAGONAL
+    };
 
     // Traceback matrix
-    std::vector<Direction> trace(m * n, STOP);
+    std::vector<Direction> trace(m * n, Direction::STOP);
     auto pos = -1;
 
     auto i = -1;
-    while (++i < m) {//foreach char si of subject
+    while (++i < m) {//foreach char is of subject
         Score score = 0;
         Score score_up = 0;
         Score csc_diag = 0;
@@ -71,16 +74,16 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
 
             // In case of equality, moving UP get us closer to the start of the candidate string.
             if (score > score_up) {
-                move = LEFT;
+                move = Direction::LEFT;
             } else {
                 score = score_up;
-                move = UP;
+                move = Direction::UP;
             }
 
             // Only take alignment if it's the absolute best option.
             if (align > score) {
                 score = align;
-                move = DIAGONAL;
+                move = Direction::DIAGONAL;
             } else {
                 // If we do not take this character, break consecutive sequence.
                 // (when consecutive is 0, it'll be recomputed)
@@ -89,7 +92,7 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
 
             score_row[j] = score;
             csc_row[j] = csc_score;
-            trace[++pos] = score > 0 ? move : STOP;
+            trace[++pos] = score > 0 ? move : Direction::STOP;
         }
     }
 
@@ -105,15 +108,15 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
 
     while (backtrack && i >= 0 && j >= 0) {
         switch (trace[pos]) {
-        case UP:
+        case Direction::UP:
             i--;
             pos -= n;
             break;
-        case LEFT:
+        case Direction::LEFT:
             j--;
             pos--;
             break;
-        case DIAGONAL:
+        case Direction::DIAGONAL:
             matches.push_back(i + offset);
             j--;
             i--;
@@ -130,7 +133,7 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
 
 std::vector<size_t> basenameMatch(const CandidateString &subject, const CandidateString &subject_lw, const PreparedQuery &preparedQuery, char pathSeparator) {
     // Skip trailing slashes
-    int end = subject.size() - 1;
+    auto end = subject.size() - 1;
     while (subject[end] == pathSeparator) {
         end--;
     }
@@ -139,8 +142,9 @@ std::vector<size_t> basenameMatch(const CandidateString &subject, const Candidat
     auto basePos = subject.rfind(pathSeparator, end);
 
     // If no PathSeparator, no base path exist.
-    if (basePos == std::string::npos)
+    if (basePos == std::string::npos) {
         return std::vector<size_t>();
+    }
 
     // Get the number of folder in query
     auto depth = preparedQuery.depth;
@@ -148,8 +152,9 @@ std::vector<size_t> basenameMatch(const CandidateString &subject, const Candidat
     // Get that many folder from subject
     while (depth-- > 0) {
         basePos = subject.rfind(pathSeparator, basePos - 1);
-        if (basePos == std::string::npos)// consumed whole subject ?
+        if (basePos == std::string::npos) {// consumed whole subject ?
             return std::vector<size_t>();
+        }
     }
 
     // Get basePath match
@@ -167,11 +172,15 @@ std::vector<size_t> basenameMatch(const CandidateString &subject, const Candidat
 // (Assume sequences are sorted, matches are sorted by construction.)
 //
 std::vector<size_t> mergeMatches(const std::vector<size_t> &a, const std::vector<size_t> &b) {
-    const int m = a.size();
-    const int n = b.size();
+    const auto m = a.size();
+    const auto n = b.size();
 
-    if (n == 0) return a;
-    if (m == 0) return b;
+    if (n == 0) {
+        return a;
+    }
+    if (m == 0) {
+        return b;
+    }
 
     auto i = -1;
     auto j = 0;
@@ -182,14 +191,16 @@ std::vector<size_t> mergeMatches(const std::vector<size_t> &a, const std::vector
         auto ai = a[i];
 
         while (bj <= ai && ++j < n) {
-            if (bj < ai)
+            if (bj < ai) {
                 out.push_back(bj);
+            }
             bj = b[j];
         }
         out.push_back(ai);
     }
-    while (j < n)
+    while (j < n) {
         out.push_back(b[j++]);
+    }
     return out;
 }
 
@@ -206,9 +217,9 @@ std::vector<size_t> matcher_match(const CandidateString &string, const Element &
 }
 
 void get_wrap(const CandidateString &string, const Element &query, const Options &options, std::string *out) {
-    const std::string tagClass = "highlight";
-    const auto tagOpen = "<strong class=\"" + tagClass + "\">";
-    const std::string tagClose = "</strong>";
+    const auto tagClass = "highlight"s;
+    const auto tagOpen = "<strong class=\""s + tagClass + "\">"s;
+    const auto tagClose = "</strong>"s;
 
     if (string == query) {
         *out = tagOpen + string + tagClose;
@@ -219,7 +230,7 @@ void get_wrap(const CandidateString &string, const Element &query, const Options
     auto matchPositions = matcher_match(string, query, options);
 
     // If no match return as is
-    if (matchPositions.size() == 0) {
+    if (matchPositions.empty()) {
         *out = string;
         return;
     }

@@ -3,10 +3,10 @@
 namespace {
 
 // Directory depth at which the full path influence is halved.
-size_t tau_depth = 20;
+const size_t tau_depth = 20;
 
 // Full path is also penalized for length of basename. This adjust a scale factor for that penalty.
-Score file_coeff = 2.5;
+const Score file_coeff = 2.5;
 
 };// namespace
 
@@ -16,13 +16,13 @@ extern Score scorePath(const CandidateString &subject, const CandidateString &su
 extern Score getExtensionScore(const CandidateString &candidate, const CandidateString &ext, int startPos, int endPos, int maxDepth);
 
 Element ToLower(const Element &s) {
-    auto snew = s;
+    Element /* copy */ snew = s;
     std::transform(s.begin(), s.end(), snew.begin(), ::tolower);
     return snew;
 }
 
 Element ToUpper(const Element &s) {
-    auto snew = s;
+    Element /* copy */ snew = s;
     std::transform(s.begin(), s.end(), snew.begin(), ::toupper);
     return snew;
 }
@@ -56,7 +56,7 @@ Score scorePath(const CandidateString &subject, const CandidateString &subject_l
     // {preparedQuery, useExtensionBonus, pathSeparator} = options
 
     // Skip trailing slashes
-    int end = subject.size() - 1;
+    auto end = subject.size() - 1;
     while (subject[end] == options.pathSeparator) {
         end--;
     }
@@ -96,7 +96,7 @@ Score scorePath(const CandidateString &subject, const CandidateString &subject_l
     // A penalty based on the size of the basePath is applied to fullPathScore
     // That way, more focused basePath match can overcome longer directory path.
 
-    const Score alpha = 0.5 * tau_depth / (tau_depth + countDir(subject, end + 1, options.pathSeparator));
+    const Score alpha = (0.5 * tau_depth) / (tau_depth + countDir(subject, end + 1, options.pathSeparator));
     return alpha * basePathScore + (1 - alpha) * fullPathScore * scoreSize(0, file_coeff * fileLength);
 }
 
@@ -105,7 +105,7 @@ Score scorePath(const CandidateString &subject, const CandidateString &subject_l
 // Count number of folder in a path.
 // (consecutive slashes count as a single directory)
 //
-int countDir(const CandidateString &path, int end, char pathSeparator) {
+int countDir(const CandidateString &path, const size_t end, const char pathSeparator) {
     if (end < 1) {
         return 0;
     }
@@ -114,12 +114,12 @@ int countDir(const CandidateString &path, int end, char pathSeparator) {
     auto i = -1;
 
     //skip slash at the start so `foo/bar` and `/foo/bar` have the same depth.
-    while (++i < end && path[i] == pathSeparator) { }
+    while (++i < end && path[i] == pathSeparator) {}
 
     while (++i < end) {
         if (path[i] == pathSeparator) {
             count++;//record first slash, but then skip consecutive ones
-            while (++i < end && path[i] == pathSeparator) { }
+            while (++i < end && path[i] == pathSeparator) {}
         }
     }
 

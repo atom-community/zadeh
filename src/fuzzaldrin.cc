@@ -47,7 +47,7 @@ Napi::Value Fuzzaldrin::SetCandidates(const Napi::CallbackInfo &info) {
     return Napi::Boolean();
 }
 
-void Fuzzaldrin::SetCandidates(vector<CandidateObject> const &candidates) {
+void Fuzzaldrin::SetCandidates(const vector<CandidateObject> &candidates) {
     const auto N = candidates.size();// different
     const auto num_chunks = N < 1000 * kMaxThreads ? N / 1000 + 1 : kMaxThreads;
     candidates_.clear();
@@ -60,7 +60,7 @@ void Fuzzaldrin::SetCandidates(vector<CandidateObject> const &candidates) {
             chunk_size++;
         }
         for (auto j = cur_start; j < cur_start + chunk_size; j++) {
-            candidates_[i].push_back(candidates[j].data);// different
+            candidates_[i].push_back(candidates[j].data);// different // TODO copy
         }
         cur_start += chunk_size;
     }
@@ -77,28 +77,28 @@ Napi::Value Fuzzaldrin::FilterTree(const Napi::CallbackInfo &info) {
         Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
         return Napi::Array::New(info.Env());
     }
-    auto const jsTreeArray = info[0].As<Napi::Array>();
-    std::string query = info[1].As<Napi::String>();
+    const auto &jsTreeArray = info[0].As<Napi::Array>();
+    const std::string &query = info[1].As<Napi::String>();
 
-    string const dataKey = info[2].As<Napi::String>();
-    string const childrenKey = info[3].As<Napi::String>();
+    const string &dataKey = info[2].As<Napi::String>();
+    const string &childrenKey = info[3].As<Napi::String>();
 
-    size_t maxResults = info[4].As<Napi::Number>().Uint32Value();
-    bool usePathScoring = info[5].As<Napi::Boolean>();
-    bool useExtensionBonus = info[6].As<Napi::Boolean>();
+    const size_t maxResults = info[4].As<Napi::Number>().Uint32Value();
+    const bool usePathScoring = info[5].As<Napi::Boolean>();
+    const bool useExtensionBonus = info[6].As<Napi::Boolean>();
 
     // create Tree and set candidates
     auto tree = Tree(jsTreeArray, dataKey, childrenKey);
     SetCandidates(tree.entriesArray);
 
     // create options
-    Options options(query, maxResults, usePathScoring, useExtensionBonus);
-    const auto matches = filter(candidates_, query, options);
+    const auto options = Options(query, maxResults, usePathScoring, useExtensionBonus);
+    const auto &matches = filter(candidates_, query, options);
 
     // filter
     auto filteredCandidateObjects = Napi::Array::New(info.Env());// array of candidate objects (with their address in index and level)
     for (uint32_t i = 0, len = matches.size(); i < len; i++) {
-        auto entry = tree.entriesArray[matches[i]];//
+        auto &entry = tree.entriesArray[matches[i]];//
 
         // create {data, index, level}
         auto obj = Napi::Object::New(info.Env());

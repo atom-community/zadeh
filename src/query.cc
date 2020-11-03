@@ -3,7 +3,7 @@
 extern Element coreChars(Element query);
 extern std::set<char> getCharCodes(const Element &str);
 
-PreparedQuery::PreparedQuery(const Element &q, char pathSeparator) : query(q), query_lw(ToLower(q)), core(coreChars(q)), core_lw(ToLower(core)), core_up(ToUpper(core)) {
+PreparedQuery::PreparedQuery(const Element &q, const char pathSeparator) : query(q), query_lw(ToLower(q)), core(coreChars(q)), core_lw(ToLower(core)), core_up(ToUpper(core)) {
     depth = countDir(query, query.size(), pathSeparator);
     ext = getExtension(query_lw);
     charCodes = getCharCodes(query_lw);
@@ -27,7 +27,8 @@ std::set<char> getCharCodes(const Element &str) {
     auto i = -1;
 
     // create map
-    while (++i < len)
+    while (++i < len) {
         charCodes.insert(str[i]);
+    }
     return charCodes;
 }
