@@ -83,7 +83,7 @@ extern Element ToUpper(const Element &s);
 extern bool isMatch(const CandidateString &subject, const Element &query_lw, const Element &query_up);
 extern bool isWordStart(const int pos, const CandidateString &subject, const CandidateString &subject_lw);
 extern Score scoreCharacter(const int i, const int j, const bool start, const Score acro_score, const Score csc_score);
-extern Score scoreConsecutives(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, int i, int j, const bool startOfWord);
+extern Score scoreConsecutives(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, unsigned i, unsigned j, const bool startOfWord);
 extern AcronymResult scoreAcronyms(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw);
 
 extern Score computeScore(const CandidateString &subject, const CandidateString &subject_lw, const PreparedQuery &preparedQuery);

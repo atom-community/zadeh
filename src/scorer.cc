@@ -158,8 +158,9 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
     csc_row[j] = 0;
   }*/
 
-    auto i = -1;
-    while (++i < m) {//foreach char si of subject
+    auto i = 0u;
+    while (i < m) {//foreach char si of subject
+        //assert(i >= 0);// fuzz: if m==0, does not enter while and i==0
         auto si_lw = subject_lw[i];
 
         // if si_lw is not in query
@@ -167,12 +168,16 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
             // reset csc_row and move to next subject char
             // unless we just cleaned it then keep cleaned version.
             if (csc_should_rebuild) {
-                auto j = -1;
-                while (++j < n) {
-                    csc_row[j] = 0;
+                auto k = 0u;
+                while (k < n) {
+                    //assert(k >= 0);// fuzz: if n==0, does not enter while and k==0
+                    csc_row[k] = 0;
+                    ++k;
                 }
                 csc_should_rebuild = false;
             }
+
+            ++i;
             continue;
         }
 
@@ -182,9 +187,9 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
         auto record_miss = true;
         csc_should_rebuild = true;
 
-        auto j = -1;//0..n-1
-        while (++j < n) {//foreach char qj of query
-
+        auto j = 0u;//0..n-1
+        while (j < n) {//foreach char qj of query
+            //assert(j >= 0);// fuzz: if n==0, does not enter while and j==0
             // What is the best gap ?
             // score_up contain the score of a gap in subject.
             // score_left = last iteration of score, -> gap in query.
@@ -230,7 +235,11 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
             csc_diag = csc_row[j];
             csc_row[j] = csc_score;
             score_row[j] = score;
+
+            ++j;
         }
+
+        ++i;
     }
 
     // get highest score so far
@@ -350,7 +359,7 @@ Score scoreCharacter(const int i, const int j, const bool start, const Score acr
 //
 // Forward search for a sequence of consecutive character.
 //
-Score scoreConsecutives(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, int i, int j, const bool startOfWord) {
+Score scoreConsecutives(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, unsigned i, unsigned j, const bool startOfWord) {
     const auto m = subject.size();
     const auto n = query.size();
 
