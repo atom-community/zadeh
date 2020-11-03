@@ -436,14 +436,14 @@ Score scoreExactMatch(const CandidateString &subject, const CandidateString &sub
         ++i;
     }
 
-    const auto end = static_cast<int>(isWordEnd(pos + n - 1u, subject, subject_lw, m));
+    const auto end = isWordEnd(pos + n - 1u, subject, subject_lw, m);
 
     Score baseNameStart = 1.0;
     if (start && pos > 0 && (subject[pos - 1] == '/' || subject[pos - 1] == '\\')) {
         baseNameStart = static_cast<Score>(1.1);
     }
 
-    return scoreExact(n, m, baseNameStart * scorePattern(n, n, sameCase, start, end != 0), pos);
+    return scoreExact(n, m, baseNameStart * scorePattern(n, n, sameCase, start, end), pos);
 }
 
 
