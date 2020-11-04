@@ -13,7 +13,7 @@ constexpr Score file_coeff = 2.5;
 
 extern Score scorePath(const CandidateString &subject, const CandidateString &subject_lw, Score fullPathScore, const Options &options);
 
-extern Score getExtensionScore(const CandidateString &candidate, const CandidateString &ext, int startPos, int endPos, int maxDepth);
+extern Score getExtensionScore(const CandidateString &candidate, const CandidateString &ext, const int startPos, const int endPos, const int maxDepth);
 
 Element ToLower(const Element &s) {
     Element /* copy */ snew = s;
@@ -141,7 +141,8 @@ CandidateString getExtension(const CandidateString &str) {
 }
 
 
-Score getExtensionScore(const CandidateString &candidate, const CandidateString &ext, int startPos, int endPos, int maxDepth) {
+Score getExtensionScore(const CandidateString &candidate, const CandidateString &ext, const int startPos, const int endPos, const int maxDepth) {
+    // TODO make startPos and endPos size_t and m, n, pos auto
     // startPos is the position of last slash of candidate, -1 if absent.
 
     if (ext.empty()) {
@@ -150,6 +151,7 @@ Score getExtensionScore(const CandidateString &candidate, const CandidateString 
 
     // Check that (a) extension exist, (b) it is after the start of the basename
     int pos = candidate.rfind('.', endPos);
+    // assert(pos >= 0u);
     if (pos <= startPos) {
         return 0;// (note that startPos >= -1)
     }
@@ -165,18 +167,21 @@ Score getExtensionScore(const CandidateString &candidate, const CandidateString 
 
     //place cursor after dot & count number of matching characters in extension
     pos++;
-    auto matched = -1;
-    while (++matched < n) {
-        if (candidate[pos + matched] != ext[matched]) {
+    // assert(pos >= 1u);
+    auto matched = 0;
+    while (matched < n) {
+        // assert(matched >=0); // fuzz: if n==0, does not enter while and matched==0
+        if (candidate[pos + matched] != ext[matched]) {// TODO candidate upper bound
             break;
         }
+        ++matched;
     }
 
     // if nothing found, try deeper for multiple extensions, with some penalty for depth
-    if (matched == 0 && maxDepth > 0) {
-        return 0.9 * getExtensionScore(candidate, ext, startPos, pos - 2, maxDepth - 1);
+    if (matched == 0u && maxDepth > 0) {
+        return 0.9f * getExtensionScore(candidate, ext, startPos, pos - 2, maxDepth - 1);
     }
 
     // cannot divide by zero because m is the largest extension length and we return if either is 0
-    return static_cast<Score>(matched) / m;
+    return static_cast<Score>(matched) / static_cast<Score>(m);
 }
