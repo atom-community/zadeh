@@ -50,7 +50,7 @@
     "fuzzaldrin-plus": "^0.6.0",
     "growl": ">=1.10.5",
     "jasmine-node": "^3.0.0",
-    "npm-check-updates": "9.2.3",
+    "npm-check-updates": "9.2.4",
     "parcel": "^2.0.0-nightly.438",
     "prebuildify": "^4.1.0",
     "shx": "^0.3.3"
