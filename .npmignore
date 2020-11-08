@@ -6,3 +6,7 @@ build/
 .travis.yml
 appveyor.yml
 .github
+.clang-format
+.clang-tidy
+babel.config.js
+.gitattributes
