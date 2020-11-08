@@ -42,7 +42,10 @@ export class ArrayFilterer {
   }
 }
 
-export const New = () => new FuzzaldrinPlusFast()
+/**
+ * @deprecated use ArrayFilterer class instead
+ */
+export const New = () => new ArrayFilterer()
 
 export function filter (candidates, query, options = {}) {
     if (!candidates || !query)

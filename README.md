@@ -155,13 +155,6 @@ In all the above functions, you can pass an optional object with the following k
 }
 ```
 
-### New()
-Initializes the native binding
-```js
-const { New } = require('fuzzaldrin-plus-fast')
-New()
-```
-
 # Info for Developers
 ## How to release the package to npm?
 
