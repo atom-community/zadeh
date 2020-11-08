@@ -171,7 +171,7 @@ Napi::Object Fuzzaldrin::Init(Napi::Env env, Napi::Object exports) {
     // define Fuzzaldrin class in JS
     const auto func = DefineClass(
       env,
-      "Fuzzaldrin",
+      "ArrayFilterer",
       { // member functions in JS
         InstanceMethod("filter", &Fuzzaldrin::Filter),
         InstanceMethod("filterTree", &Fuzzaldrin::FilterTree),
@@ -179,7 +179,7 @@ Napi::Object Fuzzaldrin::Init(Napi::Env env, Napi::Object exports) {
 
       });
     // export Fuzzaldrin class to JS
-    exports.Set("Fuzzaldrin", func);
+    exports.Set("ArrayFilterer", func);
 
     exports.Set("score", Napi::Function::New(env, score));
     exports.Set("match", Napi::Function::New(env, match));

@@ -16,9 +16,9 @@ function parseOptions(options, query) {
   return options
 }
 
-class FuzzaldrinPlusFast {
+export class ArrayFilterer {
   constructor() {
-    this.obj = new binding.Fuzzaldrin()
+    this.obj = new binding.ArrayFilterer()
   }
 
   setCandidates(candidates, options = {}) {
@@ -47,7 +47,7 @@ export const New = () => new FuzzaldrinPlusFast()
 export function filter (candidates, query, options = {}) {
     if (!candidates || !query)
       return []
-    const obj = new FuzzaldrinPlusFast()
+    const obj = new ArrayFilterer()
     obj.setCandidates(candidates, options)
     return obj.filter(query, options)
 }
@@ -56,7 +56,7 @@ export function filter (candidates, query, options = {}) {
 export function filterTree(candidatesTrees, query, dataKey = "data", childrenKey = "children", options = {}) {
     if (!candidatesTrees || !query)
       return []
-    const obj = new FuzzaldrinPlusFast()
+    const obj = new ArrayFilterer()
     return obj.filterTree(candidatesTrees, query, dataKey, childrenKey, options)
 }
 
