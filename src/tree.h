@@ -27,12 +27,12 @@ std::optional<Napi::Array> getChildren(const Napi::Object &jsTree, const string 
 
 
 struct CandidateObject {
-    const CandidateString data;// TODO copy
+    const CandidateString data;
     const size_t level = 0;
     const size_t index = 0;
 
-    CandidateObject(const CandidateString data_, const size_t level_, const size_t index_) noexcept
-      : data{ data_ }, level{ level_ }, index{ index_ } {};
+    CandidateObject(const CandidateString &data_, const size_t level_, const size_t index_) noexcept
+      : data{ data_ }, level{ level_ }, index{ index_ } {}
 };
 
 template<typename T>
