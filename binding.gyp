@@ -44,6 +44,8 @@
           'defines': [ 'DEBUG', 'NAPI_CPP_EXCEPTIONS', 'ENABLE_DEBUG' ],
           'cflags': [ '-g', '-O0' ],
           "cflags_cc": [
+            '-fexceptions', # enable exceptions
+
             # C++ standard
             "-std=c++2a",
             # Clang warnings
@@ -71,7 +73,7 @@
            ], # GCC/CLANG
           "msvs_settings": {
             "VCCLCompilerTool": {
-              'ExceptionHandling': "a",       # /EHsc
+              'ExceptionHandling': 2,       # /EHsc
               'BasicRuntimeChecks': 3,        # /RTC1
               'MinimalRebuild': 'false',
               'OmitFramePointers': 'false',
