@@ -35,9 +35,14 @@ export class ArrayFilterer {
     return res.map((ind) => this.candidates[ind])
   }
 
-  filterTree(candidatesTrees, query, dataKey = "data", childrenKey = "children", options = {}) {
+  setTreeFiltererCandidates(candidates, dataKey = "data", childrenKey = "children") {
+    this.candidates = candidates
+    return this.obj.setTreeFiltererCandidates(candidates, dataKey, childrenKey)
+  }
+
+  filterTree(query, options = {}) {
     options = parseOptions(options)
-    return this.obj.filterTree(candidatesTrees, query, dataKey, childrenKey, options.maxResults,
+    return this.obj.filterTree(query, options.maxResults,
       Boolean(options.usePathScoring), Boolean(options.useExtensionBonus))
   }
 }
@@ -60,7 +65,8 @@ export function filterTree(candidatesTrees, query, dataKey = "data", childrenKey
     if (!candidatesTrees || !query)
       return []
     const obj = new ArrayFilterer()
-    return obj.filterTree(candidatesTrees, query, dataKey, childrenKey, options)
+    obj.setTreeFiltererCandidates(candidates, dataKey, childrenKey)
+    return obj.filterTree(query, options)
 }
 
 export function score (candidate, query, options = {}) {

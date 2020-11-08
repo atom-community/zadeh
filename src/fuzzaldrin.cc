@@ -47,7 +47,23 @@ Napi::Value Fuzzaldrin::setArrayFiltererCandidates(const Napi::CallbackInfo &inf
     return Napi::Boolean();
 }
 
-void Fuzzaldrin::SetCandidates(const vector<CandidateObject> &candidates) {
+Napi::Value Fuzzaldrin::setTreeFiltererCandidates(const Napi::CallbackInfo &info) {
+    // parse arguments
+    if (info.Length() != 4
+        || !info[0].IsArray()
+        || !info[1].IsString() || !info[2].IsString()) {
+        Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
+        return Napi::Boolean();
+    }
+    const auto jsTreeArray = info[0].As<Napi::Array>();
+    const string dataKey = info[1].As<Napi::String>();
+    const string childrenKey = info[2].As<Napi::String>();
+
+    // create Tree and set candidates
+    _tree = Tree(jsTreeArray, dataKey, childrenKey);
+
+    const auto &candidates = _tree.entriesArray;
+
     const auto N = candidates.size();// different
     const auto num_chunks = N < 1000 * kMaxThreads ? N / 1000 + 1 : kMaxThreads;
     candidates_.clear();
@@ -64,41 +80,38 @@ void Fuzzaldrin::SetCandidates(const vector<CandidateObject> &candidates) {
         }
         cur_start += chunk_size;
     }
+
+
+    return Napi::Boolean();
 }
 
-/** (tree: Array<object>, query: string, dataKey: string, childrenKey: string, options: Options) */
+/** (query: string, maxResults: number, usePathScoring: bool, useExtensionBonus: bool) */
 Napi::Value Fuzzaldrin::FilterTree(const Napi::CallbackInfo &info) {
-
     // parse arguments
-    if (info.Length() != 7
-        || !info[0].IsArray()
-        || !info[1].IsString() || !info[2].IsString() || !info[3].IsString()
-        || !info[4].IsNumber() || !info[5].IsBoolean() || !info[6].IsBoolean()) {
+    if (info.Length() != 5
+        || !info[0].IsString()
+        || !info[1].IsNumber() || !info[2].IsBoolean() || !info[3].IsBoolean()) {
         Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
         return Napi::Array::New(info.Env());
     }
-    const auto jsTreeArray = info[0].As<Napi::Array>();
-    const std::string query = info[1].As<Napi::String>();
 
-    const string dataKey = info[2].As<Napi::String>();
-    const string childrenKey = info[3].As<Napi::String>();
+    // parse query
+    const std::string query = info[0].As<Napi::String>();
 
-    const size_t maxResults = info[4].As<Napi::Number>().Uint32Value();
-    const bool usePathScoring = info[5].As<Napi::Boolean>();
-    const bool useExtensionBonus = info[6].As<Napi::Boolean>();
-
-    // create Tree and set candidates
-    auto tree = Tree(jsTreeArray, dataKey, childrenKey);
-    SetCandidates(tree.entriesArray);
+    // parse options
+    const size_t maxResults = info[1].As<Napi::Number>().Uint32Value();
+    const bool usePathScoring = info[2].As<Napi::Boolean>();
+    const bool useExtensionBonus = info[3].As<Napi::Boolean>();
 
     // create options
     const auto options = Options(query, maxResults, usePathScoring, useExtensionBonus);
+
+    // perform filtering
     const auto matches = filter(candidates_, query, options);
 
-    // filter
     auto filteredCandidateObjects = Napi::Array::New(info.Env());// array of candidate objects (with their address in index and level)
     for (uint32_t i = 0, len = matches.size(); i < len; i++) {
-        auto &entry = tree.entriesArray[matches[i]];//
+        auto &entry = _tree.entriesArray[matches[i]];//
 
         // create {data, index, level}
         auto obj = Napi::Object::New(info.Env());
@@ -175,7 +188,8 @@ Napi::Object Fuzzaldrin::Init(Napi::Env env, Napi::Object exports) {
       { // member functions in JS
         InstanceMethod("filter", &Fuzzaldrin::Filter),
         InstanceMethod("filterTree", &Fuzzaldrin::FilterTree),
-        InstanceMethod("setCandidatesArrayFilterer", &Fuzzaldrin::setArrayFiltererCandidates)
+        InstanceMethod("setArrayFiltererCandidates", &Fuzzaldrin::setArrayFiltererCandidates),
+        InstanceMethod("setTreeFiltererCandidates", &Fuzzaldrin::setTreeFiltererCandidates)
 
       });
     // export Fuzzaldrin class to JS
