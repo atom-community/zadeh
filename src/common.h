@@ -23,8 +23,9 @@ class SafeString : public std::string {
     SafeString() = default;
     SafeString(const std::string &s) : std::string(s) {}
     const char &operator[](size_t i) const {
-        if (i >= size())
+        if (i >= size()) {
             printf("ERROR string index access index=%zu str=%s\n", i, c_str());
+        }
         return at(i);
     }
 };
