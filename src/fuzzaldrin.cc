@@ -77,11 +77,11 @@ Napi::Value Fuzzaldrin::FilterTree(const Napi::CallbackInfo &info) {
         Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
         return Napi::Array::New(info.Env());
     }
-    const auto &jsTreeArray = info[0].As<Napi::Array>();
-    const std::string &query = info[1].As<Napi::String>();
+    const auto jsTreeArray = info[0].As<Napi::Array>();
+    const std::string query = info[1].As<Napi::String>();
 
-    const string &dataKey = info[2].As<Napi::String>();
-    const string &childrenKey = info[3].As<Napi::String>();
+    const string dataKey = info[2].As<Napi::String>();
+    const string childrenKey = info[3].As<Napi::String>();
 
     const size_t maxResults = info[4].As<Napi::Number>().Uint32Value();
     const bool usePathScoring = info[5].As<Napi::Boolean>();
@@ -93,7 +93,7 @@ Napi::Value Fuzzaldrin::FilterTree(const Napi::CallbackInfo &info) {
 
     // create options
     const auto options = Options(query, maxResults, usePathScoring, useExtensionBonus);
-    const auto &matches = filter(candidates_, query, options);
+    const auto matches = filter(candidates_, query, options);
 
     // filter
     auto filteredCandidateObjects = Napi::Array::New(info.Env());// array of candidate objects (with their address in index and level)
