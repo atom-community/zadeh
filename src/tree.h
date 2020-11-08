@@ -54,7 +54,7 @@ struct Tree {
     /** 1st argument is a single object */
     void makeEntriesArray(const Napi::Object &jsTree, const size_t level, const size_t iEntry = -1) {
         // get the current data
-        const auto &data = jsTree.Get(dataKey).ToString().Utf8Value();
+        const auto data = jsTree.Get(dataKey).ToString().Utf8Value();
         entriesArray.emplace_back(CandidateObject(data, level, iEntry));
 
         // add children if any
