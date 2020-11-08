@@ -15,7 +15,8 @@ class Fuzzaldrin : public Napi::ObjectWrap<Fuzzaldrin> {
     explicit Fuzzaldrin(const Napi::CallbackInfo &info) : Napi::ObjectWrap<Fuzzaldrin>(info) {}
 
     Napi::Value Filter(const Napi::CallbackInfo &info);
-    Napi::Value SetCandidates(const Napi::CallbackInfo &info);
+    Napi::Value setArrayFiltererCandidates(const Napi::CallbackInfo &info);
+
     void SetCandidates(vector<CandidateObject> const &candidates);
 
     Napi::Value FilterTree(const Napi::CallbackInfo &info);

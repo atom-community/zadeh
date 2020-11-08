@@ -21,11 +21,11 @@ export class ArrayFilterer {
     this.obj = new binding.ArrayFilterer()
   }
 
-  setCandidates(candidates, options = {}) {
+  setArrayFiltererCandidates(candidates, options = {}) {
     this.candidates = candidates
     if (options.key)
       candidates = candidates.map((item) => item[options.key])
-    return this.obj.setCandidates(candidates)
+    return this.obj.setArrayFiltererCandidates(candidates)
   }
 
   filter(query, options = {}) {
@@ -51,7 +51,7 @@ export function filter (candidates, query, options = {}) {
     if (!candidates || !query)
       return []
     const obj = new ArrayFilterer()
-    obj.setCandidates(candidates, options)
+    obj.setArrayFiltererCandidates(candidates, options)
     return obj.filter(query, options)
 }
 

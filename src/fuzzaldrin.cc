@@ -21,8 +21,8 @@ Napi::Value Fuzzaldrin::Filter(const Napi::CallbackInfo &info) {
     return res;
 }
 
-Napi::Value Fuzzaldrin::SetCandidates(const Napi::CallbackInfo &info) {
-    if (info.Length() != 1 || !info[0].IsArray()) {
+Napi::Value Fuzzaldrin::setArrayFiltererCandidates(const Napi::CallbackInfo &info) {
+    if (info.Length() != 2 || !info[0].IsArray()) {
         Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
         return Napi::Boolean();
     }
@@ -175,7 +175,7 @@ Napi::Object Fuzzaldrin::Init(Napi::Env env, Napi::Object exports) {
       { // member functions in JS
         InstanceMethod("filter", &Fuzzaldrin::Filter),
         InstanceMethod("filterTree", &Fuzzaldrin::FilterTree),
-        InstanceMethod("setCandidates", &Fuzzaldrin::SetCandidates)
+        InstanceMethod("setCandidatesArrayFilterer", &Fuzzaldrin::setArrayFiltererCandidates)
 
       });
     // export Fuzzaldrin class to JS
