@@ -35,7 +35,6 @@ struct CandidateObject {
       : data{ move(data_) }, level{ level_ }, index{ index_ } {}
 };
 
-template<typename T>
 struct Tree {
     const string &dataKey;
     const string &childrenKey;
@@ -72,7 +71,8 @@ struct Tree {
     }
 
     /** create a Tree object and make an entries array */
-    Tree(const T &jsTreeArrayOrObject_, const string &dataKey_, const string &childrenKey_)
+    // NOTE: this is made to only accept Napi::Array because we cannot export templates to JavaScript
+    Tree(const Napi::Array &jsTreeArrayOrObject_, const string &dataKey_, const string &childrenKey_)
       : dataKey{ dataKey_ },
         childrenKey{ childrenKey_ } {
         makeEntriesArray(jsTreeArrayOrObject_, 0);
