@@ -31,8 +31,8 @@ struct CandidateObject {
     const size_t level = 0;
     const size_t index = 0;
 
-    CandidateObject(const CandidateString &data_, const size_t level_, const size_t index_) noexcept
-      : data{ data_ }, level{ level_ }, index{ index_ } {}
+    CandidateObject(CandidateString &&data_, const size_t level_, const size_t index_) noexcept
+      : data{ move(data_) }, level{ level_ }, index{ index_ } {}
 };
 
 template<typename T>
@@ -53,9 +53,15 @@ struct Tree {
 
     /** 1st argument is a single object */
     void makeEntriesArray(const Napi::Object &jsTree, const size_t level, const size_t iEntry) {
-        // get the current data
-        const auto data = jsTree.Get(dataKey).ToString().Utf8Value();
-        entriesArray.emplace_back(CandidateObject(data, level, iEntry));
+        // finally emplace it back
+        entriesArray.emplace_back(
+          // then make the CandidateObject
+          CandidateObject(
+            jsTree.Get(dataKey).ToString().Utf8Value(),// first, get the current data
+            level,
+            iEntry)
+
+        );
 
         // add children if any
         auto mayChildren = getChildren(jsTree, childrenKey);
