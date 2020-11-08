@@ -9,7 +9,7 @@
     "tidy": "clang-tidy src/*.cc src/*.h",
     "tidy:fix": "clang-tidy src/*.cc src/*.h --fix --fix-errors",
     "native:clean": "shx rm -rf build prebuilds",
-    "native:build": "node-gyp-build",
+    "native:build": "node-gyp configure --release && node-gyp build --release",
     "native:build:debug": "node-gyp configure --debug && node-gyp build --debug",
     "native:prebuild": "prebuildify --napi -t 12.0.0 -t electron@6.0.0 --strip",
     "native:prebuild-ia32": "prebuildify --napi --arch=ia32 -t 12.0.0 -t electron@6.0.0 --strip",
