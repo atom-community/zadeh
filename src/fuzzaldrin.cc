@@ -168,9 +168,19 @@ Napi::String wrap(const Napi::CallbackInfo &info) {
 Napi::Object Fuzzaldrin::Init(Napi::Env env, Napi::Object exports) {
     Napi::HandleScope scope(env);
 
-    const auto func = DefineClass(env, "Fuzzaldrin", { InstanceMethod("filter", &Fuzzaldrin::Filter), InstanceMethod("filterTree", &Fuzzaldrin::FilterTree), InstanceMethod("setCandidates", &Fuzzaldrin::SetCandidates) });
+    // define Fuzzaldrin class in JS
+    const auto func = DefineClass(
+      env,
+      "Fuzzaldrin",
+      { // member functions in JS
+        InstanceMethod("filter", &Fuzzaldrin::Filter),
+        InstanceMethod("filterTree", &Fuzzaldrin::FilterTree),
+        InstanceMethod("setCandidates", &Fuzzaldrin::SetCandidates)
 
+      });
+    // export Fuzzaldrin class to JS
     exports.Set("Fuzzaldrin", func);
+
     exports.Set("score", Napi::Function::New(env, score));
     exports.Set("match", Napi::Function::New(env, match));
     exports.Set("wrap", Napi::Function::New(env, wrap));
