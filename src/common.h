@@ -67,8 +67,8 @@ struct Options {
 #endif
     const PreparedQuery preparedQuery;
 
-    Options(const Element &query, size_t maxResults, bool usePathScoring, bool useExtensionBonus) : max_results(maxResults), usePathScoring(usePathScoring), useExtensionBonus(useExtensionBonus), preparedQuery(query, pathSeparator) {}
-    Options(const Element &query, char pathSeparator) : pathSeparator(pathSeparator), preparedQuery(query, pathSeparator) {}
+    Options(const Element &_query, size_t _maxResults, bool _usePathScoring, bool _useExtensionBonus) : max_results(_maxResults), usePathScoring(_usePathScoring), useExtensionBonus(_useExtensionBonus), preparedQuery(_query, pathSeparator) {}
+    Options(const Element &_query, char _pathSeparator) : pathSeparator(_pathSeparator), preparedQuery(_query, _pathSeparator) {}
 };
 
 struct AcronymResult {
