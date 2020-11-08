@@ -20,7 +20,7 @@ constexpr size_t kMaxThreads = 16;
 // Safe string class that logs error when index is accessed outside the string.
 class SafeString : public std::string {
   public:
-    SafeString() {}
+    SafeString() = default;
     SafeString(const std::string &s) : std::string(s) {}
     const char &operator[](size_t i) const {
         if (i >= size())
