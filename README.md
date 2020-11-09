@@ -6,7 +6,10 @@ Fast fuzzy-search - the native replacement for `fuzzaldrin-plus`
 * Fuzzaldrin plus is an awesome library that provides fuzzy-search that is more targeted towards filenames.
 * Fuzzaldrin-plus-fast is a rewrite of the library in native C++ to make it fast. The goal is to make it a few hundred millisecond filter times for a dataset with 1M entries. This performance is helpful in Atom's fuzzy finder to open files from large projects such as Chrome/Mozilla.
 
-Fuzzaldrin-plus-fast also provides an additional `filterTree` function which allows to fuzzy filter text in nested tree-like objects.
+### Extra featuers
+Fuzzaldrin-plus-fast:
+- provides `filterTree` function which allows to fuzzy filter text in nested tree-like objects.
+- allows setting the candidates only once using `ArrayFilterer` and `TreeFilterer` classes only once, and then, perform `filter` multiple times. This is much more efficient than calling the `filter` functions directly every time.
 
 # How performance is improved?
 Fuzzaldrin-plus-fast achieves 10x-20x performance improvement over Fuzzaldrin plus for chromium project with 300K files. This high performance is achieved using the following techniques.
@@ -61,6 +64,41 @@ candidates = [
   {name: 'Maybe', id: 3}
 ]
 results = filter(candidates, 'me', {key: 'name'}) // [{name: 'Me', id: 2}, {name: 'Maybe', id: 3}]
+```
+
+**Performance Note**: use `ArrayFilterer` class if you call the `filter` function multiple times on a certain set of candidates. `filter` internally uses this class, however, in each call it sets the candidates from scratch which can slow down the process.
+
+### ArrayFilterer
+
+ArrayFilterer is a class that allows to set the `candidates` only once and perform filtering on them multiple times. This is much more efficient than calling the `filter` function directly.
+```typescript
+export class ArrayFilterer<T> {
+    constructor()
+
+    /** The method to set the candidates that are going to be filtered
+     * @param candidates An array of tree objects.
+     * @param dataKey (optional) if `candidates` is an array of objects, pass the key in the object which holds the data. dataKey can be the options object passed to `filter` method (but this is deprecated).
+     */
+    setCandidates<T>(candidates: Array<T>, dataKey?: string): void
+
+    /** The method to perform the filtering on the already set candidates
+     *  @param query A string query to match each candidate against.
+     *  @param options options
+     *  @return returns an array of candidates sorted by best match against the query.
+     */
+    filter(query: string, options: IFilterOptions<T>): Array<T>
+}
+```
+
+Example:
+```Javascript
+const { ArrayFilterer } = require('fuzzaldrin-plus-fast')
+
+const arrayFilterer = new ArrayFilterer()
+arrayFilterer.setCandidates(['Call', 'Me', 'Maybe']) // set candidates only once
+// call filter multiple times
+arrayFilterer.filter('me')
+arrayFilterer.filter('all')
 ```
 
 ### filterTree(candidates, query, dataKey, childrenKey, options = {})
