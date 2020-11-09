@@ -23,10 +23,19 @@ export class ArrayFilterer {
     this.obj = new binding.Fuzzaldrin()
   }
 
-  setCandidates(candidates, options = {}) {
+  setCandidates(candidates, dataKey = undefined) {
     this.candidates = candidates
-    if (options.key)
-      candidates = candidates.map((item) => item[options.key])
+
+    if (dataKey) {
+      if (typeof dataKey == "string") {
+        candidates = candidates.map((item) => item[dataKey])
+      }
+      // @deprecated pass the key as the second argument as a string
+      else if (dataKey.key) { // an object (options) containing the key
+        candidates = candidates.map((item) => item[dataKey.key])
+      }
+    }
+
     return this.obj.setArrayFiltererCandidates(candidates)
   }
 
