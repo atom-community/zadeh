@@ -74,7 +74,7 @@ export function filterTree(candidatesTrees, query, dataKey = "data", childrenKey
     if (!candidatesTrees || !query)
       return []
     const treeFilterer = new TreeFilterer()
-    treeFilterer.setCandidates(candidates, dataKey, childrenKey)
+    treeFilterer.setCandidates(candidatesTrees, dataKey, childrenKey)
     return treeFilterer.filter(query, options)
 }
 
