@@ -1,10 +1,10 @@
-const fuzzaldrinPlus = require('../fuzzaldrin-dist')
-const legacy = require('fuzzaldrin-plus')
+const fuzzaldrinPlus = require("../fuzzaldrin-dist")
+const legacy = require("fuzzaldrin-plus")
 
 let performance = null
 
 try {
-  performance = (require('perf_hooks')).performance
+  performance = require("perf_hooks").performance
 } catch {
   performance = window.performance
 }
@@ -22,11 +22,9 @@ try {
 function areArraysEqual(a, b) {
   a = new Set(a)
   b = new Set(b)
-  if (a.size !== b.size)
-    return false
+  if (a.size !== b.size) return false
   for (const a_item of a) {
-    if (!b.has(a_item))
-      return false
+    if (!b.has(a_item)) return false
   }
   return true
 }
@@ -66,7 +64,7 @@ function doFilterTest(test_name, lines, query, params) {
   if (elapsed > elapsed_legacy) {
     console.error(`====== fuzzaldrin-plus-fast is SLOWER`)
   }
-  console.log('')
+  console.log("")
 }
 
 module.exports = {
