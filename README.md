@@ -68,7 +68,7 @@ results = filter(candidates, 'me', {key: 'name'}) // [{name: 'Me', id: 2}, {name
 
 **Performance Note**: use `ArrayFilterer` class if you call the `filter` function multiple times on a certain set of candidates. `filter` internally uses this class, however, in each call it sets the candidates from scratch which can slow down the process.
 
-### ArrayFilterer
+### ArrayFilterer class
 
 ArrayFilterer is a class that allows to set the `candidates` only once and perform filtering on them multiple times. This is much more efficient than calling the `filter` function directly.
 ```typescript
@@ -132,6 +132,49 @@ const candidates = [
   {data: "hello"},
 ]
 results = filter(candidates, 'hello', {key: 'name'}) // [ { data: 'hello', index: 2, level: 0 }, { data: 'helloworld', index: 0, level: 0 } ]
+```
+
+**Performance Note**: use `TreeFilterer` class if you call the `filterTree` function multiple times on a certain set of candidates. `filterTree` internally uses this class, however, in each call it sets the candidates from scratch which can slow down the process.
+
+### TreeFilterer class
+`TreeFilterer` is a class that allows to set the `candidates` only once and perform filtering on them multiple times. This is much more efficient than calling the `filterTree` function directly.
+
+```typescript
+export class TreeFilterer<T> {
+    constructor()
+
+    /** The method to set the candidates that are going to be filtered
+     * @param candidates An array of tree objects.
+     * @param dataKey the key of the object (and its children) which holds the data (defaults to `"data"`)
+     * @param childrenKey the key of the object (and its children) which hold the children (defaults to `"children"`)
+     */
+    setCandidates<T>(candidates: Array<T>, dataKey?: string, childrenKey?: string): void
+
+    /** The method to perform the filtering on the already set candidates
+     *  @param query A string query to match each candidate against.
+     *  @param options options
+     *  @return An array of candidate objects in form of `{data, index, level}` sorted by best match against the query. Each objects has the address of the object in the tree using `index` and `level`.
+     */
+    filter(query: string, options: IFilterOptions<object>): TreeFilterResult[]
+}
+```
+
+Example:
+```Javascript
+const { TreeFilterer } = require('fuzzaldrin-plus-fast')
+
+const arrayFilterer = new TreeFilterer()
+
+const candidates = [
+  {data: "bye1", children: [{data: "hello"}]},
+  {data: "Bye2", children: [{data: "_bye4"}, {data: "hel"}]},
+  {data: "eye"},
+]
+arrayFilterer.setCandidates(candidates, "data", "children") // set candidates only once
+
+// call filter multiple times
+arrayFilterer.filter('hello')
+arrayFilterer.filter('bye')
 ```
 
 ### score(string, query, options = {})
