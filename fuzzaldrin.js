@@ -16,16 +16,27 @@ function parseOptions(options, query) {
   return options
 }
 
-class FuzzaldrinPlusFast {
+/** Array Filter */
+
+export class ArrayFilterer {
   constructor() {
     this.obj = new binding.Fuzzaldrin()
   }
 
-  setCandidates(candidates, options = {}) {
+  setCandidates(candidates, dataKey = undefined) {
     this.candidates = candidates
-    if (options.key)
-      candidates = candidates.map((item) => item[options.key])
-    return this.obj.setCandidates(candidates)
+
+    if (dataKey) {
+      if (typeof dataKey == "string") {
+        candidates = candidates.map((item) => item[dataKey])
+      }
+      // @deprecated pass the key as the second argument as a string
+      else if (dataKey.key) { // an object (options) containing the key
+        candidates = candidates.map((item) => item[dataKey.key])
+      }
+    }
+
+    return this.obj.setArrayFiltererCandidates(candidates)
   }
 
   filter(query, options = {}) {
@@ -34,30 +45,46 @@ class FuzzaldrinPlusFast {
       Boolean(options.usePathScoring), Boolean(options.useExtensionBonus))
     return res.map((ind) => this.candidates[ind])
   }
-
-  filterTree(candidatesTrees, query, dataKey = "data", childrenKey = "children", options = {}) {
-    options = parseOptions(options)
-    return this.obj.filterTree(candidatesTrees, query, dataKey, childrenKey, options.maxResults,
-      Boolean(options.usePathScoring), Boolean(options.useExtensionBonus))
-  }
 }
 
-export const New = () => new FuzzaldrinPlusFast()
+/**
+ * @deprecated use ArrayFilterer or TreeFilterer instead class instead
+ */
+export const New = () => new ArrayFilterer()
 
 export function filter (candidates, query, options = {}) {
     if (!candidates || !query)
       return []
-    const obj = new FuzzaldrinPlusFast()
-    obj.setCandidates(candidates, options)
-    return obj.filter(query, options)
+    const arrayFilterer = new ArrayFilterer()
+    arrayFilterer.setCandidates(candidates, options)
+    return arrayFilterer.filter(query, options)
 }
 
+/** Tree Filter */
+
+export class TreeFilterer {
+  constructor() {
+    this.obj = new binding.Fuzzaldrin()
+  }
+
+  setCandidates(candidates, dataKey = "data", childrenKey = "children") {
+    this.candidates = candidates
+    return this.obj.setTreeFiltererCandidates(candidates, dataKey, childrenKey)
+  }
+
+  filter(query, options = {}) {
+    options = parseOptions(options)
+    return this.obj.filterTree(query, options.maxResults,
+      Boolean(options.usePathScoring), Boolean(options.useExtensionBonus))
+  }
+}
 
 export function filterTree(candidatesTrees, query, dataKey = "data", childrenKey = "children", options = {}) {
     if (!candidatesTrees || !query)
       return []
-    const obj = new FuzzaldrinPlusFast()
-    return obj.filterTree(candidatesTrees, query, dataKey, childrenKey, options)
+    const treeFilterer = new TreeFilterer()
+    treeFilterer.setCandidates(candidatesTrees, dataKey, childrenKey)
+    return treeFilterer.filter(query, options)
 }
 
 export function score (candidate, query, options = {}) {
@@ -67,6 +94,8 @@ export function score (candidate, query, options = {}) {
     return binding.score(candidate, query,
       Boolean(options.usePathScoring), Boolean(options.useExtensionBonus))
 }
+
+/** Other functions */
 
 export function match (string, query, options = {}) {
     if (!string || !query)

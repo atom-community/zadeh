@@ -5,8 +5,12 @@
 Napi::Value Fuzzaldrin::Filter(const Napi::CallbackInfo &info) {
     auto res = Napi::Array::New(info.Env());
     if (info.Length() != 4 || !info[0].IsString() || !info[1].IsNumber() || !info[2].IsBoolean() || !info[3].IsBoolean()) {
-        Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
+        Napi::TypeError::New(info.Env(), "Invalid arguments for Filter").ThrowAsJavaScriptException();
         return Napi::Boolean();
+    }
+    // optimization for no candidates
+    if (candidates_.empty()) {
+        return Napi::Array::New(info.Env());
     }
     const std::string query = info[0].As<Napi::String>();
     const size_t maxResults = info[1].As<Napi::Number>().Uint32Value();
@@ -21,9 +25,9 @@ Napi::Value Fuzzaldrin::Filter(const Napi::CallbackInfo &info) {
     return res;
 }
 
-Napi::Value Fuzzaldrin::SetCandidates(const Napi::CallbackInfo &info) {
+Napi::Value Fuzzaldrin::setArrayFiltererCandidates(const Napi::CallbackInfo &info) {
     if (info.Length() != 1 || !info[0].IsArray()) {
-        Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
+        Napi::TypeError::New(info.Env(), "Invalid arguments for setArrayFiltererCandidates").ThrowAsJavaScriptException();
         return Napi::Boolean();
     }
     auto candidates = info[0].As<Napi::Array>();
@@ -47,7 +51,23 @@ Napi::Value Fuzzaldrin::SetCandidates(const Napi::CallbackInfo &info) {
     return Napi::Boolean();
 }
 
-void Fuzzaldrin::SetCandidates(const vector<CandidateObject> &candidates) {
+Napi::Value Fuzzaldrin::setTreeFiltererCandidates(const Napi::CallbackInfo &info) {
+    // parse arguments
+    if (info.Length() != 3
+        || !info[0].IsArray()
+        || !info[1].IsString() || !info[2].IsString()) {
+        Napi::TypeError::New(info.Env(), "Invalid arguments for setTreeFiltererCandidates").ThrowAsJavaScriptException();
+        return Napi::Boolean();
+    }
+    const auto jsTreeArray = info[0].As<Napi::Array>();
+    const string dataKey = info[1].As<Napi::String>();
+    const string childrenKey = info[2].As<Napi::String>();
+
+    // create Tree and set candidates
+    _tree = Tree(jsTreeArray, dataKey, childrenKey);
+
+    const auto &candidates = _tree.entriesArray;
+
     const auto N = candidates.size();// different
     const auto num_chunks = N < 1000 * kMaxThreads ? N / 1000 + 1 : kMaxThreads;
     candidates_.clear();
@@ -64,41 +84,42 @@ void Fuzzaldrin::SetCandidates(const vector<CandidateObject> &candidates) {
         }
         cur_start += chunk_size;
     }
+
+
+    return Napi::Boolean();
 }
 
-/** (tree: Array<object>, query: string, dataKey: string, childrenKey: string, options: Options) */
+/** (query: string, maxResults: number, usePathScoring: bool, useExtensionBonus: bool) */
 Napi::Value Fuzzaldrin::FilterTree(const Napi::CallbackInfo &info) {
-
     // parse arguments
-    if (info.Length() != 7
-        || !info[0].IsArray()
-        || !info[1].IsString() || !info[2].IsString() || !info[3].IsString()
-        || !info[4].IsNumber() || !info[5].IsBoolean() || !info[6].IsBoolean()) {
-        Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
+    if (info.Length() != 4
+        || !info[0].IsString()
+        || !info[1].IsNumber() || !info[2].IsBoolean() || !info[3].IsBoolean()) {
+        Napi::TypeError::New(info.Env(), "Invalid arguments for FilterTree").ThrowAsJavaScriptException();
         return Napi::Array::New(info.Env());
     }
-    const auto jsTreeArray = info[0].As<Napi::Array>();
-    const std::string query = info[1].As<Napi::String>();
+    // optimization for no candidates
+    if (candidates_.empty()) {
+        return Napi::Array::New(info.Env());
+    }
 
-    const string dataKey = info[2].As<Napi::String>();
-    const string childrenKey = info[3].As<Napi::String>();
+    // parse query
+    const std::string query = info[0].As<Napi::String>();
 
-    const size_t maxResults = info[4].As<Napi::Number>().Uint32Value();
-    const bool usePathScoring = info[5].As<Napi::Boolean>();
-    const bool useExtensionBonus = info[6].As<Napi::Boolean>();
-
-    // create Tree and set candidates
-    auto tree = Tree(jsTreeArray, dataKey, childrenKey);
-    SetCandidates(tree.entriesArray);
+    // parse options
+    const size_t maxResults = info[1].As<Napi::Number>().Uint32Value();
+    const bool usePathScoring = info[2].As<Napi::Boolean>();
+    const bool useExtensionBonus = info[3].As<Napi::Boolean>();
 
     // create options
     const auto options = Options(query, maxResults, usePathScoring, useExtensionBonus);
+
+    // perform filtering
     const auto matches = filter(candidates_, query, options);
 
-    // filter
     auto filteredCandidateObjects = Napi::Array::New(info.Env());// array of candidate objects (with their address in index and level)
     for (uint32_t i = 0, len = matches.size(); i < len; i++) {
-        auto &entry = tree.entriesArray[matches[i]];//
+        auto &entry = _tree.entriesArray[matches[i]];//
 
         // create {data, index, level}
         auto obj = Napi::Object::New(info.Env());
@@ -114,7 +135,7 @@ Napi::Value Fuzzaldrin::FilterTree(const Napi::CallbackInfo &info) {
 
 Napi::Number score(const Napi::CallbackInfo &info) {
     if (info.Length() != 4 || !info[0].IsString() || !info[1].IsString() || !info[2].IsBoolean() || !info[3].IsBoolean()) {
-        Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
+        Napi::TypeError::New(info.Env(), "Invalid arguments for score").ThrowAsJavaScriptException();
     }
     const std::string candidate = info[0].As<Napi::String>();
     const std::string query = info[1].As<Napi::String>();
@@ -129,14 +150,14 @@ Napi::Number score(const Napi::CallbackInfo &info) {
 Napi::Array match(const Napi::CallbackInfo &info) {
     auto res = Napi::Array::New(info.Env());
     if (info.Length() != 3 || !info[0].IsString() || !info[1].IsString() || !info[2].IsString()) {
-        Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
+        Napi::TypeError::New(info.Env(), "Invalid arguments for match").ThrowAsJavaScriptException();
         return res;
     }
     std::string candidate = info[0].As<Napi::String>();
     std::string query = info[1].As<Napi::String>();
     std::string pathSeparator = info[2].As<Napi::String>();
     if (pathSeparator.size() != 1) {
-        Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
+        Napi::TypeError::New(info.Env(), "Invalid arguments for match").ThrowAsJavaScriptException();
         return res;
     }
     Options options(query, pathSeparator[0]);
@@ -149,14 +170,14 @@ Napi::Array match(const Napi::CallbackInfo &info) {
 
 Napi::String wrap(const Napi::CallbackInfo &info) {
     if (info.Length() != 3 || !info[0].IsString() || !info[1].IsString() || !info[2].IsString()) {
-        Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
+        Napi::TypeError::New(info.Env(), "Invalid arguments for wrap").ThrowAsJavaScriptException();
         return Napi::String::New(info.Env(), "");
     }
     std::string candidate = info[0].As<Napi::String>();
     std::string query = info[1].As<Napi::String>();
     std::string pathSeparator = info[2].As<Napi::String>();
     if (pathSeparator.size() != 1) {
-        Napi::TypeError::New(info.Env(), "Invalid arguments").ThrowAsJavaScriptException();
+        Napi::TypeError::New(info.Env(), "Invalid arguments for wrap").ThrowAsJavaScriptException();
         return Napi::String::New(info.Env(), "");
     }
     Options options(query, pathSeparator[0]);
@@ -168,9 +189,20 @@ Napi::String wrap(const Napi::CallbackInfo &info) {
 Napi::Object Fuzzaldrin::Init(Napi::Env env, Napi::Object exports) {
     Napi::HandleScope scope(env);
 
-    const auto func = DefineClass(env, "Fuzzaldrin", { InstanceMethod("filter", &Fuzzaldrin::Filter), InstanceMethod("filterTree", &Fuzzaldrin::FilterTree), InstanceMethod("setCandidates", &Fuzzaldrin::SetCandidates) });
+    // define Fuzzaldrin class in JS
+    const auto func = DefineClass(
+      env,
+      "Fuzzaldrin",
+      { // member functions in JS
+        InstanceMethod("filter", &Fuzzaldrin::Filter),
+        InstanceMethod("filterTree", &Fuzzaldrin::FilterTree),
+        InstanceMethod("setArrayFiltererCandidates", &Fuzzaldrin::setArrayFiltererCandidates),
+        InstanceMethod("setTreeFiltererCandidates", &Fuzzaldrin::setTreeFiltererCandidates)
 
+      });
+    // export Fuzzaldrin class to JS
     exports.Set("Fuzzaldrin", func);
+
     exports.Set("score", Napi::Function::New(env, score));
     exports.Set("match", Napi::Function::New(env, match));
     exports.Set("wrap", Napi::Function::New(env, wrap));

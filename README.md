@@ -6,7 +6,10 @@ Fast fuzzy-search - the native replacement for `fuzzaldrin-plus`
 * Fuzzaldrin plus is an awesome library that provides fuzzy-search that is more targeted towards filenames.
 * Fuzzaldrin-plus-fast is a rewrite of the library in native C++ to make it fast. The goal is to make it a few hundred millisecond filter times for a dataset with 1M entries. This performance is helpful in Atom's fuzzy finder to open files from large projects such as Chrome/Mozilla.
 
-Fuzzaldrin-plus-fast also provides an additional `filterTree` function which allows to fuzzy filter text in nested tree-like objects.
+### Extra featuers
+Fuzzaldrin-plus-fast:
+- provides `filterTree` function which allows to fuzzy filter text in nested tree-like objects.
+- allows setting the candidates only once using `ArrayFilterer` and `TreeFilterer` classes, and then, perform `filter` multiple times. This is much more efficient than calling the `filter` or `filterTree` functions directly every time.
 
 # How performance is improved?
 Fuzzaldrin-plus-fast achieves 10x-20x performance improvement over Fuzzaldrin plus for chromium project with 300K files. This high performance is achieved using the following techniques.
@@ -63,6 +66,41 @@ candidates = [
 results = filter(candidates, 'me', {key: 'name'}) // [{name: 'Me', id: 2}, {name: 'Maybe', id: 3}]
 ```
 
+**Performance Note**: use `ArrayFilterer` class if you call the `filter` function multiple times on a certain set of candidates. `filter` internally uses this class, however, in each call it sets the candidates from scratch which can slow down the process.
+
+### ArrayFilterer class
+
+ArrayFilterer is a class that allows to set the `candidates` only once and perform filtering on them multiple times. This is much more efficient than calling the `filter` function directly.
+```typescript
+export class ArrayFilterer<T> {
+    constructor()
+
+    /** The method to set the candidates that are going to be filtered
+     * @param candidates An array of tree objects.
+     * @param dataKey (optional) if `candidates` is an array of objects, pass the key in the object which holds the data. dataKey can be the options object passed to `filter` method (but this is deprecated).
+     */
+    setCandidates<T>(candidates: Array<T>, dataKey?: string): void
+
+    /** The method to perform the filtering on the already set candidates
+     *  @param query A string query to match each candidate against.
+     *  @param options options
+     *  @return returns an array of candidates sorted by best match against the query.
+     */
+    filter(query: string, options: IFilterOptions<T>): Array<T>
+}
+```
+
+Example:
+```Javascript
+const { ArrayFilterer } = require('fuzzaldrin-plus-fast')
+
+const arrayFilterer = new ArrayFilterer()
+arrayFilterer.setCandidates(['Call', 'Me', 'Maybe']) // set candidates only once
+// call filter multiple times
+arrayFilterer.filter('me')
+arrayFilterer.filter('all')
+```
+
 ### filterTree(candidates, query, dataKey, childrenKey, options = {})
 
 Sort and filter the given Tree candidates by matching them against the given query.
@@ -94,6 +132,49 @@ const candidates = [
   {data: "hello"},
 ]
 results = filter(candidates, 'hello', {key: 'name'}) // [ { data: 'hello', index: 2, level: 0 }, { data: 'helloworld', index: 0, level: 0 } ]
+```
+
+**Performance Note**: use `TreeFilterer` class if you call the `filterTree` function multiple times on a certain set of candidates. `filterTree` internally uses this class, however, in each call it sets the candidates from scratch which can slow down the process.
+
+### TreeFilterer class
+`TreeFilterer` is a class that allows to set the `candidates` only once and perform filtering on them multiple times. This is much more efficient than calling the `filterTree` function directly.
+
+```typescript
+export class TreeFilterer<T> {
+    constructor()
+
+    /** The method to set the candidates that are going to be filtered
+     * @param candidates An array of tree objects.
+     * @param dataKey the key of the object (and its children) which holds the data (defaults to `"data"`)
+     * @param childrenKey the key of the object (and its children) which hold the children (defaults to `"children"`)
+     */
+    setCandidates<T>(candidates: Array<T>, dataKey?: string, childrenKey?: string): void
+
+    /** The method to perform the filtering on the already set candidates
+     *  @param query A string query to match each candidate against.
+     *  @param options options
+     *  @return An array of candidate objects in form of `{data, index, level}` sorted by best match against the query. Each objects has the address of the object in the tree using `index` and `level`.
+     */
+    filter(query: string, options: IFilterOptions<object>): TreeFilterResult[]
+}
+```
+
+Example:
+```Javascript
+const { TreeFilterer } = require('fuzzaldrin-plus-fast')
+
+const arrayFilterer = new TreeFilterer()
+
+const candidates = [
+  {data: "bye1", children: [{data: "hello"}]},
+  {data: "Bye2", children: [{data: "_bye4"}, {data: "hel"}]},
+  {data: "eye"},
+]
+arrayFilterer.setCandidates(candidates, "data", "children") // set candidates only once
+
+// call filter multiple times
+arrayFilterer.filter('hello')
+arrayFilterer.filter('bye')
 ```
 
 ### score(string, query, options = {})
@@ -153,13 +234,6 @@ In all the above functions, you can pass an optional object with the following k
 
     pathSeparator?: '/' | '\\' | string
 }
-```
-
-### New()
-Initializes the native binding
-```js
-const { New } = require('fuzzaldrin-plus-fast')
-New()
 ```
 
 # Info for Developers

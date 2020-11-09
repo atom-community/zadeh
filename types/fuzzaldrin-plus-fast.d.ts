@@ -33,6 +33,26 @@ export type IFilterOptions<T> = IOptions & {
     // maxInners?: number
 }
 
+/** ArrayFilterer is a class that allows to set the `candidates` only once and perform filtering on them multiple times.
+ *  This is much more efficient than calling the `filter` function directly.
+ */
+export class ArrayFilterer<T> {
+    constructor()
+
+    /** The method to set the candidates that are going to be filtered
+     * @param candidates An array of tree objects.
+     * @param dataKey (optional) if `candidates` is an array of objects, pass the key in the object which holds the data. dataKey can be the options object passed to `filter` method (but this is deprecated).
+     */
+    setCandidates<T>(candidates: Array<T>, dataKey?: string): void
+
+    /** The method to perform the filtering on the already set candidates
+     *  @param query A string query to match each candidate against.
+     *  @param options options
+     *  @return returns an array of candidates sorted by best match against the query.
+     */
+    filter(query: string, options: IFilterOptions<T>): Array<T>
+}
+
 /** Sort and filter the given candidates by matching them against the given query.
 * @param candidates An array of strings or objects.
 * @param query A string query to match each candidate against.
@@ -46,22 +66,50 @@ export function filter<T>(
 ): T[]
 
 
+// The object (an element of the array) returned from filtering trees. It has the address of the object in the tree using `index` and `level`.
+interface TreeFilterResult {
+    data: string
+    index: number
+    level: number
+}
+
+/** TreeFilterer is a class that allows to set the `candidates` only once and perform filtering on them multiple times.
+ *  This is much more efficient than calling the `filterTree` function directly.
+ */
+export class TreeFilterer<T> {
+    constructor()
+
+    /** The method to set the candidates that are going to be filtered
+     * @param candidates An array of tree objects.
+     * @param dataKey the key of the object (and its children) which holds the data (defaults to `"data"`)
+     * @param childrenKey the key of the object (and its children) which hold the children (defaults to `"children"`)
+     */
+    setCandidates<T>(candidates: Array<T>, dataKey?: string, childrenKey?: string): void
+
+    /** The method to perform the filtering on the already set candidates
+     *  @param query A string query to match each candidate against.
+     *  @param options options
+     *  @return An array of candidate objects in form of `{data, index, level}` sorted by best match against the query. Each objects has the address of the object in the tree using `index` and `level`.
+     */
+    filter(query: string, options: IFilterOptions<object>): TreeFilterResult[]
+}
+
 /** Sort and filter the given Tree candidates by matching them against the given query.
 * A tree object is an object in which each entry stores the data in its dataKey and it has (may have) some children (with a similar structure) in its childrenKey
 * @param candidates An array of tree objects.
 * @param query A string query to match each candidate against.
-* @param dataKey the key of the object (and its children) which holds the data
-* @param childrenKey the key of the object (and its children) which hold the children
+* @param dataKey the key of the object (and its children) which holds the data (defaults to `"data"`)
+* @param childrenKey the key of the object (and its children) which hold the children (defaults to `"children"`)
 * @param options options
 * @return An array of candidate objects in form of `{data, index, level}` sorted by best match against the query. Each objects has the address of the object in the tree using `index` and `level`.
  */
-export function filterTree<T>(
-    candidates: T[],
+export function filterTree(
+    candidates: object[],
     query: string,
     dataKey: string,
     childrenKey: string,
-    options?: IFilterOptions<T>
-): T[]
+    options?: IFilterOptions<object>
+): TreeFilterResult[]
 
 /** Score the given string against the given query.
 * @param str The string the score.
