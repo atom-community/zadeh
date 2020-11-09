@@ -36,8 +36,8 @@ struct CandidateObject {
 };
 
 struct Tree {
-    const string &dataKey;
-    const string &childrenKey;
+    /* const */ string dataKey = "data"s;
+    /* const */ string childrenKey = "children"s;
     /** an array of the CandidateObject which includes the data and its address (index, level) in the tree for each */
     vector<CandidateObject> entriesArray;
 
@@ -69,6 +69,9 @@ struct Tree {
             makeEntriesArray(mayChildren.value(), level + 1);
         }
     }
+
+    // default constructor is needed for generation of all the move/copy methods
+    Tree() = default;
 
     /** create a Tree object and make an entries array */
     // NOTE: this is made to only accept Napi::Array because we cannot export templates to JavaScript
