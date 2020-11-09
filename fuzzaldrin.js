@@ -48,7 +48,7 @@ export class ArrayFilterer {
 }
 
 /**
- * @deprecated use ArrayFilterer or TreeFilterer instead class instead
+* @deprecated use ArrayFilterer or TreeFilterer classes instead
  */
 export const New = () => new ArrayFilterer()
 
