@@ -16,12 +16,14 @@ function parseOptions(options, query) {
   return options
 }
 
+/** Array Filter */
+
 export class ArrayFilterer {
   constructor() {
-    this.obj = new binding.ArrayFilterer()
+    this.obj = new binding.Fuzzaldrin()
   }
 
-  setArrayFiltererCandidates(candidates, options = {}) {
+  setCandidates(candidates, options = {}) {
     this.candidates = candidates
     if (options.key)
       candidates = candidates.map((item) => item[options.key])
@@ -34,39 +36,46 @@ export class ArrayFilterer {
       Boolean(options.usePathScoring), Boolean(options.useExtensionBonus))
     return res.map((ind) => this.candidates[ind])
   }
-
-  setTreeFiltererCandidates(candidates, dataKey = "data", childrenKey = "children") {
-    this.candidates = candidates
-    return this.obj.setTreeFiltererCandidates(candidates, dataKey, childrenKey)
-  }
-
-  filterTree(query, options = {}) {
-    options = parseOptions(options)
-    return this.obj.filterTree(query, options.maxResults,
-      Boolean(options.usePathScoring), Boolean(options.useExtensionBonus))
-  }
 }
 
 /**
- * @deprecated use ArrayFilterer class instead
+ * @deprecated use ArrayFilterer or TreeFilterer instead class instead
  */
 export const New = () => new ArrayFilterer()
 
 export function filter (candidates, query, options = {}) {
     if (!candidates || !query)
       return []
-    const obj = new ArrayFilterer()
-    obj.setArrayFiltererCandidates(candidates, options)
-    return obj.filter(query, options)
+    const arrayFilterer = new ArrayFilterer()
+    arrayFilterer.setCandidates(candidates, options)
+    return arrayFilterer.filter(query, options)
 }
 
+/** Tree Filter */
+
+export class TreeFilterer {
+  constructor() {
+    this.obj = new binding.Fuzzaldrin()
+  }
+
+  setCandidates(candidates, dataKey = "data", childrenKey = "children") {
+    this.candidates = candidates
+    return this.obj.setTreeFiltererCandidates(candidates, dataKey, childrenKey)
+  }
+
+  filter(query, options = {}) {
+    options = parseOptions(options)
+    return this.obj.filterTree(query, options.maxResults,
+      Boolean(options.usePathScoring), Boolean(options.useExtensionBonus))
+  }
+}
 
 export function filterTree(candidatesTrees, query, dataKey = "data", childrenKey = "children", options = {}) {
     if (!candidatesTrees || !query)
       return []
-    const obj = new ArrayFilterer()
-    obj.setTreeFiltererCandidates(candidates, dataKey, childrenKey)
-    return obj.filterTree(query, options)
+    const treeFilterer = new TreeFilterer()
+    treeFilterer.setCandidates(candidates, dataKey, childrenKey)
+    return treeFilterer.filter(query, options)
 }
 
 export function score (candidate, query, options = {}) {
@@ -76,6 +85,8 @@ export function score (candidate, query, options = {}) {
     return binding.score(candidate, query,
       Boolean(options.usePathScoring), Boolean(options.useExtensionBonus))
 }
+
+/** Other functions */
 
 export function match (string, query, options = {}) {
     if (!string || !query)
