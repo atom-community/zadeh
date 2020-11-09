@@ -8,6 +8,10 @@ Napi::Value Fuzzaldrin::Filter(const Napi::CallbackInfo &info) {
         Napi::TypeError::New(info.Env(), "Invalid arguments for Filter").ThrowAsJavaScriptException();
         return Napi::Boolean();
     }
+    // optimization for no candidates
+    if (candidates_.empty()) {
+        return Napi::Array::New(info.Env());
+    }
     const std::string query = info[0].As<Napi::String>();
     const size_t maxResults = info[1].As<Napi::Number>().Uint32Value();
     const bool usePathScoring = info[2].As<Napi::Boolean>();
@@ -92,6 +96,10 @@ Napi::Value Fuzzaldrin::FilterTree(const Napi::CallbackInfo &info) {
         || !info[0].IsString()
         || !info[1].IsNumber() || !info[2].IsBoolean() || !info[3].IsBoolean()) {
         Napi::TypeError::New(info.Env(), "Invalid arguments for FilterTree").ThrowAsJavaScriptException();
+        return Napi::Array::New(info.Env());
+    }
+    // optimization for no candidates
+    if (candidates_.empty()) {
         return Napi::Array::New(info.Env());
     }
 
