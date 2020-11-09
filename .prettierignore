@@ -1,0 +1,11 @@
+node_modules
+package.json
+package-lock.json
+pnpm-lock.yaml
+coverage
+build
+prebuilds
+fuzzaldrin-dist.js
+fuzzaldrin-dist.js.map
+spec/*.coffee
+.parcel-cache

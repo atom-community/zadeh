@@ -5,7 +5,7 @@
   "main": "fuzzaldrin-dist.js",
   "types": "./types/fuzzaldrin-plus-fast.d.ts",
   "scripts": {
-    "format": "clang-format -i src/*.cc src/*.h",
+    "format": "prettier --write . && clang-format -i src/*.cc src/*.h",
     "tidy": "clang-tidy src/*.cc src/*.h",
     "tidy:fix": "clang-tidy src/*.cc src/*.h --fix --fix-errors",
     "native:clean": "shx rm -rf build prebuilds",
@@ -51,10 +51,11 @@
     "fuzzaldrin-plus": "^0.6.0",
     "growl": ">=1.10.5",
     "jasmine-node": "^3.0.0",
-    "npm-check-updates": "9.2.4",
+    "npm-check-updates": "10.0.0",
     "parcel": "^2.0.0-nightly.438",
     "prebuildify": "^4.1.0",
-    "shx": "^0.3.3"
+    "shx": "^0.3.3",
+    "prettier": "^2.1.2"
   },
   "repository": {
     "type": "git",
