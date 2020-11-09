@@ -22,7 +22,7 @@ Napi::Value Fuzzaldrin::Filter(const Napi::CallbackInfo &info) {
 }
 
 Napi::Value Fuzzaldrin::setArrayFiltererCandidates(const Napi::CallbackInfo &info) {
-    if (info.Length() != 2 || !info[0].IsArray()) {
+    if (info.Length() != 1 || !info[0].IsArray()) {
         Napi::TypeError::New(info.Env(), "Invalid arguments for setArrayFiltererCandidates").ThrowAsJavaScriptException();
         return Napi::Boolean();
     }
@@ -49,7 +49,7 @@ Napi::Value Fuzzaldrin::setArrayFiltererCandidates(const Napi::CallbackInfo &inf
 
 Napi::Value Fuzzaldrin::setTreeFiltererCandidates(const Napi::CallbackInfo &info) {
     // parse arguments
-    if (info.Length() != 4
+    if (info.Length() != 3
         || !info[0].IsArray()
         || !info[1].IsString() || !info[2].IsString()) {
         Napi::TypeError::New(info.Env(), "Invalid arguments for setTreeFiltererCandidates").ThrowAsJavaScriptException();
@@ -88,7 +88,7 @@ Napi::Value Fuzzaldrin::setTreeFiltererCandidates(const Napi::CallbackInfo &info
 /** (query: string, maxResults: number, usePathScoring: bool, useExtensionBonus: bool) */
 Napi::Value Fuzzaldrin::FilterTree(const Napi::CallbackInfo &info) {
     // parse arguments
-    if (info.Length() != 5
+    if (info.Length() != 4
         || !info[0].IsString()
         || !info[1].IsNumber() || !info[2].IsBoolean() || !info[3].IsBoolean()) {
         Napi::TypeError::New(info.Env(), "Invalid arguments for FilterTree").ThrowAsJavaScriptException();
