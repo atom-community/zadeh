@@ -61,7 +61,7 @@ const std::vector<CandidateIndex> sort_priority_queue(CandidateScorePriorityQueu
     }
     std::sort(sorted.begin(), sorted.end());
     for (const auto &item : sorted) {
-        ret.push_back(item.index);
+        ret.emplace_back(item.index);
     }
     return ret;
 }

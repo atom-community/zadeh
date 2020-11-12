@@ -117,7 +117,7 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
             pos--;
             break;
         case Direction::DIAGONAL:
-            matches.push_back(i + offset);
+            matches.emplace_back(i + offset);
             j--;
             i--;
             pos -= n + 1;
@@ -192,14 +192,14 @@ std::vector<size_t> mergeMatches(const std::vector<size_t> &a, const std::vector
 
         while (bj <= ai && ++j < n) {
             if (bj < ai) {
-                out.push_back(bj);
+                out.emplace_back(bj);
             }
             bj = b[j];
         }
-        out.push_back(ai);
+        out.emplace_back(ai);
     }
     while (j < n) {
-        out.push_back(b[j++]);
+        out.emplace_back(b[j++]);
     }
     return out;
 }
