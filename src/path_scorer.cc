@@ -1,15 +1,10 @@
 #include "common.h"
 
-namespace {
-
 // Directory depth at which the full path influence is halved.
 constexpr size_t tau_depth = 20;
 
 // Full path is also penalized for length of basename. This adjust a scale factor for that penalty.
 constexpr Score file_coeff = 2.5;
-
-};// namespace
-
 
 extern Score scorePath(const CandidateString &subject, const CandidateString &subject_lw, Score fullPathScore, const Options &options);
 

@@ -4,7 +4,6 @@
 #include <thread>
 #include <limits>
 
-namespace {
 
 struct CandidateScore {
     // TODO non const
@@ -65,8 +64,6 @@ const std::vector<CandidateIndex> sort_priority_queue(CandidateScorePriorityQueu
     }
     return ret;
 }
-
-}// namespace
 
 const std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &candidates, const Element &query, const Options &options) {
     CandidateScorePriorityQueue top_k;

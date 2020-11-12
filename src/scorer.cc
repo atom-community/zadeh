@@ -7,8 +7,6 @@
 //  score: Find string similarity using a Smith Waterman algorithm
 //         Modified to account for programing scenarios (CamelCase folder/file.ext object.property)
 
-namespace {
-
 // Base point for a single character match
 // This balance making patterns VS position and size penalty.
 constexpr int wm = 150;
@@ -27,8 +25,6 @@ constexpr Score tau_size = 150;
 // If a spec with frequent repetition fail, increase this.
 // This has a direct influence on worst case scenario benchmark.
 constexpr float miss_coeff = 0.75;// Max number missed consecutive hit = ceil(miss_coeff*query.length) + 5
-
-}// namespace
 
 extern bool isWordEnd(const size_t pos, const CandidateString &subject, const CandidateString &subject_lw, const size_t len);
 extern bool isSeparator(const char c) noexcept;
