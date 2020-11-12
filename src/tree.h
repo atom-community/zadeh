@@ -1,5 +1,5 @@
-#ifndef fuzzaldrin_tree_h__
-#define fuzzaldrin_tree_h__
+#ifndef Fuzzaldrin_tree_h_
+#define Fuzzaldrin_tree_h_
 
 #include <optional>
 #include "common.h"
@@ -84,4 +84,4 @@ struct Tree {
     }
 };
 
-#endif// tree_h__
+#endif// Fuzzaldrin_tree_h_

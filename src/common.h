@@ -1,5 +1,5 @@
-#ifndef fuzzaldrin_common_h__
-#define fuzzaldrin_common_h__
+#ifndef Fuzzaldrin_common_h_
+#define Fuzzaldrin_common_h_
 
 #include <vector>
 #include <set>
@@ -103,4 +103,4 @@ extern const std::vector<CandidateIndex> filter(const vector<std::vector<Candida
 extern std::vector<size_t> matcher_match(const CandidateString &string, const Element &query, const Options &options);
 extern void get_wrap(const CandidateString &string, const Element &query, const Options &options, std::string *out);
 
-#endif// fuzzaldrin_common_h__
+#endif// Fuzzaldrin_common_h_
