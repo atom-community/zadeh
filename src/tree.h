@@ -44,7 +44,9 @@ struct Tree {
 
     /** Recursive function that fills the entriesArray from the given jsTreeArray */
     void makeEntriesArray(const Napi::Array &jsTreeArray, const size_t level) {
-        for (auto iEntry = 0u, len = jsTreeArray.Length(); iEntry < len; iEntry++) {
+        const auto entriesArrayLength = jsTreeArray.Length();
+        entriesArray.reserve(entriesArrayLength);// reserve enough space
+        for (auto iEntry = 0u; iEntry < entriesArrayLength; iEntry++) {
             auto jsTree = jsTreeArray[iEntry].As<Napi::Object>();
             makeEntriesArray(jsTree, level, iEntry);
         }
