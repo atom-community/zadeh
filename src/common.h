@@ -20,8 +20,8 @@ constexpr size_t kMaxThreads = 16;
 // Safe string class that logs error when index is accessed outside the string.
 class SafeString : public std::string {
   public:
-    SafeString() = default;
-    SafeString(const std::string &s) : std::string(s) {}
+    explicit SafeString() = default;
+    explicit SafeString(const std::string &s) : std::string(s) {}
     const char &operator[](size_t i) const {
         if (i >= size()) {
             printf("ERROR string index access index=%zu str=%s\n", i, c_str());
@@ -53,7 +53,7 @@ struct PreparedQuery {
     Element ext;
     std::set<char> charCodes{};
 
-    PreparedQuery(const Element &q, const char pathSeparator);
+    explicit PreparedQuery(const Element &q, const char pathSeparator);
 };
 
 struct Options {
@@ -68,8 +68,8 @@ struct Options {
 #endif
     const PreparedQuery preparedQuery;
 
-    Options(const Element &_query, size_t _maxResults, bool _usePathScoring, bool _useExtensionBonus) : max_results(_maxResults), usePathScoring(_usePathScoring), useExtensionBonus(_useExtensionBonus), preparedQuery(_query, pathSeparator) {}
-    Options(const Element &_query, char _pathSeparator) : pathSeparator(_pathSeparator), preparedQuery(_query, _pathSeparator) {}
+    explicit Options(const Element &_query, size_t _maxResults, bool _usePathScoring, bool _useExtensionBonus) : max_results(_maxResults), usePathScoring(_usePathScoring), useExtensionBonus(_useExtensionBonus), preparedQuery(_query, pathSeparator) {}
+    explicit Options(const Element &_query, char _pathSeparator) : pathSeparator(_pathSeparator), preparedQuery(_query, _pathSeparator) {}
 };
 
 struct AcronymResult {
@@ -77,7 +77,7 @@ struct AcronymResult {
     float pos;
     int count;
 
-    AcronymResult(Score s, float p, int c) noexcept : score(s), pos(p), count(c) {}
+    explicit AcronymResult(Score s, float p, int c) noexcept : score(s), pos(p), count(c) {}
 };
 
 extern Element ToLower(const Element &s);
