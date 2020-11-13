@@ -33,7 +33,7 @@ extern Score scoreExact(const size_t n, const size_t m, const size_t quality, co
 extern Score scorePattern(const size_t count, const size_t len, const size_t sameCase, const bool start, const bool end) noexcept;
 extern Score scoreExactMatch(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, size_t pos, const size_t n, const size_t m);
 
-extern bool isAcronymFullWord(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const unsigned nbAcronymInQuery);
+extern bool isAcronymFullWord(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const unsigned nbAcronymInQuery) noexcept;
 
 
 //
@@ -531,7 +531,7 @@ AcronymResult scoreAcronyms(const CandidateString &subject, const CandidateStrin
 //
 // This method check for (b) assuming (a) has been checked before entering.
 
-bool isAcronymFullWord(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const unsigned nbAcronymInQuery) {
+bool isAcronymFullWord(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const unsigned nbAcronymInQuery) noexcept {
     const auto m = subject.size();
     const auto n = query.size();
     auto count = 0u;
