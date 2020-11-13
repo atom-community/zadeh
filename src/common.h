@@ -98,7 +98,7 @@ extern Score path_scorer_score(const CandidateString &string, const Element &que
 extern int countDir(const CandidateString &path, const size_t end, const char pathSeparator) noexcept;
 extern CandidateString getExtension(const CandidateString &str);
 
-extern const std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &candidates, const Element &query, const Options &options);
+extern std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &candidates, const Element &query, const Options &options);
 
 extern std::vector<size_t> matcher_match(const CandidateString &string, const Element &query, const Options &options);
 extern void get_wrap(const CandidateString &string, const Element &query, const Options &options, std::string *out);
