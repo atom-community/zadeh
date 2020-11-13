@@ -44,7 +44,7 @@ Napi::Value Fuzzaldrin::setArrayFiltererCandidates(const Napi::CallbackInfo &inf
         }
         for (auto j = cur_start; j < cur_start + chunk_size; j++) {
             const Napi::Value val = candidates[j];
-            candidates_[i].push_back(val.ToString().Utf8Value());
+            candidates_[i].emplace_back(val.ToString().Utf8Value());
         }
         cur_start += chunk_size;
     }
@@ -80,7 +80,7 @@ Napi::Value Fuzzaldrin::setTreeFiltererCandidates(const Napi::CallbackInfo &info
             chunk_size++;
         }
         for (auto j = cur_start; j < cur_start + chunk_size; j++) {
-            candidates_[i].push_back(candidates[j].data);// different // TODO copy
+            candidates_[i].emplace_back(candidates[j].data);// different // TODO copy
         }
         cur_start += chunk_size;
     }

@@ -7,8 +7,6 @@
 //  score: Find string similarity using a Smith Waterman algorithm
 //         Modified to account for programing scenarios (CamelCase folder/file.ext object.property)
 
-namespace {
-
 // Base point for a single character match
 // This balance making patterns VS position and size penalty.
 constexpr int wm = 150;
@@ -28,8 +26,6 @@ constexpr Score tau_size = 150;
 // This has a direct influence on worst case scenario benchmark.
 constexpr float miss_coeff = 0.75;// Max number missed consecutive hit = ceil(miss_coeff*query.length) + 5
 
-}// namespace
-
 extern bool isWordEnd(const size_t pos, const CandidateString &subject, const CandidateString &subject_lw, const size_t len);
 extern bool isSeparator(const char c) noexcept;
 extern Score scoreExact(const size_t n, const size_t m, const size_t quality, const Score pos);
@@ -37,7 +33,7 @@ extern Score scoreExact(const size_t n, const size_t m, const size_t quality, co
 extern Score scorePattern(const size_t count, const size_t len, const size_t sameCase, const bool start, const bool end) noexcept;
 extern Score scoreExactMatch(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, size_t pos, const size_t n, const size_t m);
 
-extern bool isAcronymFullWord(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const unsigned nbAcronymInQuery);
+extern bool isAcronymFullWord(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const unsigned nbAcronymInQuery) noexcept;
 
 
 //
@@ -535,7 +531,7 @@ AcronymResult scoreAcronyms(const CandidateString &subject, const CandidateStrin
 //
 // This method check for (b) assuming (a) has been checked before entering.
 
-bool isAcronymFullWord(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const unsigned nbAcronymInQuery) {
+bool isAcronymFullWord(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const unsigned nbAcronymInQuery) noexcept {
     const auto m = subject.size();
     const auto n = query.size();
     auto count = 0u;

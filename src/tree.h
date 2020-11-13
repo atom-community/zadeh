@@ -1,5 +1,5 @@
-#ifndef fuzzaldrin_tree_h__
-#define fuzzaldrin_tree_h__
+#ifndef Fuzzaldrin_tree_h_
+#define Fuzzaldrin_tree_h_
 
 #include <optional>
 #include "common.h"
@@ -31,7 +31,7 @@ struct CandidateObject {
     const size_t level = 0;
     const size_t index = 0;
 
-    CandidateObject(CandidateString &&data_, const size_t level_, const size_t index_) noexcept
+    explicit CandidateObject(CandidateString &&data_, const size_t level_, const size_t index_) noexcept
       : data{ move(data_) }, level{ level_ }, index{ index_ } {}
 };
 
@@ -44,7 +44,9 @@ struct Tree {
 
     /** Recursive function that fills the entriesArray from the given jsTreeArray */
     void makeEntriesArray(const Napi::Array &jsTreeArray, const size_t level) {
-        for (auto iEntry = 0u, len = jsTreeArray.Length(); iEntry < len; iEntry++) {
+        const auto entriesArrayLength = jsTreeArray.Length();
+        entriesArray.reserve(entriesArrayLength);// reserve enough space
+        for (auto iEntry = 0u; iEntry < entriesArrayLength; iEntry++) {
             auto jsTree = jsTreeArray[iEntry].As<Napi::Object>();
             makeEntriesArray(jsTree, level, iEntry);
         }
@@ -71,15 +73,15 @@ struct Tree {
     }
 
     // default constructor is needed for generation of all the move/copy methods
-    Tree() = default;
+    explicit Tree() = default;
 
     /** create a Tree object and make an entries array */
     // NOTE: this is made to only accept Napi::Array because we cannot export templates to JavaScript
-    Tree(const Napi::Array &jsTreeArrayOrObject_, const string &dataKey_, const string &childrenKey_)
+    explicit Tree(const Napi::Array &jsTreeArrayOrObject_, const string &dataKey_, const string &childrenKey_)
       : dataKey{ dataKey_ },
         childrenKey{ childrenKey_ } {
         makeEntriesArray(jsTreeArrayOrObject_, 0);
     }
 };
 
-#endif// tree_h__
+#endif// Fuzzaldrin_tree_h_

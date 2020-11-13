@@ -4,7 +4,6 @@
 #include <thread>
 #include <limits>
 
-namespace {
 
 struct CandidateScore {
     // TODO non const
@@ -50,7 +49,7 @@ void thread_worker_filter(const std::vector<CandidateString> &candidates,
     filter_internal(candidates, start_index, query, options, max_results, results);
 }
 
-const std::vector<CandidateIndex> sort_priority_queue(CandidateScorePriorityQueue &&candidates) {
+std::vector<CandidateIndex> sort_priority_queue(CandidateScorePriorityQueue &&candidates) {
     vector<CandidateScore> sorted;
     std::vector<CandidateIndex> ret;
     sorted.reserve(candidates.size());
@@ -61,14 +60,12 @@ const std::vector<CandidateIndex> sort_priority_queue(CandidateScorePriorityQueu
     }
     std::sort(sorted.begin(), sorted.end());
     for (const auto &item : sorted) {
-        ret.push_back(item.index);
+        ret.emplace_back(item.index);
     }
     return ret;
 }
 
-}// namespace
-
-const std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &candidates, const Element &query, const Options &options) {
+std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &candidates, const Element &query, const Options &options) {
     CandidateScorePriorityQueue top_k;
     auto max_results = options.max_results;
     if (max_results == 0u) {
