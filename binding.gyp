@@ -11,7 +11,7 @@
       'configurations': {
         # Release Settings
         'Release': {
-          'defines': [ 'NAPI_DISABLE_CPP_EXCEPTIONS' ],
+          'defines': [ 'NAPI_DISABLE_CPP_EXCEPTIONS', 'NDEBUG' ],
           "cflags": [ "-fno-exceptions", "-O3" ],
           "cflags_cc": [ "-fno-exceptions", "-O3", "-std=c++2a" ],
           "xcode_settings": {
@@ -28,6 +28,7 @@
               "AdditionalOptions": [
                 # C++ standard
                 "/std:c++latest",
+                "/DNDEBUG"                          # turn off asserts
               ],
               'EnableFunctionLevelLinking': 'true',
               'EnableIntrinsicFunctions': 'true',

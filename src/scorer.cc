@@ -72,14 +72,14 @@ bool isMatch(const CandidateString &subject, const Element &query_lw, const Elem
 
     // foreach char of query
     while (j < n) {
-        // assert(j >= 0); // fuzz: if n==0, does not enter while and j==0
+        assert(j >= 0);// fuzz: if n==0, does not enter while and j==0
         const auto qj_lw = query_lw[j];// inbounds
         const auto qj_up = query_up[j];// TODO bounds
 
         // continue walking the subject from where we have left with previous query char
         // until we have found a character that is either lowercase or uppercase query.
         while (i < m) {
-            // assert(i >= 0); // fuzz: if m==0, does not enter while and i==0
+            assert(i >= 0);// fuzz: if m==0, does not enter while and i==0
             const auto si = subject[i];// inbounds
             if (si == qj_lw || si == qj_up) {
                 break;
@@ -87,15 +87,17 @@ bool isMatch(const CandidateString &subject, const Element &query_lw, const Elem
 
             ++i;
         }
+        assert(i >= 0);
 
         // if we passed the last char, query is not in subject
         if (i == m) {
-            //assert(i >= 0); // fuzz: if m==0, i is 0
+            assert(i >= 0);// fuzz: if m==0, i is 0
             return false;
         }
 
         ++j;
     }
+    assert(j >= 0);
 
     // Found every char of query in subject in proper order, match is positive
     return true;
@@ -159,7 +161,7 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
 
     auto i = 0u;
     while (i < m) {//foreach char si of subject
-        //assert(i >= 0);// fuzz: if m==0, does not enter while and i==0
+        assert(i >= 0);// fuzz: if m==0, does not enter while and i==0
         auto si_lw = subject_lw[i];
 
         // if si_lw is not in query
@@ -169,10 +171,11 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
             if (csc_should_rebuild) {
                 auto k = 0u;
                 while (k < n) {
-                    //assert(k >= 0);// fuzz: if n==0, does not enter while and k==0
+                    assert(k >= 0);// fuzz: if n==0, does not enter while and k==0
                     csc_row[k] = 0;
                     ++k;
                 }
+                assert(k >= 0);
                 csc_should_rebuild = false;
             }
 
@@ -188,7 +191,7 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
 
         auto j = 0u;//0..n-1
         while (j < n) {//foreach char qj of query
-            //assert(j >= 0);// fuzz: if n==0, does not enter while and j==0
+            assert(j >= 0);// fuzz: if n==0, does not enter while and j==0
             // What is the best gap ?
             // score_up contain the score of a gap in subject.
             // score_left = last iteration of score, -> gap in query.
@@ -237,10 +240,10 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
 
             ++j;
         }
-
+        assert(j >= 0);
         ++i;
     }
-
+    assert(i >= 0);// fuzz: if m==0, does not enter while and i==0
     // get highest score so far
     const auto score = score_row[n - 1];
     return score * sz;
@@ -257,7 +260,7 @@ bool isWordStart(const size_t pos, const CandidateString &subject, const Candida
     if (pos == 0u) {
         return true;// match is FIRST char ( place a virtual token separator before first char of string)
     }
-    // assert(pos > 0u);
+    assert(pos > 0u);
     const auto curr_s = subject[pos];
     const auto prev_s = subject[pos - 1];//inbounds
     return isSeparator(prev_s) ||// match FOLLOW a separator
@@ -430,12 +433,13 @@ Score scoreExactMatch(const CandidateString &subject, const CandidateString &sub
     auto i = 0u;
     auto sameCase = 0u;
     while (i < n) {
-        // assert(i>=0); // fuzz: if n==0, does not enter while and i==0u
+        assert(i >= 0);// fuzz: if n==0, does not enter while and i==0u
         if (query[i] == subject[pos + i]) {
             sameCase++;
         }
         ++i;
     }
+    assert(i >= 0);
 
     const auto end = isWordEnd(pos + n - 1u, subject, subject_lw, m);
 
@@ -545,7 +549,7 @@ bool isAcronymFullWord(const CandidateString &subject, const CandidateString &su
 
     auto i = 0u;
     while (i < m) {
-        // assert(i>=0); // fuzz: if m==0, does not enter while and i==0
+        assert(i >= 0);// fuzz: if m==0, does not enter while and i==0
         //For each char of subject
         //Test if we have an acronym, if so increase acronym count.
         //If the acronym count is more than nbAcronymInQuery (number of non separator char in query)
@@ -556,6 +560,7 @@ bool isAcronymFullWord(const CandidateString &subject, const CandidateString &su
 
         ++i;
     }
+    assert(i >= 0);
 
     return true;
 }

@@ -9,6 +9,7 @@
 #include <cstring>
 #include <iostream>
 #include <utility>
+#include <cassert>
 
 #include <napi.h>
 
