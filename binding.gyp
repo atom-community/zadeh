@@ -42,7 +42,7 @@
         },
         # Debug Settings
         'Debug': {
-          'defines': [ 'DEBUG', 'NAPI_CPP_EXCEPTIONS', 'ENABLE_DEBUG' ],
+          'defines': [ 'DEBUG', 'NAPI_CPP_EXCEPTIONS' ],
           'cflags': [ '-g', '-O0' ],
           "cflags_cc": [
             '-fexceptions', # enable exceptions

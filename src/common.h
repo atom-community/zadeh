@@ -18,6 +18,7 @@ using namespace std;
 constexpr size_t kMaxThreads = 16;
 
 #ifdef ENABLE_DEBUG
+// TODO does not work anymore because we added explicit to constructors
 // Safe string class that logs error when index is accessed outside the string.
 class SafeString : public std::string {
   public:
