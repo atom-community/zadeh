@@ -20,16 +20,16 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
     const auto &query_lw = preparedQuery.query_lw;
 
     // TODO making these two auto breaks the code. There are a lot of narrowing conversions in this file
-    const int m = subject.size();
-    const int n = query.size();
+    const int subject_size = subject.size();
+    const int query_size = query.size();
 
     // this is like the consecutive bonus, but for camelCase / snake_case initials
     const auto acro = scoreAcronyms(subject, subject_lw, query, query_lw);
     const auto acro_score = acro.score;
 
     // Init
-    vector<Score> score_row(n, 0);
-    vector<Score> csc_row(n, 0);
+    vector<Score> score_row(query_size, 0);
+    vector<Score> csc_row(query_size, 0);
 
     // Directions constants
     enum class Direction {
@@ -40,18 +40,18 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
     };
 
     // Traceback matrix
-    std::vector<Direction> trace(m * n, Direction::STOP);
+    std::vector<Direction> trace(subject_size * query_size, Direction::STOP);
     auto pos = -1;
 
     auto i = -1;
-    while (++i < m) {//foreach char is of subject
+    while (++i < subject_size) {//foreach char is of subject
         Score score = 0;
         Score score_up = 0;
         Score csc_diag = 0;
         const auto si_lw = subject_lw[i];
 
         auto j = -1;//0..n-1
-        while (++j < n) {//foreach char qj of query
+        while (++j < query_size) {//foreach char qj of query
             // reset score
             Score csc_score = 0;
             Score align = 0;
@@ -100,9 +100,9 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
     // Go back in the trace matrix
     // and collect matches (diagonals)
 
-    i = m - 1;
-    auto j = n - 1;
-    pos = i * n + j;
+    i = subject_size - 1;
+    auto j = query_size - 1;
+    pos = i * query_size + j;
     auto backtrack = true;
     std::vector<size_t> matches;
 
@@ -110,7 +110,7 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
         switch (trace[pos]) {
         case Direction::UP:
             i--;
-            pos -= n;
+            pos -= query_size;
             break;
         case Direction::LEFT:
             j--;
@@ -120,7 +120,7 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
             matches.emplace_back(i + offset);
             j--;
             i--;
-            pos -= n + 1;
+            pos -= query_size + 1;
             break;
         default:
             backtrack = false;
@@ -172,13 +172,13 @@ std::vector<size_t> basenameMatch(const CandidateString &subject, const Candidat
 // (Assume sequences are sorted, matches are sorted by construction.)
 //
 std::vector<size_t> mergeMatches(const std::vector<size_t> &a, const std::vector<size_t> &b) {
-    const auto m = a.size();
-    const auto n = b.size();
+    const auto a_size = a.size();
+    const auto b_size = b.size();
 
-    if (n == 0) {
+    if (b_size == 0) {
         return a;
     }
-    if (m == 0) {
+    if (a_size == 0) {
         return b;
     }
 
@@ -187,10 +187,10 @@ std::vector<size_t> mergeMatches(const std::vector<size_t> &a, const std::vector
     auto bj = b[j];
     std::vector<size_t> out;
 
-    while (++i < m) {
+    while (++i < a_size) {
         auto ai = a[i];
 
-        while (bj <= ai && ++j < n) {
+        while (bj <= ai && ++j < b_size) {
             if (bj < ai) {
                 out.emplace_back(bj);
             }
@@ -198,7 +198,7 @@ std::vector<size_t> mergeMatches(const std::vector<size_t> &a, const std::vector
         }
         out.emplace_back(ai);
     }
-    while (j < n) {
+    while (j < b_size) {
         out.emplace_back(b[j++]);
     }
     return out;
