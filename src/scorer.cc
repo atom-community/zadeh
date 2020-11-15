@@ -462,6 +462,12 @@ AcronymResult scoreAcronyms(const CandidateString &subject, const CandidateStrin
     const auto m = subject.size();
     const auto n = query.size();
 
+    // TODO do we need this inbounds check?
+    if (query_lw.size() < n) {
+        std::cerr << out_of_range("query_lw.size() < n").what();
+        abort();
+    }
+
     //a single char is not an acronym
     if (m <= 1 || n <= 1) {
         return emptyAcronymResult;
@@ -476,7 +482,8 @@ AcronymResult scoreAcronyms(const CandidateString &subject, const CandidateStrin
 
     //foreach char of query
     for (auto j = 0u; j < n; j++) {
-        const auto qj_lw = query_lw[j];// TODO bounds
+        assert(0u <= j && j < query_lw.size());
+        const auto qj_lw = query_lw[j];
 
         // Separator will not score point but will continue the prefix when present.
         // Test that the separator is in the candidate and advance cursor to that position.
