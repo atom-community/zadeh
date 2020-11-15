@@ -40,15 +40,6 @@ void filter_internal(const std::vector<CandidateString> &candidates,
     }
 }
 
-void thread_worker_filter(const std::vector<CandidateString> &candidates,
-  size_t start_index,
-  const Element &query,
-  const Options &options,
-  size_t max_results,
-  CandidateScorePriorityQueue &results) {
-    filter_internal(candidates, start_index, query, options, max_results, results);
-}
-
 std::vector<CandidateIndex> sort_priority_queue(CandidateScorePriorityQueue &&candidates) {
     vector<CandidateScore> sorted;
     std::vector<CandidateIndex> ret;
@@ -89,7 +80,7 @@ std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &c
     for (size_t i = 1; i < candidates_size; i++) {
         assert(1 < i && i < candidates.size() && i < results.size());
         start_index += candidates[i - 1].size();//inbounds
-        threads.emplace_back(thread_worker_filter, ref(candidates[i]), start_index, ref(query), ref(options), max_results, ref(results[i]));// inbounds
+        threads.emplace_back(filter_internal, ref(candidates[i]), start_index, ref(query), ref(options), max_results, ref(results[i]));// inbounds
     }
 
     assert(threads.size() == candidates.size() && results.size() == candidates.size());
