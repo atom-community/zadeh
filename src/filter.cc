@@ -77,7 +77,7 @@ std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &c
     vector<CandidateScorePriorityQueue> results(candidates.size());
     size_t start_index = 0;
     for (size_t i = 1, len = candidates.size(); i < len; i++) {
-        start_index += candidates[i - 1].size();
+        start_index += candidates[i - 1].size();//inbounds
         threads.emplace_back(thread_worker_filter, ref(candidates[i]), start_index, ref(query), ref(options), max_results, ref(results[i]));
     }
     // Do the work for first thread.
