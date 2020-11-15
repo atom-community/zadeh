@@ -77,9 +77,9 @@ struct Options {
 struct AcronymResult {
     Score score;
     float pos;
-    int count;
+    size_t count;
 
-    explicit AcronymResult(Score s, float p, int c) noexcept : score(s), pos(p), count(c) {}
+    explicit AcronymResult(Score s, float p, size_t c) noexcept : score(s), pos(p), count(c) {}
 };
 
 extern Element ToLower(const Element &s);
