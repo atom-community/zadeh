@@ -66,6 +66,10 @@ std::vector<CandidateIndex> sort_priority_queue(CandidateScorePriorityQueue &&ca
 }
 
 std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &candidates, const Element &query, const Options &options) {
+    const auto candidates_size = candidates.size();
+
+    assert(1 <= candidates_size);// TODO handled outside
+
     CandidateScorePriorityQueue top_k;
     auto max_results = options.max_results;
     if (max_results == 0u) {
@@ -74,17 +78,24 @@ std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &c
 
     // Split the dataset and pass down to multiple threads.
     vector<thread> threads;
-    vector<CandidateScorePriorityQueue> results(candidates.size());
+    threads.reserve(candidates.size());
+
+    auto results = vector<CandidateScorePriorityQueue>(candidates.size());
+
     size_t start_index = 0;
-    for (size_t i = 1, len = candidates.size(); i < len; i++) {
+    for (size_t i = 1; i < candidates_size; i++) {
+        assert(1 < i && i < candidates.size() && i < results.size());
         start_index += candidates[i - 1].size();//inbounds
-        threads.emplace_back(thread_worker_filter, ref(candidates[i]), start_index, ref(query), ref(options), max_results, ref(results[i]));
+        threads.emplace_back(thread_worker_filter, ref(candidates[i]), start_index, ref(query), ref(options), max_results, ref(results[i]));// inbounds
     }
+
+    assert(threads.size() == candidates.size() && results.size() == candidates.size());
+
     // Do the work for first thread.
-    filter_internal(candidates[0], 0, query, options, max_results, top_k);
-    // Wait for threads to complete and merge the restuls.
-    for (size_t i = 1, len = candidates.size(); i < len; i++) {
-        threads[i - 1].join();
+    filter_internal(candidates[0], 0, query, options, max_results, top_k);//inbounds (candidate_size >= 1)
+    // Wait for threads to complete and merge the results.
+    for (size_t i = 1; i < candidates_size; i++) {
+        threads[i - 1].join();//inbounds
         while (!results[i].empty()) {
             top_k.emplace(results[i].top());
             results[i].pop();
