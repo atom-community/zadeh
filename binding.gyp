@@ -12,8 +12,8 @@
         # Release Settings
         'Release': {
           'defines': [ 'NAPI_DISABLE_CPP_EXCEPTIONS', 'NDEBUG' ],
-          "cflags": [ "-fno-exceptions", "-O3" ],
-          "cflags_cc": [ "-fno-exceptions", "-O3", "-std=c++2a" ],
+          "cflags": [ "-fno-exceptions", "-Ofast" ],
+          "cflags_cc": [ "-fno-exceptions", "-Ofast", "-std=c++2a" ],
           "xcode_settings": {
             'GCC_OPTIMIZATION_LEVEL': '3', # stop gyp from defaulting to -Os
             "CLANG_CXX_LIBRARY": "libc++",
