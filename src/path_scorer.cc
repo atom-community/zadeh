@@ -11,13 +11,13 @@ extern Score scorePath(const CandidateString &subject, const CandidateString &su
 extern Score getExtensionScore(const CandidateString &candidate, const CandidateString &ext, const int startPos, const int endPos, const int maxDepth);
 
 Element ToLower(const Element &s) {
-    Element /* copy */ snew = s;
+    string snew = string(s.size(), ' '); // new string
     std::transform(s.begin(), s.end(), snew.begin(), ::tolower);
     return snew;
 }
 
 Element ToUpper(const Element &s) {
-    Element /* copy */ snew = s;
+    string snew = string(s.size(), ' '); // new string
     std::transform(s.begin(), s.end(), snew.begin(), ::toupper);
     return snew;
 }
