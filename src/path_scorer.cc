@@ -153,12 +153,12 @@ Score getExtensionScore(const CandidateString &candidate, const CandidateString 
         return 0;// (note that startPos >= -1)
     }
 
-    int n = ext.size();
+    int ext_size = ext.size();
     auto m = endPos - pos;
 
     // n contain the smallest of both extension length, m the largest.
-    if (m < n) {
-        n = m;
+    if (m < ext_size) {
+        ext_size = m;
         m = ext.size();
     }
 
@@ -166,7 +166,7 @@ Score getExtensionScore(const CandidateString &candidate, const CandidateString 
     pos++;
     assert(pos >= 1u);
     auto matched = 0;
-    while (matched < n) {
+    while (matched < ext_size) {
         assert(matched >= 0);// fuzz: if n==0, does not enter while and matched==0
         if (candidate[pos + matched] != ext[matched]) {// TODO candidate upper bound
             break;
