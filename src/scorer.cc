@@ -72,14 +72,14 @@ bool isMatch(const CandidateString &subject, const Element &query_lw, const Elem
 
     // foreach char of query
     while (j < n) {
-        assert(j >= 0);// fuzz: if n==0, does not enter while and j==0
+        assert(0 <= j && j < query_lw.size());// fuzz: if n==0, does not enter while and j==0
         const auto qj_lw = query_lw[j];// inbounds
         const auto qj_up = query_up[j];// TODO bounds
 
         // continue walking the subject from where we have left with previous query char
         // until we have found a character that is either lowercase or uppercase query.
         while (i < m) {
-            assert(i >= 0);// fuzz: if m==0, does not enter while and i==0
+            assert(0 <= i && i < subject.size());// fuzz: if m==0, does not enter while and i==0
             const auto si = subject[i];// inbounds
             if (si == qj_lw || si == qj_up) {
                 break;
@@ -87,7 +87,7 @@ bool isMatch(const CandidateString &subject, const Element &query_lw, const Elem
 
             ++i;
         }
-        assert(i >= 0);
+        assert(0 <= i && i < subject.size());
 
         // if we passed the last char, query is not in subject
         if (i == m) {
@@ -97,7 +97,7 @@ bool isMatch(const CandidateString &subject, const Element &query_lw, const Elem
 
         ++j;
     }
-    assert(j >= 0);
+    assert(0 <= j && j < query_lw.size());
 
     // Found every char of query in subject in proper order, match is positive
     return true;
@@ -260,7 +260,7 @@ bool isWordStart(const size_t pos, const CandidateString &subject, const Candida
     if (pos == 0u) {
         return true;// match is FIRST char ( place a virtual token separator before first char of string)
     }
-    assert(pos > 0u);
+    assert(0u < pos && pos < subject.size());
     const auto curr_s = subject[pos];
     const auto prev_s = subject[pos - 1];//inbounds
     return isSeparator(prev_s) ||// match FOLLOW a separator

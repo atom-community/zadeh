@@ -110,19 +110,19 @@ int countDir(const CandidateString &path, const size_t end, const char pathSepar
 
     //skip slash at the start so `foo/bar` and `/foo/bar` have the same depth.
     while ((i < end) && (path[i] == pathSeparator)) {//inbounds
-        assert(i >= 0);// fuzz: if end==0, it does not enter while and i==0
+        assert(0 <= i);// fuzz: if end==0, it does not enter while and i==0
         ++i;
     }
-    assert(i >= 0);
+    assert(0 <= i);
 
     while (++i < end) {
-        assert(i >= 0);// fuzz: if end==0, it does not enter while and i==0
+        assert(0 <= i && i < path.size());// fuzz: if end==0, it does not enter while and i==0
         if (path[i] == pathSeparator) {//inbounds
             count++;//record first slash, but then skip consecutive ones
             while ((++i < end) && (path[i] == pathSeparator)) {}
         }
     }
-    assert(i >= 0);
+    assert(0 <= i && i < path.size());
 
     return count;
 }
