@@ -51,7 +51,7 @@ Score scorePath(const CandidateString &subject, const CandidateString &subject_l
     // {preparedQuery, useExtensionBonus, pathSeparator} = options
 
     // Skip trailing slashes
-    auto end = subject.size() - 1;
+    int end = subject.size() - 1;
     while (subject[end] == options.pathSeparator) {
         end--;
     }
@@ -110,17 +110,19 @@ int countDir(const CandidateString &path, const size_t end, const char pathSepar
 
     //skip slash at the start so `foo/bar` and `/foo/bar` have the same depth.
     while ((i < end) && (path[i] == pathSeparator)) {//inbounds
-        // assert(i>=0); fuzz: if end==0, it does not enter while and i==0
+        assert(0 <= i);// fuzz: if end==0, it does not enter while and i==0
         ++i;
     }
+    assert(0 <= i);
 
     while (++i < end) {
-        // assert(i>=0); fuzz: if end==0, it does not enter while and i==0
+        assert(0 <= i && i < path.size());// fuzz: if end==0, it does not enter while and i==0
         if (path[i] == pathSeparator) {//inbounds
             count++;//record first slash, but then skip consecutive ones
             while ((++i < end) && (path[i] == pathSeparator)) {}
         }
     }
+    assert(0 <= i && i < path.size());
 
     return count;
 }
@@ -146,31 +148,32 @@ Score getExtensionScore(const CandidateString &candidate, const CandidateString 
 
     // Check that (a) extension exist, (b) it is after the start of the basename
     int pos = candidate.rfind('.', endPos);
-    // assert(pos >= 0u);
+    assert(pos >= 0u);
     if (pos <= startPos) {
         return 0;// (note that startPos >= -1)
     }
 
-    int n = ext.size();
+    int ext_size = ext.size();
     auto m = endPos - pos;
 
     // n contain the smallest of both extension length, m the largest.
-    if (m < n) {
-        n = m;
+    if (m < ext_size) {
+        ext_size = m;
         m = ext.size();
     }
 
     //place cursor after dot & count number of matching characters in extension
     pos++;
-    // assert(pos >= 1u);
+    assert(pos >= 1u);
     auto matched = 0;
-    while (matched < n) {
-        // assert(matched >=0); // fuzz: if n==0, does not enter while and matched==0
+    while (matched < ext_size) {
+        assert(matched >= 0);// fuzz: if n==0, does not enter while and matched==0
         if (candidate[pos + matched] != ext[matched]) {// TODO candidate upper bound
             break;
         }
         ++matched;
     }
+    assert(matched >= 0);
 
     // if nothing found, try deeper for multiple extensions, with some penalty for depth
     if (matched == 0u && maxDepth > 0) {

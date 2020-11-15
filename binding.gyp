@@ -11,9 +11,9 @@
       'configurations': {
         # Release Settings
         'Release': {
-          'defines': [ 'NAPI_DISABLE_CPP_EXCEPTIONS' ],
-          "cflags": [ "-fno-exceptions", "-O3" ],
-          "cflags_cc": [ "-fno-exceptions", "-O3", "-std=c++2a" ],
+          'defines': [ 'NAPI_DISABLE_CPP_EXCEPTIONS', 'NDEBUG' ],
+          "cflags": [ "-fno-exceptions", "-Ofast" ],
+          "cflags_cc": [ "-fno-exceptions", "-Ofast", "-std=c++2a" ],
           "xcode_settings": {
             'GCC_OPTIMIZATION_LEVEL': '3', # stop gyp from defaulting to -Os
             "CLANG_CXX_LIBRARY": "libc++",
@@ -28,6 +28,11 @@
               "AdditionalOptions": [
                 # C++ standard
                 "/std:c++latest",
+                "/O2",      # optimizations
+                "/Ob3",     # agressive inline
+                "/Oi",      # intrinsic functions
+                "/Ot",      # favor speed
+                "/DNDEBUG"  # turn off asserts
               ],
               'EnableFunctionLevelLinking': 'true',
               'EnableIntrinsicFunctions': 'true',
@@ -41,7 +46,7 @@
         },
         # Debug Settings
         'Debug': {
-          'defines': [ 'DEBUG', 'NAPI_CPP_EXCEPTIONS', 'ENABLE_DEBUG' ],
+          'defines': [ 'DEBUG', 'NAPI_CPP_EXCEPTIONS' ],
           'cflags': [ '-g', '-O0' ],
           "cflags_cc": [
             '-fexceptions', # enable exceptions

@@ -9,6 +9,7 @@
 #include <cstring>
 #include <iostream>
 #include <utility>
+#include <cassert>
 
 #include <napi.h>
 
@@ -17,6 +18,7 @@ using namespace std;
 constexpr size_t kMaxThreads = 16;
 
 #ifdef ENABLE_DEBUG
+// TODO does not work anymore because we added explicit to constructors
 // Safe string class that logs error when index is accessed outside the string.
 class SafeString : public std::string {
   public:
@@ -75,9 +77,9 @@ struct Options {
 struct AcronymResult {
     Score score;
     float pos;
-    int count;
+    size_t count;
 
-    explicit AcronymResult(Score s, float p, int c) noexcept : score(s), pos(p), count(c) {}
+    explicit AcronymResult(Score s, float p, size_t c) noexcept : score(s), pos(p), count(c) {}
 };
 
 extern Element ToLower(const Element &s);

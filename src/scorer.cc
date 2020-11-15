@@ -57,10 +57,10 @@ Score scorer_score(const CandidateString &string, const Element &query, const Op
 // Are all (non optional)characters of query in subject, in proper order ?
 //
 bool isMatch(const CandidateString &subject, const Element &query_lw, const Element &query_up) {
-    const auto m = subject.size();
-    const auto n = query_lw.size();
+    const auto subject_size = subject.size();
+    const auto query_lw_size = query_lw.size();
 
-    if (m == 0 || n > m) {
+    if (subject_size == 0 || query_lw_size > subject_size) {
         return false;
     }
     if (query_up.empty()) {// TODO will query_up be ever empty?
@@ -71,15 +71,15 @@ bool isMatch(const CandidateString &subject, const Element &query_lw, const Elem
     auto j = 0u;
 
     // foreach char of query
-    while (j < n) {
-        // assert(j >= 0); // fuzz: if n==0, does not enter while and j==0
+    while (j < query_lw_size) {
+        assert(0 <= j && j < query_lw.size());// fuzz: if n==0, does not enter while and j==0
         const auto qj_lw = query_lw[j];// inbounds
         const auto qj_up = query_up[j];// TODO bounds
 
         // continue walking the subject from where we have left with previous query char
         // until we have found a character that is either lowercase or uppercase query.
-        while (i < m) {
-            // assert(i >= 0); // fuzz: if m==0, does not enter while and i==0
+        while (i < subject_size) {
+            assert(0 <= i && i < subject.size());// fuzz: if m==0, does not enter while and i==0
             const auto si = subject[i];// inbounds
             if (si == qj_lw || si == qj_up) {
                 break;
@@ -87,15 +87,17 @@ bool isMatch(const CandidateString &subject, const Element &query_lw, const Elem
 
             ++i;
         }
+        assert(0 <= i && i < subject.size());
 
         // if we passed the last char, query is not in subject
-        if (i == m) {
-            //assert(i >= 0); // fuzz: if m==0, i is 0
+        if (i == subject_size) {
+            assert(i >= 0);// fuzz: if m==0, i is 0
             return false;
         }
 
         ++j;
     }
+    assert(0 <= j && j < query_lw.size());
 
     // Found every char of query in subject in proper order, match is positive
     return true;
@@ -110,8 +112,8 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
     const auto &query = preparedQuery.query;
     const auto &query_lw = preparedQuery.query_lw;
 
-    const auto m = subject.size();
-    const auto n = query.size();
+    const auto subject_size = subject.size();
+    const auto query_size = query.size();
 
     //----------------------------
     // Abbreviations sequence
@@ -121,8 +123,8 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
 
     // Whole query is abbreviation ?
     // => use that as score
-    if (acro.count == n) {
-        return scoreExact(n, m, acro_score, acro.pos);
+    if (acro.count == query_size) {
+        return scoreExact(query_size, subject_size, acro_score, acro.pos);
     }
 
     //----------------------------
@@ -131,7 +133,7 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
 
     const auto pos = subject_lw.find(query_lw);
     if (pos != std::string::npos) {
-        return scoreExactMatch(subject, subject_lw, query, query_lw, pos, n, m);
+        return scoreExactMatch(subject, subject_lw, query, query_lw, pos, query_size, subject_size);
     }
 
 
@@ -141,11 +143,11 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
 
 
     // Init
-    vector<Score> score_row(n, 0);
-    vector<Score> csc_row(n, 0);
-    const auto sz = scoreSize(n, m);
+    vector<Score> score_row(query_size, 0);
+    vector<Score> csc_row(query_size, 0);
+    const auto sz = scoreSize(query_size, subject_size);
 
-    const auto miss_budget = ceil(miss_coeff * n) + 5;
+    const auto miss_budget = ceil(miss_coeff * query_size) + 5;
     auto miss_left = miss_budget;
     auto csc_should_rebuild = true;
 
@@ -158,8 +160,8 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
   }*/
 
     auto i = 0u;
-    while (i < m) {//foreach char si of subject
-        //assert(i >= 0);// fuzz: if m==0, does not enter while and i==0
+    while (i < subject_size) {//foreach char si of subject
+        assert(i >= 0);// fuzz: if m==0, does not enter while and i==0
         auto si_lw = subject_lw[i];
 
         // if si_lw is not in query
@@ -168,11 +170,12 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
             // unless we just cleaned it then keep cleaned version.
             if (csc_should_rebuild) {
                 auto k = 0u;
-                while (k < n) {
-                    //assert(k >= 0);// fuzz: if n==0, does not enter while and k==0
+                while (k < query_size) {
+                    assert(k >= 0);// fuzz: if n==0, does not enter while and k==0
                     csc_row[k] = 0;
                     ++k;
                 }
+                assert(k >= 0);
                 csc_should_rebuild = false;
             }
 
@@ -187,8 +190,8 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
         csc_should_rebuild = true;
 
         auto j = 0u;//0..n-1
-        while (j < n) {//foreach char qj of query
-            //assert(j >= 0);// fuzz: if n==0, does not enter while and j==0
+        while (j < query_size) {//foreach char qj of query
+            assert(j >= 0);// fuzz: if n==0, does not enter while and j==0
             // What is the best gap ?
             // score_up contain the score of a gap in subject.
             // score_left = last iteration of score, -> gap in query.
@@ -221,7 +224,7 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
                     // Each character of query have it's score history stored in score_row
                     // To get full query score use last item of row.
                     if (record_miss && --miss_left <= 0) {
-                        return fmax(score, score_row[n - 1]) * sz;
+                        return fmax(score, score_row[query_size - 1]) * sz;
                     }
 
                     record_miss = false;
@@ -237,12 +240,12 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
 
             ++j;
         }
-
+        assert(j >= 0);
         ++i;
     }
-
+    assert(i >= 0);// fuzz: if m==0, does not enter while and i==0
     // get highest score so far
-    const auto score = score_row[n - 1];
+    const auto score = score_row[query_size - 1];
     return score * sz;
 }
 
@@ -257,7 +260,7 @@ bool isWordStart(const size_t pos, const CandidateString &subject, const Candida
     if (pos == 0u) {
         return true;// match is FIRST char ( place a virtual token separator before first char of string)
     }
-    // assert(pos > 0u);
+    assert(0u < pos && pos < subject.size());
     const auto curr_s = subject[pos];
     const auto prev_s = subject[pos - 1];//inbounds
     return isSeparator(prev_s) ||// match FOLLOW a separator
@@ -361,12 +364,12 @@ Score scoreCharacter(const int i, const int j, const bool start, const Score acr
 // Forward search for a sequence of consecutive character.
 //
 Score scoreConsecutives(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, unsigned i, unsigned j, const bool startOfWord) {
-    const auto m = subject.size();
-    const auto n = query.size();
+    const auto subject_size = subject.size();
+    const auto query_size = query.size();
 
-    const auto mi = m - i;
-    const auto nj = n - j;
-    const auto k = mi < nj ? mi : nj;
+    const auto subject_size_i = subject_size - i;
+    const auto query_size_j = query_size - j;
+    const auto k = subject_size_i < query_size_j ? subject_size_i : query_size_j;
 
     auto sameCase = 0u;
     auto sz = 0u;//sz will be one more than the last qi is sj
@@ -398,7 +401,7 @@ Score scoreConsecutives(const CandidateString &subject, const CandidateString &s
         return 1 + 2 * sameCase;
     }
 
-    return scorePattern(sz, n, sameCase, startOfWord, isWordEnd(i, subject, subject_lw, m));
+    return scorePattern(sz, query_size, sameCase, startOfWord, isWordEnd(i, subject, subject_lw, subject_size));
 }
 
 
@@ -430,12 +433,13 @@ Score scoreExactMatch(const CandidateString &subject, const CandidateString &sub
     auto i = 0u;
     auto sameCase = 0u;
     while (i < n) {
-        // assert(i>=0); // fuzz: if n==0, does not enter while and i==0u
+        assert(i >= 0);// fuzz: if n==0, does not enter while and i==0u
         if (query[i] == subject[pos + i]) {
             sameCase++;
         }
         ++i;
     }
+    assert(i >= 0);
 
     const auto end = isWordEnd(pos + n - 1u, subject, subject_lw, m);
 
@@ -455,11 +459,17 @@ Score scoreExactMatch(const CandidateString &subject, const CandidateString &sub
 const auto emptyAcronymResult = AcronymResult(static_cast<Score>(0), static_cast<float>(0.1), static_cast<int>(0));
 
 AcronymResult scoreAcronyms(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw) {
-    const auto m = subject.size();
-    const auto n = query.size();
+    const auto subject_size = subject.size();
+    const auto query_size = query.size();
+
+    // TODO do we need this inbounds check?
+    if (query_lw.size() < query_size) {
+        std::cerr << out_of_range("query_lw.size() < n").what();
+        abort();
+    }
 
     //a single char is not an acronym
-    if (m <= 1 || n <= 1) {
+    if (subject_size <= 1 || query_size <= 1) {
         return emptyAcronymResult;
     }
 
@@ -471,8 +481,9 @@ AcronymResult scoreAcronyms(const CandidateString &subject, const CandidateStrin
     auto i = string::npos;// incrementing will become 0
 
     //foreach char of query
-    for (auto j = 0u; j < n; j++) {
-        const auto qj_lw = query_lw[j];// TODO bounds
+    for (auto j = 0u; j < query_size; j++) {
+        assert(0u <= j && j < query_lw.size());
+        const auto qj_lw = query_lw[j];
 
         // Separator will not score point but will continue the prefix when present.
         // Test that the separator is in the candidate and advance cursor to that position.
@@ -490,7 +501,7 @@ AcronymResult scoreAcronyms(const CandidateString &subject, const CandidateStrin
         // For other characters we search for the first match where subject[i] = query[j]
         // that also happens to be a start-of-word
 
-        while (++i < m) {
+        while (++i < subject_size) {
             if (qj_lw == subject_lw[i] && isWordStart(i, subject, subject_lw)) {
                 if (query[j] == subject[i]) {// TODO bounds
                     sameCase++;
@@ -502,7 +513,7 @@ AcronymResult scoreAcronyms(const CandidateString &subject, const CandidateStrin
         }
 
         // All of subject is consumed, stop processing the query.
-        if (i == m) {
+        if (i == subject_size) {
             break;
         }
     }
@@ -516,8 +527,8 @@ AcronymResult scoreAcronyms(const CandidateString &subject, const CandidateStrin
 
     // Acronym are scored as start-of-word
     // Unless the acronym is a 1:1 match with candidate then it is upgraded to full-word.
-    const auto fullWord = count == n ? isAcronymFullWord(subject, subject_lw, query, count) : false;
-    const auto score = scorePattern(count, n, sameCase, true, fullWord);
+    const auto fullWord = count == query_size ? isAcronymFullWord(subject, subject_lw, query, count) : false;
+    const auto score = scorePattern(count, query_size, sameCase, true, fullWord);
 
     return AcronymResult(score, static_cast<Score>(sumPos) / count, count + sepCount);
 }
@@ -532,20 +543,20 @@ AcronymResult scoreAcronyms(const CandidateString &subject, const CandidateStrin
 // This method check for (b) assuming (a) has been checked before entering.
 
 bool isAcronymFullWord(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const unsigned nbAcronymInQuery) noexcept {
-    const auto m = subject.size();
-    const auto n = query.size();
+    const auto subject_size = subject.size();
+    const auto query_size = query.size();
     auto count = 0u;
 
     // Heuristic:
     // Assume one acronym every (at most) 12 character on average
     // This filter out long paths, but then they can match on the filename.
-    if (m > 12u * n) {
+    if (subject_size > 12u * query_size) {
         return false;
     }
 
     auto i = 0u;
-    while (i < m) {
-        // assert(i>=0); // fuzz: if m==0, does not enter while and i==0
+    while (i < subject_size) {
+        assert(i >= 0);// fuzz: if m==0, does not enter while and i==0
         //For each char of subject
         //Test if we have an acronym, if so increase acronym count.
         //If the acronym count is more than nbAcronymInQuery (number of non separator char in query)
@@ -556,6 +567,7 @@ bool isAcronymFullWord(const CandidateString &subject, const CandidateString &su
 
         ++i;
     }
+    assert(i >= 0);
 
     return true;
 }
