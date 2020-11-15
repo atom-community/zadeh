@@ -52,8 +52,11 @@ void thread_worker_filter(const std::vector<CandidateString> &candidates,
 std::vector<CandidateIndex> sort_priority_queue(CandidateScorePriorityQueue &&candidates) {
     vector<CandidateScore> sorted;
     std::vector<CandidateIndex> ret;
-    sorted.reserve(candidates.size());
-    ret.reserve(candidates.size());
+
+    const auto initial_candidates_size = candidates.size();
+    sorted.reserve(initial_candidates_size);
+    ret.reserve(initial_candidates_size);
+
     while (!candidates.empty()) {
         sorted.emplace_back(candidates.top());
         candidates.pop();
