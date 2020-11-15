@@ -24,12 +24,12 @@ void filter_internal(const std::vector<CandidateString> &candidates,
   const Options &options,
   size_t max_results,
   CandidateScorePriorityQueue &results) {
+    const auto scoreProvider = options.usePathScoring ? path_scorer_score : scorer_score;
     for (size_t i = 0, len = candidates.size(); i < len; i++) {
         const auto &candidate = candidates[i];
         if (candidate.empty()) {
             continue;
         }
-        const auto scoreProvider = options.usePathScoring ? path_scorer_score : scorer_score;
         auto score = scoreProvider(candidate, query, options);
         if (score > 0) {
             results.emplace(score, start_index + i);
