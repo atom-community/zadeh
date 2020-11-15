@@ -51,7 +51,7 @@ Score scorePath(const CandidateString &subject, const CandidateString &subject_l
     // {preparedQuery, useExtensionBonus, pathSeparator} = options
 
     // Skip trailing slashes
-    auto end = subject.size() - 1;
+    int end = subject.size() - 1;
     while (subject[end] == options.pathSeparator) {
         end--;
     }
