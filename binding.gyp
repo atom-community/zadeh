@@ -28,7 +28,11 @@
               "AdditionalOptions": [
                 # C++ standard
                 "/std:c++latest",
-                "/DNDEBUG"                          # turn off asserts
+                "/O2",      # optimizations
+                "/Ob3",     # agressive inline
+                "/Oi",      # intrinsic functions
+                "/Ot",      # favor speed
+                "/DNDEBUG"  # turn off asserts
               ],
               'EnableFunctionLevelLinking': 'true',
               'EnableIntrinsicFunctions': 'true',
