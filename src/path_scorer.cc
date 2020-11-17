@@ -122,7 +122,7 @@ int countDir(const CandidateString &path, const size_t end, const char pathSepar
             while ((++i < end) && (path[i] == pathSeparator)) {}
         }
     }
-    assert(0 <= i && i < path.size());
+    assert(0 <= i && i <= path.size());
 
     return count;
 }

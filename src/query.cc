@@ -32,6 +32,6 @@ std::set<char> getCharCodes(const Element &str) {
         charCodes.insert(str[i]);//inbounds
         ++i;
     }
-    assert(0 <= i && i < str.size());
+    assert(0 <= i && i <= str.size());
     return charCodes;
 }

@@ -87,7 +87,7 @@ bool isMatch(const CandidateString &subject, const Element &query_lw, const Elem
 
             ++i;
         }
-        assert(0 <= i && i < subject.size());
+        assert(0 <= i && i <= subject.size());
 
         // if we passed the last char, query is not in subject
         if (i == subject_size) {
@@ -97,7 +97,7 @@ bool isMatch(const CandidateString &subject, const Element &query_lw, const Elem
 
         ++j;
     }
-    assert(0 <= j && j < query_lw.size());
+    assert(0 <= j && j <= query_lw.size());
 
     // Found every char of query in subject in proper order, match is positive
     return true;
