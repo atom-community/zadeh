@@ -100,7 +100,10 @@ Score scorePath(const CandidateString &subject, const CandidateString &subject_l
 // Count number of folder in a path.
 // (consecutive slashes count as a single directory)
 //
-int countDir(const CandidateString &path, const size_t end, const char pathSeparator) noexcept {
+int countDir(const CandidateString &path, const size_t end, const char pathSeparator) {
+    // TODO bounds
+
+
     if (end < 1u) {
         return 0;
     }
@@ -109,20 +112,32 @@ int countDir(const CandidateString &path, const size_t end, const char pathSepar
     auto i = 0u;
 
     //skip slash at the start so `foo/bar` and `/foo/bar` have the same depth.
-    while ((i < end) && (path[i] == pathSeparator)) {//inbounds
+    // the following skips all the pathSeparator from the beginning of the given path
+    while ((i < end) && (path[i] == pathSeparator)) {
         assert(0 <= i);// fuzz: if end==0, it does not enter while and i==0
         ++i;
     }
-    assert(0 <= i);
+    assert(0 <= i);// if there were no pathSeparator i==0
 
-    while (++i < end) {
+
+    ++i;// the current char is certainly a non-pathSeparator, so we should check the other following ones
+    while (i < end) {
         assert(0 <= i && i < path.size());// fuzz: if end==0, it does not enter while and i==0
-        if (path[i] == pathSeparator) {//inbounds
+        if (path[i] == pathSeparator) {
             count++;//record first slash, but then skip consecutive ones
-            while ((++i < end) && (path[i] == pathSeparator)) {}
+
+            // skip consecutive slashes:
+            ++i;// current one is already pathSeparator, so we should check the other following ones
+            while ((i < end) && (path[i] == pathSeparator)) {
+                ++i;
+            }
+            // once a non-pathSeparator is found the above while exits
+            // after this, i is certainly a non-pathSeparator, so we should check the other following ones, so i is incremented before the next loop;
         }
+        ++i;
     }
-    assert(0 <= i && i <= path.size());
+    // assert(0 <= i && i <= path.size()); // TODO
+    // cout << "i" << i << endl << "path.size()" << path.size() << endl;
 
     return count;
 }
