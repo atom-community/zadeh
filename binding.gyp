@@ -2,7 +2,7 @@
 {
   "targets": [{
       "target_name": "fuzzaldrinplusfast",
-      "sources": [ "src/fuzzaldrin.cc", "src/scorer.cc", "src/path_scorer.cc", "src/filter.cc", "src/query.cc", "src/matcher.cc",  "src/tree.h" ],
+      "sources": [ "src/fuzzaldrin.cc", "src/scorer.cc", "src/path_scorer.cc", "src/filter.cc", "src/query.cc", "src/matcher.cc",  "src/tree.h", "src/coz_wrap.h" ],
       "include_dirs": [
         "<!@(node -p \"require('node-addon-api').include\")"
       ],
@@ -47,8 +47,11 @@
         # Debug Settings
         'Debug': {
           'defines': [ 'DEBUG', 'NAPI_CPP_EXCEPTIONS' ],
-          'cflags': [ '-g', '-O0' ],
+          'cflags': [ '-g', '-O0', "-ldl" ],
           "cflags_cc": [
+            '-g',
+            "-ldl",
+
             '-fexceptions', # enable exceptions
 
             # C++ standard

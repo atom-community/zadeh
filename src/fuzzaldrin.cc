@@ -1,6 +1,7 @@
 #include <napi.h>
 
 #include "fuzzaldrin.h"
+#include "coz_wrap.h"
 
 Napi::Value Fuzzaldrin::Filter(const Napi::CallbackInfo &info) {
     auto res = Napi::Array::New(info.Env());
@@ -206,6 +207,13 @@ Napi::Object Fuzzaldrin::Init(Napi::Env env, Napi::Object exports) {
     exports.Set("score", Napi::Function::New(env, score));
     exports.Set("match", Napi::Function::New(env, match));
     exports.Set("wrap", Napi::Function::New(env, wrap));
+
+    // coz
+    exports.Set("cozProgress", Napi::Function::New(env, CozProgressWrapped));
+    exports.Set("cozProgressNamed", Napi::Function::New(env, CozProgressNamedWrapped));
+    exports.Set("cozBegin", Napi::Function::New(env, CozBeginWrapped));
+    exports.Set("cozEnd", Napi::Function::New(env, CozEndWrapped));
+
     return exports;
 }
 

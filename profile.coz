@@ -1,0 +1,30 @@
+startup	time=1605571855909059600
+experiment	selected=/home/iojs/build/deps/v8/src/builtins/base.tq:1866	speedup=0.45	duration=485645000	selected-samples=32
+throughput-point	name=../src/coz_wrap.h:12	delta=0
+runtime	time=591593300
+samples	location=/home/iojs/build/deps/v8/src/builtins/base.tq:102	count=2
+samples	location=/home/iojs/build/deps/v8/src/builtins/base.tq:107	count=3
+samples	location=/home/iojs/build/deps/v8/src/builtins/base.tq:1866	count=51
+startup	time=1605572397750845300
+experiment	selected=/home/iojs/build/deps/v8/src/builtins/base.tq:1866	speedup=0.30	duration=489605300	selected-samples=35
+throughput-point	name=../src/coz_wrap.h:12	delta=0
+runtime	time=592144300
+samples	location=/home/iojs/build/deps/v8/src/builtins/base.tq:102	count=1
+samples	location=/home/iojs/build/deps/v8/src/builtins/base.tq:107	count=3
+samples	location=/home/iojs/build/deps/v8/src/builtins/base.tq:1866	count=58
+samples	location=/home/iojs/build/ws/deps/uv/src/uv-common.c:146	count=1
+startup	time=1605572411577578800
+experiment	selected=/home/iojs/build/deps/v8/src/builtins/base.tq:1866	speedup=0.45	duration=482977500	selected-samples=38
+throughput-point	name=../src/coz_wrap.h:12	delta=0
+runtime	time=592005500
+samples	location=/home/iojs/build/deps/v8/src/builtins/arguments.tq:24	count=1
+samples	location=/home/iojs/build/deps/v8/src/builtins/base.tq:102	count=3
+samples	location=/home/iojs/build/deps/v8/src/builtins/base.tq:107	count=2
+samples	location=/home/iojs/build/deps/v8/src/builtins/base.tq:1866	count=57
+startup	time=1605573128708042000
+experiment	selected=/home/iojs/build/deps/v8/src/builtins/base.tq:1866	speedup=0.20	duration=492219800	selected-samples=39
+throughput-point	name=../src/coz_wrap.h:12	delta=0
+runtime	time=591475900
+samples	location=/home/iojs/build/deps/v8/src/builtins/base.tq:102	count=1
+samples	location=/home/iojs/build/deps/v8/src/builtins/base.tq:107	count=1
+samples	location=/home/iojs/build/deps/v8/src/builtins/base.tq:1866	count=59

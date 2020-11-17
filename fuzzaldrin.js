@@ -1,5 +1,7 @@
 const binding = require("node-gyp-build")(__dirname)
 
+export const cozProgress = binding.cozProgress;
+
 const defaultPathSeparator = process.platform === "win32" ? "\\" : "/"
 
 function parseOptions(options, query) {
