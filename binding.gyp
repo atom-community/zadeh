@@ -47,8 +47,10 @@
         # Debug Settings
         'Debug': {
           'defines': [ 'DEBUG', 'NAPI_CPP_EXCEPTIONS' ],
-          'cflags': [ '-g', '-O0' ],
+          'cflags': [ '-g', '-O0', '-ldl' ],
           "cflags_cc": [
+            '-g',
+            '-ldl',
             '-fexceptions', # enable exceptions
 
             # C++ standard
