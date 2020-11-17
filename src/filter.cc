@@ -72,7 +72,7 @@ std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &c
 
     // Split the dataset and pass down to multiple threads.
     vector<thread> threads;
-    threads.reserve(candidates.size() - 1); // 1 less thread
+    threads.reserve(candidates.size() - 1);// 1 less thread
 
     auto results = vector<CandidateScorePriorityQueue>(candidates.size());
 
@@ -82,7 +82,7 @@ std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &c
         start_index += candidates[i - 1].size();//inbounds
         threads.emplace_back(filter_internal, ref(candidates[i]), start_index, ref(query), ref(options), max_results, ref(results[i]));// inbounds
     }
-    
+
     assert(threads.size() == candidates.size() - 1 && results.size() == candidates.size());
 
     // Do the work for first thread.
