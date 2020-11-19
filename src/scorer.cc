@@ -375,24 +375,21 @@ Score scoreConsecutives(const CandidateString &subject, const CandidateString &s
         std::abort();
     }
 
-
-    const auto subject_size_i = subject_size - i;
-    const auto query_size_j = query_size - j;
-    const auto min_subject_size_i_query_size_j = min(subject_size_i, query_size_j);
-
     auto sameCase = 0u;
-    auto sz = 0u;//sz will be one more than the last qi is sj
-
     // query_lw[i] is subject_lw[j] has been checked before entering now do case sensitive check.
     if (query[j] == subject[i]) {
         sameCase++;
     }
 
+    auto sz = 1u;//sz will be one more than the last qi is sj
+    const auto min_subject_size_i_query_size_j = min(subject_size - i, query_size - j);
+
     //Continue while lowercase char are the same, record when they are case-sensitive match.
-    while (++sz < min_subject_size_i_query_size_j && query_lw[++j] == subject_lw[++i]) {
+    while (sz < min_subject_size_i_query_size_j && query_lw[++j] == subject_lw[++i]) {
         if (query[j] == subject[i]) {
             sameCase++;
         }
+        ++sz;
     }
 
 
@@ -406,7 +403,7 @@ Score scoreConsecutives(const CandidateString &subject, const CandidateString &s
     // Isolated character match occurs often and are not really interesting.
     // Fast path so we don't compute expensive pattern score on them.
     // Acronym should be addressed with acronym context bonus instead of consecutive.
-    if (sz == 1) {
+    if (sz == 1u) {
         return 1 + 2 * sameCase;
     }
 
