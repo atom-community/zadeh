@@ -22,10 +22,8 @@ void filter_internal(const std::vector<CandidateString> &candidates,
   size_t start_index,
   const Element &query,
   const Options &options,
-  size_t max_results,
   CandidateScoreVector &results) {
     const auto scoreProvider = options.usePathScoring ? path_scorer_score : scorer_score;
-    auto results_size = results.size();
     for (size_t i = 0, len = candidates.size(); i < len; i++) {
         const auto &candidate = candidates[i];
         if (candidate.empty()) {
@@ -34,11 +32,6 @@ void filter_internal(const std::vector<CandidateString> &candidates,
         const auto score = scoreProvider(candidate, query, options);
         if (score > 0) {
             results.emplace_back(score, start_index + i);
-            ++results_size;// maintain size manually rather than calling results.size() every time
-            if (results_size > max_results) {
-                results.pop_back();
-                --results_size;
-            }
         }
     }
 }
@@ -76,13 +69,13 @@ std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &c
     for (size_t i = 1; i < candidates_size; i++) {
         assert(1 <= i && i < candidates_size && i < results.size());
         start_index += candidates[i - 1].size();//inbounds
-        threads.emplace_back(filter_internal, ref(candidates[i]), start_index, ref(query), ref(options), max_results, ref(results[i]));// inbounds
+        threads.emplace_back(filter_internal, ref(candidates[i]), start_index, ref(query), ref(options), ref(results[i]));// inbounds
     }
     assert(threads.size() == candidates_size - 1 && results.size() == candidates_size);
 
     CandidateScoreVector top_k;
     // Do the work for first thread.
-    filter_internal(candidates[0], 0, query, options, max_results, top_k);//inbounds (candidate_size >= 1)
+    filter_internal(candidates[0], 0, query, options, top_k);//inbounds (candidate_size >= 1)
     // Wait for threads to complete and merge the results.
 
     for (size_t i = 1; i < candidates_size; i++) {
