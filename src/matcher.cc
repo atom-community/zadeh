@@ -20,7 +20,7 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
     const auto &query_lw = preparedQuery.query_lw;
 
     // TODO making these two auto breaks the code. There are a lot of narrowing conversions in this file
-    const int subject_size = subject.size();
+    const auto subject_size = subject.size();
     const int query_size = query.size();
 
     // this is like the consecutive bonus, but for camelCase / snake_case initials
