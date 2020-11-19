@@ -114,9 +114,11 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
 
     // TODO narrowing conversions
 
-    int ii = subject_size - 1;
-    int jj = query_size - 1;
-    int pos_ = ii * query_size + jj;
+    const auto query_size_int = static_cast<int>(query_size);
+
+    int ii = static_cast<int>(subject_size) - 1;
+    int jj = query_size_int - 1;
+    int pos_ = ii * query_size_int + jj;
     auto backtrack = true;
     std::vector<size_t> matches;
 
@@ -124,7 +126,7 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
         switch (trace[pos_]) {
         case Direction::UP:
             ii--;
-            pos_ -= query_size;
+            pos_ -= query_size_int;
             break;
         case Direction::LEFT:
             jj--;
@@ -134,7 +136,7 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
             matches.emplace_back(ii + offset);
             jj--;
             ii--;
-            pos_ -= query_size + 1;
+            pos_ -= query_size_int + 1;
             break;
         default:
             backtrack = false;
