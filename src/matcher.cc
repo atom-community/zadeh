@@ -50,8 +50,10 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
         Score csc_diag = 0;
         const auto si_lw = subject_lw[i];
 
-        auto j = -1;//0..n-1
-        while (++j < query_size) {//foreach char qj of query
+        auto j = 0u;//0..n-1
+        while (j < query_size) {//foreach char qj of query
+            assert(0u <= j && j < min({ static_cast<size_t>(query_size), query_lw.size(), score_row.size(), csc_row.size() }));
+
             // reset score
             Score csc_score = 0;
             Score align = 0;
@@ -92,8 +94,14 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
 
             score_row[j] = score;
             csc_row[j] = csc_score;
-            trace[++pos] = score > 0 ? move : Direction::STOP;
+
+            ++pos;
+            assert(0u <= pos && pos < trace.size());
+            trace[pos] = score > 0 ? move : Direction::STOP;
+
+            ++j;
         }
+        assert(0u <= j && j <= query_size);
     }
 
     // -------------------
