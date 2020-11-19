@@ -378,7 +378,7 @@ Score scoreConsecutives(const CandidateString &subject, const CandidateString &s
 
     const auto subject_size_i = subject_size - i;
     const auto query_size_j = query_size - j;
-    const auto k = subject_size_i < query_size_j ? subject_size_i : query_size_j;
+    const auto min_subject_size_i_query_size_j = min(subject_size_i, query_size_j);
 
     auto sameCase = 0u;
     auto sz = 0u;//sz will be one more than the last qi is sj
@@ -389,7 +389,7 @@ Score scoreConsecutives(const CandidateString &subject, const CandidateString &s
     }
 
     //Continue while lowercase char are the same, record when they are case-sensitive match.
-    while (++sz < k && query_lw[++j] == subject_lw[++i]) {
+    while (++sz < min_subject_size_i_query_size_j && query_lw[++j] == subject_lw[++i]) {
         if (query[j] == subject[i]) {
             sameCase++;
         }
@@ -398,7 +398,7 @@ Score scoreConsecutives(const CandidateString &subject, const CandidateString &s
 
     // If we quit because of a non match
     // replace cursor to the last match
-    if (sz < k) {
+    if (sz < min_subject_size_i_query_size_j) {
         i--;
     }
 
