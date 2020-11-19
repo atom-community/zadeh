@@ -43,8 +43,9 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
     auto trace = std::vector<Direction>(subject_size * query_size, Direction::STOP);
     auto pos = -1;
 
-    auto i = -1;
-    while (++i < subject_size) {//foreach char is of subject
+    int i = 0;// TODO making it size_t breaks the code!
+    while (i < subject_size) {//foreach char is of subject
+        assert(0 <= i && i < subject_lw.size());
         Score score = 0;
         Score score_up = 0;
         Score csc_diag = 0;
@@ -102,7 +103,10 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
             ++j;
         }
         assert(0u <= j && j <= query_size);
+
+        ++i;
     }
+    assert(0 <= i && i <= subject_lw.size());
 
     // -------------------
     // Go back in the trace matrix
