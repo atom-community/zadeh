@@ -19,9 +19,8 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
     const auto &query = preparedQuery.query;
     const auto &query_lw = preparedQuery.query_lw;
 
-    // TODO making these two auto breaks the code. There are a lot of narrowing conversions in this file
     const auto subject_size = subject.size();
-    const int query_size = query.size();
+    const auto query_size = query.size();
 
     // this is like the consecutive bonus, but for camelCase / snake_case initials
     const auto acro = scoreAcronyms(subject, subject_lw, query, query_lw);
@@ -112,8 +111,10 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
     // Go back in the trace matrix
     // and collect matches (diagonals)
 
+    // TODO narrowing conversions
+
     int ii = subject_size - 1;
-    auto jj = query_size - 1;
+    int jj = query_size - 1;
     pos = ii * query_size + jj;
     auto backtrack = true;
     std::vector<size_t> matches;
