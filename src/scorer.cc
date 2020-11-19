@@ -364,7 +364,7 @@ Score scoreCharacter(const size_t i, const size_t j, const bool start, const Sco
 //
 // Forward search for a sequence of consecutive character.
 //
-Score scoreConsecutives(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, unsigned i, unsigned j, const bool startOfWord) {
+Score scoreConsecutives(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, size_t i, size_t j, const bool startOfWord) {
     const auto subject_size = subject.size();
     const auto query_size = query.size();
 
