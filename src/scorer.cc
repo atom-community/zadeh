@@ -344,10 +344,11 @@ Score scorePattern(const size_t count, const size_t len, const size_t sameCase, 
 //
 // Compute the bonuses for two chars that are confirmed to matches in a case-insensitive way
 //
-Score scoreCharacter(const int i, const int j, const bool start, const Score acro_score, const Score csc_score) {
+Score scoreCharacter(const size_t i, const size_t j, const bool start, const Score acro_score, const Score csc_score) {
+    // TODO j is not used!
 
     // start of string / position of match bonus
-    const auto posBonus = scorePosition(i);
+    const auto posBonus = scorePosition(static_cast<Score>(i));
 
     // match IS a word boundary
     // choose between taking part of consecutive characters or consecutive acronym
