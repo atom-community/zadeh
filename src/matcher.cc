@@ -118,7 +118,7 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
 
     int ii = static_cast<int>(subject_size) - 1;
     int jj = query_size_int - 1;
-    int pos_ = ii * query_size_int + jj;
+    auto pos_ = static_cast<size_t>(ii * query_size_int + jj);
     auto backtrack = true;
     std::vector<size_t> matches;
 
