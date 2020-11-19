@@ -28,8 +28,8 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
     const auto acro_score = acro.score;
 
     // Init
-    vector<Score> score_row(query_size, 0);
-    vector<Score> csc_row(query_size, 0);
+    auto score_row = vector<Score>(query_size, 0);
+    auto csc_row = vector<Score>(query_size, 0);
 
     // Directions constants
     enum class Direction {
@@ -40,7 +40,7 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
     };
 
     // Traceback matrix
-    std::vector<Direction> trace(subject_size * query_size, Direction::STOP);
+    auto trace = std::vector<Direction>(subject_size * query_size, Direction::STOP);
     auto pos = -1;
 
     auto i = -1;
@@ -237,8 +237,8 @@ void get_wrap(const CandidateString &string, const Element &query, const Options
 
     // Loop over match positions
     std::string output;
-    size_t matchIndex = 0;
-    size_t strPos = 0;
+    auto matchIndex = 0u;
+    auto strPos = 0u;
     while (matchIndex < matchPositions.size()) {
         auto matchPos = matchPositions[matchIndex];
         matchIndex++;
