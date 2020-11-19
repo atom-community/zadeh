@@ -368,6 +368,14 @@ Score scoreConsecutives(const CandidateString &subject, const CandidateString &s
     const auto subject_size = subject.size();
     const auto query_size = query.size();
 
+    // TODO do we need this check?
+    if (!(j < query_size) || !(i <= subject_size)) {
+        cerr << "\n out of bounds! \n j, query_size, i, subject_size \n"
+             << j << query_size << i << subject_size << endl;
+        std::abort();
+    }
+
+
     const auto subject_size_i = subject_size - i;
     const auto query_size_j = query_size - j;
     const auto k = subject_size_i < query_size_j ? subject_size_i : query_size_j;
