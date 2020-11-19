@@ -22,6 +22,8 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
     const auto subject_size = subject.size();
     const auto query_size = query.size();
 
+    // TODO optimization for the case that the sizes are 1
+
     // this is like the consecutive bonus, but for camelCase / snake_case initials
     const auto acro = scoreAcronyms(subject, subject_lw, query, query_lw);
     const auto acro_score = acro.score;
