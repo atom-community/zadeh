@@ -143,6 +143,7 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
 
 
     // Init
+    // Fill with 0
     vector<Score> score_row(query_size, 0);
     vector<Score> csc_row(query_size, 0);
     const auto sz = scoreSize(query_size, subject_size);
@@ -151,13 +152,6 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
     auto miss_left = miss_budget;
     auto csc_should_rebuild = true;
 
-    // Fill with 0
-    /*
-  int j = -1;
-  while (++j < n) {
-    score_row[j] = 0;
-    csc_row[j] = 0;
-  }*/
 
     auto i = 0u;
     while (i < subject_size) {//foreach char si of subject
