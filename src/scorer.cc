@@ -383,19 +383,21 @@ Score scoreConsecutives(const CandidateString &subject, const CandidateString &s
 
     auto sz = 1u;//sz will be one more than the last qi is sj
     const auto min_subject_size_i_query_size_j = min(subject_size - i, query_size - j);
+    assert(1u <= min_subject_size_i_query_size_j);
 
     //Continue while lowercase char are the same, record when they are case-sensitive match.
     while (sz < min_subject_size_i_query_size_j && query_lw[++j] == subject_lw[++i]) {
+        assert(1u <= sz && sz < min_subject_size_i_query_size_j);// fuzz: if min_subject_size_i_query_size_j==1u does not enter while loop, and sz ==1u
         if (query[j] == subject[i]) {
             sameCase++;
         }
         ++sz;
     }
-
+    assert(1u <= sz && sz <= min_subject_size_i_query_size_j);
 
     // If we quit because of a non match
     // replace cursor to the last match
-    if (sz < min_subject_size_i_query_size_j) {
+    if (sz < min_subject_size_i_query_size_j) {// equal to: sz != min_subject_size_i_query_size_j
         i--;
     }
 
