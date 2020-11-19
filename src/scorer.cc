@@ -406,7 +406,7 @@ Score scoreConsecutives(const CandidateString &subject, const CandidateString &s
     // Fast path so we don't compute expensive pattern score on them.
     // Acronym should be addressed with acronym context bonus instead of consecutive.
     if (sz == 1u) {
-        return 1 + 2 * sameCase;
+        return static_cast<Score>(1u + 2u * sameCase);
     }
 
     return scorePattern(sz, query_size, sameCase, startOfWord, isWordEnd(i, subject, subject_lw, subject_size));
