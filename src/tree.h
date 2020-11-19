@@ -47,8 +47,7 @@ struct Tree {
         const auto entriesArrayLength = jsTreeArray.Length();
         entriesArray.reserve(entriesArrayLength);// reserve enough space
         for (auto iEntry = 0u; iEntry < entriesArrayLength; iEntry++) {
-            auto jsTree = jsTreeArray[iEntry].As<Napi::Object>();
-            makeEntriesArray(jsTree, level, iEntry);
+            makeEntriesArray(jsTreeArray[iEntry].As<Napi::Object>(), level, iEntry);
         }
     }
 
