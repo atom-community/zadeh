@@ -40,7 +40,7 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
 
     // Traceback matrix
     auto trace = std::vector<Direction>(subject_size * query_size, Direction::STOP);
-    auto pos = -1;
+    auto pos = 0u;
 
     auto i = 0u;
     while (i < subject_size) {//foreach char is of subject
@@ -95,9 +95,10 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
             score_row[j] = score;
             csc_row[j] = csc_score;
 
-            ++pos;
             assert(0u <= pos && pos < trace.size());
             trace[pos] = score > 0 ? move : Direction::STOP;
+
+            ++pos;
 
             ++j;
         }
@@ -115,25 +116,25 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
 
     int ii = subject_size - 1;
     int jj = query_size - 1;
-    pos = ii * query_size + jj;
+    int pos_ = ii * query_size + jj;
     auto backtrack = true;
     std::vector<size_t> matches;
 
     while (backtrack && ii >= 0 && jj >= 0) {
-        switch (trace[pos]) {
+        switch (trace[pos_]) {
         case Direction::UP:
             ii--;
-            pos -= query_size;
+            pos_ -= query_size;
             break;
         case Direction::LEFT:
             jj--;
-            pos--;
+            pos_--;
             break;
         case Direction::DIAGONAL:
             matches.emplace_back(ii + offset);
             jj--;
             ii--;
-            pos -= query_size + 1;
+            pos_ -= query_size + 1;
             break;
         default:
             backtrack = false;
