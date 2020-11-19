@@ -235,8 +235,9 @@ std::vector<size_t> matcher_match(const CandidateString &string, const Element &
 }
 
 void get_wrap(const CandidateString &string, const Element &query, const Options &options, std::string *out) {
-    const auto tagClass = "highlight"s;
-    const auto tagOpen = "<strong class=\""s + tagClass + "\">"s;
+    //const auto tagClass = "highlight"s;
+    //const auto tagOpen = "<strong class=\""s + tagClass + "\">"s;
+    const auto tagOpen = R"(<strong class="highlight">)"s;
     const auto tagClose = "</strong>"s;
 
     if (string == query) {
