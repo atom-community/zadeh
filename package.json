@@ -24,7 +24,7 @@
     "benchmark:large": "node benchmark/benchmark-large.js",
     "benchmark:small": "node benchmark/benchmark-small.js",
     "benchmark": "npm run benchmark:small && npm run benchmark:regular && npm run benchmark:large",
-    "bump": "ncu -u",
+    "bump": "ncu -u --greatest",
     "prepare": "npm run build"
   },
   "gypfile": true,
