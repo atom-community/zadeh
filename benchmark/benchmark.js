@@ -29,7 +29,7 @@ testutils.doFilterTest("~98% of results + Fuzzy match, [Worst case but shorter s
 
 const query = "index"
 testutils.start_timer()
-prepared = fuzzaldrinPlus.prepareQuery(query)
+const prepared = fuzzaldrinPlus.prepareQuery(query)
 for (const line of lines) {
   fuzzaldrinPlus.match(line, query, {
     preparedQuery: prepared,

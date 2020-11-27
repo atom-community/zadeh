@@ -3,7 +3,7 @@ const DeepEqual = require("deep-equal")
 
 describe("filterTree", () => {
   it("can fuzzy search in an array tree objects", () => {
-    candidates = [
+    const candidates = [
       { data: "bye1", children: [{ data: "hello" }] },
       { data: "Bye2", children: [{ data: "_bye4" }, { data: "hel" }] },
       { data: "eye" },
