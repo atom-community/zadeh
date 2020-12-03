@@ -81,6 +81,8 @@
               'MinimalRebuild': 'false',
               'Optimization': 0,              # /Od /Oy-, no optimization
               "AdditionalOptions": [
+                "/DEBUG",
+
                 # C++ standard
                 "/std:c++latest",
                 # MSVC Warnings
