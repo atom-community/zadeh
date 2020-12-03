@@ -25,22 +25,18 @@
               'ExceptionHandling': 0,               # /EHsc
               'MultiProcessorCompilation': 'true',
               'StringPooling': 'true',              # pool string literals
+              'RuntimeTypeInfo': 'false',
+              'Optimization': 4,              # full optimizations /O2  ==	/Og /Oi /Ot /Oy /Ob2 /GF /Gy
+              'InlineFunctionExpansion': 3,   # stop gyp from defaulting to /Ob2
               "AdditionalOptions": [
                 # C++ standard
                 "/std:c++latest",
-                "/O2",      # optimizations
-                "/Ob3",     # agressive inline
-                "/Oi",      # intrinsic functions
-                "/Ot",      # favor speed
+
+                # Optimizations
+                "/Ob3",  # agressive inline
+                "/GL",   # whole Program Optimization
                 "/DNDEBUG"  # turn off asserts
               ],
-              'EnableFunctionLevelLinking': 'true',
-              'EnableIntrinsicFunctions': 'true',
-              'FavorSizeOrSpeed': 1,          # /Ot, favor speed over size
-              'InlineFunctionExpansion': 2,   # /Ob2, inline anything eligible
-              'OmitFramePointers': 'true',
-              'Optimization': 3,              # /Ox, full optimization
-              'RuntimeTypeInfo': 'false',
             }
           }
         },
@@ -83,8 +79,7 @@
               'ExceptionHandling': 2,       # /EHsc
               'BasicRuntimeChecks': 3,        # /RTC1
               'MinimalRebuild': 'false',
-              'OmitFramePointers': 'false',
-              'Optimization': 0,              # /Od, no optimization
+              'Optimization': 0,              # /Od /Oy-, no optimization
               "AdditionalOptions": [
                 # C++ standard
                 "/std:c++latest",
