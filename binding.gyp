@@ -34,7 +34,7 @@
 
                 # Optimizations
                 "/Ob3",  # agressive inline
-                "/GL",   # whole Program Optimization
+                "/GL",   # whole Program Optimization  # /LTCG is implied with /GL.
                 "/DNDEBUG"  # turn off asserts
               ],
             }
