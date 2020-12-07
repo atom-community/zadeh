@@ -1,6 +1,6 @@
 const fs = require("fs")
 const path = require("path")
-const {averageArray} = require("./testutils")
+const { averageArray } = require("./testutils")
 
 try {
   performance = require("perf_hooks").performance
@@ -47,8 +47,9 @@ const out_getBuffer = treeFilterer.filter("getBuffer")
 let t6_delta = performance.now() - t6
 console.log(`TreeFilterer.filter getBuffer: ${t6_delta.toFixed(2)} ms`)
 
-console.log(`\t TreeFilterer.filter average: ${averageArray([t2_delta,t3_delta,t4_delta,t5_delta,t6_delta]).toFixed(3)} ms`)
-
+console.log(
+  `\t TreeFilterer.filter average: ${averageArray([t2_delta, t3_delta, t4_delta, t5_delta, t6_delta]).toFixed(3)} ms`
+)
 
 // filterTree
 let t7 = performance.now()
@@ -78,4 +79,6 @@ const out_filterTree_getBuffer = filterTree(outlineData, "getBuffer", "plainText
 let t11_delta = performance.now() - t11
 console.log(`filterTree getBuffer: ${t11_delta.toFixed(2)} ms`)
 
-console.log(`\t filterTree average: ${averageArray([t7_delta,t8_delta,t9_delta,t10_delta,t11_delta]).toFixed(3)} ms`)
+console.log(
+  `\t filterTree average: ${averageArray([t7_delta, t8_delta, t9_delta, t10_delta, t11_delta]).toFixed(3)} ms`
+)

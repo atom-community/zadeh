@@ -68,7 +68,7 @@ function doFilterTest(test_name, lines, query, params) {
 }
 
 function averageArray(nums) {
-  return (nums.reduce((a, b) => (a + b), 0) / nums.length ) || 0;
+  return nums.reduce((a, b) => a + b, 0) / nums.length || 0
 }
 
 module.exports = {
@@ -76,5 +76,5 @@ module.exports = {
   elapsed_time,
 
   doFilterTest,
-  averageArray
+  averageArray,
 }
