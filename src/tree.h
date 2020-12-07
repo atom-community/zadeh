@@ -6,21 +6,15 @@
 
 /** Get the children of a jsTree (Napi::Object) */
 inline std::optional<Napi::Array> getChildren(const Napi::Object &jsTree, const string &childrenKey) {
-    Napi::Array childrenArray;
-
     // determine if it has children
-    auto hasChildren = false;
     if (jsTree.HasOwnProperty(childrenKey)) {
         const auto childrenRaw = jsTree.Get(childrenKey);
         if (childrenRaw.IsArray()) {
-            childrenArray = childrenRaw.As<Napi::Array>();
+            const auto childrenArray = childrenRaw.As<Napi::Array>();
             if (childrenArray.Length() != 0) {
-                hasChildren = true;
+                return childrenArray;
             }
         }
-    }
-    if (hasChildren) {
-        return childrenArray;
     }
     return {};
 }
