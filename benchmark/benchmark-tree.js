@@ -47,6 +47,28 @@ const out_getBuffer = treeFilterer.filter("getBuffer")
 let t6_delta = performance.now() - t6
 console.log(`TreeFilterer.filter getBuffer: ${t6_delta.toFixed(2)} ms`)
 
+console.log(`\t TreeFilterer.filter average: ${averageArray([t2_delta,t3_delta,t4_delta,t5_delta,t6_delta]).toFixed(3)} ms`)
+
+
+// filterTree
+let t7 = performance.now()
+const out_filterTree_text = filterTree(outlineData, "text", "plainText", "children")
+let t7_delta = performance.now() - t7
+console.log(`filterTree text: ${t7_delta.toFixed(2)} ms`)
+
+//
+let t8 = performance.now()
+const out_filterTree_dips = filterTree(outlineData, "dips", "plainText", "children")
+let t8_delta = performance.now() - t8
+console.log(`filterTree dips: ${t8_delta.toFixed(2)} ms`)
+
+//
+let t9 = performance.now()
+const out_filterTree_disp = filterTree(outlineData, "disp", "plainText", "children")
+let t9_delta = performance.now() - t9
+console.log(`filterTree disp: ${t9_delta.toFixed(2)} ms`)
+
+let t10 = performance.now()
 const out_filterTree_txt = filterTree(outlineData, "txt", "plainText", "children")
 let t10_delta = performance.now() - t10
 console.log(`filterTree txt: ${t10_delta.toFixed(2)} ms`)
