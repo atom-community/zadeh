@@ -67,9 +67,14 @@ function doFilterTest(test_name, lines, query, params) {
   console.log("")
 }
 
+function averageArray(nums) {
+  return nums.reduce((a, b) => a + b, 0) / nums.length || 0
+}
+
 module.exports = {
   start_timer,
   elapsed_time,
 
   doFilterTest,
+  averageArray,
 }
