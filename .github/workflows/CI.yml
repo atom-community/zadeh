@@ -80,8 +80,20 @@ jobs:
         if: ${{ contains(matrix.node_version, '12') && contains(matrix.node_arch, 'x86') }}
         run: npm run native:prebuild-ia32
 
-      - name: Upload artifacts
-        if: ${{ contains(matrix.node_version, '12') }}
+      - name: Upload artifacts for Ubuntu
+        if: ${{ contains(matrix.node_version, '12') && contains(matrix.os, 'ubuntu-20.04') }}
+        uses: actions/upload-artifact@v2.0.1
+        with:
+          path: ./prebuilds
+
+      - name: Upload artifacts for MacOS
+        if: ${{ contains(matrix.node_version, '12') && contains(matrix.os, 'macos-11.0') }}
+        uses: actions/upload-artifact@v2.0.1
+        with:
+          path: ./prebuilds
+
+      - name: Upload artifacts for Windows
+        if: ${{ contains(matrix.node_version, '12') && contains(matrix.os, 'windows-latest') }}
         uses: actions/upload-artifact@v2.0.1
         with:
           path: ./prebuilds
