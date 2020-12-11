@@ -28,6 +28,14 @@
     "bump": "ncu -u --greatest",
     "prepare": "npm run build"
   },
+  "files": [
+    "src",
+    "types",
+    "prebuilds",
+    "fuzzaldrin-dist.js",
+    "fuzzaldrin-dist.js.map",
+    "binding.gyp"
+  ],
   "gypfile": true,
   "targets": {
     "main": {
