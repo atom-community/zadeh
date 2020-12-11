@@ -115,8 +115,10 @@ jobs:
           node-version: ${{ matrix.node_version }}
           architecture: ${{ matrix.node_arch }}
 
-      - name: Install dependencies and build
-        run: npm install
+      - name: Install dependencies only
+        run: |
+          npm install --ignore-scripts
+          npm run js:build
 
       - name: Download articats
         uses: actions/download-artifact@v2
