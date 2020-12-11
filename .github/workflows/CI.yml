@@ -50,6 +50,9 @@ jobs:
           sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 10
           sudo update-alternatives --config clang
           sudo update-alternatives --config clang++
+
+      - name: Set Compiler for Ubuntu
+        run: |
           echo "CC=clang" >> $GITHUB_ENV
           echo "CXX=clang++" >> $GITHUB_ENV
 
