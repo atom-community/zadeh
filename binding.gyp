@@ -13,11 +13,11 @@
         'Release': {
           'defines': [ 'NAPI_DISABLE_CPP_EXCEPTIONS', 'NDEBUG' ],
           "cflags": [ "-fno-exceptions", "-Ofast" ],
-          "cflags_cc": [ "-fno-exceptions", "-Ofast", "-std=c++2a",  "-stdlib=libc++" ],
+          "cflags_cc": [ "-fno-exceptions", "-Ofast", "-std=c++17" ],
           "xcode_settings": {
             'GCC_OPTIMIZATION_LEVEL': '3', # stop gyp from defaulting to -Os
             "CLANG_CXX_LIBRARY": "libc++",
-            "CLANG_CXX_LANGUAGE_STANDARD":"c++2a",
+            "CLANG_CXX_LANGUAGE_STANDARD":"c++17",
             'MACOSX_DEPLOYMENT_TARGET': '10.15'
           },
           "msvs_settings": {
@@ -50,7 +50,7 @@
             '-fexceptions', # enable exceptions
 
             # C++ standard
-            "-std=c++2a",
+            "-std=c++17",
             "-stdlib=libc++",
 
             # Clang warnings
@@ -108,7 +108,7 @@
             'GCC_OPTIMIZATION_LEVEL': '0', # stop gyp from defaulting to -Os
             'GCC_ENABLE_CPP_EXCEPTIONS': 'YES',
             "CLANG_CXX_LIBRARY": "libc++",
-            "CLANG_CXX_LANGUAGE_STANDARD":"c++2a",
+            "CLANG_CXX_LANGUAGE_STANDARD":"c++17",
             'MACOSX_DEPLOYMENT_TARGET': '10.15'
           } # XCODE
         }, # Debug

@@ -42,19 +42,19 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-${{ matrix.node_version }}-${{ matrix.node_arch }}-${{ hashFiles('package.json') }}
 
-      - name: Install Compiler for Ubuntu 16.04
-        if: ${{ contains(matrix.os, 'ubuntu-16.04') }}
-        run: |
-          sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
-          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-9 10
-          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 10
-          sudo update-alternatives --config clang
-          sudo update-alternatives --config clang++
-
-      - name: Set Compiler for Ubuntu
-        run: |
-          echo "CC=clang" >> $GITHUB_ENV
-          echo "CXX=clang++" >> $GITHUB_ENV
+      # - name: Install Compiler for Ubuntu 16.04
+      #   if: ${{ contains(matrix.os, 'ubuntu-16.04') }}
+      #   run: |
+      #     sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+      #     sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-9 10
+      #     sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 10
+      #     sudo update-alternatives --config clang
+      #     sudo update-alternatives --config clang++
+      
+      # - name: Set Compiler for Ubuntu
+      #   run: |
+      #     echo "CC=clang" >> $GITHUB_ENV
+      #     echo "CXX=clang++" >> $GITHUB_ENV
 
       - name: Install Node
         uses: actions/setup-node@v2.1.3
