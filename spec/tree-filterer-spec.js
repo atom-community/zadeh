@@ -35,6 +35,7 @@ describe("TreeFilterer", function () {
       const treeFilterer = new TreeFilterer()
       treeFilterer.setCandidates(outlineData, "plainText", "children")
 
+      // console.log(treeFilterer.filter("text"))
       expect(
         DeepEqual(treeFilterer.filter("text"), [
           { data: "text", index: 0, level: 4 },
@@ -135,6 +136,7 @@ describe("TreeFilterer", function () {
         ])
       ).toBe(true)
 
+      // console.log(treeFilterer.filter("disp"))
       expect(
         DeepEqual(treeFilterer.filter("disp"), [
           { data: "disposable", index: 3, level: 4 },
@@ -162,6 +164,7 @@ describe("TreeFilterer", function () {
         ])
       ).toBe(true)
 
+      // console.log(treeFilterer.filter("dips"))
       expect(
         DeepEqual(treeFilterer.filter("dips"), [
           { data: "didUpdateStyles", index: 2, level: 3 },

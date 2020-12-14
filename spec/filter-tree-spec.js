@@ -39,6 +39,7 @@ describe("filterTree", () => {
       ])
     ).toBe(true)
 
+    // console.log(filterTree(candidates, "ye", "data", "children"))
     expect(
       DeepEqual(
         filterTree(candidates, "ye", "data", "children"),
@@ -59,6 +60,7 @@ describe("filterTree", () => {
     ).toBe(true)
 
     // test maxResults
+    // console.log(filterTree(candidates, "bye", "data", "children", { maxResults: 2 }))
     expect(
       DeepEqual(filterTree(candidates, "bye", "data", "children", { maxResults: 2 }), [
         { data: "bye1", index: 0, level: 0 },
@@ -66,6 +68,7 @@ describe("filterTree", () => {
       ])
     ).toBe(true)
 
+    // console.log(filterTree(candidates, "ye", "data", "children", { maxResults: 3 }))
     expect(
       DeepEqual(
         filterTree(candidates, "ye", "data", "children", { maxResults: 3 }),
@@ -104,7 +107,7 @@ describe("filterTree", () => {
 
   if (process.platform === "win32") {
     // answers are os dependant because of slight differences
-
+    // console.log(filterTree(outlineData, "text", "plainText", "children"))
     it("can search in outline data", () => {
       expect(
         DeepEqual(filterTree(outlineData, "text", "plainText", "children"), [
@@ -206,6 +209,7 @@ describe("filterTree", () => {
         ])
       ).toBe(true)
 
+      // console.log(filterTree(outlineData, "disp", "plainText", "children"))
       expect(
         DeepEqual(filterTree(outlineData, "disp", "plainText", "children"), [
           { data: "disposable", index: 3, level: 4 },
@@ -233,6 +237,7 @@ describe("filterTree", () => {
         ])
       ).toBe(true)
 
+      // console.log(filterTree(outlineData, "dips", "plainText", "children"))
       expect(
         DeepEqual(filterTree(outlineData, "dips", "plainText", "children"), [
           { data: "didUpdateStyles", index: 2, level: 3 },
