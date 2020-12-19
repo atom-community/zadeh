@@ -9,3 +9,4 @@ fuzzaldrin-dist.js
 fuzzaldrin-dist.js.map
 spec/*.coffee
 .parcel-cache
+benchmark/result.md
