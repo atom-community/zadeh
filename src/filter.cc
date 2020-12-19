@@ -44,10 +44,13 @@ void filter_internal(const std::vector<CandidateString> &candidates,
 }
 
 std::vector<CandidateIndex> sort_priority_queue(CandidateScoreVector &&candidates, size_t max_results) {
+    // sort all the results
+    std::sort(candidates.begin(), candidates.end());
+
+    // find the end based on max_results or the length of the results
     const auto end = min(max_results, candidates.size());
 
-    std::partial_sort(candidates.begin(), candidates.begin() + end, candidates.end());
-
+    // make the return from the indices of the results
     std::vector<CandidateIndex> ret;
     ret.reserve(end);
     for (auto i = 0u; i < end; i++) {
