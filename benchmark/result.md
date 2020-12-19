@@ -1151,3 +1151,272 @@ ThreeLetter#Filter: 412.148ms
 setCandidates#Keybased: 195.928ms
 TwoLetter#Keybased#Filter: 414.564ms
 ThreeLetter#Keybased#Filter: 404.176ms
+
+aminy@LAPTOP-DHBEBJRL  ~\Documents\GitHub\JavaScript\@atom-ide-community\fuzzaldrin-plus-fast   master ≣   [17:49]
+❯ npm run benchmark
+
+> fuzzaldrin-plus-fast@1.2.3 benchmark C:\Users\aminy\Documents\GitHub\JavaScript\@atom-ide-community\fuzzaldrin-plus-fast
+> npm run benchmark:small && npm run benchmark:regular && npm run benchmark:large && npm run benchmark:tree
+
+
+> fuzzaldrin-plus-fast@1.2.3 benchmark:small
+> node benchmark/benchmark-small.js
+
+====== Running test - query:nm ======
+Elapsed time - fuzzaldrin-plus-fast: 0 ms vs. fuzzaldrin-plus: 1 ms
+length 100 100
+
+====== Running test - query:npm ======
+Elapsed time - fuzzaldrin-plus-fast: 0 ms vs. fuzzaldrin-plus: 4 ms
+length 55 100
+
+====== Running test - query:node ======
+Elapsed time - fuzzaldrin-plus-fast: 0 ms vs. fuzzaldrin-plus: 1 ms
+length 100 100
+
+====== Running test - query:grunt ======
+Elapsed time - fuzzaldrin-plus-fast: 0 ms vs. fuzzaldrin-plus: 0 ms
+length 33 100
+
+====== Running test - query:html ======
+Elapsed time - fuzzaldrin-plus-fast: 0 ms vs. fuzzaldrin-plus: 0 ms
+length 10 100
+
+====== Running test - query:doc ======
+Elapsed time - fuzzaldrin-plus-fast: 0 ms vs. fuzzaldrin-plus: 4 ms
+length 87 100
+
+====== Running test - query:cli ======
+Elapsed time - fuzzaldrin-plus-fast: 0 ms vs. fuzzaldrin-plus: 2 ms
+length 57 100
+
+====== Running test - query:js ======
+Elapsed time - fuzzaldrin-plus-fast: 0 ms vs. fuzzaldrin-plus: 0 ms
+length 60 100
+
+====== Running test - query:jas ======
+Elapsed time - fuzzaldrin-plus-fast: 0 ms vs. fuzzaldrin-plus: 0 ms
+length 19 100
+
+====== Running test - query:mine ======
+Elapsed time - fuzzaldrin-plus-fast: 0 ms vs. fuzzaldrin-plus: 2 ms
+length 65 100
+
+====== Running test - query:stream ======
+Elapsed time - fuzzaldrin-plus-fast: 0 ms vs. fuzzaldrin-plus: 1 ms
+length 19 100
+
+
+> fuzzaldrin-plus-fast@1.2.3 benchmark:regular
+> node benchmark/benchmark.js
+
+====== Running test - query:index ======
+Elapsed time - fuzzaldrin-plus-fast: 27 ms vs. fuzzaldrin-plus: 44 ms
+length 6168 66672
+
+====== Running test - query:indx ======
+Elapsed time - fuzzaldrin-plus-fast: 28 ms vs. fuzzaldrin-plus: 51 ms
+length 6192 66672
+
+====== Running test - query:walkdr ======
+Elapsed time - fuzzaldrin-plus-fast: 26 ms vs. fuzzaldrin-plus: 16 ms
+length 504 66672
+====== fuzzaldrin-plus-fast is SLOWER
+
+====== Running test - query:node ======
+Elapsed time - fuzzaldrin-plus-fast: 46 ms vs. fuzzaldrin-plus: 69 ms
+length 65136 66672
+
+====== Running test - query:nm ======
+Elapsed time - fuzzaldrin-plus-fast: 44 ms vs. fuzzaldrin-plus: 61 ms
+length 65208 66672
+
+====== Running test - query:nm ======
+Elapsed time - fuzzaldrin-plus-fast: 44 ms vs. fuzzaldrin-plus: 52 ms
+length 65208 66672
+
+====== Running test - query:nm ======
+Elapsed time - fuzzaldrin-plus-fast: 45 ms vs. fuzzaldrin-plus: 52 ms
+length 65208 66672
+
+====== Running test - query:ndem ======
+Elapsed time - fuzzaldrin-plus-fast: 51 ms vs. fuzzaldrin-plus: 238 ms
+length 65124 66672
+
+Matching 66672 results for 'index' took 287ms (Prepare in advance)
+Matching 66672 results for 'index' took 277ms (cache)
+Matching 66672 results for 'index' took 86ms (legacy)
+
+> fuzzaldrin-plus-fast@1.2.3 benchmark:large
+> node benchmark/benchmark-large.js
+
+TwoLetter#legacy: 10.569s
+TwoLetter#fuzzaldrin-plus-fast#DirectFilter: 2.909s
+TwoLetter#fuzzaldrin-plus-fast#setCandidates#filter: 411.434ms
+======
+ThreeLetter#legacy: 8.844s
+ThreeLetter#fuzzaldrin-plus-fast#DirectFilter: 2.999s
+ThreeLetter#fuzzaldrin-plus-fast#setCandidates#filter: 406.735ms
+======
+TwoLetter#Keybased#Filter: 3.454s
+ThreeLetter#Keybased#Filter: 3.832s
+======
+setCandidates: 187.174ms
+TwoLetter#Filter: 414.171ms
+ThreeLetter#Filter: 418.369ms
+======
+setCandidates#Keybased: 196.369ms
+TwoLetter#Keybased#Filter: 546.893ms
+ThreeLetter#Keybased#Filter: 416.643ms
+
+> fuzzaldrin-plus-fast@1.2.3 benchmark:tree
+> node benchmark/benchmark-tree.js
+
+         TreeFilterer.setCandidates: 1.99 ms
+TreeFilterer.filter text: 0.60 ms
+TreeFilterer.filter dips: 0.56 ms
+TreeFilterer.filter disp: 0.29 ms
+TreeFilterer.filter txt: 0.39 ms
+TreeFilterer.filter getBuffer: 0.28 ms
+         TreeFilterer.filter average: 0.425 ms
+filterTree text: 2.53 ms
+filterTree dips: 2.14 ms
+filterTree disp: 3.10 ms
+filterTree txt: 2.55 ms
+filterTree getBuffer: 2.74 ms
+         filterTree average: 2.610 ms
+
+
+aminy@LAPTOP-DHBEBJRL  ~\Documents\GitHub\JavaScript\@atom-ide-community\fuzzaldrin-plus-fast   vector-insteadof-priority_queue ↑1 ↓1                                                                                              [17:46]
+❯ npm run benchmark
+
+> fuzzaldrin-plus-fast@1.2.3 benchmark C:\Users\aminy\Documents\GitHub\JavaScript\@atom-ide-community\fuzzaldrin-plus-fast
+> npm run benchmark:small && npm run benchmark:regular && npm run benchmark:large && npm run benchmark:tree
+
+
+> fuzzaldrin-plus-fast@1.2.3 benchmark:small
+> node benchmark/benchmark-small.js
+
+====== Running test - query:nm ======
+Elapsed time - fuzzaldrin-plus-fast: 0 ms vs. fuzzaldrin-plus: 1 ms
+length 100 100
+
+====== Running test - query:npm ======
+Elapsed time - fuzzaldrin-plus-fast: 0 ms vs. fuzzaldrin-plus: 4 ms
+length 55 100
+
+====== Running test - query:node ======
+Elapsed time - fuzzaldrin-plus-fast: 0 ms vs. fuzzaldrin-plus: 2 ms
+length 100 100
+
+====== Running test - query:grunt ======
+Elapsed time - fuzzaldrin-plus-fast: 0 ms vs. fuzzaldrin-plus: 0 ms
+length 33 100
+
+====== Running test - query:html ======
+Elapsed time - fuzzaldrin-plus-fast: 0 ms vs. fuzzaldrin-plus: 1 ms
+length 10 100
+
+====== Running test - query:doc ======
+Elapsed time - fuzzaldrin-plus-fast: 0 ms vs. fuzzaldrin-plus: 4 ms
+length 87 100
+
+====== Running test - query:cli ======
+Elapsed time - fuzzaldrin-plus-fast: 0 ms vs. fuzzaldrin-plus: 2 ms
+length 57 100
+
+====== Running test - query:js ======
+Elapsed time - fuzzaldrin-plus-fast: 0 ms vs. fuzzaldrin-plus: 0 ms
+length 60 100
+
+====== Running test - query:jas ======
+Elapsed time - fuzzaldrin-plus-fast: 0 ms vs. fuzzaldrin-plus: 1 ms
+length 19 100
+
+====== Running test - query:mine ======
+Elapsed time - fuzzaldrin-plus-fast: 0 ms vs. fuzzaldrin-plus: 2 ms
+length 65 100
+
+====== Running test - query:stream ======
+Elapsed time - fuzzaldrin-plus-fast: 0 ms vs. fuzzaldrin-plus: 1 ms
+length 19 100
+
+
+> fuzzaldrin-plus-fast@1.2.3 benchmark:regular
+> node benchmark/benchmark.js
+
+====== Running test - query:index ======
+Elapsed time - fuzzaldrin-plus-fast: 28 ms vs. fuzzaldrin-plus: 44 ms
+length 6168 66672
+
+====== Running test - query:indx ======
+Elapsed time - fuzzaldrin-plus-fast: 27 ms vs. fuzzaldrin-plus: 50 ms
+length 6192 66672
+
+====== Running test - query:walkdr ======
+Elapsed time - fuzzaldrin-plus-fast: 25 ms vs. fuzzaldrin-plus: 16 ms
+length 504 66672
+====== fuzzaldrin-plus-fast is SLOWER
+
+====== Running test - query:node ======
+Elapsed time - fuzzaldrin-plus-fast: 42 ms vs. fuzzaldrin-plus: 71 ms
+length 65136 66672
+
+====== Running test - query:nm ======
+Elapsed time - fuzzaldrin-plus-fast: 40 ms vs. fuzzaldrin-plus: 61 ms
+length 65208 66672
+
+====== Running test - query:nm ======
+Elapsed time - fuzzaldrin-plus-fast: 39 ms vs. fuzzaldrin-plus: 52 ms
+length 65208 66672
+
+====== Running test - query:nm ======
+Elapsed time - fuzzaldrin-plus-fast: 39 ms vs. fuzzaldrin-plus: 52 ms
+length 65208 66672
+
+====== Running test - query:ndem ======
+Elapsed time - fuzzaldrin-plus-fast: 46 ms vs. fuzzaldrin-plus: 248 ms
+length 65124 66672
+
+Matching 66672 results for 'index' took 294ms (Prepare in advance)
+Matching 66672 results for 'index' took 277ms (cache)
+Matching 66672 results for 'index' took 86ms (legacy)
+
+> fuzzaldrin-plus-fast@1.2.3 benchmark:large
+> node benchmark/benchmark-large.js
+
+TwoLetter#legacy: 11.316s
+TwoLetter#fuzzaldrin-plus-fast#DirectFilter: 2.853s
+TwoLetter#fuzzaldrin-plus-fast#setCandidates#filter: 401.659ms
+======
+ThreeLetter#legacy: 8.940s
+ThreeLetter#fuzzaldrin-plus-fast#DirectFilter: 2.986s
+ThreeLetter#fuzzaldrin-plus-fast#setCandidates#filter: 399.152ms
+======
+TwoLetter#Keybased#Filter: 3.842s
+ThreeLetter#Keybased#Filter: 4.146s
+======
+setCandidates: 205.464ms
+TwoLetter#Filter: 417.096ms
+ThreeLetter#Filter: 406.179ms
+======
+setCandidates#Keybased: 209.739ms
+TwoLetter#Keybased#Filter: 413.274ms
+ThreeLetter#Keybased#Filter: 404.988ms
+
+> fuzzaldrin-plus-fast@1.2.3 benchmark:tree
+> node benchmark/benchmark-tree.js
+
+        TreeFilterer.setCandidates: 2.04 ms
+TreeFilterer.filter text: 0.64 ms
+TreeFilterer.filter dips: 0.29 ms
+TreeFilterer.filter disp: 0.25 ms
+TreeFilterer.filter txt: 0.43 ms
+TreeFilterer.filter getBuffer: 0.32 ms
+        TreeFilterer.filter average: 0.388 ms
+filterTree text: 2.57 ms
+filterTree dips: 2.51 ms
+filterTree disp: 3.09 ms
+filterTree txt: 2.49 ms
+filterTree getBuffer: 2.29 ms
+        filterTree average: 2.590 ms
