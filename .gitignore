@@ -6,3 +6,4 @@ dist/
 fuzzaldrin-dist.js
 fuzzaldrin-dist.js.map
 .scannerwork
+package-lock.json
