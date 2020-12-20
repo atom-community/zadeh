@@ -32,7 +32,7 @@ Napi::Value Fuzzaldrin::setArrayFiltererCandidates(const Napi::CallbackInfo &inf
     }
     auto candidates = info[0].As<Napi::Array>();
     const auto N = candidates.Length();
-    const auto num_chunks = N < 1000 * kMaxThreads ? N / 1000 + 1 : kMaxThreads;
+    const auto num_chunks = N < 1000u * kMaxThreads ? N / 1000u + 1u : kMaxThreads;
 
 
     candidates_.clear();
@@ -73,7 +73,7 @@ Napi::Value Fuzzaldrin::setTreeFiltererCandidates(const Napi::CallbackInfo &info
     const auto &candidates = _tree.entriesArray;
 
     const auto N = candidates.size();// different
-    const auto num_chunks = N < 1000 * kMaxThreads ? N / 1000 + 1 : kMaxThreads;
+    const auto num_chunks = N < 1000u * kMaxThreads ? N / 1000u + 1u : kMaxThreads;
 
 
     candidates_.clear();

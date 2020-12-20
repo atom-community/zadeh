@@ -15,7 +15,7 @@
 
 using namespace std;
 
-constexpr size_t kMaxThreads = 16;
+constexpr auto kMaxThreads = 16u;
 
 #ifdef ENABLE_DEBUG
 // TODO does not work anymore because we added explicit to constructors
