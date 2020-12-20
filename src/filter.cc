@@ -16,14 +16,14 @@ struct CandidateScore {
     }
 };
 
-using CandidateScorePriorityQueue = std::priority_queue<CandidateScore>;
+using CandidateScoreVector = std::vector<CandidateScore>;
 
 void filter_internal(const std::vector<CandidateString> &candidates,
   size_t start_index,
   const Element &query,
   const Options &options,
   size_t max_results,
-  CandidateScorePriorityQueue &results) {
+  CandidateScoreVector &results) {
     const auto scoreProvider = options.usePathScoring ? path_scorer_score : scorer_score;
     auto results_size = results.size();
     for (size_t i = 0, len = candidates.size(); i < len; i++) {
@@ -31,34 +31,32 @@ void filter_internal(const std::vector<CandidateString> &candidates,
         if (candidate.empty()) {
             continue;
         }
-        auto score = scoreProvider(candidate, query, options);
+        const auto score = scoreProvider(candidate, query, options);
         if (score > 0) {
-            results.emplace(score, start_index + i);
+            results.emplace_back(score, start_index + i);
             ++results_size;// maintain size manually rather than calling results.size() every time
             if (results_size > max_results) {
-                results.pop();
+                results.pop_back();
                 --results_size;
             }
         }
     }
 }
 
-std::vector<CandidateIndex> sort_priority_queue(CandidateScorePriorityQueue &&candidates) {
-    vector<CandidateScore> sorted;
+std::vector<CandidateIndex> sort_priority_queue(CandidateScoreVector &&candidates, size_t max_results) {
+    // sort all the results
+    std::sort(candidates.begin(), candidates.end());
+
+    // find the end based on max_results or the length of the results
+    const auto end = min(max_results, candidates.size());
+
+    // make the return from the indices of the results
     std::vector<CandidateIndex> ret;
-
-    const auto initial_candidates_size = candidates.size();
-    sorted.reserve(initial_candidates_size);
-    ret.reserve(initial_candidates_size);
-
-    while (!candidates.empty()) {
-        sorted.emplace_back(candidates.top());
-        candidates.pop();
+    ret.reserve(end);
+    for (auto i = 0u; i < end; i++) {
+        ret.emplace_back(candidates[i].index);
     }
-    std::sort(sorted.begin(), sorted.end());
-    for (const auto &item : sorted) {
-        ret.emplace_back(item.index);
-    }
+
     return ret;
 }
 
@@ -75,7 +73,7 @@ std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &c
     vector<thread> threads;
     threads.reserve(candidates_size - 1);// 1 less thread
 
-    auto results = vector<CandidateScorePriorityQueue>(candidates_size);
+    auto results = vector<CandidateScoreVector>(candidates_size);
 
     size_t start_index = 0;
     for (size_t i = 1; i < candidates_size; i++) {
@@ -85,24 +83,17 @@ std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &c
     }
     assert(threads.size() == candidates_size - 1 && results.size() == candidates_size);
 
-    CandidateScorePriorityQueue top_k;
+    CandidateScoreVector top_k;
     // Do the work for first thread.
     filter_internal(candidates[0], 0, query, options, max_results, top_k);//inbounds (candidate_size >= 1)
     // Wait for threads to complete and merge the results.
 
-    auto top_k_size = 0u;// maintain size manually rather than calling top_k.size() every time
     for (size_t i = 1; i < candidates_size; i++) {
         threads[i - 1].join();//inbounds
-        while (!results[i].empty()) {
-            top_k.emplace(results[i].top());
-            results[i].pop();
 
-            ++top_k_size;
-            if (top_k_size > max_results) {
-                top_k.pop();
-                --top_k_size;
-            }
-        }
+        const auto new_results = results[i];
+        std::move(new_results.begin(), new_results.end(), std::back_inserter(top_k));
     }
-    return sort_priority_queue(move(top_k));
+
+    return sort_priority_queue(move(top_k), max_results);
 }
