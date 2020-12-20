@@ -47,7 +47,7 @@ Napi::Value Fuzzaldrin::setArrayFiltererCandidates(const Napi::CallbackInfo &inf
             chunk_size++;
         }
         for (auto j = cur_start; j < cur_start + chunk_size; j++) {
-            candidates_[i].emplace_back(static_cast<Napi::Value>(candidates[j]).ToString().Utf8Value());
+            candidates_[i].emplace_back(candidates.Get(j).ToString().Utf8Value());
         }
         cur_start += chunk_size;
     }
