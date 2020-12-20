@@ -10,12 +10,13 @@
 #include <iostream>
 #include <utility>
 #include <cassert>
+#include <thread>
 
 #include <napi.h>
 
 using namespace std;
 
-constexpr auto kMaxThreads = 16u;
+static const auto kMaxThreads = std::thread::hardware_concurrency();
 
 #ifdef ENABLE_DEBUG
 // TODO does not work anymore because we added explicit to constructors
