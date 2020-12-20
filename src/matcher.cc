@@ -15,7 +15,7 @@
 // - we record the best move at each position in a matrix, and finish by a traceback.
 // - we reset consecutive sequence if we do not take the match.
 // - no hit miss limit
-std::vector<size_t> computeMatch(const CandidateString &subject, const CandidateString &subject_lw, const PreparedQuery &preparedQuery, size_t offset = 0) {
+std::vector<size_t> computeMatch(const CandidateString &subject, const CandidateString &subject_lw, const PreparedQuery &preparedQuery, size_t offset = 0u) {
     const auto &query = preparedQuery.query;
     const auto &query_lw = preparedQuery.query_lw;
 
@@ -193,19 +193,19 @@ std::vector<size_t> mergeMatches(const std::vector<size_t> &a, const std::vector
     const auto a_size = a.size();
     const auto b_size = b.size();
 
-    if (b_size == 0) {
+    if (b_size == 0u) {
         return a;
     }
-    if (a_size == 0) {
+    if (a_size == 0u) {
         return b;
     }
 
-    auto i = -1;
-    auto j = 0;
+    auto i = 0u;
+    auto j = 0u;
     auto bj = b[j];
     std::vector<size_t> out;
 
-    while (++i < a_size) {
+    while (i < a_size) {
         auto ai = a[i];
 
         while (bj <= ai && ++j < b_size) {
@@ -215,6 +215,7 @@ std::vector<size_t> mergeMatches(const std::vector<size_t> &a, const std::vector
             bj = b[j];
         }
         out.emplace_back(ai);
+        ++i;
     }
     while (j < b_size) {
         out.emplace_back(b[j++]);
