@@ -29,25 +29,24 @@ function areArraysEqual(a, b) {
   return true
 }
 
-let timer_start_time = null
-
 function start_timer() {
-  timer_start_time = performance.now()
+  return performance.now()
 }
 
-function elapsed_time() {
-  return Math.round(performance.now() - timer_start_time)
+function elapsed_time(timer_start_time) {
+  const time_final = performance.now()
+  return Math.round(time_final - timer_start_time)
 }
 
 function doFilterTest(test_name, lines, query, params) {
   console.log(`====== Running test - query:${query} ======`)
-  start_timer()
+  const timer_start_time = start_timer()
   const res_actual = fuzzaldrinPlus.filter(lines, query, params)
-  const elapsed = elapsed_time()
+  const elapsed = elapsed_time(timer_start_time)
 
-  start_timer()
+  const timer_start_time_legacy = start_timer()
   const res_expected = legacy.filter(lines, query)
-  const elapsed_legacy = elapsed_time()
+  const elapsed_legacy = elapsed_time(timer_start_time_legacy)
 
   if (res_actual.length != res_expected.length) {
     console.error(`Results count changed! ${res_actual.length} instead of ${res_expected.length}`)
@@ -59,8 +58,8 @@ function doFilterTest(test_name, lines, query, params) {
     process.exit(1)
   }
 
-  console.log(`Elapsed time - fuzzaldrin-plus-fast: ${elapsed} ms vs. fuzzaldrin-plus: ${elapsed_legacy} ms`)
-  console.log(`length ${res_actual.length} ${lines.length}`)
+  console.log(`Elapsed time - fuzzaldrin-plus-fast: ${elapsed} ms vs. fuzzaldrin-plus: ${elapsed_legacy} ms\n`)
+  console.log(`length of the result: ${res_actual.length}, length of the lines: ${lines.length}`)
   if (elapsed > elapsed_legacy) {
     console.error(`====== fuzzaldrin-plus-fast is SLOWER`)
   }
