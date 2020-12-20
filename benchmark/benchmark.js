@@ -1,7 +1,7 @@
 require("coffeescript/register")
 const fs = require("fs")
 const path = require("path")
-const testutils = require("./testutils")
+const { start_timer, elapsed_time, doFilterTest } = require("./testutils")
 
 const fuzzaldrinPlus = require("../fuzzaldrin-dist")
 const legacy = require("fuzzaldrin-plus")
@@ -18,35 +18,35 @@ const mitigation = {
 fuzzaldrinPlus.filter(lines, "index", forceAllMatch)
 legacy.filter(lines, "index")
 
-testutils.doFilterTest("~10% of results are positive, mix exact & fuzzy", lines, "index")
-testutils.doFilterTest("~10% of results are positive, Fuzzy match", lines, "indx")
-testutils.doFilterTest("~1% of results are positive, fuzzy", lines, "walkdr")
-testutils.doFilterTest("~98% of results are positive, mostly Exact match", lines, "node", forceAllMatch)
-testutils.doFilterTest("~98% of results are positive, Acronym match", lines, "nm")
-testutils.doFilterTest("~98% of results + Fuzzy match, [Worst case scenario]", lines, "nm", forceAllMatch)
-testutils.doFilterTest("~98% of results + Fuzzy match, [Mitigation]", lines, "nm", mitigation)
-testutils.doFilterTest("~98% of results + Fuzzy match, [Worst case but shorter string]", lines, "ndem", forceAllMatch)
+doFilterTest("~10% of results are positive, mix exact & fuzzy", lines, "index")
+doFilterTest("~10% of results are positive, Fuzzy match", lines, "indx")
+doFilterTest("~1% of results are positive, fuzzy", lines, "walkdr")
+doFilterTest("~98% of results are positive, mostly Exact match", lines, "node", forceAllMatch)
+doFilterTest("~98% of results are positive, Acronym match", lines, "nm")
+doFilterTest("~98% of results + Fuzzy match, [Worst case scenario]", lines, "nm", forceAllMatch)
+doFilterTest("~98% of results + Fuzzy match, [Mitigation]", lines, "nm", mitigation)
+doFilterTest("~98% of results + Fuzzy match, [Worst case but shorter string]", lines, "ndem", forceAllMatch)
 
 const query = "index"
-testutils.start_timer()
+const t1 = start_timer()
 const prepared = fuzzaldrinPlus.prepareQuery(query)
 for (const line of lines) {
   fuzzaldrinPlus.match(line, query, {
     preparedQuery: prepared,
   })
 }
-console.log(`Matching ${lines.length} results for 'index' took ${testutils.elapsed_time()}ms (Prepare in advance)`)
+elapsed_time(t1, `Matching ${lines.length} results for 'index' (Prepare in advance)`)
 
-testutils.start_timer()
+const t2 = start_timer()
 for (const line of lines) {
   fuzzaldrinPlus.match(line, query)
 }
-console.log(`Matching ${lines.length} results for 'index' took ${testutils.elapsed_time()}ms (cache)`)
+elapsed_time(t2, `Matching ${lines.length} results for 'index' (cache)`)
 // replace by 'prepQuery ?= scorer.prepQuery(query)' to test without cache.
 
-testutils.start_timer()
+const t3 = start_timer()
 for (const line of lines) {
   legacy.match(line, query)
 }
-console.log(`Matching ${lines.length} results for 'index' took ${testutils.elapsed_time()}ms (legacy)`)
+elapsed_time(t3, `Matching ${lines.length} results for 'index' (_legacy_)`)
 // replace by `prepQuery ? = scorer.prepQuery(query) to test without cache.

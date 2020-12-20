@@ -1,12 +1,6 @@
 const fs = require("fs")
 const path = require("path")
-const { averageArray } = require("./testutils")
-
-try {
-  performance = require("perf_hooks").performance
-} catch {
-  performance = window.performance
-}
+const { averageArray, start_timer, elapsed_time } = require("./testutils")
 
 const { TreeFilterer, filterTree } = require("../fuzzaldrin-dist")
 
@@ -14,71 +8,69 @@ const outlineData = JSON.parse(fs.readFileSync(path.join(__dirname, "tree.json")
 
 // Loading using TreeFilterer
 
-let t1 = performance.now()
+let t1 = start_timer()
 const treeFilterer = new TreeFilterer()
 treeFilterer.setCandidates(outlineData, "plainText", "children")
-console.log(`\t TreeFilterer.setCandidates: ${(performance.now() - t1).toFixed(2)} ms`)
+elapsed_time(t1, `TreeFilterer.setCandidates:`)
 
 // Filter using TreeFilterer
-let t2 = performance.now()
+let t2 = start_timer()
 const out_text = treeFilterer.filter("text")
-let t2_delta = performance.now() - t2
-console.log(`TreeFilterer.filter text: ${t2_delta.toFixed(2)} ms`)
+const t2_delta = elapsed_time(t2, `TreeFilterer.filter text`)
 
 //
-let t3 = performance.now()
+let t3 = start_timer()
 const out_dips = treeFilterer.filter("dips")
-let t3_delta = performance.now() - t3
-console.log(`TreeFilterer.filter dips: ${t3_delta.toFixed(2)} ms`)
+const t3_delta = elapsed_time(t3, `TreeFilterer.filter dips`)
 
 //
-let t4 = performance.now()
+let t4 = start_timer()
 const out_disp = treeFilterer.filter("disp")
-let t4_delta = performance.now() - t4
-console.log(`TreeFilterer.filter disp: ${t4_delta.toFixed(2)} ms`)
+const t4_delta = elapsed_time(t4, `TreeFilterer.filter disp`)
 
-let t5 = performance.now()
+let t5 = start_timer()
 const out_txt = treeFilterer.filter("txt")
-let t5_delta = performance.now() - t5
-console.log(`TreeFilterer.filter txt: ${t5_delta.toFixed(2)} ms`)
+const t5_delta = elapsed_time(t5, `TreeFilterer.filter txt`)
 
-let t6 = performance.now()
+let t6 = start_timer()
 const out_getBuffer = treeFilterer.filter("getBuffer")
-let t6_delta = performance.now() - t6
-console.log(`TreeFilterer.filter getBuffer: ${t6_delta.toFixed(2)} ms`)
+const t6_delta = elapsed_time(t6, `TreeFilterer.filter getBuffer`)
 
 console.log(
-  `\t TreeFilterer.filter average: ${averageArray([t2_delta, t3_delta, t4_delta, t5_delta, t6_delta]).toFixed(3)} ms`
+  `\nTreeFilterer.filter average: ${" ".repeat(57)} ${averageArray([
+    t2_delta,
+    t3_delta,
+    t4_delta,
+    t5_delta,
+    t6_delta,
+  ]).toFixed(3)} ms\n`
 )
 
 // filterTree
-let t7 = performance.now()
+let t7 = start_timer()
 const out_filterTree_text = filterTree(outlineData, "text", "plainText", "children")
-let t7_delta = performance.now() - t7
-console.log(`filterTree text: ${t7_delta.toFixed(2)} ms`)
+const t7_delta = elapsed_time(t7, `filterTree text`)
 
 //
-let t8 = performance.now()
+let t8 = start_timer()
 const out_filterTree_dips = filterTree(outlineData, "dips", "plainText", "children")
-let t8_delta = performance.now() - t8
-console.log(`filterTree dips: ${t8_delta.toFixed(2)} ms`)
+const t8_delta = elapsed_time(t8, `filterTree dips`)
 
 //
-let t9 = performance.now()
+let t9 = start_timer()
 const out_filterTree_disp = filterTree(outlineData, "disp", "plainText", "children")
-let t9_delta = performance.now() - t9
-console.log(`filterTree disp: ${t9_delta.toFixed(2)} ms`)
+const t9_delta = elapsed_time(t9, `filterTree disp`)
 
-let t10 = performance.now()
+let t10 = start_timer()
 const out_filterTree_txt = filterTree(outlineData, "txt", "plainText", "children")
-let t10_delta = performance.now() - t10
-console.log(`filterTree txt: ${t10_delta.toFixed(2)} ms`)
+const t10_delta = elapsed_time(t10, `filterTree txt:`)
 
-let t11 = performance.now()
+let t11 = start_timer()
 const out_filterTree_getBuffer = filterTree(outlineData, "getBuffer", "plainText", "children")
-let t11_delta = performance.now() - t11
-console.log(`filterTree getBuffer: ${t11_delta.toFixed(2)} ms`)
+const t11_delta = elapsed_time(t11, `filterTree getBuffer:`)
 
 console.log(
-  `\t filterTree average: ${averageArray([t7_delta, t8_delta, t9_delta, t10_delta, t11_delta]).toFixed(3)} ms`
+  `\nfilterTree average: ${" ".repeat(66)} ${averageArray([t7_delta, t8_delta, t9_delta, t10_delta, t11_delta]).toFixed(
+    3
+  )} ms\n`
 )

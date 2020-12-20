@@ -32,11 +32,17 @@ function areArraysEqual(a, b) {
 function start_timer() {
   return performance.now()
 }
+exports.start_timer = start_timer
 
-function elapsed_time(timer_start_time) {
+function elapsed_time(timer_start_time, testName, decimals = 2) {
   const time_final = performance.now()
-  return Math.round(time_final - timer_start_time)
+  const elapsed = (time_final - timer_start_time).toFixed(decimals)
+  if (testName) {
+    console.log(`${testName} took ${" ".repeat(80 - testName.length)} ${elapsed} ms`)
+  }
+  return parseFloat(elapsed)
 }
+exports.elapsed_time = elapsed_time
 
 function doFilterTest(test_name, lines, query, params) {
   console.log(`====== Running test - query:${query} ======`)
@@ -58,10 +64,14 @@ function doFilterTest(test_name, lines, query, params) {
     process.exit(1)
   }
 
-  console.log(`Elapsed time - fuzzaldrin-plus-fast: ${elapsed} ms vs. fuzzaldrin-plus: ${elapsed_legacy} ms\n`)
+  if (test_name) {
+    console.log(test_name)    
+  }
+  console.log(`fuzzaldrin-plus-fast vs. legacy: ${" ".repeat(50)} ${elapsed} ms  |   ${elapsed_legacy} ms`)
   console.log(`length of the result: ${res_actual.length}, length of the lines: ${lines.length}`)
+
   if (elapsed > elapsed_legacy) {
-    console.error(`====== fuzzaldrin-plus-fast is SLOWER`)
+    console.error(`${" ".repeat(75)} fuzzaldrin-plus-fast is SLOWER`)
   }
   console.log("")
 }
