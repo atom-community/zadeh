@@ -86,7 +86,7 @@
                 "/DEBUG",
 
                 # C++ standard
-                "/std:c++latest",
+                "/std:c++17",
                 # MSVC Warnings
                  # disable warnings on external headers
                 "/experimental:external",
