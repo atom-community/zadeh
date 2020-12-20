@@ -31,12 +31,16 @@ Napi::Value Fuzzaldrin::setArrayFiltererCandidates(const Napi::CallbackInfo &inf
         return Napi::Boolean();
     }
     auto candidates = info[0].As<Napi::Array>();
-    const size_t N = candidates.Length();
+    const auto N = candidates.Length();
     const auto num_chunks = N < 1000 * kMaxThreads ? N / 1000 + 1 : kMaxThreads;
+
+
     candidates_.clear();
     candidates_.resize(num_chunks);
-    size_t cur_start = 0;
-    for (size_t i = 0; i < num_chunks; i++) {
+
+    auto cur_start = 0u;
+    for (auto i = 0u; i < num_chunks; i++) {
+
         auto chunk_size = N / num_chunks;
         // Distribute remainder among the chunks.
         if (i < N % num_chunks) {
@@ -47,6 +51,7 @@ Napi::Value Fuzzaldrin::setArrayFiltererCandidates(const Napi::CallbackInfo &inf
         }
         cur_start += chunk_size;
     }
+
     return Napi::Boolean();
 }
 
@@ -69,10 +74,13 @@ Napi::Value Fuzzaldrin::setTreeFiltererCandidates(const Napi::CallbackInfo &info
 
     const auto N = candidates.size();// different
     const auto num_chunks = N < 1000 * kMaxThreads ? N / 1000 + 1 : kMaxThreads;
+
+
     candidates_.clear();
     candidates_.resize(num_chunks);
-    size_t cur_start = 0;
-    for (size_t i = 0; i < num_chunks; i++) {
+
+    auto cur_start = 0u;
+    for (auto i = 0u; i < num_chunks; i++) {
         auto chunk_size = N / num_chunks;
         // Distribute remainder among the chunks.
         if (i < N % num_chunks) {
