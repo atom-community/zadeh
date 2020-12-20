@@ -129,7 +129,7 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
         switch (trace[pos_]) {
         case Direction::UP:
             ii--;
-            pos_ -= query_size_int;
+            pos_ -= query_size;
             break;
         case Direction::LEFT:
             jj--;
@@ -139,7 +139,7 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
             matches.emplace_back(ii + offset);
             jj--;
             ii--;
-            pos_ -= query_size_int + 1;
+            pos_ -= query_size + 1;
             break;
         default:
             backtrack = false;
