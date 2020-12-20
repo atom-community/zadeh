@@ -27,10 +27,10 @@ constexpr Score tau_size = 150;
 constexpr float miss_coeff = 0.75;// Max number missed consecutive hit = ceil(miss_coeff*query.length) + 5
 
 extern bool isWordEnd(const size_t pos, const CandidateString &subject, const CandidateString &subject_lw, const size_t len);
-extern bool isSeparator(const char c) noexcept;
+extern constexpr bool isSeparator(const char c) noexcept;
 extern Score scoreExact(const size_t n, const size_t m, const size_t quality, const Score pos);
 
-extern Score scorePattern(const size_t count, const size_t len, const size_t sameCase, const bool start, const bool end) noexcept;
+extern constexpr Score scorePattern(const size_t count, const size_t len, const size_t sameCase, const bool start, const bool end) noexcept;
 extern Score scoreExactMatch(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, size_t pos, const size_t n, const size_t m);
 
 extern bool isAcronymFullWord(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const unsigned nbAcronymInQuery) noexcept;
@@ -271,7 +271,7 @@ bool isWordEnd(const size_t pos, const CandidateString &subject, const Candidate
            ((curr_s == subject_lw[pos]) && (next_s != subject_lw[pos + 1]));// match is lowercase, followed by uppercase
 }
 
-bool isSeparator(const char c) noexcept {
+constexpr bool isSeparator(const char c) noexcept {
     return c == ' ' || c == '.' || c == '-' || c == '_' || c == '/' || c == '\\';
 }
 
@@ -303,7 +303,7 @@ Score scoreExact(const size_t n, const size_t m, const size_t quality, const Sco
 // and structural quality of the pattern on the overall string (word boundary)
 //
 
-Score scorePattern(const size_t count, const size_t len, const size_t sameCase, const bool start, const bool end) noexcept {
+constexpr Score scorePattern(const size_t count, const size_t len, const size_t sameCase, const bool start, const bool end) noexcept {
     auto sz = count;
 
     auto bonus = 6;// to ensure consecutive length dominate score, this should be as large other bonus combined
