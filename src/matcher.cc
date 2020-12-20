@@ -146,7 +146,7 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
         }
     }
 
-    std::reverse(std::begin(matches), std::end(matches));
+    std::reverse(matches.begin(), matches.end());
     return matches;
 }
 
