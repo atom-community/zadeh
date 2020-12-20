@@ -45,15 +45,15 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
     auto pos = 0u;
 
     auto i = 0u;
-    while (i < subject_size) {//foreach char is of subject
+    while (i < subject_size) {    //foreach char is of subject
         assert(0 <= i && i < subject_lw.size());
         Score score = 0;
         Score score_up = 0;
         Score csc_diag = 0;
         const auto si_lw = subject_lw[i];
 
-        auto j = 0u;//0..n-1
-        while (j < query_size) {//foreach char qj of query
+        auto j = 0u;    //0..n-1
+        while (j < query_size) {    //foreach char qj of query
             assert(0u <= j && j < min({ static_cast<size_t>(query_size), query_lw.size(), score_row.size(), csc_row.size() }));
 
             // reset score
@@ -73,7 +73,7 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
                 align = score_diag + scoreCharacter(i, j, start, acro_score, csc_score);
             }
             // Prepare next sequence & match score.
-            score_up = score_row[j];// Current score_up is next run score diag
+            score_up = score_row[j];    // Current score_up is next run score diag
             csc_diag = csc_row[j];
 
             // In case of equality, moving UP get us closer to the start of the candidate string.
@@ -170,7 +170,7 @@ std::vector<size_t> basenameMatch(const CandidateString &subject, const Candidat
     // Get that many folder from subject
     while (depth-- > 0) {
         basePos = subject.rfind(pathSeparator, basePos - 1);
-        if (basePos == std::string::npos) {// consumed whole subject ?
+        if (basePos == std::string::npos) {    // consumed whole subject ?
             return std::vector<size_t>();
         }
     }

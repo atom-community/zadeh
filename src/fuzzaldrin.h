@@ -25,4 +25,4 @@ class Fuzzaldrin : public Napi::ObjectWrap<Fuzzaldrin> {
     Tree _tree;
 };
 
-#endif// FUZZALDRIN_H
+#endif    // FUZZALDRIN_H

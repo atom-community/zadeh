@@ -24,7 +24,7 @@ constexpr Score tau_size = 150;
 //
 // If a spec with frequent repetition fail, increase this.
 // This has a direct influence on worst case scenario benchmark.
-constexpr float miss_coeff = 0.75;// Max number missed consecutive hit = ceil(miss_coeff*query.length) + 5
+constexpr float miss_coeff = 0.75;    // Max number missed consecutive hit = ceil(miss_coeff*query.length) + 5
 
 extern bool isWordEnd(const size_t pos, const CandidateString &subject, const CandidateString &subject_lw, const size_t len);
 extern constexpr bool isSeparator(const char c) noexcept;
@@ -72,15 +72,15 @@ bool isMatch(const CandidateString &subject, const Element &query_lw, const Elem
 
     // foreach char of query
     while (j < query_lw_size) {
-        assert(0 <= j && j < query_lw.size());// fuzz: if n==0, does not enter while and j==0
-        const auto qj_lw = query_lw[j];// inbounds
-        const auto qj_up = query_up[j];// TODO bounds
+        assert(0 <= j && j < query_lw.size());    // fuzz: if n==0, does not enter while and j==0
+        const auto qj_lw = query_lw[j];    // inbounds
+        const auto qj_up = query_up[j];    // TODO bounds
 
         // continue walking the subject from where we have left with previous query char
         // until we have found a character that is either lowercase or uppercase query.
         while (i < subject_size) {
-            assert(0 <= i && i < subject.size());// fuzz: if m==0, does not enter while and i==0
-            const auto si = subject[i];// inbounds
+            assert(0 <= i && i < subject.size());    // fuzz: if m==0, does not enter while and i==0
+            const auto si = subject[i];    // inbounds
             if (si == qj_lw || si == qj_up) {
                 break;
             }
@@ -91,7 +91,7 @@ bool isMatch(const CandidateString &subject, const Element &query_lw, const Elem
 
         // if we passed the last char, query is not in subject
         if (i == subject_size) {
-            assert(i >= 0);// fuzz: if m==0, i is 0
+            assert(i >= 0);    // fuzz: if m==0, i is 0
             return false;
         }
 
@@ -154,8 +154,8 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
 
 
     auto i = 0u;
-    while (i < subject_size) {//foreach char si of subject
-        assert(i >= 0);// fuzz: if m==0, does not enter while and i==0
+    while (i < subject_size) {    //foreach char si of subject
+        assert(i >= 0);    // fuzz: if m==0, does not enter while and i==0
         auto si_lw = subject_lw[i];
 
         // if si_lw is not in query
@@ -165,7 +165,7 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
             if (csc_should_rebuild) {
                 auto k = 0u;
                 while (k < query_size) {
-                    assert(k >= 0);// fuzz: if n==0, does not enter while and k==0
+                    assert(k >= 0);    // fuzz: if n==0, does not enter while and k==0
                     csc_row[k] = 0;
                     ++k;
                 }
@@ -183,9 +183,9 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
         auto record_miss = true;
         csc_should_rebuild = true;
 
-        auto j = 0u;//0..n-1
-        while (j < query_size) {//foreach char qj of query
-            assert(j >= 0);// fuzz: if n==0, does not enter while and j==0
+        auto j = 0u;    //0..n-1
+        while (j < query_size) {    //foreach char qj of query
+            assert(j >= 0);    // fuzz: if n==0, does not enter while and j==0
             // What is the best gap ?
             // score_up contain the score of a gap in subject.
             // score_left = last iteration of score, -> gap in query.
@@ -237,7 +237,7 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
         assert(j >= 0);
         ++i;
     }
-    assert(i >= 0);// fuzz: if m==0, does not enter while and i==0
+    assert(i >= 0);    // fuzz: if m==0, does not enter while and i==0
     // get highest score so far
     const auto score = score_row[query_size - 1];
     return score * sz;
@@ -252,23 +252,23 @@ Score computeScore(const CandidateString &subject, const CandidateString &subjec
 //
 bool isWordStart(const size_t pos, const CandidateString &subject, const CandidateString &subject_lw) noexcept {
     if (pos == 0u) {
-        return true;// match is FIRST char ( place a virtual token separator before first char of string)
+        return true;    // match is FIRST char ( place a virtual token separator before first char of string)
     }
     assert(0u < pos && pos < subject.size());
     const auto curr_s = subject[pos];
-    const auto prev_s = subject[pos - 1];//inbounds
-    return isSeparator(prev_s) ||// match FOLLOW a separator
-           ((curr_s != subject_lw[pos]) && (prev_s == subject_lw[pos - 1]));// match is Capital in camelCase (preceded by lowercase)
+    const auto prev_s = subject[pos - 1];    //inbounds
+    return isSeparator(prev_s) ||    // match FOLLOW a separator
+           ((curr_s != subject_lw[pos]) && (prev_s == subject_lw[pos - 1]));    // match is Capital in camelCase (preceded by lowercase)
 }
 
 bool isWordEnd(const size_t pos, const CandidateString &subject, const CandidateString &subject_lw, const size_t len) {
     if (pos == len - 1u) {
-        return true;// last char of string
+        return true;    // last char of string
     }
     const auto curr_s = subject[pos];
     const auto next_s = subject[pos + 1];
-    return isSeparator(next_s) ||// match IS FOLLOWED BY a separator
-           ((curr_s == subject_lw[pos]) && (next_s != subject_lw[pos + 1]));// match is lowercase, followed by uppercase
+    return isSeparator(next_s) ||    // match IS FOLLOWED BY a separator
+           ((curr_s == subject_lw[pos]) && (next_s != subject_lw[pos + 1]));    // match is lowercase, followed by uppercase
 }
 
 constexpr bool isSeparator(const char c) noexcept {
@@ -306,7 +306,7 @@ Score scoreExact(const size_t n, const size_t m, const size_t quality, const Sco
 constexpr Score scorePattern(const size_t count, const size_t len, const size_t sameCase, const bool start, const bool end) noexcept {
     auto sz = count;
 
-    auto bonus = 6;// to ensure consecutive length dominate score, this should be as large other bonus combined
+    auto bonus = 6;    // to ensure consecutive length dominate score, this should be as large other bonus combined
     if (sameCase == count) {
         bonus += 2;
     }
@@ -375,13 +375,13 @@ Score scoreConsecutives(const CandidateString &subject, const CandidateString &s
         sameCase++;
     }
 
-    auto sz = 1u;//sz will be one more than the last qi is sj
+    auto sz = 1u;    //sz will be one more than the last qi is sj
     const auto min_subject_size_i_query_size_j = min(subject_size - i, query_size - j);
     assert(1u <= min_subject_size_i_query_size_j);
 
     //Continue while lowercase char are the same, record when they are case-sensitive match.
     while (sz < min_subject_size_i_query_size_j && query_lw[++j] == subject_lw[++i]) {
-        assert(1u <= sz && sz < min_subject_size_i_query_size_j);// fuzz: if min_subject_size_i_query_size_j==1u does not enter while loop, and sz ==1u
+        assert(1u <= sz && sz < min_subject_size_i_query_size_j);    // fuzz: if min_subject_size_i_query_size_j==1u does not enter while loop, and sz ==1u
         if (query[j] == subject[i]) {
             sameCase++;
         }
@@ -391,7 +391,7 @@ Score scoreConsecutives(const CandidateString &subject, const CandidateString &s
 
     // If we quit because of a non match
     // replace cursor to the last match
-    if (sz < min_subject_size_i_query_size_j) {// equal to: sz != min_subject_size_i_query_size_j
+    if (sz < min_subject_size_i_query_size_j) {    // equal to: sz != min_subject_size_i_query_size_j
         i--;
     }
 
@@ -435,7 +435,7 @@ Score scoreExactMatch(const CandidateString &subject, const CandidateString &sub
     auto i = 0u;
     auto sameCase = 0u;
     while (i < n) {
-        assert(i >= 0);// fuzz: if n==0, does not enter while and i==0u
+        assert(i >= 0);    // fuzz: if n==0, does not enter while and i==0u
         if (query[i] == subject[pos + i]) {
             sameCase++;
         }
@@ -480,7 +480,7 @@ AcronymResult scoreAcronyms(const CandidateString &subject, const CandidateStrin
     auto sumPos = 0;
     auto sameCase = 0;
 
-    auto i = string::npos;// incrementing will become 0
+    auto i = string::npos;    // incrementing will become 0
 
     //foreach char of query
     for (auto j = 0u; j < query_size; j++) {
@@ -505,7 +505,7 @@ AcronymResult scoreAcronyms(const CandidateString &subject, const CandidateStrin
 
         while (++i < subject_size) {
             if (qj_lw == subject_lw[i] && isWordStart(i, subject, subject_lw)) {
-                if (query[j] == subject[i]) {// TODO bounds
+                if (query[j] == subject[i]) {    // TODO bounds
                     sameCase++;
                 }
                 sumPos += i;
@@ -558,7 +558,7 @@ bool isAcronymFullWord(const CandidateString &subject, const CandidateString &su
 
     auto i = 0u;
     while (i < subject_size) {
-        assert(i >= 0);// fuzz: if m==0, does not enter while and i==0
+        assert(i >= 0);    // fuzz: if m==0, does not enter while and i==0
         //For each char of subject
         //Test if we have an acronym, if so increase acronym count.
         //If the acronym count is more than nbAcronymInQuery (number of non separator char in query)

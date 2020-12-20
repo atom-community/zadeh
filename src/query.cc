@@ -28,8 +28,8 @@ std::set<char> getCharCodes(const Element &str) {
 
     // create map
     while (i < len) {
-        assert(0 <= i && i < str.size());// fuzz: if len==0, does not enter while and i==0
-        charCodes.insert(str[i]);//inbounds
+        assert(0 <= i && i < str.size());    // fuzz: if len==0, does not enter while and i==0
+        charCodes.insert(str[i]);    //inbounds
         ++i;
     }
     assert(0 <= i && i <= str.size());

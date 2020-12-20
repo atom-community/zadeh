@@ -72,7 +72,7 @@ Napi::Value Fuzzaldrin::setTreeFiltererCandidates(const Napi::CallbackInfo &info
 
     const auto &candidates = _tree.entriesArray;
 
-    const auto N = candidates.size();// different
+    const auto N = candidates.size();    // different
     const auto num_chunks = N < 1000u * kMaxThreads ? N / 1000u + 1u : kMaxThreads;
 
 
@@ -87,7 +87,7 @@ Napi::Value Fuzzaldrin::setTreeFiltererCandidates(const Napi::CallbackInfo &info
             chunk_size++;
         }
         for (auto j = cur_start; j < cur_start + chunk_size; j++) {
-            candidates_[i].emplace_back(candidates[j].data);// different // TODO copy
+            candidates_[i].emplace_back(candidates[j].data);    // different // TODO copy
         }
         cur_start += chunk_size;
     }
@@ -124,9 +124,9 @@ Napi::Value Fuzzaldrin::FilterTree(const Napi::CallbackInfo &info) {
     // perform filtering
     const auto matches = filter(candidates_, query, options);
 
-    auto filteredCandidateObjects = Napi::Array::New(info.Env());// array of candidate objects (with their address in index and level)
+    auto filteredCandidateObjects = Napi::Array::New(info.Env());    // array of candidate objects (with their address in index and level)
     for (uint32_t i = 0, len = matches.size(); i < len; i++) {
-        auto &entry = _tree.entriesArray[matches[i]];//
+        auto &entry = _tree.entriesArray[matches[i]];    //
 
         // create {data, index, level}
         auto obj = Napi::Object::New(info.Env());

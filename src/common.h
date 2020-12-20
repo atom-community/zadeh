@@ -105,4 +105,4 @@ extern std::vector<CandidateIndex> filter(const vector<std::vector<CandidateStri
 extern std::vector<size_t> matcher_match(const CandidateString &string, const Element &query, const Options &options);
 extern void get_wrap(const CandidateString &string, const Element &query, const Options &options, std::string *out);
 
-#endif// Fuzzaldrin_common_h_
+#endif    // Fuzzaldrin_common_h_

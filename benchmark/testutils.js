@@ -65,7 +65,7 @@ function doFilterTest(test_name, lines, query, params) {
   }
 
   if (test_name) {
-    console.log(test_name)    
+    console.log(test_name)
   }
   console.log(`fuzzaldrin-plus-fast vs. legacy: ${" ".repeat(50)} ${elapsed} ms  |   ${elapsed_legacy} ms`)
   console.log(`length of the result: ${res_actual.length}, length of the lines: ${lines.length}`)

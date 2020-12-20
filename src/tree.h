@@ -39,7 +39,7 @@ struct Tree {
     /** Recursive function that fills the entriesArray from the given jsTreeArray */
     void makeEntriesArray(const Napi::Array &jsTreeArray, const size_t level) {
         const auto entriesArrayLength = jsTreeArray.Length();
-        entriesArray.reserve(entriesArrayLength);// reserve enough space
+        entriesArray.reserve(entriesArrayLength);    // reserve enough space
         for (auto iEntry = 0u; iEntry < entriesArrayLength; iEntry++) {
             makeEntriesArray(jsTreeArray[iEntry].As<Napi::Object>(), level, iEntry);
         }
@@ -49,7 +49,7 @@ struct Tree {
     void makeEntriesArray(const Napi::Object &jsTree, const size_t level, const size_t iEntry) {
         // make the CandidateObject and push it back
         entriesArray.emplace_back(
-          jsTree.Get(dataKey).ToString().Utf8Value(),// first, get the current data
+          jsTree.Get(dataKey).ToString().Utf8Value(),    // first, get the current data
           level,
           iEntry
 
@@ -75,4 +75,4 @@ struct Tree {
     }
 };
 
-#endif// Fuzzaldrin_tree_h_
+#endif    // Fuzzaldrin_tree_h_

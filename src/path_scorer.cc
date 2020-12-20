@@ -11,13 +11,13 @@ extern Score scorePath(const CandidateString &subject, const CandidateString &su
 extern Score getExtensionScore(const CandidateString &candidate, const CandidateString &ext, const int startPos, const int endPos, const int maxDepth);
 
 Element ToLower(const Element &s) {
-    string snew = string(s.size(), ' ');// new string
+    string snew = string(s.size(), ' ');    // new string
     std::transform(s.begin(), s.end(), snew.begin(), ::tolower);
     return snew;
 }
 
 Element ToUpper(const Element &s) {
-    string snew = string(s.size(), ' ');// new string
+    string snew = string(s.size(), ' ');    // new string
     std::transform(s.begin(), s.end(), snew.begin(), ::toupper);
     return snew;
 }
@@ -114,20 +114,20 @@ int countDir(const CandidateString &path, const size_t end, const char pathSepar
     //skip slash at the start so `foo/bar` and `/foo/bar` have the same depth.
     // the following skips all the pathSeparator from the beginning of the given path
     while ((i < end) && (path[i] == pathSeparator)) {
-        assert(0 <= i);// fuzz: if end==0, it does not enter while and i==0
+        assert(0 <= i);    // fuzz: if end==0, it does not enter while and i==0
         ++i;
     }
-    assert(0 <= i);// if there were no pathSeparator i==0
+    assert(0 <= i);    // if there were no pathSeparator i==0
 
 
-    ++i;// the current char is certainly a non-pathSeparator, so we should check the other following ones
+    ++i;    // the current char is certainly a non-pathSeparator, so we should check the other following ones
     while (i < end) {
-        assert(0 <= i && i < path.size());// fuzz: if end==0, it does not enter while and i==0
+        assert(0 <= i && i < path.size());    // fuzz: if end==0, it does not enter while and i==0
         if (path[i] == pathSeparator) {
-            count++;//record first slash, but then skip consecutive ones
+            count++;    //record first slash, but then skip consecutive ones
 
             // skip consecutive slashes:
-            ++i;// current one is already pathSeparator, so we should check the other following ones
+            ++i;    // current one is already pathSeparator, so we should check the other following ones
             while ((i < end) && (path[i] == pathSeparator)) {
                 ++i;
             }
@@ -165,7 +165,7 @@ Score getExtensionScore(const CandidateString &candidate, const CandidateString 
     int pos = candidate.rfind('.', endPos);
     assert(pos >= 0u);
     if (pos <= startPos) {
-        return 0;// (note that startPos >= -1)
+        return 0;    // (note that startPos >= -1)
     }
 
     int ext_size = ext.size();
@@ -182,8 +182,8 @@ Score getExtensionScore(const CandidateString &candidate, const CandidateString 
     assert(pos >= 1u);
     auto matched = 0;
     while (matched < ext_size) {
-        assert(matched >= 0);// fuzz: if n==0, does not enter while and matched==0
-        if (candidate[pos + matched] != ext[matched]) {// TODO candidate upper bound
+        assert(matched >= 0);    // fuzz: if n==0, does not enter while and matched==0
+        if (candidate[pos + matched] != ext[matched]) {    // TODO candidate upper bound
             break;
         }
         ++matched;
