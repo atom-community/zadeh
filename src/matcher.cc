@@ -60,7 +60,6 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
             Score csc_score = 0;
             Score align = 0;
             const auto score_diag = score_up;
-            Direction move;
 
             //Compute a tentative match
             if (query_lw[j] == si_lw) {
@@ -76,13 +75,15 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
             score_up = score_row[j];    // Current score_up is next run score diag
             csc_diag = csc_row[j];
 
-            // In case of equality, moving UP get us closer to the start of the candidate string.
-            if (score > score_up) {
-                move = Direction::LEFT;
-            } else {
+
+            Direction move = [&score_up, &score]() {
+                // In case of equality, moving UP get us closer to the start of the candidate string.
+                if (score > score_up) {
+                    return Direction::LEFT;
+                }
                 score = score_up;
-                move = Direction::UP;
-            }
+                return Direction::UP;
+            }();
 
             // Only take alignment if it's the absolute best option.
             if (align > score) {
