@@ -63,9 +63,9 @@ bool isMatch(const CandidateString &subject, const Element &query_lw, const Elem
     if (subject_size == 0 || query_lw_size > subject_size) {
         return false;
     }
-    if (query_up.empty()) {// TODO will query_up be ever empty?
-        // TODO don't know what to do. return true; seems to pass the tests
-    }
+    //if (query_up.empty()) {// TODO will query_up be ever empty?
+    //    // TODO don't know what to do. return true; seems to pass the tests
+    //}
 
     auto i = 0u;
     auto j = 0u;
