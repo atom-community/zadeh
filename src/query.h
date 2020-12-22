@@ -1,17 +1,7 @@
 #ifndef Fuzzaldrin_query_h_
 #define Fuzzaldrin_query_h_
 
-
 #include "common.h"
-
-extern Element coreChars(Element query);
-extern std::set<char> getCharCodes(const Element &str);
-
-PreparedQuery::PreparedQuery(const Element &q, const char pathSeparator) : query(q), query_lw(ToLower(q)), core(coreChars(q)), core_lw(ToLower(core)), core_up(ToUpper(core)) {
-    depth = countDir(query, query.size(), pathSeparator);
-    ext = getExtension(query_lw);
-    charCodes = getCharCodes(query_lw);
-}
 
 //
 // Optional chars
@@ -40,5 +30,10 @@ std::set<char> getCharCodes(const Element &str) {
     return charCodes;
 }
 
+PreparedQuery::PreparedQuery(const Element &q, const char pathSeparator) : query(q), query_lw(ToLower(q)), core(coreChars(q)), core_lw(ToLower(core)), core_up(ToUpper(core)) {
+    depth = countDir(query, query.size(), pathSeparator);
+    ext = getExtension(query_lw);
+    charCodes = getCharCodes(query_lw);
+}
 
 #endif
