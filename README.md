@@ -14,7 +14,7 @@ Fuzzaldrin-plus-fast:
 - provides `filterTree` function which allows to fuzzy filter text in nested tree-like objects.
 - allows setting the candidates only once using `ArrayFilterer` and `TreeFilterer` classes, and then, perform `filter` multiple times. This is much more efficient than calling the `filter` or `filterTree` functions directly every time.
 
-# How performance is improved?
+# How is performance improved?
 
 Fuzzaldrin-plus-fast achieves 10x-20x performance improvement over Fuzzaldrin plus for chromium project with 300K files. This high performance is achieved using the following techniques.
 
