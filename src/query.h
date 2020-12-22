@@ -1,3 +1,7 @@
+#ifndef Fuzzaldrin_query_h_
+#define Fuzzaldrin_query_h_
+
+
 #include "common.h"
 
 extern Element coreChars(Element query);
@@ -35,3 +39,6 @@ std::set<char> getCharCodes(const Element &str) {
     assert(0 <= i && i <= str.size());
     return charCodes;
 }
+
+
+#endif

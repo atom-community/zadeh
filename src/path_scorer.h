@@ -1,3 +1,7 @@
+#ifndef Fuzzaldrin_path_scorer_h_
+#define Fuzzaldrin_path_scorer_h_
+
+
 #include "common.h"
 
 // Directory depth at which the full path influence is halved.
@@ -9,18 +13,7 @@ constexpr Score file_coeff = 2.5;
 extern Score scorePath(const CandidateString &subject, const CandidateString &subject_lw, Score fullPathScore, const Options &options);
 
 extern Score getExtensionScore(const CandidateString &candidate, const CandidateString &ext, const int startPos, const int endPos, const int maxDepth);
-
-Element ToLower(const Element &s) {
-    string snew = string(s.size(), ' ');    // new string
-    std::transform(s.begin(), s.end(), snew.begin(), ::tolower);
-    return snew;
-}
-
-Element ToUpper(const Element &s) {
-    string snew = string(s.size(), ' ');    // new string
-    std::transform(s.begin(), s.end(), snew.begin(), ::toupper);
-    return snew;
-}
+extern int countDir(const CandidateString &path, const size_t end, const char pathSeparator);
 
 
 //
@@ -198,3 +191,7 @@ Score getExtensionScore(const CandidateString &candidate, const CandidateString 
     // cannot divide by zero because m is the largest extension length and we return if either is 0
     return static_cast<Score>(matched) / static_cast<Score>(m);
 }
+
+
+
+#endif

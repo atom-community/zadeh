@@ -2,7 +2,7 @@
 {
   "targets": [{
       "target_name": "fuzzaldrinplusfast",
-      "sources": [ "src/common.h", "src/binding/node.cc", "src/binding/node.h", "src/scorer.cc", "src/path_scorer.cc", "src/filter.cc", "src/query.cc", "src/matcher.cc",  "src/binding/tree.h" ],
+      "sources": [ "src/common.h", "src/binding/node.cc", "src/binding/node.h", "src/scorer.h", "src/path_scorer.h", "src/filter.h", "src/query.h", "src/matcher.h",  "src/binding/tree.h" ],
       "include_dirs": [
         "<!@(node -p \"require('node-addon-api').include\")"
       ],

@@ -1,3 +1,7 @@
+#ifndef Fuzzaldrin_scorer_h_
+#define Fuzzaldrin_scorer_h_
+
+
 #include "common.h"
 
 //
@@ -26,6 +30,7 @@ constexpr Score tau_size = 150;
 // This has a direct influence on worst case scenario benchmark.
 constexpr float miss_coeff = 0.75;    // Max number missed consecutive hit = ceil(miss_coeff*query.length) + 5
 
+extern bool isWordStart(const size_t pos, const CandidateString &subject, const CandidateString &subject_lw) noexcept;
 extern bool isWordEnd(const size_t pos, const CandidateString &subject, const CandidateString &subject_lw, const size_t len);
 extern constexpr bool isSeparator(const char c) noexcept;
 extern Score scoreExact(const size_t n, const size_t m, const size_t quality, const Score pos);
@@ -35,6 +40,15 @@ extern Score scoreExactMatch(const CandidateString &subject, const CandidateStri
 
 extern bool isAcronymFullWord(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const unsigned nbAcronymInQuery) noexcept;
 
+extern bool isMatch(const CandidateString &subject, const Element &query_lw, const Element &query_up);
+extern Score scoreCharacter(const size_t i, const size_t j, const bool start, const Score acro_score, const Score csc_score);
+extern Score scoreConsecutives(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw, size_t i, size_t j, const bool startOfWord);
+extern AcronymResult scoreAcronyms(const CandidateString &subject, const CandidateString &subject_lw, const Element &query, const Element &query_lw);
+
+extern Score computeScore(const CandidateString &subject, const CandidateString &subject_lw, const PreparedQuery &preparedQuery);
+
+extern Score scorer_score(const CandidateString &string, const Element &query, const Options &options);
+extern Score scoreSize(const Score n, const Score m);
 
 //
 // Main export
@@ -573,3 +587,6 @@ bool isAcronymFullWord(const CandidateString &subject, const CandidateString &su
 
     return true;
 }
+
+
+#endif

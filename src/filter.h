@@ -1,3 +1,6 @@
+#ifndef Fuzzaldrin_filter_h_
+#define Fuzzaldrin_filter_h_
+
 #include "common.h"
 #include <queue>
 #include <functional>
@@ -97,3 +100,7 @@ std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &c
 
     return sort_priority_queue(move(top_k), max_results);
 }
+
+
+
+#endif

@@ -1,3 +1,7 @@
+#ifndef Fuzzaldrin_matcher_h_
+#define Fuzzaldrin_matcher_h_
+
+
 #include <iterator>
 #include <algorithm>
 
@@ -299,3 +303,6 @@ void get_wrap(const CandidateString &string, const Element &query, const Options
     // return wrapped text
     *out = output;
 }
+
+
+#endif
