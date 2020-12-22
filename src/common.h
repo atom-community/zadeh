@@ -1,5 +1,5 @@
-#ifndef Fuzzaldrin_common_h_
-#define Fuzzaldrin_common_h_
+#ifndef Zadeh_common_h_
+#define Zadeh_common_h_
 
 #include <vector>
 #include <set>
@@ -64,4 +64,4 @@ Element ToUpper(const Element &s) {
     return snew;
 }
 
-#endif    // Fuzzaldrin_common_h_
+#endif    // Zadeh_common_h_

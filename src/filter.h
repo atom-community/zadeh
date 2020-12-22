@@ -1,5 +1,5 @@
-#ifndef Fuzzaldrin_filter_h_
-#define Fuzzaldrin_filter_h_
+#ifndef Zadeh_filter_h_
+#define Zadeh_filter_h_
 
 #include <queue>
 #include <functional>

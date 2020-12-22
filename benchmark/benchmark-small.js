@@ -3,7 +3,7 @@ const fs = require("fs")
 const path = require("path")
 const testutils = require("./testutils")
 
-const fuzzaldrinPlus = require("../node-dist")
+const Zadeh = require("../node-dist")
 const legacy = require("fuzzaldrin-plus")
 
 const lines = fs.readFileSync(path.join(__dirname, "data-small.txt"), "utf8").trim().split("\n")
@@ -15,7 +15,7 @@ const mitigation = {
 }
 
 // warmup + compile
-fuzzaldrinPlus.filter(lines, "index", forceAllMatch)
+Zadeh.filter(lines, "index", forceAllMatch)
 legacy.filter(lines, "index")
 
 testutils.doFilterTest(null, lines, "nm")

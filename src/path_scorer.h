@@ -1,5 +1,5 @@
-#ifndef Fuzzaldrin_path_scorer_h_
-#define Fuzzaldrin_path_scorer_h_
+#ifndef Zadeh_path_scorer_h_
+#define Zadeh_path_scorer_h_
 
 
 #include "common.h"

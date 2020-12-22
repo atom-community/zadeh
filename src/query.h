@@ -1,5 +1,5 @@
-#ifndef Fuzzaldrin_query_h_
-#define Fuzzaldrin_query_h_
+#ifndef Zadeh_query_h_
+#define Zadeh_query_h_
 
 #include "common.h"
 #include "path_scorer.h"

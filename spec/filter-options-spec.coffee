@@ -1,14 +1,14 @@
-fuzzaldrinplusfast = require('../node-dist');
+zadeh = require('../node-dist');
 fuzzaldrinExpected = require 'fuzzaldrin-plus'
 
 score_test = (candidate, query, options={}) ->
   expected = fuzzaldrinExpected.score(candidate, query, options)
-  actual = fuzzaldrinplusfast.score(candidate, query, options)
+  actual = zadeh.score(candidate, query, options)
   # expect(actual).toEqual(expected) # Tests are disabled for now.
 
 filter_test = (candidates, query, options={}) ->
   expected = fuzzaldrinExpected.filter(candidates, query, options)
-  actual = fuzzaldrinplusfast.filter(candidates, query, options)
+  actual = zadeh.filter(candidates, query, options)
   expect(actual).toEqual(expected)
 
 score_test_with_options = (options) ->
@@ -61,14 +61,14 @@ describe "filtering", ->
   describe "returns the same candidates as filtered by fuzzaldrin-plus", ->
 
     it "with default options", ->
-      expect(fuzzaldrinplusfast.filter(['ab', 'abc', 'cd', 'de'], 'a')).toEqual(['ab', 'abc'])
-      expect(fuzzaldrinplusfast.filter(['ab', 'abc', 'cd', 'de'], 'b')).toEqual(['ab', 'abc'])
-      expect(fuzzaldrinplusfast.filter(['ab', 'abc', 'cd', 'de'], 'c')).toEqual(['cd', 'abc',])
+      expect(zadeh.filter(['ab', 'abc', 'cd', 'de'], 'a')).toEqual(['ab', 'abc'])
+      expect(zadeh.filter(['ab', 'abc', 'cd', 'de'], 'b')).toEqual(['ab', 'abc'])
+      expect(zadeh.filter(['ab', 'abc', 'cd', 'de'], 'c')).toEqual(['cd', 'abc',])
 
     it "honors maxResults in options", ->
-      expect(fuzzaldrinplusfast.filter(['ab', 'abc', 'abcd', 'abcdde'], 'a', maxResults: 1)).toEqual(['ab'])
-      expect(fuzzaldrinplusfast.filter(['ab', 'abc', 'abcd', 'abcdde'], 'a', maxResults: 2)).toEqual(['ab', 'abc'])
-      expect(fuzzaldrinplusfast.filter(['ab', 'abc', 'abcd', 'abcdde'], 'c', maxResults: 2)).toEqual(['abc', 'abcd'])
+      expect(zadeh.filter(['ab', 'abc', 'abcd', 'abcdde'], 'a', maxResults: 1)).toEqual(['ab'])
+      expect(zadeh.filter(['ab', 'abc', 'abcd', 'abcdde'], 'a', maxResults: 2)).toEqual(['ab', 'abc'])
+      expect(zadeh.filter(['ab', 'abc', 'abcd', 'abcdde'], 'c', maxResults: 2)).toEqual(['abc', 'abcd'])
 
     it "candidates are able to be indexed by a given key", ->
       candidates = [
@@ -77,18 +77,18 @@ describe "filtering", ->
         {uri: '/usr/sbin/find', fname: 'find'},
         {uri: '/usr/local/bin/git', fname: 'git'},
       ]
-      expect(fuzzaldrinplusfast.filter(candidates, 'i', key: 'fname')).toEqual([candidates[3], candidates[2], candidates[1]])
+      expect(zadeh.filter(candidates, 'i', key: 'fname')).toEqual([candidates[3], candidates[2], candidates[1]])
 
     it "candidates with duplicate values when indexed by key are returned properly", ->
       candidates = [
         {uri: '/usr/bin/ls', fname: 'ls'},
         {uri: '/usr/sbin/ls', fname: 'ls'}
       ]
-      expect(fuzzaldrinplusfast.filter(candidates, 'l', key: 'fname')).toEqual([candidates[0], candidates[1]])
+      expect(zadeh.filter(candidates, 'l', key: 'fname')).toEqual([candidates[0], candidates[1]])
 
   describe "filtering by creating an object", ->
     it "with default options", ->
-      obj = fuzzaldrinplusfast.New()
+      obj = zadeh.New()
       obj.setCandidates ['ab', 'abc', 'cd', 'de']
       expect(obj.filter('a')).toEqual(['ab', 'abc'])
       expect(obj.filter('b')).toEqual(['ab', 'abc'])
@@ -101,7 +101,7 @@ describe "filtering", ->
         {uri: '/usr/sbin/find', fname: 'find'},
         {uri: '/usr/local/bin/git', fname: 'git'},
       ]
-      obj = fuzzaldrinplusfast.New()
+      obj = zadeh.New()
       obj.setCandidates candidates, key: 'fname'
       expect(obj.filter('i')).toEqual([candidates[3], candidates[2], candidates[1]])
 
@@ -110,6 +110,6 @@ describe "filtering", ->
         {uri: '/usr/bin/ls', fname: 'ls'},
         {uri: '/usr/sbin/ls', fname: 'ls'}
       ]
-      obj = fuzzaldrinplusfast.New()
+      obj = zadeh.New()
       obj.setCandidates candidates, key: 'fname'
       expect(obj.filter('l')).toEqual([candidates[0], candidates[1]])

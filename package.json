@@ -1,10 +1,10 @@
 {
-  "name": "fuzzaldrin-plus-fast",
+  "name": "zadeh",
   "version": "1.2.4",
-  "description": "Fuzzaldrin plus - fast using native c bindings",
+  "description": "Blazing fast library for fuzzy filtering, matching, and other fuzzy things!",
   "main": "./node-dist.js",
   "node": "./node-dist.js",
-  "types": "./types/fuzzaldrin-plus-fast.d.ts",
+  "types": "./types/zadeh.d.ts",
   "scripts": {
     "format": "prettier --write . && clang-format -i src/*.cc src/*.h",
     "tidy": "clang-tidy src/*.cc src/*.h",
@@ -69,12 +69,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/atom-ide-community/fuzzaldrin-plus-fast.git"
+    "url": "https://github.com/atom-ide-community/zadeh.git"
   },
   "author": "Rajendran T",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/atom-ide-community/fuzzaldrin-plus-fast/issues"
+    "url": "https://github.com/atom-ide-community/zadeh/issues"
   },
-  "homepage": "https://github.com/atom-ide-community/fuzzaldrin-plus-fast"
+  "homepage": "https://github.com/atom-ide-community/zadeh"
 }

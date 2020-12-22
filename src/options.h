@@ -1,5 +1,5 @@
-#ifndef Fuzzaldrin_options_h_
-#define Fuzzaldrin_options_h_
+#ifndef Zadeh_options_h_
+#define Zadeh_options_h_
 
 #include "common.h"
 

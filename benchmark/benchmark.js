@@ -3,7 +3,7 @@ const fs = require("fs")
 const path = require("path")
 const { start_timer, elapsed_time, doFilterTest } = require("./testutils")
 
-const fuzzaldrinPlus = require("../node-dist")
+const Zadeh = require("../node-dist")
 const legacy = require("fuzzaldrin-plus")
 
 const lines = fs.readFileSync(path.join(__dirname, "data.txt"), "utf8").trim().split("\n")
@@ -15,7 +15,7 @@ const mitigation = {
 }
 
 // warmup + compile
-fuzzaldrinPlus.filter(lines, "index", forceAllMatch)
+Zadeh.filter(lines, "index", forceAllMatch)
 legacy.filter(lines, "index")
 
 doFilterTest("~10% of results are positive, mix exact & fuzzy", lines, "index")
@@ -29,9 +29,9 @@ doFilterTest("~98% of results + Fuzzy match, [Worst case but shorter string]", l
 
 const query = "index"
 const t1 = start_timer()
-const prepared = fuzzaldrinPlus.prepareQuery(query)
+const prepared = Zadeh.prepareQuery(query)
 for (const line of lines) {
-  fuzzaldrinPlus.match(line, query, {
+  Zadeh.match(line, query, {
     preparedQuery: prepared,
   })
 }
@@ -39,7 +39,7 @@ elapsed_time(t1, `Matching ${lines.length} results for 'index' (Prepare in advan
 
 const t2 = start_timer()
 for (const line of lines) {
-  fuzzaldrinPlus.match(line, query)
+  Zadeh.match(line, query)
 }
 elapsed_time(t2, `Matching ${lines.length} results for 'index' (cache)`)
 // replace by 'prepQuery ?= scorer.prepQuery(query)' to test without cache.

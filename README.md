@@ -1,22 +1,22 @@
-![CI](https://github.com/atom-ide-community/fuzzaldrin-plus-fast/workflows/CI/badge.svg)
+![CI](https://github.com/atom-ide-community/zadeh/workflows/CI/badge.svg)
 
-Fast fuzzy-search - the native replacement for `fuzzaldrin-plus`
+Blazing fast library for fuzzy filtering, matching, and other fuzzy things!
 
-# What is fuzzaldrin-plus-fast?
+# What is Zadeh?
 
 - Fuzzaldrin plus is an awesome library that provides fuzzy-search that is more targeted towards filenames.
-- Fuzzaldrin-plus-fast is a rewrite of the library in native C++ to make it fast. The goal is to make it a few hundred millisecond filter times for a dataset with 1M entries. This performance is helpful in Atom's fuzzy finder to open files from large projects such as Chrome/Mozilla.
+- Zadeh is a rewrite of the library in native C++ to make it fast. The goal is to make it a few hundred millisecond filter times for a dataset with 1M entries. This performance is helpful in Atom's fuzzy finder to open files from large projects such as Chrome/Mozilla.
 
-### Extra featuers
+### Extra features
 
-Fuzzaldrin-plus-fast:
+Zadeh:
 
 - provides `filterTree` function which allows to fuzzy filter text in nested tree-like objects.
 - allows setting the candidates only once using `ArrayFilterer` and `TreeFilterer` classes, and then, perform `filter` multiple times. This is much more efficient than calling the `filter` or `filterTree` functions directly every time.
 
 # How performance is improved?
 
-Fuzzaldrin-plus-fast achieves 10x-20x performance improvement over Fuzzaldrin plus for chromium project with 300K files. This high performance is achieved using the following techniques.
+Zadeh achieves 10x-20x performance improvement over Fuzzaldrin plus for chromium project with 300K files. This high performance is achieved using the following techniques.
 
 - Converting Javascript/CoffeeScript code to native C++ bindings provides 4x performance benefit.
 - Use multiple threads to parallelize computation to achieve another 4x performance benefit. Currently, up to 8 threads are used if there are more than 10K candidates to filter.
@@ -34,19 +34,19 @@ API is backward compatible with Fuzzaldrin and Fuzzaldrin-plus. Additional funct
 Installation:
 
 ```sh
-npm install fuzzaldrin-plus-fast
+npm install zadeh
 ```
 
 To import all the functions:
 
 ```js
-import * as fuzzaldrin from "fuzzaldrin-plus-fast"
+import * as zadeh from "zadeh"
 ```
 
 or
 
 ```js
-const fuzzaldrin = require("fuzzaldrin-plus-fast")
+const zadeh = require("zadeh")
 ```
 
 ### filter(candidates, query, options = {})
@@ -60,7 +60,7 @@ Sort and filter the given candidates by matching them against the given query.
 Returns an array of candidates sorted by best match against the query.
 
 ```js
-const { filter } = require('fuzzaldrin-plus-fast')
+const { filter } = require('zadeh')
 
 // With an array of strings
 let candidates = ['Call', 'Me', 'Maybe']
@@ -103,7 +103,7 @@ export class ArrayFilterer<T> {
 Example:
 
 ```Javascript
-const { ArrayFilterer } = require('fuzzaldrin-plus-fast')
+const { ArrayFilterer } = require('zadeh')
 
 const arrayFilterer = new ArrayFilterer()
 arrayFilterer.setCandidates(['Call', 'Me', 'Maybe']) // set candidates only once
@@ -126,7 +126,7 @@ A **tree object** is an object in which each entry stores the data in its dataKe
 - `returns` An array of candidate objects in form of `{data, index, level}` sorted by best match against the query. Each objects has the address of the object in the tree using `index` and `level`.
 
 ```js
-const { filterTree } = require("fuzzaldrin-plus-fast")
+const { filterTree } = require("zadeh")
 
 candidates = [
   { data: "bye1", children: [{ data: "hello" }] },
@@ -170,7 +170,7 @@ export class TreeFilterer<T> {
 Example:
 
 ```Javascript
-const { TreeFilterer } = require('fuzzaldrin-plus-fast')
+const { TreeFilterer } = require('zadeh')
 
 const arrayFilterer = new TreeFilterer()
 
@@ -194,7 +194,7 @@ Score the given string against the given query.
 - `query` - The query to score the string against.
 
 ```js
-const { score } = require('fuzzaldrin-plus-fast')
+const { score } = require('zadeh')
 
 score('Me', 'me')    # 0.17099999999999999
 score('Maybe', 'me') # 0.0693
@@ -205,7 +205,7 @@ score('Maybe', 'me') # 0.0693
 Gives an array of indices at which the query matches the given string
 
 ```js
-const { match } = require("fuzzaldrin-plus-fast")
+const { match } = require("zadeh")
 
 match("Hello World", "he") // [0, 1]
 match("Hello World", "wor") // [6, 7, 8]

@@ -1,5 +1,5 @@
-#ifndef Fuzzaldrin_tree_h_
-#define Fuzzaldrin_tree_h_
+#ifndef Zadeh_tree_h_
+#define Zadeh_tree_h_
 
 #include <optional>
 #include "../common.h"
@@ -75,4 +75,4 @@ struct Tree {
     }
 };
 
-#endif    // Fuzzaldrin_tree_h_
+#endif    // Zadeh_tree_h_

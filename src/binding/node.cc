@@ -2,7 +2,7 @@
 
 #include "node.h"
 
-Napi::Value Fuzzaldrin::Filter(const Napi::CallbackInfo &info) {
+Napi::Value Zadeh::Filter(const Napi::CallbackInfo &info) {
     auto res = Napi::Array::New(info.Env());
     if (info.Length() != 4 || !info[0].IsString() || !info[1].IsNumber() || !info[2].IsBoolean() || !info[3].IsBoolean()) {
         Napi::TypeError::New(info.Env(), "Invalid arguments for Filter").ThrowAsJavaScriptException();
@@ -25,7 +25,7 @@ Napi::Value Fuzzaldrin::Filter(const Napi::CallbackInfo &info) {
     return res;
 }
 
-Napi::Value Fuzzaldrin::setArrayFiltererCandidates(const Napi::CallbackInfo &info) {
+Napi::Value Zadeh::setArrayFiltererCandidates(const Napi::CallbackInfo &info) {
     if (info.Length() != 1 || !info[0].IsArray()) {
         Napi::TypeError::New(info.Env(), "Invalid arguments for setArrayFiltererCandidates").ThrowAsJavaScriptException();
         return Napi::Boolean();
@@ -55,7 +55,7 @@ Napi::Value Fuzzaldrin::setArrayFiltererCandidates(const Napi::CallbackInfo &inf
     return Napi::Boolean();
 }
 
-Napi::Value Fuzzaldrin::setTreeFiltererCandidates(const Napi::CallbackInfo &info) {
+Napi::Value Zadeh::setTreeFiltererCandidates(const Napi::CallbackInfo &info) {
     // parse arguments
     if (info.Length() != 3
         || !info[0].IsArray()
@@ -97,7 +97,7 @@ Napi::Value Fuzzaldrin::setTreeFiltererCandidates(const Napi::CallbackInfo &info
 }
 
 /** (query: string, maxResults: number, usePathScoring: bool, useExtensionBonus: bool) */
-Napi::Value Fuzzaldrin::FilterTree(const Napi::CallbackInfo &info) {
+Napi::Value Zadeh::FilterTree(const Napi::CallbackInfo &info) {
     // parse arguments
     if (info.Length() != 4
         || !info[0].IsString()
@@ -193,22 +193,22 @@ Napi::String wrap(const Napi::CallbackInfo &info) {
     return Napi::String::New(info.Env(), res);
 }
 
-Napi::Object Fuzzaldrin::Init(Napi::Env env, Napi::Object exports) {
+Napi::Object Zadeh::Init(Napi::Env env, Napi::Object exports) {
     Napi::HandleScope scope(env);
 
-    // define Fuzzaldrin class in JS
+    // define Zadeh class in JS
     const auto func = DefineClass(
       env,
-      "Fuzzaldrin",
+      "Zadeh",
       { // member functions in JS
-        InstanceMethod("filter", &Fuzzaldrin::Filter),
-        InstanceMethod("filterTree", &Fuzzaldrin::FilterTree),
-        InstanceMethod("setArrayFiltererCandidates", &Fuzzaldrin::setArrayFiltererCandidates),
-        InstanceMethod("setTreeFiltererCandidates", &Fuzzaldrin::setTreeFiltererCandidates)
+        InstanceMethod("filter", &Zadeh::Filter),
+        InstanceMethod("filterTree", &Zadeh::FilterTree),
+        InstanceMethod("setArrayFiltererCandidates", &Zadeh::setArrayFiltererCandidates),
+        InstanceMethod("setTreeFiltererCandidates", &Zadeh::setTreeFiltererCandidates)
 
       });
-    // export Fuzzaldrin class to JS
-    exports.Set("Fuzzaldrin", func);
+    // export Zadeh class to JS
+    exports.Set("Zadeh", func);
 
     exports.Set("score", Napi::Function::New(env, score));
     exports.Set("match", Napi::Function::New(env, match));
@@ -217,7 +217,7 @@ Napi::Object Fuzzaldrin::Init(Napi::Env env, Napi::Object exports) {
 }
 
 Napi::Object InitAll(Napi::Env env, Napi::Object exports) {
-    return Fuzzaldrin::Init(env, exports);
+    return Zadeh::Init(env, exports);
 }
 
 NODE_API_MODULE(NODE_GYP_MODULE_NAME, InitAll)
