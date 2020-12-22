@@ -69,11 +69,4 @@ Element ToUpper(const Element &s) {
     return snew;
 }
 
-#include "options.h"
-#include "scorer.h"
-#include "matcher.h"
-#include "path_scorer.h"
-#include "query.h"
-#include "filter.h"
-
 #endif    // Fuzzaldrin_common_h_

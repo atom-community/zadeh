@@ -6,6 +6,8 @@
 #include <algorithm>
 
 #include "common.h"
+#include "options.h"
+#include "query.h"
 
 //----------------------------------------------------------------------
 // Align sequence (used for fuzzaldrin.match)

@@ -2,6 +2,7 @@
 #define Fuzzaldrin_query_h_
 
 #include "common.h"
+#include "path_scorer.h"
 
 //
 // Optional chars

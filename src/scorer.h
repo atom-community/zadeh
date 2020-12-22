@@ -1,8 +1,8 @@
 #ifndef Fuzzaldrin_scorer_h_
 #define Fuzzaldrin_scorer_h_
 
-
 #include "common.h"
+#include "options.h"
 
 //
 // Score similarity between two string

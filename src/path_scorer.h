@@ -3,6 +3,8 @@
 
 
 #include "common.h"
+#include "options.h"
+#include "scorer.h"
 
 // Directory depth at which the full path influence is halved.
 constexpr size_t tau_depth = 20;

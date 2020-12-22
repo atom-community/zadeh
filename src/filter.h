@@ -1,12 +1,13 @@
 #ifndef Fuzzaldrin_filter_h_
 #define Fuzzaldrin_filter_h_
 
-#include "common.h"
 #include <queue>
 #include <functional>
 #include <thread>
 #include <limits>
 
+#include "common.h"
+#include "options.h"
 
 struct CandidateScore {
     // TODO non const

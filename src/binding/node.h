@@ -3,7 +3,15 @@
 #define FUZZALDRIN_H
 
 #include <napi.h>
+
 #include "../common.h"
+#include "../options.h"
+#include "../scorer.h"
+#include "../matcher.h"
+#include "../path_scorer.h"
+#include "../query.h"
+#include "../filter.h"
+
 #include "tree.h"
 
 // Converted from the example at
