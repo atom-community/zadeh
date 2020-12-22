@@ -3,7 +3,7 @@
 #define FUZZALDRIN_H
 
 #include <napi.h>
-#include "common.h"
+#include "../common.h"
 #include "tree.h"
 
 // Converted from the example at

@@ -2,7 +2,7 @@
 #define Fuzzaldrin_tree_h_
 
 #include <optional>
-#include "common.h"
+#include "../common.h"
 
 /** Get the children of a jsTree (Napi::Object) */
 inline std::optional<Napi::Array> getChildren(const Napi::Object &jsTree, const string &childrenKey) {

@@ -5,8 +5,8 @@ pnpm-lock.yaml
 coverage
 build
 prebuilds
-fuzzaldrin-dist.js
-fuzzaldrin-dist.js.map
+node-dist.js
+node-dist.js.map
 spec/*.coffee
 .parcel-cache
 benchmark/result.md

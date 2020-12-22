@@ -1,6 +1,6 @@
 #include <napi.h>
 
-#include "fuzzaldrin.h"
+#include "node.h"
 
 Napi::Value Fuzzaldrin::Filter(const Napi::CallbackInfo &info) {
     auto res = Napi::Array::New(info.Env());

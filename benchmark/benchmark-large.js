@@ -3,7 +3,7 @@ const fs = require("fs")
 const path = require("path")
 const { elapsed_time, start_timer } = require("./testutils")
 
-const FuzzaldrinPlusFast = require("../fuzzaldrin-dist")
+const FuzzaldrinPlusFast = require("../node-dist")
 const legacy = require("fuzzaldrin-plus")
 
 const lines = fs.readFileSync(path.join(__dirname, "data-large.txt"), "utf8").trim().split("\n")

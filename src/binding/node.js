@@ -1,4 +1,4 @@
-const binding = require("node-gyp-build")(__dirname)
+const binding = require("node-gyp-build")(__dirname) // this relies on Parcel to bundle this file in the root of the package, so __dirname becomes correct
 
 const defaultPathSeparator = process.platform === "win32" ? "\\" : "/"
 

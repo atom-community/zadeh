@@ -1,5 +1,5 @@
 path = require 'path'
-{filter,score} = require '../fuzzaldrin-dist'
+{filter,score} = require '../node-dist'
 
 bestMatch = (candidates, query, options = {}) ->
 

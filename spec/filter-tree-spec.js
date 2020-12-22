@@ -1,4 +1,4 @@
-const { filterTree } = require("../fuzzaldrin-dist")
+const { filterTree } = require("../node-dist")
 const DeepEqual = require("deep-equal")
 const fs = require("fs")
 const path = require("path")

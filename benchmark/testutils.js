@@ -1,4 +1,4 @@
-const fuzzaldrinPlus = require("../fuzzaldrin-dist")
+const fuzzaldrinPlus = require("../node-dist")
 const legacy = require("fuzzaldrin-plus")
 
 let performance = null
