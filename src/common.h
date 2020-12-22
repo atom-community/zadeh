@@ -44,8 +44,6 @@ using CandidateIndex = size_t;
 
 using Score = float;
 
-struct Options;
-
 struct PreparedQuery {
     Element query;
     Element query_lw;
@@ -59,23 +57,6 @@ struct PreparedQuery {
     explicit PreparedQuery(const Element &q, const char pathSeparator);
 };
 
-struct Options {
-    size_t max_results = 0;
-    bool allowErrors = false;
-    bool usePathScoring = true;
-    bool useExtensionBonus = false;
-#ifdef _WIN32
-    char pathSeparator = '\\';
-#else
-    char pathSeparator = '/';
-#endif
-    const PreparedQuery preparedQuery;
-
-    explicit Options(const Element &_query, size_t _maxResults, bool _usePathScoring, bool _useExtensionBonus) : max_results(_maxResults), usePathScoring(_usePathScoring), useExtensionBonus(_useExtensionBonus), preparedQuery(_query, pathSeparator) {}
-    explicit Options(const Element &_query, char _pathSeparator) : pathSeparator(_pathSeparator), preparedQuery(_query, _pathSeparator) {}
-};
-
-
 Element ToLower(const Element &s) {
     string snew = string(s.size(), ' ');    // new string
     std::transform(s.begin(), s.end(), snew.begin(), ::tolower);
@@ -88,6 +69,7 @@ Element ToUpper(const Element &s) {
     return snew;
 }
 
+#include "options.h"
 #include "scorer.h"
 #include "matcher.h"
 #include "path_scorer.h"
