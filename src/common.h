@@ -75,13 +75,6 @@ struct Options {
     explicit Options(const Element &_query, char _pathSeparator) : pathSeparator(_pathSeparator), preparedQuery(_query, _pathSeparator) {}
 };
 
-struct AcronymResult {
-    Score score;
-    float pos;
-    size_t count;
-
-    explicit AcronymResult(Score s, float p, size_t c) noexcept : score(s), pos(p), count(c) {}
-};
 
 Element ToLower(const Element &s) {
     string snew = string(s.size(), ' ');    // new string
