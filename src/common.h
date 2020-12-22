@@ -4,15 +4,10 @@
 #include <vector>
 #include <set>
 #include <string>
-#include <cmath>
 #include <algorithm>
-#include <cstring>
-#include <iostream>
 #include <utility>
 #include <cassert>
 #include <thread>
-
-#include <napi.h>
 
 using namespace std;
 

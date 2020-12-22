@@ -1,6 +1,9 @@
 #ifndef Fuzzaldrin_scorer_h_
 #define Fuzzaldrin_scorer_h_
 
+#include <cmath>
+#include <iostream> // cerr
+
 #include "common.h"
 #include "options.h"
 
@@ -206,7 +209,7 @@ Score scoreConsecutives(const CandidateString &subject, const CandidateString &s
     // TODO do we need this check?
     if (!(j < query_size) || !(i <= subject_size)) {
         cerr << "\n out of bounds! \n j, query_size, i, subject_size \n"
-             << j << query_size << i << subject_size << endl;
+             << j << query_size << i << subject_size << '\n';
         std::abort();
     }
 
