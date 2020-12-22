@@ -82,7 +82,7 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
             csc_diag = csc_row[j];
 
 
-            Direction move = [&score_up, &score]() {
+            auto move = [&score_up, &score]() {
                 // In case of equality, moving UP get us closer to the start of the candidate string.
                 if (score > score_up) {
                     return Direction::LEFT;
@@ -125,8 +125,8 @@ std::vector<size_t> computeMatch(const CandidateString &subject, const Candidate
 
     const auto query_size_int = static_cast<int>(query_size);
 
-    int ii = static_cast<int>(subject_size) - 1;
-    int jj = query_size_int - 1;
+    auto ii = static_cast<int>(subject_size) - 1;
+    auto jj = query_size_int - 1;
     auto pos_ = static_cast<size_t>(ii * query_size_int + jj);
     auto backtrack = true;
     std::vector<size_t> matches;

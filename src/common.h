@@ -58,13 +58,13 @@ struct PreparedQuery {
 };
 
 Element ToLower(const Element &s) {
-    string snew = string(s.size(), ' ');    // new string
+    auto snew = string(s.size(), ' ');    // new string
     std::transform(s.begin(), s.end(), snew.begin(), ::tolower);
     return snew;
 }
 
 Element ToUpper(const Element &s) {
-    string snew = string(s.size(), ' ');    // new string
+    auto snew = string(s.size(), ' ');    // new string
     std::transform(s.begin(), s.end(), snew.begin(), ::toupper);
     return snew;
 }
