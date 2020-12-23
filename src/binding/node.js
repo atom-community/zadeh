@@ -17,7 +17,7 @@ function parseOptions(options, query) {
 
 export class ArrayFilterer {
   constructor() {
-    this.obj = new binding.Fuzzaldrin()
+    this.obj = new binding.Zadeh()
   }
 
   setCandidates(candidates, dataKey = undefined) {
@@ -65,7 +65,7 @@ export function filter(candidates, query, options = {}) {
 
 export class TreeFilterer {
   constructor() {
-    this.obj = new binding.Fuzzaldrin()
+    this.obj = new binding.Zadeh()
   }
 
   setCandidates(candidates, dataKey = "data", childrenKey = "children") {

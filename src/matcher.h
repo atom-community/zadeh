@@ -1,5 +1,5 @@
-#ifndef Fuzzaldrin_matcher_h_
-#define Fuzzaldrin_matcher_h_
+#ifndef Zadeh_matcher_h_
+#define Zadeh_matcher_h_
 
 
 #include <iterator>
@@ -10,7 +10,7 @@
 #include "query.h"
 
 //----------------------------------------------------------------------
-// Align sequence (used for fuzzaldrin.match)
+// Align sequence (used for zadeh.match)
 // Return position of subject characters that match query.
 //
 // Follow closely scorer.computeScore.

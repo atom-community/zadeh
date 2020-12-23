@@ -3,7 +3,7 @@ const fs = require("fs")
 const path = require("path")
 const { elapsed_time, start_timer } = require("./testutils")
 
-const FuzzaldrinPlusFast = require("../node-dist")
+const Zadeh = require("../node-dist")
 const legacy = require("fuzzaldrin-plus")
 
 const lines = fs.readFileSync(path.join(__dirname, "data-large.txt"), "utf8").trim().split("\n")
@@ -14,8 +14,8 @@ const dict = lines.map((item) => {
   }
 })
 
-const fuzzaldrinplusfast = FuzzaldrinPlusFast.New()
-fuzzaldrinplusfast.setCandidates(lines)
+const zadeh = Zadeh.New()
+zadeh.setCandidates(lines)
 
 const two_letter_tests = [
   "dp",
@@ -71,14 +71,14 @@ elapsed_time(t1, "TwoLetter _legacy_")
 
 const t2 = start_timer()
 for (const query of two_letter_tests)
-  FuzzaldrinPlusFast.filter(lines, query, {
+  Zadeh.filter(lines, query, {
     maxResults: 10,
   })
 elapsed_time(t2, "TwoLetter direct filter")
 
 const t3 = start_timer()
 for (const query of two_letter_tests)
-  fuzzaldrinplusfast.filter(query, {
+  zadeh.filter(query, {
     maxResults: 10,
   })
 elapsed_time(t3, "TwoLetter setCandidates")
@@ -94,14 +94,14 @@ elapsed_time(t4, "ThreeLetter _legacy_")
 
 const t5 = start_timer()
 for (const query of three_letter_tests)
-  FuzzaldrinPlusFast.filter(lines, query, {
+  Zadeh.filter(lines, query, {
     maxResults: 10,
   })
 elapsed_time(t5, "ThreeLetter direct filter")
 
 const t6 = start_timer()
 for (const query of three_letter_tests)
-  fuzzaldrinplusfast.filter(query, {
+  zadeh.filter(query, {
     maxResults: 10,
   })
 elapsed_time(t6, "ThreeLetter setCandidates")
@@ -110,7 +110,7 @@ console.log("======")
 
 const t7 = start_timer()
 for (const query of two_letter_tests)
-  FuzzaldrinPlusFast.filter(dict, query, {
+  Zadeh.filter(dict, query, {
     maxResults: 10,
     key: "key",
   })
@@ -118,7 +118,7 @@ elapsed_time(t7, "TwoLetter keybased filter")
 
 const t8 = start_timer()
 for (const query of three_letter_tests)
-  FuzzaldrinPlusFast.filter(dict, query, {
+  Zadeh.filter(dict, query, {
     maxResults: 10,
     key: "key",
   })
@@ -127,7 +127,7 @@ elapsed_time(t8, "ThreeLetter keybased filter")
 console.log("======")
 
 const t9 = start_timer()
-let obj = FuzzaldrinPlusFast.New()
+let obj = Zadeh.New()
 obj.setCandidates(lines)
 elapsed_time(t9, "setCandidates")
 
@@ -148,7 +148,7 @@ elapsed_time(t11, "ThreeLetter filter")
 console.log("======")
 
 const t12 = start_timer()
-obj = FuzzaldrinPlusFast.New()
+obj = Zadeh.New()
 obj.setCandidates(dict, {
   key: "key",
 })

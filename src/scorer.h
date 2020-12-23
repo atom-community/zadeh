@@ -1,5 +1,5 @@
-#ifndef Fuzzaldrin_scorer_h_
-#define Fuzzaldrin_scorer_h_
+#ifndef Zadeh_scorer_h_
+#define Zadeh_scorer_h_
 
 #include <cmath>
 #include <iostream> // cerr

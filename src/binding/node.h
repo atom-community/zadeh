@@ -1,6 +1,6 @@
 #pragma once
-#ifndef FUZZALDRIN_H
-#define FUZZALDRIN_H
+#ifndef Zadeh_H
+#define Zadeh_H
 
 #include <napi.h>
 
@@ -17,10 +17,10 @@
 // Converted from the example at
 // https://github.com/nodejs/node-addon-examples/blob/master/6_object_wrap/node-addon-api/
 
-class Fuzzaldrin : public Napi::ObjectWrap<Fuzzaldrin> {
+class Zadeh : public Napi::ObjectWrap<Zadeh> {
   public:
     static Napi::Object Init(Napi::Env env, Napi::Object exports);
-    explicit Fuzzaldrin(const Napi::CallbackInfo &info) : Napi::ObjectWrap<Fuzzaldrin>(info) {}
+    explicit Zadeh(const Napi::CallbackInfo &info) : Napi::ObjectWrap<Zadeh>(info) {}
 
     Napi::Value Filter(const Napi::CallbackInfo &info);
     Napi::Value setArrayFiltererCandidates(const Napi::CallbackInfo &info);
@@ -33,4 +33,4 @@ class Fuzzaldrin : public Napi::ObjectWrap<Fuzzaldrin> {
     Tree _tree;
 };
 
-#endif    // FUZZALDRIN_H
+#endif    // Zadeh_H

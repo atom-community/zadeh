@@ -1,4 +1,4 @@
-const fuzzaldrinPlus = require("../node-dist")
+const zadeh = require("../node-dist")
 const legacy = require("fuzzaldrin-plus")
 
 let performance = null
@@ -47,7 +47,7 @@ exports.elapsed_time = elapsed_time
 function doFilterTest(test_name, lines, query, params) {
   console.log(`====== Running test - query:${query} ======`)
   const timer_start_time = start_timer()
-  const res_actual = fuzzaldrinPlus.filter(lines, query, params)
+  const res_actual = zadeh.filter(lines, query, params)
   const elapsed = elapsed_time(timer_start_time)
 
   const timer_start_time_legacy = start_timer()
@@ -67,11 +67,11 @@ function doFilterTest(test_name, lines, query, params) {
   if (test_name) {
     console.log(test_name)
   }
-  console.log(`fuzzaldrin-plus-fast vs. legacy: ${" ".repeat(50)} ${elapsed} ms  |   ${elapsed_legacy} ms`)
+  console.log(`zadeh vs. legacy: ${" ".repeat(50)} ${elapsed} ms  |   ${elapsed_legacy} ms`)
   console.log(`length of the result: ${res_actual.length}, length of the lines: ${lines.length}`)
 
   if (elapsed > elapsed_legacy) {
-    console.error(`${" ".repeat(75)} fuzzaldrin-plus-fast is SLOWER`)
+    console.error(`${" ".repeat(75)} zadeh is SLOWER`)
   }
   console.log("")
 }

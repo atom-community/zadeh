@@ -1,7 +1,7 @@
 # Note: C++ standard is repeated in configurations multiple times for different configurations
 {
   "targets": [{
-      "target_name": "fuzzaldrinplusfast",
+      "target_name": "zadeh",
       "sources": [ "src/common.h", "src/options.h", "src/binding/node.cc", "src/binding/node.h", "src/scorer.h", "src/path_scorer.h", "src/filter.h", "src/query.h", "src/matcher.h",  "src/binding/tree.h" ],
       "include_dirs": [
         "<!@(node -p \"require('node-addon-api').include\")"
