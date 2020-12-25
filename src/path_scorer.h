@@ -6,6 +6,9 @@
 #include "options.h"
 #include "scorer.h"
 
+namespace zadeh {
+
+
 // Directory depth at which the full path influence is halved.
 constexpr size_t tau_depth = 20;
 
@@ -173,7 +176,6 @@ Score scorePath(const CandidateString &subject, const CandidateString &subject_l
 }
 
 
-
 //
 // Main export
 //
@@ -191,5 +193,5 @@ Score path_scorer_score(const CandidateString &string, const Element &query, con
 }
 
 
-
+}    // namespace zadeh
 #endif

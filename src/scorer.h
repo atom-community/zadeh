@@ -2,10 +2,13 @@
 #define Zadeh_scorer_h_
 
 #include <cmath>
-#include <iostream> // cerr
+#include <iostream>    // cerr
 
 #include "common.h"
 #include "options.h"
+
+namespace zadeh {
+
 
 //
 // Score similarity between two string
@@ -84,7 +87,6 @@ bool isMatch(const CandidateString &subject, const Element &query_lw, const Elem
     // Found every char of query in subject in proper order, match is positive
     return true;
 }
-
 
 
 constexpr bool isSeparator(const char c) noexcept {
@@ -426,7 +428,6 @@ AcronymResult scoreAcronyms(const CandidateString &subject, const CandidateStrin
 }
 
 
-
 //----------------------------------------------------------------------
 //
 // Main scoring algorithm
@@ -583,4 +584,6 @@ Score scorer_score(const CandidateString &string, const Element &query, const Op
     return ceil(score);
 }
 
+
+}    // namespace zadeh
 #endif

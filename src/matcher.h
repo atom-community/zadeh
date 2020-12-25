@@ -9,6 +9,9 @@
 #include "options.h"
 #include "query.h"
 
+namespace zadeh {
+
+
 //----------------------------------------------------------------------
 // Align sequence (used for zadeh.match)
 // Return position of subject characters that match query.
@@ -307,4 +310,5 @@ void get_wrap(const CandidateString &string, const Element &query, const Options
 }
 
 
+}    // namespace zadeh
 #endif

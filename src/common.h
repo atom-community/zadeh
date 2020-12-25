@@ -9,7 +9,11 @@
 #include <cassert>
 #include <thread>
 
+
+namespace zadeh {
+
 using namespace std;
+
 
 static const auto kMaxThreads = std::thread::hardware_concurrency();
 
@@ -64,4 +68,6 @@ Element ToUpper(const Element &s) {
     return snew;
 }
 
+
+}    // namespace zadeh
 #endif    // Zadeh_common_h_
