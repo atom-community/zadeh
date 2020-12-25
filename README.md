@@ -18,7 +18,6 @@ Zadeh is a blazing fast library for fuzzy filtering, matching, and other fuzzy t
 - Allows setting the candidates only once using `ArrayFilterer` and `TreeFilterer` classes, and then, perform `filter` multiple times, which is much more efficient than calling the `filter` or `filterTree` functions directly every time.
 - Bindings for Nodejs (more to come)
 
-
 ### Table of content
 
 - [Zadeh](#zadeh)
@@ -35,7 +34,6 @@ Zadeh is a blazing fast library for fuzzy filtering, matching, and other fuzzy t
     - [options](#options)
 - [Comparison with other libraries](#comparison-with-other-libraries)
   - [Zadeh vs fuzzaldrin and fuzzaldrin-plus](#zadeh-vs-fuzzaldrin-and-fuzzaldrin-plus)
-
 
 # Usage
 
@@ -58,7 +56,6 @@ or
 ```js
 const zadeh = require("zadeh")
 ```
-
 
 ### ArrayFilterer
 
@@ -97,7 +94,7 @@ arrayFilterer.filter('all')
 
 ### filter
 
-  filter(candidates, query, options = {})
+    filter(candidates, query, options = {})
 
 Sort and filter the given candidates by matching them against the given query.
 
@@ -170,7 +167,7 @@ arrayFilterer.filter('bye')
 
 ### filterTree
 
-  filterTree(candidates, query, dataKey, childrenKey, options = {})
+    filterTree(candidates, query, dataKey, childrenKey, options = {})
 
 Sort and filter the given Tree candidates by matching them against the given query.
 
@@ -203,7 +200,7 @@ results = filter(candidates, "hello", { key: "name" }) // [ { data: 'hello', ind
 
 ### score
 
-  score(string, query, options = {})
+    score(string, query, options = {})
 
 Score the given string against the given query.
 
@@ -219,7 +216,7 @@ score('Maybe', 'me') # 0.0693
 
 ### match
 
-  match(string, query, options = {})
+    match(string, query, options = {})
 
 Gives an array of indices at which the query matches the given string
 
@@ -233,7 +230,7 @@ match("Hello World", "elwor") // [1, 2, 6, 7, 8]
 
 ### wrap
 
-  wrap (string, query, options = {})
+    wrap (string, query, options = {})
 
 Gives an HTML/Markdown string that highlights the range for which the match happens
 
