@@ -4,6 +4,9 @@
 #include "common.h"
 #include "path_scorer.h"
 
+namespace zadeh {
+
+
 //
 // Optional chars
 // Those char improve the score if present, but will not block the match (score=0) if absent.
@@ -37,4 +40,6 @@ PreparedQuery::PreparedQuery(const Element &q, const char pathSeparator) : query
     charCodes = getCharCodes(query_lw);
 }
 
+
+}    // namespace zadeh
 #endif

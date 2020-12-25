@@ -4,6 +4,9 @@
 #include <optional>
 #include "../common.h"
 
+namespace zadeh {
+
+
 /** Get the children of a jsTree (Napi::Object) */
 inline std::optional<Napi::Array> getChildren(const Napi::Object &jsTree, const string &childrenKey) {
     // determine if it has children
@@ -75,4 +78,6 @@ struct Tree {
     }
 };
 
+
+}    // namespace zadeh
 #endif    // Zadeh_tree_h_

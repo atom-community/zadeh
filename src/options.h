@@ -3,6 +3,9 @@
 
 #include "common.h"
 
+namespace zadeh {
+
+
 struct Options {
     size_t max_results = 0;
     bool allowErrors = false;
@@ -20,4 +23,5 @@ struct Options {
 };
 
 
+}    // namespace zadeh
 #endif

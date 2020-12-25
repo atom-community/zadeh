@@ -14,6 +14,8 @@
 
 #include "tree.h"
 
+namespace zadeh {
+
 // Converted from the example at
 // https://github.com/nodejs/node-addon-examples/blob/master/6_object_wrap/node-addon-api/
 
@@ -33,4 +35,6 @@ class Zadeh : public Napi::ObjectWrap<Zadeh> {
     Tree _tree;
 };
 
+
+}    // namespace zadeh
 #endif    // Zadeh_H

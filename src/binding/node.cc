@@ -2,6 +2,8 @@
 
 #include "node.h"
 
+namespace zadeh {
+
 Napi::Value Zadeh::Filter(const Napi::CallbackInfo &info) {
     auto res = Napi::Array::New(info.Env());
     if (info.Length() != 4 || !info[0].IsString() || !info[1].IsNumber() || !info[2].IsBoolean() || !info[3].IsBoolean()) {
@@ -221,3 +223,6 @@ Napi::Object InitAll(Napi::Env env, Napi::Object exports) {
 }
 
 NODE_API_MODULE(NODE_GYP_MODULE_NAME, InitAll)
+
+
+}    // namespace zadeh

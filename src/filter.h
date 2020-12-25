@@ -9,6 +9,9 @@
 #include "common.h"
 #include "options.h"
 
+namespace zadeh {
+
+
 struct CandidateScore {
     // TODO non const
     Score score;
@@ -103,5 +106,5 @@ std::vector<CandidateIndex> filter(const vector<std::vector<CandidateString>> &c
 }
 
 
-
+}    // namespace zadeh
 #endif
