@@ -8,6 +8,7 @@
 #include <utility>
 #include <cassert>
 #include <thread>
+#include <optional>
 
 
 namespace zadeh {
@@ -68,6 +69,10 @@ Element ToUpper(const Element &s) {
     return snew;
 }
 
+
+auto get_num_chunks(const size_t N) {
+    return N < 1000u * kMaxThreads ? N / 1000u + 1u : kMaxThreads;
+}
 
 }    // namespace zadeh
 #endif    // Zadeh_common_h_

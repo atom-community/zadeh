@@ -2,7 +2,12 @@
 {
   "targets": [{
       "target_name": "zadeh",
-      "sources": [ "src/common.h", "src/options.h", "src/binding/node.cc", "src/binding/node.h", "src/scorer.h", "src/path_scorer.h", "src/filter.h", "src/query.h", "src/matcher.h",  "src/binding/tree.h" ],
+      "sources": [
+        "src/zadeh.h", "src/common.h", "src/data_interface.h",
+        "src/options.h", "src/scorer.h", "src/path_scorer.h", "src/filter.h", "src/query.h", "src/matcher.h",
+        "src/ArrayFilterer.h", "src/TreeFilterer.h",
+        "src/binding/node.cc", "src/binding/node.h"
+      ],
       "include_dirs": [
         "<!@(node -p \"require('node-addon-api').include\")"
       ],
@@ -37,7 +42,10 @@
                 "/GL",   # whole Program Optimization  # /LTCG is implied with /GL.
                 "/DNDEBUG"  # turn off asserts
               ],
-            }
+            },
+            "ClCompile": {
+              "LanguageStandard": "stdcpp17"
+            },
           }
         },
         # Debug Settings
@@ -102,6 +110,9 @@
                 "/wd4626", # assignment operator was implicitly defined as deleted
                 "/wd5027"  # move operator was implicitly defined as deleted
               ],
+            },
+            "ClCompile": {
+              "LanguageStandard": "stdcpp17"
             },
           }, # MSVC
           "xcode_settings": {
