@@ -42,7 +42,10 @@
                 "/GL",   # whole Program Optimization  # /LTCG is implied with /GL.
                 "/DNDEBUG"  # turn off asserts
               ],
-            }
+            },
+            "ClCompile": {
+              "LanguageStandard": "stdcpp17"
+            },
           }
         },
         # Debug Settings
@@ -107,6 +110,9 @@
                 "/wd4626", # assignment operator was implicitly defined as deleted
                 "/wd5027"  # move operator was implicitly defined as deleted
               ],
+            },
+            "ClCompile": {
+              "LanguageStandard": "stdcpp17"
             },
           }, # MSVC
           "xcode_settings": {
