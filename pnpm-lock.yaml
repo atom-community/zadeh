@@ -1,6 +1,6 @@
 dependencies:
   bindings: 1.5.0
-  node-addon-api: 3.0.2
+  node-addon-api: 3.1.0
   node-gyp-build: 4.2.3
 devDependencies:
   babel-preset-atomic: 3.0.1
@@ -6690,8 +6690,13 @@ packages:
     resolution:
       integrity: sha512-9xZrlyfvKhWme2EXFKQhZRp1yNWT/uI1luYPr3sFl+H4keYY4xR+1jO7mvTTijIsHf1M+QDe9uWuKeEpLInIlg==
   /node-addon-api/3.0.2:
+    dev: true
     resolution:
       integrity: sha512-+D4s2HCnxPd5PjjI0STKwncjXTUKKqm74MDMz9OPXavjsGmjkvwgLtA5yoxJUdmpj52+2u+RrXgPipahKczMKg==
+  /node-addon-api/3.1.0:
+    dev: false
+    resolution:
+      integrity: sha512-flmrDNB06LIl5lywUz7YlNGZH/5p0M7W28k8hzd9Lshtdh1wshD2Y+U4h9LD6KObOy1f+fEVdgprPrEymjM5uw==
   /node-forge/0.10.0:
     dev: true
     engines:
@@ -9416,7 +9421,7 @@ specifiers:
   fuzzaldrin-plus: ^0.6.0
   growl: '>=1.10.5'
   jasmine-node: ^3.0.0
-  node-addon-api: ~3.0.2
+  node-addon-api: ~3.1.0
   node-gyp-build: ^4.2.3
   npm-check-updates: 10.2.5
   parcel: 2.0.0-nightly.500
