@@ -15,8 +15,8 @@
     "native:prebuild": "prebuildify --napi -t 12.0.0 -t electron@6.0.0 -t electron@9.3.5 --strip",
     "native:prebuild-ia32": "prebuildify --napi --arch=ia32 -t 12.0.0 -t electron@6.0.0 -t electron@9.3.5 --strip",
     "js:clean": "shx rm -rf dist .parcel-cache",
-    "js:dev": "cross-env NODE_ENV=development parcel watch --target main src/binding/node.js",
-    "js:build": "cross-env NODE_ENV=production parcel build --target main src/binding/node.js",
+    "js:dev": "cross-env NODE_ENV=development rollup -c -w",
+    "js:build": "cross-env NODE_ENV=production rollup -c",
     "clean": "npm run native:clean && npm run js:clean",
     "install": "node-gyp-build",
     "build": "npm run native:build && npm run js:build",
@@ -38,17 +38,6 @@
     "binding.gyp"
   ],
   "gypfile": true,
-  "targets": {
-    "main": {
-      "context": "node",
-      "engines": {
-        "node": ">=6.x"
-      },
-      "includeNodeModules": true,
-      "outputFormat": "commonjs",
-      "isLibrary": true
-    }
-  },
   "dependencies": {
     "bindings": "~1.5.0",
     "node-addon-api": "~3.1.0",
@@ -62,10 +51,11 @@
     "growl": ">=1.10.5",
     "jasmine-node": "^3.0.0",
     "npm-check-updates": "10.2.5",
-    "parcel": "2.0.0-nightly.500",
     "prebuildify": "^4.1.1",
-    "shx": "^0.3.3",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "rollup": "^2.36.0",
+    "rollup-plugin-atomic": "^1.6.4",
+    "shx": "^0.3.3"
   },
   "repository": {
     "type": "git",
