@@ -55,14 +55,14 @@
     "node-gyp-build": "^4.2.3"
   },
   "devDependencies": {
-    "babel-preset-atomic": "^3.0.0",
+    "babel-preset-atomic": "^3.0.1",
     "cross-env": "^7.0.3",
     "deep-equal": "^2.0.5",
     "fuzzaldrin-plus": "^0.6.0",
     "growl": ">=1.10.5",
     "jasmine-node": "^3.0.0",
-    "npm-check-updates": "10.2.3",
-    "parcel": "^2.0.0-nightly.469",
+    "npm-check-updates": "10.2.5",
+    "parcel": "2.0.0-nightly.500",
     "prebuildify": "^4.1.1",
     "shx": "^0.3.3",
     "prettier": "^2.2.1"
