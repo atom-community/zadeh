@@ -14,8 +14,8 @@ jobs:
       matrix:
         os:
           - ubuntu-20.04
-          - macos-11.0
-          - windows-latest
+          # - macos-11.0
+          # - windows-latest
         node_version:
           - 12
         node_arch:
@@ -81,25 +81,25 @@ jobs:
       matrix:
         os:
           - ubuntu-20.04
-          - macos-11.0
-          - windows-latest
+          # - macos-11.0
+          # - windows-latest
         node_version:
           - 10
-          - 12
-          - 14
+          # - 12
+          # - 14
         node_arch:
           - x64
         include:
-          - os: windows-2016
-            node_version: 12
-            node_arch: x86
-          - os: ubuntu-16.04
-            node_version: 12
+          # - os: windows-2016
+          #   node_version: 12
+          #   node_arch: x86
+          # - os: ubuntu-16.04
+          #   node_version: 12
           - os: ubuntu-latest
             node_version: 12
             snap: true
-          - os: macos-10.15
-            node_version: 12
+          # - os: macos-10.15
+          #   node_version: 12
     steps:
       - uses: actions/checkout@v2
 
