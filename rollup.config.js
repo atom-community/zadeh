@@ -13,6 +13,6 @@ export default [
       },
     ],
     plugins: plugins,
-    external: ['node-gyp-build']
+    external: ["node-gyp-build"],
   },
 ]
