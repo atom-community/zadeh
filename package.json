@@ -1,6 +1,6 @@
 {
   "name": "zadeh",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Blazing fast library for fuzzy filtering, matching, and other fuzzy things!",
   "main": "./node-dist.js",
   "node": "./node-dist.js",
