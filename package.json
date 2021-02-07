@@ -7,6 +7,9 @@
   "types": "./types/zadeh.d.ts",
   "scripts": {
     "format": "prettier --write . && clang-format -i src/*.h src/binding/*.cc src/binding/*.h",
+    "test.format": "prettier . --check",
+    "lint": "eslint . --fix",
+    "test.lint": "eslint .",
     "tidy": "clang-tidy src/*.cc src/*.h",
     "tidy:fix": "clang-tidy src/*.cc src/*.h --fix --fix-errors",
     "native:clean": "shx rm -rf build prebuilds",
