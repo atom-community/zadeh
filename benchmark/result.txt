@@ -1,41 +1,38 @@
 
-> zadeh@1.2.4 benchmark C:\Users\aminy\Documents\GitHub\JavaScript\@atom-ide-community\fuzzaldrin-plus-fast
-> npm run benchmark:small && npm run benchmark:regular && npm run benchmark:large && npm run benchmark:tree
-
 
 > zadeh@1.2.4 benchmark:small C:\Users\aminy\Documents\GitHub\JavaScript\@atom-ide-community\fuzzaldrin-plus-fast
 > node benchmark/benchmark-small.js
 
 ====== Running test - query:nm ======
-zadeh vs. legacy:                                                    0.19 ms  |   0.51 ms
+zadeh vs. legacy:                                                    0.18 ms  |   0.5 ms
 length of the result: 100, length of the lines: 100
 
 ====== Running test - query:npm ======
-zadeh vs. legacy:                                                    0.42 ms  |   3.86 ms
+zadeh vs. legacy:                                                    0.19 ms  |   3.4 ms
 length of the result: 55, length of the lines: 100
 
 ====== Running test - query:node ======
-zadeh vs. legacy:                                                    0.16 ms  |   1.3 ms
+zadeh vs. legacy:                                                    0.17 ms  |   1.41 ms
 length of the result: 100, length of the lines: 100
 
 ====== Running test - query:grunt ======
-zadeh vs. legacy:                                                    0.14 ms  |   0.33 ms
+zadeh vs. legacy:                                                    0.13 ms  |   0.26 ms
 length of the result: 33, length of the lines: 100
 
 ====== Running test - query:html ======
-zadeh vs. legacy:                                                    0.11 ms  |   0.46 ms
+zadeh vs. legacy:                                                    0.15 ms  |   0.44 ms
 length of the result: 10, length of the lines: 100
 
 ====== Running test - query:doc ======
-zadeh vs. legacy:                                                    0.26 ms  |   3.69 ms
+zadeh vs. legacy:                                                    0.23 ms  |   3.61 ms
 length of the result: 87, length of the lines: 100
 
 ====== Running test - query:cli ======
-zadeh vs. legacy:                                                    0.38 ms  |   1.61 ms
+zadeh vs. legacy:                                                    0.19 ms  |   1.72 ms
 length of the result: 57, length of the lines: 100
 
 ====== Running test - query:js ======
-zadeh vs. legacy:                                                    0.14 ms  |   0.31 ms
+zadeh vs. legacy:                                                    0.15 ms  |   0.34 ms
 length of the result: 60, length of the lines: 100
 
 ====== Running test - query:jas ======
@@ -43,11 +40,11 @@ zadeh vs. legacy:                                                    0.14 ms  | 
 length of the result: 19, length of the lines: 100
 
 ====== Running test - query:mine ======
-zadeh vs. legacy:                                                    0.22 ms  |   2.4 ms
+zadeh vs. legacy:                                                    0.28 ms  |   2.44 ms
 length of the result: 65, length of the lines: 100
 
 ====== Running test - query:stream ======
-zadeh vs. legacy:                                                    0.16 ms  |   1.29 ms
+zadeh vs. legacy:                                                    0.16 ms  |   1.2 ms
 length of the result: 19, length of the lines: 100
 
 
@@ -56,87 +53,87 @@ length of the result: 19, length of the lines: 100
 
 ====== Running test - query:index ======
 ~10% of results are positive, mix exact & fuzzy
-zadeh vs. legacy:                                                    27.41 ms  |   42.58 ms
+zadeh vs. legacy:                                                    27.43 ms  |   44 ms
 length of the result: 6168, length of the lines: 66672
 
 ====== Running test - query:indx ======
 ~10% of results are positive, Fuzzy match
-zadeh vs. legacy:                                                    27.49 ms  |   48.34 ms
+zadeh vs. legacy:                                                    27.46 ms  |   53.35 ms
 length of the result: 6192, length of the lines: 66672
 
 ====== Running test - query:walkdr ======
 ~1% of results are positive, fuzzy
-zadeh vs. legacy:                                                    25.83 ms  |   15.7 ms
+zadeh vs. legacy:                                                    24.77 ms  |   15.88 ms
 length of the result: 504, length of the lines: 66672
                                                                             zadeh is SLOWER
 
 ====== Running test - query:node ======
 ~98% of results are positive, mostly Exact match
-zadeh vs. legacy:                                                    40.36 ms  |   68.62 ms
+zadeh vs. legacy:                                                    41.59 ms  |   66.91 ms
 length of the result: 65136, length of the lines: 66672
 
 ====== Running test - query:nm ======
 ~98% of results are positive, Acronym match
-zadeh vs. legacy:                                                    38.94 ms  |   64.32 ms
+zadeh vs. legacy:                                                    39.39 ms  |   64.91 ms
 length of the result: 65208, length of the lines: 66672
 
 ====== Running test - query:nm ======
 ~98% of results + Fuzzy match, [Worst case scenario]
-zadeh vs. legacy:                                                    38.7 ms  |   48.69 ms
+zadeh vs. legacy:                                                    40.9 ms  |   48.74 ms
 length of the result: 65208, length of the lines: 66672
 
 ====== Running test - query:nm ======
 ~98% of results + Fuzzy match, [Mitigation]
-zadeh vs. legacy:                                                    38.19 ms  |   57.74 ms
+zadeh vs. legacy:                                                    38.78 ms  |   57.66 ms
 length of the result: 65208, length of the lines: 66672
 
 ====== Running test - query:ndem ======
 ~98% of results + Fuzzy match, [Worst case but shorter string]
-zadeh vs. legacy:                                                    45.93 ms  |   229.78 ms
+zadeh vs. legacy:                                                    45.35 ms  |   230.62 ms
 length of the result: 65124, length of the lines: 66672
 
-Matching 66672 results for 'index' (Prepare in advance) took                           275.81 ms
-Matching 66672 results for 'index' (cache) took                                        274.02 ms
-Matching 66672 results for 'index' (_legacy_) took                                     81.18 ms
+Matching 66672 results for 'index' (Prepare in advance) took                           299.56 ms
+Matching 66672 results for 'index' (cache) took                                        282.37 ms
+Matching 66672 results for 'index' (_legacy_) took                                     80.77 ms
 
 > zadeh@1.2.4 benchmark:large C:\Users\aminy\Documents\GitHub\JavaScript\@atom-ide-community\fuzzaldrin-plus-fast
 > node benchmark/benchmark-large.js
 
-TwoLetter _legacy_ took                                                                10776.69 ms
-TwoLetter direct filter took                                                           3234.20 ms
-TwoLetter setCandidates took                                                           414.90 ms
+TwoLetter _legacy_ took                                                                10496.92 ms
+TwoLetter direct filter took                                                           2891.81 ms
+TwoLetter setCandidates took                                                           403.40 ms
 ======
-ThreeLetter _legacy_ took                                                              9632.80 ms
-ThreeLetter direct filter took                                                         3286.15 ms
-ThreeLetter setCandidates took                                                         383.19 ms
+ThreeLetter _legacy_ took                                                              8289.71 ms
+ThreeLetter direct filter took                                                         2984.63 ms
+ThreeLetter setCandidates took                                                         404.91 ms
 ======
-TwoLetter keybased filter took                                                         3776.86 ms
-ThreeLetter keybased filter took                                                       4413.96 ms
+TwoLetter keybased filter took                                                         3350.54 ms
+ThreeLetter keybased filter took                                                       3842.84 ms
 ======
-setCandidates took                                                                     219.13 ms
-TwoLetter filter took                                                                  393.76 ms
-ThreeLetter filter took                                                                406.25 ms
+setCandidates took                                                                     193.01 ms
+TwoLetter filter took                                                                  607.50 ms
+ThreeLetter filter took                                                                400.47 ms
 ======
-setCandidates keybased took                                                            227.17 ms
-TwoLetter keybased filter took                                                         402.38 ms
-ThreeLetter keybased filter took                                                       416.81 ms
+setCandidates keybased took                                                            197.76 ms
+TwoLetter keybased filter took                                                         412.17 ms
+ThreeLetter keybased filter took                                                       404.81 ms
 
 > zadeh@1.2.4 benchmark:tree C:\Users\aminy\Documents\GitHub\JavaScript\@atom-ide-community\fuzzaldrin-plus-fast
 > node benchmark/benchmark-tree.js
 
-TreeFilterer.setCandidates: took                                                       2.21 ms
-TreeFilterer.filter text took                                                          0.54 ms
-TreeFilterer.filter dips took                                                          0.41 ms
-TreeFilterer.filter disp took                                                          0.36 ms
-TreeFilterer.filter txt took                                                           0.42 ms
+TreeFilterer.setCandidates: took                                                       2.10 ms
+TreeFilterer.filter text took                                                          0.53 ms
+TreeFilterer.filter dips took                                                          0.39 ms
+TreeFilterer.filter disp took                                                          0.35 ms
+TreeFilterer.filter txt took                                                           0.43 ms
 TreeFilterer.filter getBuffer took                                                     0.29 ms
 
-TreeFilterer.filter average:                                                           0.404 ms
+TreeFilterer.filter average:                                                           0.398 ms
 
-filterTree text took                                                                   2.83 ms
-filterTree dips took                                                                   2.43 ms
-filterTree disp took                                                                   3.54 ms
-filterTree txt: took                                                                   2.77 ms
-filterTree getBuffer: took                                                             2.37 ms
+filterTree text took                                                                   2.58 ms
+filterTree dips took                                                                   3.12 ms
+filterTree disp took                                                                   2.30 ms
+filterTree txt: took                                                                   3.09 ms
+filterTree getBuffer: took                                                             2.35 ms
 
-filterTree average:                                                                    2.788 ms
+filterTree average:                                                                    2.688 ms
