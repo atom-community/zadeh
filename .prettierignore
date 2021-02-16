@@ -7,6 +7,6 @@ build
 prebuilds
 node-dist.js
 node-dist.js.map
-spec/*.coffee
+test/*.coffee
 .parcel-cache
 benchmark/result.md

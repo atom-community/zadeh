@@ -23,7 +23,7 @@
     "clean": "npm run native:clean && npm run js:clean",
     "install": "node-gyp-build",
     "build": "npm run native:build && npm run js:build",
-    "test": "jasmine-node --coffee --captureExceptions spec",
+    "test": "jasmine-node --coffee --captureExceptions test",
     "benchmark:regular": "node benchmark/benchmark.js",
     "benchmark:large": "node benchmark/benchmark-large.js",
     "benchmark:small": "node benchmark/benchmark-small.js",
