@@ -10,3 +10,4 @@ node-dist.js.map
 test/*.coffee
 .parcel-cache
 benchmark/result.md
+.mypy_cache
