@@ -1,3 +1,4 @@
+#ifdef Zadeh_NODE_BINDING    // only defined for building the Node-js binding
 #ifndef Zadeh_Node_H
 #define Zadeh_Node_H
 
@@ -10,7 +11,6 @@ namespace zadeh {
 
 class ZadehNode : public Napi::ObjectWrap<ZadehNode> {
   public:
-
     Napi::Value Filter(const Napi::CallbackInfo &info) {
         auto res = Napi::Array::New(info.Env());
         if (info.Length() != 4 || !info[0].IsString() || !info[1].IsNumber() || !info[2].IsBoolean() || !info[3].IsBoolean()) {
@@ -159,3 +159,5 @@ Napi::String wrap(const Napi::CallbackInfo &info) {
 
 }    // namespace zadeh
 #endif    // Zadeh_Node_H
+
+#endif

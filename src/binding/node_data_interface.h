@@ -1,3 +1,5 @@
+#ifdef Zadeh_NODE_BINDING    // only defined for building the Node-js binding
+
 #ifndef Zadeh_Node_DATA_INTERFACE_H
 #define Zadeh_Node_DATA_INTERFACE_H
 
@@ -49,4 +51,5 @@ optional<Napi::Array> get_children(const Napi::Object &tree_object, const string
 
 
 }    // namespace zadeh
+#endif
 #endif

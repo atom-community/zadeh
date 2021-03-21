@@ -1,3 +1,5 @@
+#ifdef Zadeh_NODE_BINDING    // only defined for building the Node-js binding
+
 #include "./node.h"
 
 namespace zadeh {
@@ -33,3 +35,5 @@ Napi::Object InitAll(Napi::Env env, Napi::Object exports) {
 }
 
 NODE_API_MODULE(NODE_GYP_MODULE_NAME, InitAll);
+
+#endif
