@@ -37,6 +37,10 @@ Zadeh is a blazing fast library for fuzzy filtering, matching, and other fuzzy t
 
 # Usage
 
+### Usage from C++
+
+This is a header only library. Include `./src/zadeh.h` and build it in your application.
+
 ## Usage from Nodejs
 
 Installation:
