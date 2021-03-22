@@ -16,10 +16,6 @@ SizeType get_size(const ArrayType &candidates);
 
 // vector<E>
 template<>
-CandidateString get_at(const vector<CandidateString> &candidates, const size_t iCandidate) {
-    return candidates[iCandidate];
-}
-template<>
 CandidateString get_at(const vector<CandidateString> &candidates, const unsigned int iCandidate) {
     return candidates[iCandidate];
 }
