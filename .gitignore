@@ -7,3 +7,4 @@ node-dist.js
 node-dist.js.map
 .scannerwork
 package-lock.json
+cmake-build-*

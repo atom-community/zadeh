@@ -41,6 +41,41 @@ Zadeh is a blazing fast library for fuzzy filtering, matching, and other fuzzy t
 
 This is a header only library. Include `./src/zadeh.h` and build it in your application.
 
+`examples/example1.cpp`:
+```cpp
+#include <string>
+#include "../src/zadeh.h"
+#include <iostream>
+
+using namespace std;
+
+int main() {
+  // the data to fuzzy search on
+  auto data = vector<string>{"eye", "why", "bi"};
+
+  // setup ArrayFilterer
+  auto arrayFilterer = zadeh::ArrayFilterer<vector<string>, string>{};
+  arrayFilterer.set_candidates(data);
+
+  // filter the indices that match the query
+  auto filtered_indices = arrayFilterer.filter_indices("ye");
+
+  // print the filtered data
+  for (auto ind: filtered_indices) {
+    cout << data[ind] << '\n';
+  }
+}
+```
+
+Building using Cmake:
+```cmake
+cmake_minimum_required(VERSION 3.17)
+
+project(example1 LANGUAGES CXX)
+add_executable(example1 ./examples/example1.cpp)
+target_compile_features(example1 PRIVATE cxx_std_17)
+```
+
 ## Usage from Nodejs
 
 Installation:
