@@ -11,7 +11,7 @@ devDependencies:
   jasmine-node: 3.0.0
   npm-check-updates: 11.3.0
   prebuildify: 4.1.2
-  prettier: 2.2.1
+  prettier-config-atomic: 1.0.1
   rollup: 2.42.1
   rollup-plugin-atomic: 2.1.1_rollup@2.42.1
   shx: 0.3.3
@@ -4147,6 +4147,12 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=
+  /prettier-config-atomic/1.0.1:
+    dependencies:
+      prettier: 2.2.1
+    dev: true
+    resolution:
+      integrity: sha512-bNW8oMkuuVZI0OXEwwfbGGpdh1Jv4QfOzSMnmueBkSCYcCAnA9iHy+wRVsAeVRZPfB1hjqB9UtxGTnrflITtyg==
   /prettier/2.2.1:
     dev: true
     engines:
@@ -5355,7 +5361,7 @@ specifiers:
   node-gyp-build: ^4.2.3
   npm-check-updates: 11.3.0
   prebuildify: ^4.1.2
-  prettier: ^2.2.1
+  prettier-config-atomic: ^1.0.1
   rollup: ^2.42.1
   rollup-plugin-atomic: ^2.1.1
   shx: ^0.3.3
