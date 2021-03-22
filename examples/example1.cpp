@@ -1,5 +1,5 @@
+#include "../src/zadeh.h"  // include zadeh.h
 #include <string>
-#include "../src/zadeh.h"
 #include <iostream>
 
 using namespace std;

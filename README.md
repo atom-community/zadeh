@@ -42,9 +42,10 @@ Zadeh is a blazing fast library for fuzzy filtering, matching, and other fuzzy t
 This is a header only library. Include `./src/zadeh.h` and build it in your application.
 
 `examples/example1.cpp`:
+
 ```cpp
+#include "../src/zadeh.h"  // include zadeh.h
 #include <string>
-#include "../src/zadeh.h"
 #include <iostream>
 
 using namespace std;
@@ -67,13 +68,20 @@ int main() {
 }
 ```
 
-Building using Cmake:
+Cmake file:
+
 ```cmake
 cmake_minimum_required(VERSION 3.17)
 
 project(example1 LANGUAGES CXX)
 add_executable(example1 ./examples/example1.cpp)
 target_compile_features(example1 PRIVATE cxx_std_17)
+```
+
+Build:
+
+```
+cmake -S . -B ./build && cmake --build ./build --config Debug
 ```
 
 ## Usage from Nodejs

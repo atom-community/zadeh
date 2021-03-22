@@ -29,6 +29,7 @@
     "benchmark:small": "node benchmark/benchmark-small.js",
     "benchmark:tree": "node benchmark/benchmark-tree.js",
     "benchmark": "npm run benchmark:small && npm run benchmark:regular && npm run benchmark:large && npm run benchmark:tree",
+    "examples.cpp": "cmake -S . -B ./build && cmake --build ./build --config Debug",
     "bump": "ncu -u --greatest",
     "prepare": "npm run build"
   },
