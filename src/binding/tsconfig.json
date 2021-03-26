@@ -24,8 +24,7 @@
     "esModuleInterop": true,
     "module": "commonjs",
     "moduleResolution": "node",
-    "importHelpers": false,
-    "outDir": "./../.."
+    "importHelpers": false
   },
   "compileOnSave": false
 }
