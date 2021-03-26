@@ -17,8 +17,9 @@
     "native.prebuild": "prebuildify --napi -t 12.0.0 -t electron@6.0.0 -t electron@9.3.5 --strip",
     "native.prebuild-ia32": "prebuildify --napi --arch=ia32 -t 12.0.0 -t electron@6.0.0 -t electron@9.3.5 --strip",
     "js.clean": "shx rm -rf dist .parcel-cache",
-    "js.dev": "cross-env NODE_ENV=development rollup -c -w",
-    "js.build": "cross-env NODE_ENV=production rollup -c",
+    "js.dev": "npm run js.types && cross-env NODE_ENV=development rollup -c -w",
+    "js.build": "npm run js.types && cross-env NODE_ENV=production rollup -c",
+    "js.types": "tsc -p ./src/binding/tsconfig.json --outDir . --declaration",
     "clean": "npm run native.clean && npm run js.clean",
     "install": "node-gyp-build",
     "build": "npm run native.build && npm run js.build",
@@ -35,9 +36,9 @@
   "prettier": "prettier-config-atomic",
   "files": [
     "src",
-    "types",
     "prebuilds",
     "node.js",
+    "node.d.ts",
     "node.js.map",
     "binding.gyp"
   ],

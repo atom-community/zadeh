@@ -91,8 +91,8 @@ function getDataKey<T extends StringOrObjectArray>(dataKey: string | IFilterOpti
 ██   ██ ██   ██ ██   ██ ██   ██    ██        ██      ██ ███████ ██    ███████ ██   ██
 */
 
-type ObjectElement = object & Record<string, string>
-type StringOrObjectArray = string | ObjectElement
+export type ObjectElement = object & Record<string, string>
+export type StringOrObjectArray = string | ObjectElement
 
 /** ArrayFilterer is a class that allows to set the `candidates` only once and perform filtering on them multiple times.
  *  This is much more efficient than calling the `filter` function directly.
@@ -177,7 +177,7 @@ export function filter<T extends StringOrObjectArray>(
 */
 
 // The object (an element of the array) returned from filtering trees. It has the address of the object in the tree using `index` and `level`.
-interface TreeFilterResult {
+export interface TreeFilterResult {
   data: string
   index: number
   level: number
@@ -324,6 +324,8 @@ export function wrap(str: string, query: string, options: IOptions = {}): string
 */
 
 /** @deprecated: there is no major benefit by precomputing something just for the query. */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+// @ts-ignore
 export function prepareQuery(query: string, options: IOptions = {}): {} {
   console.warn(
     "Zadeh: prepareQuery is deprecated. There is no major benefit by precomputing something just for the query. "
