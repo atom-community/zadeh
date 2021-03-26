@@ -46,7 +46,8 @@ export class ArrayFilterer<T> {
         candidates = candidates.map((item) => item[dataKey])
       }
       // @deprecated pass the key as the second argument as a string
-      else if (dataKey.key) {
+      else if ("key" in dataKey) {
+        console.warn("Zadeh: deprecated option. Pass the key as the second argument as a string")
         // an object (options) containing the key
         candidates = candidates.map((item) => item[(dataKey as { key: string }).key])
       }
