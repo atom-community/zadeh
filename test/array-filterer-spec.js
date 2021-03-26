@@ -1,4 +1,4 @@
-const { ArrayFilterer } = require("../node-dist")
+const { ArrayFilterer } = require("../node")
 
 describe("ArrayFilterer", function () {
   it("is possible to set candidates only once and filter multiple times", function () {

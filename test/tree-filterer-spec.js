@@ -1,4 +1,4 @@
-const { TreeFilterer } = require("../node-dist")
+const { TreeFilterer } = require("../node")
 const DeepEqual = require("deep-equal")
 const fs = require("fs")
 const path = require("path")
