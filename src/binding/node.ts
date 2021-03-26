@@ -32,7 +32,7 @@ export interface IOptions {
   preparedQuery?: {}
 }
 
-export type IFilterOptions<T> = IOptions & {
+export type IFilterOptions<T extends StringOrObjectArray> = IOptions & {
   /** @deprecated The key to use when candidates is an object
    * Deprecated option. Pass the key as a string to the second argument of 'ArrayFilterer.setCandidates' or to the third argument of 'filter'
    */
@@ -58,7 +58,7 @@ function parseOptions(options: IOptions) {
   }
 }
 
-function parseFilterOptions<T>(filterOptions: IFilterOptions<T>) {
+function parseFilterOptions<T extends StringOrObjectArray>(filterOptions: IFilterOptions<T>) {
   // options.optCharRegEx ? = null
   // options.wrap ? = null
   if (!filterOptions.maxResults) {
@@ -68,7 +68,7 @@ function parseFilterOptions<T>(filterOptions: IFilterOptions<T>) {
   parseOptions(filterOptions)
 }
 
-function getDataKey<T>(dataKey: string | IFilterOptions<T>): string | undefined {
+function getDataKey<T extends StringOrObjectArray>(dataKey: string | IFilterOptions<T>): string | undefined {
   if (typeof dataKey === "string") {
     return dataKey
   } else if (dataKey?.key) {
@@ -91,10 +91,13 @@ function getDataKey<T>(dataKey: string | IFilterOptions<T>): string | undefined 
 ██   ██ ██   ██ ██   ██ ██   ██    ██        ██      ██ ███████ ██    ███████ ██   ██
 */
 
+type ObjectElement = object & Record<string, string>
+type StringOrObjectArray = string | ObjectElement
+
 /** ArrayFilterer is a class that allows to set the `candidates` only once and perform filtering on them multiple times.
  *  This is much more efficient than calling the `filter` function directly.
  */
-export class ArrayFilterer<T> {
+export class ArrayFilterer<T extends StringOrObjectArray> {
   obj = new binding.Zadeh()
   // @ts-ignore
   candidates: Array<T>
@@ -114,10 +117,8 @@ export class ArrayFilterer<T> {
     let candidateStrings: string[]
     if (dataKey) {
       const validDataKey = getDataKey<T>(dataKey)
-      // @ts-ignore
       candidateStrings = (candidates as Array<Record<string, string>>).map((item) => item[validDataKey as string])
     } else {
-      // @ts-ignore
       candidateStrings = candidates as string[]
     }
     return this.obj.setArrayFiltererCandidates(candidateStrings)
@@ -151,7 +152,11 @@ export const New = () => new ArrayFilterer()
  * @param options options
  * @return returns an array of candidates sorted by best match against the query.
  */
-export function filter<T>(candidates: T[], query: string, options: IFilterOptions<T> = {}): T[] {
+export function filter<T extends StringOrObjectArray>(
+  candidates: T[],
+  query: string,
+  options: IFilterOptions<T> = {}
+): T[] {
   if (!candidates || !query) {
     console.warn(`Zadeh: bad input to filter candidates: ${candidates}, query: ${query}`)
     return []
@@ -205,7 +210,7 @@ export class TreeFilterer<T> {
    *  @param options options
    *  @return An array of candidate objects in form of `{data, index, level}` sorted by best match against the query. Each objects has the address of the object in the tree using `index` and `level`.
    */
-  filter(query: string, options: IFilterOptions<object> = {}): TreeFilterResult[] {
+  filter(query: string, options: IFilterOptions<ObjectElement> = {}): TreeFilterResult[] {
     parseFilterOptions(options)
     return this.obj.filterTree(
       query,
