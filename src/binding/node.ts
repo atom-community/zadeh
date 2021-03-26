@@ -1,5 +1,7 @@
+import nodeGypBuld from "node-gyp-build"
+const binding = nodeGypBuld(__dirname) // this relies on Parcel to bundle this file in the root of the package, so __dirname becomes correct
+
 import type { IOptions, IFilterOptions } from "./node-types"
-const binding = require("node-gyp-build")(__dirname) // this relies on Parcel to bundle this file in the root of the package, so __dirname becomes correct
 
 const defaultPathSeparator = process.platform === "win32" ? "\\" : "/"
 
