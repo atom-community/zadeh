@@ -105,6 +105,8 @@ export class ArrayFilterer<T extends StringOrObjectArray> {
   constructor(candidates?: Array<T>, dataKey?: string) {
     if (candidates) {
       this.setCandidates(candidates, dataKey)
+    } else {
+      this.candidates = []
     }
   }
 
@@ -192,6 +194,8 @@ export class TreeFilterer<T> {
   constructor(candidates?: Array<T>, dataKey: string = "data", childrenKey: string = "children") {
     if (candidates) {
       this.setCandidates(candidates, dataKey, childrenKey)
+    } else {
+      this.candidates = []
     }
   }
 
