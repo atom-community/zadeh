@@ -141,6 +141,7 @@ export const New = () => new ArrayFilterer()
  */
 export function filter<T>(candidates: T[], query: string, options: IFilterOptions<T> = {}): T[] {
   if (!candidates || !query) {
+    console.warn(`Zadeh: bad input to filter candidates: ${candidates}, query: ${query}`)
     return []
   }
   const arrayFilterer = new ArrayFilterer<T>()
@@ -213,6 +214,7 @@ export function filterTree(
   options: IFilterOptions<object> = {}
 ): TreeFilterResult[] {
   if (!candidatesTrees || !query) {
+    console.warn(`Zadeh: bad input to filterTree candidatesTrees: ${candidatesTrees}, query: ${query}`)
     return []
   }
   const treeFilterer = new TreeFilterer()
@@ -235,6 +237,7 @@ export function filterTree(
  */
 export function score(candidate: string, query: string, options: IOptions = {}): number {
   if (!candidate || !query) {
+    console.warn(`Zadeh: bad input to score candidates: ${candidate}, query: ${query}`)
     return 0
   }
   options = parseOptions(options)
@@ -250,15 +253,16 @@ export function score(candidate: string, query: string, options: IOptions = {}):
 */
 
 /** Gives an array of indices at which the query matches the given string */
-export function match(string: string, query: string, options: IOptions = {}): number[] {
-  if (!string || !query) {
+export function match(str: string, query: string, options: IOptions = {}): number[] {
+  if (!str || !query) {
+    console.warn(`Zadeh: bad input to match str: ${str}, query: ${query}`)
     return []
   }
-  if (string == query) {
-    return Array.from(Array(string.length).keys())
+  if (str == query) {
+    return Array.from(Array(str.length).keys())
   }
   options = parseOptions(options)
-  return binding.match(string, query, options.pathSeparator)
+  return binding.match(str, query, options.pathSeparator)
 }
 
 /*
@@ -270,12 +274,14 @@ export function match(string: string, query: string, options: IOptions = {}): nu
 */
 
 /** Gives an HTML/Markdown string that highlights the range for which the match happens */
-export function wrap(string: string, query: string, options: IOptions = {}): string {
-  if (!string || !query) {
-    return ""
+export function wrap(str: string, query: string, options: IOptions = {}): string {
+  if (!str || !query) {
+    console.warn(`Zadeh: bad input to wrap str: ${str}, query: ${query}`)
+    // @ts-ignore
+    return []
   }
   options = parseOptions(options)
-  return binding.wrap(string, query, options.pathSeparator)
+  return binding.wrap(str, query, options.pathSeparator)
 }
 
 /*
@@ -288,6 +294,9 @@ export function wrap(string: string, query: string, options: IOptions = {}): str
 
 /** @deprecated: there is no major benefit by precomputing something just for the query. */
 export function prepareQuery(query: string, options: IOptions = {}): {} {
+  console.warn(
+    "Zadeh: prepareQuery is deprecated. There is no major benefit by precomputing something just for the query. "
+  )
   // This is no - op since there is no major benefit by precomputing something
   // just for the query.
   return {}
