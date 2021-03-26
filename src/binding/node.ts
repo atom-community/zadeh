@@ -139,7 +139,22 @@ export class TreeFilterer<T> {
   }
 }
 
-export function filterTree(candidatesTrees, query, dataKey = "data", childrenKey = "children", options = {}) {
+/** Sort and filter the given Tree candidates by matching them against the given query.
+ * A tree object is an object in which each entry stores the data in its dataKey and it has (may have) some children (with a similar structure) in its childrenKey
+ * @param candidatesTrees An array of tree objects.
+ * @param query A string query to match each candidate against.
+ * @param dataKey the key of the object (and its children) which holds the data (defaults to `"data"`)
+ * @param childrenKey the key of the object (and its children) which hold the children (defaults to `"children"`)
+ * @param options options
+ * @return An array of candidate objects in form of `{data, index, level}` sorted by best match against the query. Each objects has the address of the object in the tree using `index` and `level`.
+ */
+export function filterTree(
+  candidatesTrees: object[],
+  query: string,
+  dataKey: string = "data",
+  childrenKey: string = "children",
+  options: IFilterOptions<object> = {}
+): TreeFilterResult[] {
   if (!candidatesTrees || !query) {
     return []
   }
