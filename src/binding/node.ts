@@ -99,19 +99,36 @@ export function filter<T>(candidates: T[], query: string, options: IFilterOption
   return arrayFilterer.filter(query, options)
 }
 
-/** Tree Filter */
+// The object (an element of the array) returned from filtering trees. It has the address of the object in the tree using `index` and `level`.
+interface TreeFilterResult {
+  data: string
+  index: number
+  level: number
+}
 
-export class TreeFilterer {
-  constructor() {
-    this.obj = new binding.Zadeh()
-  }
+/** TreeFilterer is a class that allows to set the `candidates` only once and perform filtering on them multiple times.
+ *  This is much more efficient than calling the `filterTree` function directly.
+ */
+export class TreeFilterer<T> {
+  obj = new binding.Zadeh()
+  candidates: Array<T>
 
-  setCandidates(candidates, dataKey = "data", childrenKey = "children") {
+  /** The method to set the candidates that are going to be filtered
+   * @param candidates An array of tree objects.
+   * @param dataKey the key of the object (and its children) which holds the data (defaults to `"data"`)
+   * @param childrenKey the key of the object (and its children) which hold the children (defaults to `"children"`)
+   */
+  setCandidates(candidates: Array<T>, dataKey: string = "data", childrenKey: string = "children"): void {
     this.candidates = candidates
     return this.obj.setTreeFiltererCandidates(candidates, dataKey, childrenKey)
   }
 
-  filter(query, options = {}) {
+  /** The method to perform the filtering on the already set candidates
+   *  @param query A string query to match each candidate against.
+   *  @param options options
+   *  @return An array of candidate objects in form of `{data, index, level}` sorted by best match against the query. Each objects has the address of the object in the tree using `index` and `level`.
+   */
+  filter(query: string, options: IFilterOptions<object> = {}): TreeFilterResult[] {
     options = parseFilterOptions(options)
     return this.obj.filterTree(
       query,
