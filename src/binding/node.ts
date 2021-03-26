@@ -221,6 +221,9 @@ export class TreeFilterer<T> {
   }
 }
 
+// TODO better type
+export type Tree = Record<string, string>
+
 /** Sort and filter the given Tree candidates by matching them against the given query.
  * A tree object is an object in which each entry stores the data in its dataKey and it has (may have) some children (with a similar structure) in its childrenKey
  * @param candidatesTrees An array of tree objects.
@@ -231,11 +234,11 @@ export class TreeFilterer<T> {
  * @return An array of candidate objects in form of `{data, index, level}` sorted by best match against the query. Each objects has the address of the object in the tree using `index` and `level`.
  */
 export function filterTree(
-  candidatesTrees: object[],
+  candidatesTrees: Tree[],
   query: string,
   dataKey: string = "data",
   childrenKey: string = "children",
-  options: IFilterOptions<object> = {}
+  options: IFilterOptions<Tree> = {}
 ): TreeFilterResult[] {
   if (!candidatesTrees || !query) {
     console.warn(`Zadeh: bad input to filterTree candidatesTrees: ${candidatesTrees}, query: ${query}`)
