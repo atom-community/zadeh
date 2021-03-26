@@ -52,6 +52,8 @@
     "babel-preset-atomic": "^3.0.3",
     "cross-env": "^7.0.3",
     "deep-equal": "^2.0.5",
+    "eslint": "^7.22.0",
+    "eslint-config-atomic": "^1.12.4",
     "fuzzaldrin-plus": "^0.6.0",
     "growl": ">=1.10.5",
     "jasmine-node": "^3.0.0",
