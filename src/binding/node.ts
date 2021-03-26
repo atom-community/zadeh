@@ -111,12 +111,16 @@ export class ArrayFilterer<T> {
    */
   setCandidates(candidates: Array<T>, dataKey?: string): void {
     this.candidates = candidates
+    let candidateStrings: string[]
     if (dataKey) {
       const validDataKey = getDataKey<T>(dataKey)
       // @ts-ignore
-      candidates = (candidates as Array<Record<string, string>>).map((item) => item[validDataKey as string])
+      candidateStrings = (candidates as Array<Record<string, string>>).map((item) => item[validDataKey as string])
+    } else {
+      // @ts-ignore
+      candidateStrings = candidates as string[]
     }
-    return this.obj.setArrayFiltererCandidates(candidates)
+    return this.obj.setArrayFiltererCandidates(candidateStrings)
   }
 
   /** The method to perform the filtering on the already set candidates
