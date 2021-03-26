@@ -3,21 +3,26 @@ const binding = require("node-gyp-build")(__dirname) // this relies on Parcel to
 
 const defaultPathSeparator = process.platform === "win32" ? "\\" : "/"
 
-function parseOptions(options: IOptions, query: string) {
+function parseOptions(options: IOptions) {
   // options.allowErrors ? = false
-  if (options.usePathScoring == undefined) {
+  if (options.usePathScoring === undefined || options.usePathScoring === null) {
     options.usePathScoring = true
   }
   // options.useExtensionBonus ? = false
   if (!options.pathSeparator) {
     options.pathSeparator = defaultPathSeparator
   }
+  return options
+}
+
+function parseFilterOptions<T>(filterOptions: IFilterOptions<T>) {
   // options.optCharRegEx ? = null
   // options.wrap ? = null
-  if (!options.maxResults) {
-    options.maxResults = 0
+  if (!filterOptions.maxResults) {
+    filterOptions.maxResults = 0
   }
-  return options
+  // parse common options
+  return parseOptions(filterOptions)
 }
 
 /** Array Filter */
@@ -45,7 +50,7 @@ export class ArrayFilterer {
   }
 
   filter(query, options = {}) {
-    options = parseOptions(options)
+    options = parseFilterOptions(options)
     const res = this.obj.filter(
       query,
       options.maxResults,
@@ -83,7 +88,7 @@ export class TreeFilterer {
   }
 
   filter(query, options = {}) {
-    options = parseOptions(options)
+    options = parseFilterOptions(options)
     return this.obj.filterTree(
       query,
       options.maxResults,
@@ -119,7 +124,7 @@ export function match(string, query, options = {}) {
   if (string == query) {
     return Array.from(Array(string.length).keys())
   }
-  options = parseOptions(options, query)
+  options = parseOptions(options)
   return binding.match(string, query, options.pathSeparator)
 }
 
@@ -127,7 +132,7 @@ export function wrap(string, query, options = {}) {
   if (!string || !query) {
     return []
   }
-  options = parseOptions(options, query)
+  options = parseOptions(options)
   return binding.wrap(string, query, options.pathSeparator)
 }
 
