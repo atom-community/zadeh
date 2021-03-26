@@ -1,6 +1,14 @@
 import nodeGypBuld from "node-gyp-build"
 const binding = nodeGypBuld(__dirname) // this relies on Parcel to bundle this file in the root of the package, so __dirname becomes correct
 
+/*
+ ██████  ██████  ████████ ██  ██████  ███    ██ ███████
+██    ██ ██   ██    ██    ██ ██    ██ ████   ██ ██
+██    ██ ██████     ██    ██ ██    ██ ██ ██  ██ ███████
+██    ██ ██         ██    ██ ██    ██ ██  ██ ██      ██
+ ██████  ██         ██    ██  ██████  ██   ████ ███████
+*/
+
 export interface IOptions {
   /** @default false */
   allowErrors?: boolean
@@ -75,6 +83,14 @@ function getDataKey<T>(dataKey: string | IFilterOptions<T>): string | undefined 
   }
 }
 
+/*
+ █████  ██████  ██████   █████  ██    ██     ███████ ██ ██   ████████ ███████ ██████
+██   ██ ██   ██ ██   ██ ██   ██  ██  ██      ██      ██ ██      ██    ██      ██   ██
+███████ ██████  ██████  ███████   ████       █████   ██ ██      ██    █████   ██████
+██   ██ ██   ██ ██   ██ ██   ██    ██        ██      ██ ██      ██    ██      ██   ██
+██   ██ ██   ██ ██   ██ ██   ██    ██        ██      ██ ███████ ██    ███████ ██   ██
+*/
+
 /** ArrayFilterer is a class that allows to set the `candidates` only once and perform filtering on them multiple times.
  *  This is much more efficient than calling the `filter` function directly.
  */
@@ -131,6 +147,14 @@ export function filter<T>(candidates: T[], query: string, options: IFilterOption
   arrayFilterer.setCandidates(candidates, getDataKey(options))
   return arrayFilterer.filter(query, options)
 }
+
+/*
+████████ ██████  ███████ ███████     ███████ ██ ██   ████████ ███████ ██████
+   ██    ██   ██ ██      ██          ██      ██ ██      ██    ██      ██   ██
+   ██    ██████  █████   █████       █████   ██ ██      ██    █████   ██████
+   ██    ██   ██ ██      ██          ██      ██ ██      ██    ██      ██   ██
+   ██    ██   ██ ███████ ███████     ██      ██ ███████ ██    ███████ ██   ██
+*/
 
 // The object (an element of the array) returned from filtering trees. It has the address of the object in the tree using `index` and `level`.
 interface TreeFilterResult {
@@ -196,6 +220,14 @@ export function filterTree(
   return treeFilterer.filter(query, options)
 }
 
+/*
+███████  ██████  ██████  ██████  ███████
+██      ██      ██    ██ ██   ██ ██
+███████ ██      ██    ██ ██████  █████
+     ██ ██      ██    ██ ██   ██ ██
+███████  ██████  ██████  ██   ██ ███████
+*/
+
 /** Score the given string against the given query.
  * @param candidate The string the score.
  * @param query The query to score the string against.
@@ -209,7 +241,13 @@ export function score(candidate: string, query: string, options: IOptions = {}):
   return binding.score(candidate, query, Boolean(options.usePathScoring), Boolean(options.useExtensionBonus))
 }
 
-/** Other functions */
+/*
+███    ███  █████  ████████  ██████ ██   ██
+████  ████ ██   ██    ██    ██      ██   ██
+██ ████ ██ ███████    ██    ██      ███████
+██  ██  ██ ██   ██    ██    ██      ██   ██
+██      ██ ██   ██    ██     ██████ ██   ██
+*/
 
 /** Gives an array of indices at which the query matches the given string */
 export function match(string: string, query: string, options: IOptions = {}): number[] {
@@ -223,6 +261,14 @@ export function match(string: string, query: string, options: IOptions = {}): nu
   return binding.match(string, query, options.pathSeparator)
 }
 
+/*
+██     ██ ██████   █████  ██████
+██     ██ ██   ██ ██   ██ ██   ██
+██  █  ██ ██████  ███████ ██████
+██ ███ ██ ██   ██ ██   ██ ██
+ ███ ███  ██   ██ ██   ██ ██
+*/
+
 /** Gives an HTML/Markdown string that highlights the range for which the match happens */
 export function wrap(string: string, query: string, options: IOptions = {}): string {
   if (!string || !query) {
@@ -231,6 +277,14 @@ export function wrap(string: string, query: string, options: IOptions = {}): str
   options = parseOptions(options)
   return binding.wrap(string, query, options.pathSeparator)
 }
+
+/*
+ ██████  ████████ ██   ██ ███████ ██████
+██    ██    ██    ██   ██ ██      ██   ██
+██    ██    ██    ███████ █████   ██████
+██    ██    ██    ██   ██ ██      ██   ██
+ ██████     ██    ██   ██ ███████ ██   ██
+*/
 
 /** @deprecated: there is no major benefit by precomputing something just for the query. */
 export function prepareQuery(query: string, options: IOptions = {}): {} {
