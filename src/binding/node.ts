@@ -163,7 +163,12 @@ export function filterTree(
   return treeFilterer.filter(query, options)
 }
 
-export function score(candidate, query, options = {}) {
+/** Score the given string against the given query.
+ * @param candidate The string the score.
+ * @param query The query to score the string against.
+ * @param options options
+ */
+export function score(candidate: string, query: string, options: IOptions = {}): number {
   if (!candidate || !query) {
     return 0
   }

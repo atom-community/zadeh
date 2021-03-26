@@ -33,13 +33,6 @@ export type IFilterOptions<T> = IOptions & {
   // maxInners?: number
 }
 
-/** Score the given string against the given query.
- * @param str The string the score.
- * @param query The query to score the string against.
- * @param options options
- */
-export function score(str: string, query: string, options?: IOptions): number
-
 /** Gives an array of indices at which the query matches the given string */
 export function match(str: string, query: string, options?: IOptions): number[]
 
