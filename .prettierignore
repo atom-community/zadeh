@@ -3,8 +3,8 @@ package-lock.json
 pnpm-lock.yaml
 build
 prebuilds
-node-dist.js
-node-dist.js.map
+node.js
+node.js.map
 test/*.coffee
 .parcel-cache
 benchmark/result.md

@@ -2,7 +2,7 @@ const fs = require("fs")
 const path = require("path")
 const { averageArray, start_timer, elapsed_time } = require("./testutils")
 
-const { TreeFilterer, filterTree } = require("../node-dist")
+const { TreeFilterer, filterTree } = require("../node")
 
 const outlineData = JSON.parse(fs.readFileSync(path.join(__dirname, "tree.json"), "utf8"))
 

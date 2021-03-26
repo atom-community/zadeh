@@ -1,4 +1,4 @@
-const zadeh = require("../node-dist")
+const zadeh = require("../node")
 const legacy = require("fuzzaldrin-plus")
 
 let performance = null

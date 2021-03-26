@@ -1,4 +1,4 @@
-{score} = require '../node-dist'
+{score} = require '../node'
 
 describe "score(string, query)", ->
   it "returns a score", ->

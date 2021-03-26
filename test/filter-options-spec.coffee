@@ -1,4 +1,4 @@
-zadeh = require('../node-dist');
+zadeh = require('../node');
 fuzzaldrinExpected = require 'fuzzaldrin-plus'
 
 score_test = (candidate, query, options={}) ->

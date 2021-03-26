@@ -7,7 +7,7 @@ const RollupConfig = [
     input: "src/binding/node.ts",
     output: [
       {
-        file: "./node-dist.js",
+        file: "./node.js",
         format: "cjs",
         sourcemap: true,
       },

@@ -2,8 +2,8 @@
   "name": "zadeh",
   "version": "2.0.2",
   "description": "Blazing fast library for fuzzy filtering, matching, and other fuzzy things!",
-  "main": "./node-dist.js",
-  "node": "./node-dist.js",
+  "main": "./node.js",
+  "node": "./node.js",
   "scripts": {
     "format": "prettier --write . && clang-format -i src/*.h src/binding/*.cc src/binding/*.h",
     "test.format": "prettier . --check",
@@ -37,8 +37,8 @@
     "src",
     "types",
     "prebuilds",
-    "node-dist.js",
-    "node-dist.js.map",
+    "node.js",
+    "node.js.map",
     "binding.gyp"
   ],
   "gypfile": true,

@@ -3,8 +3,8 @@ node_modules/
 prebuilds/
 dist/
 .parcel-cache
-node-dist.js
-node-dist.js.map
+node.js
+node.js.map
 .scannerwork
 package-lock.json
 cmake-build-*
