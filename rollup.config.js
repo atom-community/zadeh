@@ -2,7 +2,7 @@ import { createPlugins } from "rollup-plugin-atomic"
 
 const plugins = createPlugins(["ts", "js"])
 
-export default [
+const RollupConfig = [
   {
     input: "src/binding/node.ts",
     output: [
@@ -16,3 +16,4 @@ export default [
     external: ["node-gyp-build"],
   },
 ]
+export default RollupConfig
