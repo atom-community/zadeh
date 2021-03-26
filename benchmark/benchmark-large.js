@@ -63,65 +63,73 @@ const three_letter_tests = [
 ]
 
 const t1 = start_timer()
-for (const query of two_letter_tests)
+for (const query of two_letter_tests) {
   legacy.filter(lines, query, {
     maxResults: 10,
   })
+}
 elapsed_time(t1, "TwoLetter _legacy_")
 
 const t2 = start_timer()
-for (const query of two_letter_tests)
+for (const query of two_letter_tests) {
   Zadeh.filter(lines, query, {
     maxResults: 10,
   })
+}
 elapsed_time(t2, "TwoLetter direct filter")
 
 const t3 = start_timer()
-for (const query of two_letter_tests)
+for (const query of two_letter_tests) {
   zadeh.filter(query, {
     maxResults: 10,
   })
+}
 elapsed_time(t3, "TwoLetter setCandidates")
 
 console.log("======")
 
 const t4 = start_timer()
-for (const query of three_letter_tests)
+for (const query of three_letter_tests) {
   legacy.filter(lines, query, {
     maxResults: 10,
   })
+}
 elapsed_time(t4, "ThreeLetter _legacy_")
 
 const t5 = start_timer()
-for (const query of three_letter_tests)
+for (const query of three_letter_tests) {
   Zadeh.filter(lines, query, {
     maxResults: 10,
   })
+}
 elapsed_time(t5, "ThreeLetter direct filter")
 
 const t6 = start_timer()
-for (const query of three_letter_tests)
+for (const query of three_letter_tests) {
   zadeh.filter(query, {
     maxResults: 10,
   })
+}
 elapsed_time(t6, "ThreeLetter setCandidates")
 
 console.log("======")
 
 const t7 = start_timer()
-for (const query of two_letter_tests)
+for (const query of two_letter_tests) {
   Zadeh.filter(dict, query, {
     maxResults: 10,
     key: "key",
   })
+}
 elapsed_time(t7, "TwoLetter keybased filter")
 
 const t8 = start_timer()
-for (const query of three_letter_tests)
+for (const query of three_letter_tests) {
   Zadeh.filter(dict, query, {
     maxResults: 10,
     key: "key",
   })
+}
 elapsed_time(t8, "ThreeLetter keybased filter")
 
 console.log("======")
@@ -132,17 +140,19 @@ obj.setCandidates(lines)
 elapsed_time(t9, "setCandidates")
 
 const t10 = start_timer()
-for (const query of two_letter_tests)
+for (const query of two_letter_tests) {
   obj.filter(query, {
     maxResults: 10,
   })
+}
 elapsed_time(t10, "TwoLetter filter")
 
 const t11 = start_timer()
-for (const query of three_letter_tests)
+for (const query of three_letter_tests) {
   obj.filter(query, {
     maxResults: 10,
   })
+}
 elapsed_time(t11, "ThreeLetter filter")
 
 console.log("======")
@@ -155,17 +165,19 @@ obj.setCandidates(dict, {
 elapsed_time(t12, "setCandidates keybased")
 
 const t13 = start_timer()
-for (const query of two_letter_tests)
+for (const query of two_letter_tests) {
   obj.filter(query, {
     maxResults: 10,
     key: "key",
   })
+}
 elapsed_time(t13, "TwoLetter keybased filter")
 
 const t14 = start_timer()
-for (const query of three_letter_tests)
+for (const query of three_letter_tests) {
   obj.filter(query, {
     maxResults: 10,
     key: "key",
   })
+}
 elapsed_time(t14, "ThreeLetter keybased filter")

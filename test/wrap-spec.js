@@ -15,7 +15,7 @@ describe("wrap(string, query)", () => {
   const queries = ["he", "hl", "hw", "el", "eo", "ll", "wo", "ld", "", "helloworld"]
   for (const c of candidates) {
     for (const q of queries) {
-      it("returns same for " + c, () => {
+      it(`returns same for ${c}`, () => {
         expect(wrap(c, q)).toEqual(legacy.wrap(c, q))
       })
     }

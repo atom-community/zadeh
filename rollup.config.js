@@ -1,10 +1,10 @@
 import { createPlugins } from "rollup-plugin-atomic"
 
-const plugins = createPlugins(["js"])
+const plugins = createPlugins(["ts", "js"])
 
 export default [
   {
-    input: "src/binding/node.js",
+    input: "src/binding/node.ts",
     output: [
       {
         file: "./node-dist.js",
@@ -12,7 +12,7 @@ export default [
         sourcemap: true,
       },
     ],
-    plugins: plugins,
+    plugins,
     external: ["node-gyp-build"],
   },
 ]
