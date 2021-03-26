@@ -33,9 +33,5 @@ export type IFilterOptions<T> = IOptions & {
   // maxInners?: number
 }
 
-
-/** Gives an HTML/Markdown string that highlights the range for which the match happens */
-export function wrap(str: string, query: string, options?: IOptions): string
-
 /** @deprecated: there is no major benefit by precomputing something just for the query. */
 export function prepareQuery(query: string, options?: IOptions): {}

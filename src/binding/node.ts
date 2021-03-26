@@ -190,9 +190,10 @@ export function match(string: string, query: string, options: IOptions = {}): nu
   return binding.match(string, query, options.pathSeparator)
 }
 
-export function wrap(string, query, options = {}) {
+/** Gives an HTML/Markdown string that highlights the range for which the match happens */
+export function wrap(string: string, query: string, options: IOptions = {}): string {
   if (!string || !query) {
-    return []
+    return ""
   }
   options = parseOptions(options)
   return binding.wrap(string, query, options.pathSeparator)
