@@ -1,3 +1,4 @@
+// @ts-ignore
 import nodeGypBuld from "node-gyp-build"
 const binding = nodeGypBuld(__dirname) // this relies on Parcel to bundle this file in the root of the package, so __dirname becomes correct
 
@@ -106,7 +107,8 @@ export class ArrayFilterer<T> {
     this.candidates = candidates
     if (dataKey) {
       const validDataKey = getDataKey<T>(dataKey)
-      candidates = candidates.map((item) => item[validDataKey as string])
+      // @ts-ignore
+      candidates = (candidates as Array<Record<string, string>>).map((item) => item[validDataKey as string])
     }
     return this.obj.setArrayFiltererCandidates(candidates)
   }
@@ -124,7 +126,7 @@ export class ArrayFilterer<T> {
       Boolean(options.usePathScoring),
       Boolean(options.useExtensionBonus)
     )
-    return res.map((ind) => this.candidates[ind])
+    return res.map((ind: number) => this.candidates[ind])
   }
 }
 
