@@ -12,7 +12,7 @@ export default [
         sourcemap: true,
       },
     ],
-    plugins: plugins,
+    plugins,
     external: ["node-gyp-build"],
   },
 ]
