@@ -178,7 +178,8 @@ export function score(candidate: string, query: string, options: IOptions = {}):
 
 /** Other functions */
 
-export function match(string, query, options = {}) {
+/** Gives an array of indices at which the query matches the given string */
+export function match(string: string, query: string, options: IOptions = {}): number[] {
   if (!string || !query) {
     return []
   }

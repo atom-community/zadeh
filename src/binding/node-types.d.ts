@@ -33,8 +33,6 @@ export type IFilterOptions<T> = IOptions & {
   // maxInners?: number
 }
 
-/** Gives an array of indices at which the query matches the given string */
-export function match(str: string, query: string, options?: IOptions): number[]
 
 /** Gives an HTML/Markdown string that highlights the range for which the match happens */
 export function wrap(str: string, query: string, options?: IOptions): string
