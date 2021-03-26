@@ -56,7 +56,6 @@ function parseOptions(options: IOptions) {
   if (!options.pathSeparator) {
     options.pathSeparator = defaultPathSeparator
   }
-  return options
 }
 
 function parseFilterOptions<T>(filterOptions: IFilterOptions<T>) {
@@ -66,7 +65,7 @@ function parseFilterOptions<T>(filterOptions: IFilterOptions<T>) {
     filterOptions.maxResults = 0
   }
   // parse common options
-  return parseOptions(filterOptions)
+  parseOptions(filterOptions)
 }
 
 function getDataKey<T>(dataKey: string | IFilterOptions<T>): string | undefined {
@@ -126,7 +125,7 @@ export class ArrayFilterer<T> {
    *  @return returns an array of candidates sorted by best match against the query.
    */
   filter(query: string, options: IFilterOptions<T> = {}): Array<T> {
-    options = parseFilterOptions(options)
+    parseFilterOptions(options)
     const res = this.obj.filter(
       query,
       options.maxResults,
@@ -203,7 +202,7 @@ export class TreeFilterer<T> {
    *  @return An array of candidate objects in form of `{data, index, level}` sorted by best match against the query. Each objects has the address of the object in the tree using `index` and `level`.
    */
   filter(query: string, options: IFilterOptions<object> = {}): TreeFilterResult[] {
-    options = parseFilterOptions(options)
+    parseFilterOptions(options)
     return this.obj.filterTree(
       query,
       options.maxResults,
@@ -256,7 +255,7 @@ export function score(candidate: string, query: string, options: IOptions = {}):
     console.warn(`Zadeh: bad input to score candidates: ${candidate}, query: ${query}`)
     return 0
   }
-  options = parseOptions(options)
+  parseOptions(options)
   return binding.score(candidate, query, Boolean(options.usePathScoring), Boolean(options.useExtensionBonus))
 }
 
@@ -277,7 +276,7 @@ export function match(str: string, query: string, options: IOptions = {}): numbe
   if (str == query) {
     return Array.from(Array(str.length).keys())
   }
-  options = parseOptions(options)
+  parseOptions(options)
   return binding.match(str, query, options.pathSeparator)
 }
 
@@ -296,7 +295,7 @@ export function wrap(str: string, query: string, options: IOptions = {}): string
     // @ts-ignore
     return []
   }
-  options = parseOptions(options)
+  parseOptions(options)
   return binding.wrap(str, query, options.pathSeparator)
 }
 
