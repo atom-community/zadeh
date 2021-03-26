@@ -97,7 +97,14 @@ function getDataKey<T>(dataKey: string | IFilterOptions<T>): string | undefined 
  */
 export class ArrayFilterer<T> {
   obj = new binding.Zadeh()
+  // @ts-ignore
   candidates: Array<T>
+
+  constructor(candidates?: Array<T>, dataKey?: string) {
+    if (candidates) {
+      this.setCandidates(candidates, dataKey)
+    }
+  }
 
   /** The method to set the candidates that are going to be filtered
    * @param candidates An array of tree objects.
@@ -171,7 +178,14 @@ interface TreeFilterResult {
  */
 export class TreeFilterer<T> {
   obj = new binding.Zadeh()
+  // @ts-ignore
   candidates: Array<T>
+
+  constructor(candidates?: Array<T>, dataKey: string = "data", childrenKey: string = "children") {
+    if (candidates) {
+      this.setCandidates(candidates, dataKey, childrenKey)
+    }
+  }
 
   /** The method to set the candidates that are going to be filtered
    * @param candidates An array of tree objects.
