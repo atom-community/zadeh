@@ -1,15 +1,22 @@
+import type { IOptions, IFilterOptions } from "./node-types"
 const binding = require("node-gyp-build")(__dirname) // this relies on Parcel to bundle this file in the root of the package, so __dirname becomes correct
 
 const defaultPathSeparator = process.platform === "win32" ? "\\" : "/"
 
-function parseOptions(options, query) {
+function parseOptions(options: IOptions, query: string) {
   // options.allowErrors ? = false
-  if (options.usePathScoring == undefined) options.usePathScoring = true
+  if (options.usePathScoring == undefined) {
+    options.usePathScoring = true
+  }
   // options.useExtensionBonus ? = false
-  if (!options.pathSeparator) options.pathSeparator = defaultPathSeparator
+  if (!options.pathSeparator) {
+    options.pathSeparator = defaultPathSeparator
+  }
   // options.optCharRegEx ? = null
   // options.wrap ? = null
-  if (!options.maxResults) options.maxResults = 0
+  if (!options.maxResults) {
+    options.maxResults = 0
+  }
   return options
 }
 
@@ -24,7 +31,7 @@ export class ArrayFilterer {
     this.candidates = candidates
 
     if (dataKey) {
-      if (typeof dataKey == "string") {
+      if (typeof dataKey === "string") {
         candidates = candidates.map((item) => item[dataKey])
       }
       // @deprecated pass the key as the second argument as a string
@@ -55,7 +62,9 @@ export class ArrayFilterer {
 export const New = () => new ArrayFilterer()
 
 export function filter(candidates, query, options = {}) {
-  if (!candidates || !query) return []
+  if (!candidates || !query) {
+    return []
+  }
   const arrayFilterer = new ArrayFilterer()
   arrayFilterer.setCandidates(candidates, options)
   return arrayFilterer.filter(query, options)
@@ -85,14 +94,18 @@ export class TreeFilterer {
 }
 
 export function filterTree(candidatesTrees, query, dataKey = "data", childrenKey = "children", options = {}) {
-  if (!candidatesTrees || !query) return []
+  if (!candidatesTrees || !query) {
+    return []
+  }
   const treeFilterer = new TreeFilterer()
   treeFilterer.setCandidates(candidatesTrees, dataKey, childrenKey)
   return treeFilterer.filter(query, options)
 }
 
 export function score(candidate, query, options = {}) {
-  if (!candidate || !query) return 0
+  if (!candidate || !query) {
+    return 0
+  }
   options = parseOptions(options)
   return binding.score(candidate, query, Boolean(options.usePathScoring), Boolean(options.useExtensionBonus))
 }
@@ -100,14 +113,20 @@ export function score(candidate, query, options = {}) {
 /** Other functions */
 
 export function match(string, query, options = {}) {
-  if (!string || !query) return []
-  if (string == query) return Array.from(Array(string.length).keys())
+  if (!string || !query) {
+    return []
+  }
+  if (string == query) {
+    return Array.from(Array(string.length).keys())
+  }
   options = parseOptions(options, query)
   return binding.match(string, query, options.pathSeparator)
 }
 
 export function wrap(string, query, options = {}) {
-  if (!string || !query) return []
+  if (!string || !query) {
+    return []
+  }
   options = parseOptions(options, query)
   return binding.wrap(string, query, options.pathSeparator)
 }

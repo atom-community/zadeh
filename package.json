@@ -4,7 +4,6 @@
   "description": "Blazing fast library for fuzzy filtering, matching, and other fuzzy things!",
   "main": "./node-dist.js",
   "node": "./node-dist.js",
-  "types": "./types/zadeh.d.ts",
   "scripts": {
     "format": "prettier --write . && clang-format -i src/*.h src/binding/*.cc src/binding/*.h",
     "test.format": "prettier . --check",
