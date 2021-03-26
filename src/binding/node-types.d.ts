@@ -32,6 +32,3 @@ export type IFilterOptions<T> = IOptions & {
   // TODO not implemented
   // maxInners?: number
 }
-
-/** @deprecated: there is no major benefit by precomputing something just for the query. */
-export function prepareQuery(query: string, options?: IOptions): {}

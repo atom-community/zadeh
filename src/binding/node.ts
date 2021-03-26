@@ -199,7 +199,8 @@ export function wrap(string: string, query: string, options: IOptions = {}): str
   return binding.wrap(string, query, options.pathSeparator)
 }
 
-export function prepareQuery(query, options = {}) {
+/** @deprecated: there is no major benefit by precomputing something just for the query. */
+export function prepareQuery(query: string, options: IOptions = {}): {} {
   // This is no - op since there is no major benefit by precomputing something
   // just for the query.
   return {}
