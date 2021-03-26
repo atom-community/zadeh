@@ -21,7 +21,9 @@ export interface IOptions {
 }
 
 export type IFilterOptions<T> = IOptions & {
-  /** The key to use when candidates is an object */
+  /** @deprecated The key to use when candidates is an object
+   * Deprecated option. Pass the key as a string to the second argument of 'ArrayFilterer.setCandidates' or to the third argument of 'filter'
+   */
   key?: T extends string ? never : keyof T
 
   /** The maximum numbers of results to return */
@@ -30,14 +32,6 @@ export type IFilterOptions<T> = IOptions & {
   // TODO not implemented
   // maxInners?: number
 }
-
-/** Sort and filter the given candidates by matching them against the given query.
- * @param candidates An array of strings or objects.
- * @param query A string query to match each candidate against.
- * @param options options
- * @return returns an array of candidates sorted by best match against the query.
- */
-export function filter<T>(candidates: T[], query: string, options?: IFilterOptions<T>): T[]
 
 // The object (an element of the array) returned from filtering trees. It has the address of the object in the tree using `index` and `level`.
 interface TreeFilterResult {

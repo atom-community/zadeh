@@ -27,6 +27,21 @@ function parseFilterOptions<T>(filterOptions: IFilterOptions<T>) {
   return parseOptions(filterOptions)
 }
 
+function getDataKey<T>(dataKey: string | IFilterOptions<T>): string | undefined {
+  if (typeof dataKey === "string") {
+    return dataKey
+  } else if (dataKey?.key) {
+    // console.warn(`Zadeh: deprecated option.
+    // Pass the key as a string to the second argument of 'ArrayFilterer.setCandidates'
+    // or to the third argument of 'filter'`)
+    // an object (options) containing the key
+    // @ts-ignore
+    return dataKey.key
+  } else {
+    return undefined
+  }
+}
+
 /** ArrayFilterer is a class that allows to set the `candidates` only once and perform filtering on them multiple times.
  *  This is much more efficient than calling the `filter` function directly.
  */
@@ -36,23 +51,14 @@ export class ArrayFilterer<T> {
 
   /** The method to set the candidates that are going to be filtered
    * @param candidates An array of tree objects.
-   * @param dataKey (optional) if `candidates` is an array of objects, pass the key in the object which holds the data. dataKey can be the options object passed to `filter` method (but this is deprecated).
+   * @param dataKey (optional) if `candidates` is an array of objects, pass the key in the object which holds the data.
    */
   setCandidates(candidates: Array<T>, dataKey?: string): void {
     this.candidates = candidates
-
     if (dataKey) {
-      if (typeof dataKey === "string") {
-        candidates = candidates.map((item) => item[dataKey])
-      }
-      // @deprecated pass the key as the second argument as a string
-      else if ("key" in dataKey) {
-        console.warn("Zadeh: deprecated option. Pass the key as the second argument as a string")
-        // an object (options) containing the key
-        candidates = candidates.map((item) => item[(dataKey as { key: string }).key])
-      }
+      const validDataKey = getDataKey<T>(dataKey)
+      candidates = candidates.map((item) => item[validDataKey as string])
     }
-
     return this.obj.setArrayFiltererCandidates(candidates)
   }
 
@@ -78,12 +84,18 @@ export class ArrayFilterer<T> {
  */
 export const New = () => new ArrayFilterer()
 
-export function filter(candidates, query, options = {}) {
+/** Sort and filter the given candidates by matching them against the given query.
+ * @param candidates An array of strings or objects.
+ * @param query A string query to match each candidate against.
+ * @param options options
+ * @return returns an array of candidates sorted by best match against the query.
+ */
+export function filter<T>(candidates: T[], query: string, options: IFilterOptions<T> = {}): T[] {
   if (!candidates || !query) {
     return []
   }
-  const arrayFilterer = new ArrayFilterer()
-  arrayFilterer.setCandidates(candidates, options)
+  const arrayFilterer = new ArrayFilterer<T>()
+  arrayFilterer.setCandidates(candidates, getDataKey(options))
   return arrayFilterer.filter(query, options)
 }
 
