@@ -23,7 +23,7 @@
     "clean": "npm run native.clean && npm run js.clean",
     "install": "node-gyp-build",
     "build": "npm run native.build && npm run js.build",
-    "test": "jasmine-node --coffee --captureExceptions test",
+    "test": "atom --test test",
     "benchmark.regular": "node benchmark/benchmark.js",
     "benchmark.large": "node benchmark/benchmark-large.js",
     "benchmark.small": "node benchmark/benchmark-small.js",
@@ -33,6 +33,7 @@
     "bump": "ncu -u --greatest",
     "prepare": "npm run build"
   },
+  "atomTestRunner": "./test/runner",
   "prettier": "prettier-config-atomic",
   "files": [
     "src",
@@ -49,6 +50,8 @@
     "node-gyp-build": "^4.2.3"
   },
   "devDependencies": {
+    "@types/jasmine": "^3.6.9",
+    "atom-jasmine3-test-runner": "^5.2.2",
     "babel-preset-atomic": "^3.0.3",
     "cross-env": "^7.0.3",
     "deep-equal": "^2.0.5",
@@ -56,7 +59,6 @@
     "eslint-config-atomic": "^1.12.4",
     "fuzzaldrin-plus": "^0.6.0",
     "growl": ">=1.10.5",
-    "jasmine-node": "^3.0.0",
     "npm-check-updates": "11.3.0",
     "prebuildify": "^4.1.2",
     "prettier-config-atomic": "^1.0.1",
