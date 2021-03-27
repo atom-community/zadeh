@@ -89,7 +89,7 @@ describe("filterTree", () => {
   // answers are os dependant because of slight differences
   // console.log(filterTree(outlineData, "text", "plainText", "children"))
   it("can search in outline data", () => {
-    process.platform === "win32" &&
+    if (process.platform === "win32") {
       expect(
         DeepEqual(filterTree(outlineData, "text", "plainText", "children"), [
           { data: "text", index: 0, level: 4 },
@@ -189,9 +189,10 @@ describe("filterTree", () => {
           { data: "updateMaxScreenLineLength", index: 29, level: 2 },
         ])
       ).toBe(true)
+    }
 
     // console.log(filterTree(outlineData, "disp", "plainText", "children"))
-    process.platform !== "linux" &&
+    if (process.platform !== "linux") {
       expect(
         DeepEqual(filterTree(outlineData, "disp", "plainText", "children"), [
           { data: "disposable", index: 3, level: 4 },
@@ -218,9 +219,10 @@ describe("filterTree", () => {
           { data: "onDidChangeCursorPosition", index: 58, level: 2 },
         ])
       ).toBe(true)
+    }
 
     // console.log(filterTree(outlineData, "dips", "plainText", "children"))
-    process.platform !== "linux" &&
+    if (process.platform !== "linux") {
       expect(
         DeepEqual(filterTree(outlineData, "dips", "plainText", "children"), [
           { data: "didUpdateStyles", index: 2, level: 3 },
@@ -257,5 +259,6 @@ describe("filterTree", () => {
           { data: "destroyFoldsContainingBufferPositions", index: 373, level: 2 },
         ])
       ).toBe(true)
+    }
   })
 })

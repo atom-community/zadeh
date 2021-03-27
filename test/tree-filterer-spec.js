@@ -35,7 +35,7 @@ describe("TreeFilterer", function () {
     treeFilterer.setCandidates(outlineData, "plainText", "children")
 
     // console.log(treeFilterer.filter("text"))
-    process.platform === "win32" &&
+    if (process.platform === "win32") {
       expect(
         DeepEqual(treeFilterer.filter("text"), [
           { data: "text", index: 0, level: 4 },
@@ -135,9 +135,10 @@ describe("TreeFilterer", function () {
           { data: "updateMaxScreenLineLength", index: 29, level: 2 },
         ])
       ).toBe(true)
+    }
 
     // console.log(treeFilterer.filter("disp"))
-    process.platform !== "linux" &&
+    if (process.platform !== "linux") {
       expect(
         DeepEqual(treeFilterer.filter("disp"), [
           { data: "disposable", index: 3, level: 4 },
@@ -164,9 +165,10 @@ describe("TreeFilterer", function () {
           { data: "onDidChangeCursorPosition", index: 58, level: 2 },
         ])
       ).toBe(true)
+    }
 
     // console.log(treeFilterer.filter("dips"))
-    process.platform !== "linux" &&
+    if (process.platform !== "linux") {
       expect(
         DeepEqual(treeFilterer.filter("dips"), [
           { data: "didUpdateStyles", index: 2, level: 3 },
@@ -203,5 +205,6 @@ describe("TreeFilterer", function () {
           { data: "destroyFoldsContainingBufferPositions", index: 373, level: 2 },
         ])
       ).toBe(true)
+    }
   })
 })
