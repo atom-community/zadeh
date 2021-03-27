@@ -1,4 +1,4 @@
-zadeh = require('../node');
+zadeh = require('../index');
 fuzzaldrinExpected = require 'fuzzaldrin-plus'
 
 score_test = (candidate, query, options={}) ->

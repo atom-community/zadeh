@@ -1,5 +1,5 @@
 path = require 'path'
-{filter,score} = require '../node'
+{filter,score} = require '../index'
 
 bestMatch = (candidates, query, options = {}) ->
 

@@ -3,7 +3,7 @@ const fs = require("fs")
 const path = require("path")
 const { start_timer, elapsed_time, doFilterTest } = require("./testutils")
 
-const Zadeh = require("../node")
+const Zadeh = require("../index")
 const legacy = require("fuzzaldrin-plus")
 
 const lines = fs.readFileSync(path.join(__dirname, "data.txt"), "utf8").trim().split("\n")

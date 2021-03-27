@@ -1,4 +1,4 @@
-{match} = require '../node'
+{match} = require '../index'
 path = require 'path'
 
 describe "match(string, query)", ->

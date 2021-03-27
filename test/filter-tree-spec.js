@@ -1,4 +1,4 @@
-const { filterTree } = require("../node")
+const { filterTree } = require("../index")
 const DeepEqual = require("deep-equal")
 const fs = require("fs")
 const path = require("path")

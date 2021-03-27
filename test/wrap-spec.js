@@ -1,5 +1,5 @@
 const path = require("path")
-const { wrap } = require("../node")
+const { wrap } = require("../index")
 const legacy = require("fuzzaldrin-plus")
 
 describe("wrap(string, query)", () => {
