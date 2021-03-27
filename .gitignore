@@ -2,6 +2,7 @@ node_modules/
 
 build/
 dist/
+dist-test/
 prebuilds/
 
 .parcel-cache
