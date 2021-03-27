@@ -291,7 +291,7 @@ export function match(str: string, query: string, options: IOptions = {}): numbe
     console.warn(`Zadeh: bad input to match str: ${str}, query: ${query}`)
     return []
   }
-  if (str == query) {
+  if (str === query) {
     return Array.from(Array(str.length).keys())
   }
   parseOptions(options)
