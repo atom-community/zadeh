@@ -3,8 +3,6 @@ dependencies:
   node-addon-api: 3.1.0
   node-gyp-build: 4.2.3
 devDependencies:
-  '@types/jasmine': 3.6.9
-  atom-jasmine3-test-runner: 5.2.2
   babel-preset-atomic: 3.0.3
   cross-env: 7.0.3
   deep-equal: 2.0.5
@@ -12,6 +10,7 @@ devDependencies:
   eslint-config-atomic: 1.12.4_eslint@7.22.0
   fuzzaldrin-plus: 0.6.0
   growl: 1.10.5
+  jasmine-node: 3.0.0
   npm-check-updates: 11.3.0
   prebuildify: 4.1.2
   prettier-config-atomic: 1.0.1
@@ -1561,13 +1560,6 @@ packages:
       node: '>= 6'
     resolution:
       integrity: sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
-  /@types/atom/1.40.10:
-    dependencies:
-      '@types/node': 14.14.37
-    dev: true
-    optional: true
-    resolution:
-      integrity: sha512-aNFUhCuR6nmTTMoYKfWWMifZ3IcNETLWC75hCdg3i1/OvirfR/5qm1wfiISBb4s/TPM2YVEtxytCdWhKJuEhzw==
   /@types/estree/0.0.39:
     dev: true
     resolution:
@@ -1576,10 +1568,6 @@ packages:
     dev: true
     resolution:
       integrity: sha512-jnqIUKDUqJbDIUxm0Uj7bnlMnRm1T/eZ9N+AVMqhPgzrba2GhGG5o/jCTwmdPK709nEZsGoMzXEDUjcXHa3W0g==
-  /@types/jasmine/3.6.9:
-    dev: true
-    resolution:
-      integrity: sha512-B53NIwMj/AO0O+xfSWLYmKB0Mo6TYxfv2Mk8/c1T2w/e38t55iaPR6p7pHXTTtqfTmevPK3i8T1YweYFTZlxDw==
   /@types/json-schema/7.0.7:
     dev: true
     resolution:
@@ -1592,11 +1580,6 @@ packages:
     dev: true
     resolution:
       integrity: sha512-Y93R97Ouif9JEOWPIUyU+eyIdyRqQR0I8Ez1dzku4hDx34NWh4HbtIc3WNzwB1Y9ULvNGeu5B8h8bVL5cAk4/A==
-  /@types/node/14.14.37:
-    dev: true
-    optional: true
-    resolution:
-      integrity: sha512-XYmBiy+ohOR4Lh5jE379fV2IU+6Jn4g5qASinhitfyO71b/sCo6MKsMLF5tc7Zf2CE8hViVQyYSobJNke8OvUw==
   /@types/parse-json/4.0.0:
     dev: true
     resolution:
@@ -1945,10 +1928,6 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-Z7tMw1ytTXt5jqMcOP+OQteU1VuNK9Y02uuJtKQ1Sv69jXQKKg5cibLwGJow8yzZP+eAc18EmLGPal0bp36rvQ==
-  /async/1.5.2:
-    dev: true
-    resolution:
-      integrity: sha1-7GphrlZIDAw8skHJVhjiCJL5Zyo=
   /asynckit/0.4.0:
     dev: true
     resolution:
@@ -1960,30 +1939,6 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
-  /atom-jasmine3-test-runner/5.2.2:
-    dependencies:
-      etch: 0.14.1
-      find-parent-dir: 0.3.0
-      fs-plus: 3.1.1
-      glob: 7.1.6
-      grim: 2.0.3
-      jasmine: 3.7.0
-      jasmine-local-storage: 1.1.1_jasmine@3.7.0
-      jasmine-pass: 1.1.0_jasmine@3.7.0
-      jasmine-should-fail: 1.1.7_jasmine@3.7.0
-      jasmine-unspy: 1.1.1_jasmine@3.7.0
-      jasmine2-atom-matchers: 1.1.8_jasmine@3.7.0
-      jasmine2-focused: 1.1.1_jasmine@3.7.0
-      jasmine2-json: 1.1.1_jasmine@3.7.0
-      jasmine2-tagged: 1.1.1_jasmine@3.7.0
-      temp: 0.9.4
-      underscore-plus: 1.7.0
-    dev: true
-    optionalDependencies:
-      '@types/atom': 1.40.10
-      '@types/jasmine': 3.6.9
-    resolution:
-      integrity: sha512-wcWeasDDlqtUzQpaWJ6R9SaCNSUXd8Q9N30Aze0PcX/yXVjhcGJSRhXdilHOvEF0XhOajJ8apl3Eur5tsTGGPA==
   /available-typed-arrays/1.0.2:
     dependencies:
       array-filter: 1.0.0
@@ -3527,14 +3482,6 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==
-  /etch/0.14.1:
-    dev: true
-    resolution:
-      integrity: sha512-+IwqSDBhaQFMUHJu4L/ir0dhDoW5IIihg4Z9lzsIxxne8V0PlSg0gnk2STaKWjGJQnDR4cxpA+a/dORX9kycTA==
-  /event-kit/2.5.3:
-    dev: true
-    resolution:
-      integrity: sha512-b7Qi1JNzY4BfAYfnIRanLk0DOD1gdkWHT4GISIn8Q2tAf3LpU8SP2CMwWaq40imYoKWbtN4ZhbSRxvsnikooZQ==
   /execspawn/1.0.1:
     dependencies:
       util-extend: 1.0.3
@@ -3612,10 +3559,6 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-qOo9F+dMUmC2Lcb4BbVvnKJxTPjCm+RRpe4gDuGrzkL7mEVl/djYSu2OdQ2Pa302N4oqkSg9ir6jaLWJ2USVpQ==
-  /find-parent-dir/0.3.0:
-    dev: true
-    resolution:
-      integrity: sha1-M8RLQpqysvBkYpnF+fcY83b/jVQ=
   /find-up/2.1.0:
     dependencies:
       locate-path: 2.0.0
@@ -3690,15 +3633,6 @@ packages:
       node: '>= 8'
     resolution:
       integrity: sha512-V/JgOLFCS+R6Vcq0slCuaeWEdNC3ouDlJMNIsacH2VtALiu9mV4LPrHc5cDl8k5aw6J8jwgWWpiTo5RYhmIzvg==
-  /fs-plus/3.1.1:
-    dependencies:
-      async: 1.5.2
-      mkdirp: 0.5.5
-      rimraf: 2.7.1
-      underscore-plus: 1.7.0
-    dev: true
-    resolution:
-      integrity: sha512-Se2PJdOWXqos1qVTkvqqjb0CSnfBnwwD+pq+z4ksT+e97mEShod/hrNg0TRCCsXPbJzcIq+NuzQhigunMWMJUA==
   /fs.realpath/1.0.0:
     dev: true
     resolution:
@@ -3747,6 +3681,14 @@ packages:
     dev: true
     resolution:
       integrity: sha1-LANAXHU4w51+s3sxcCLjJfsBi/c=
+  /gaze/1.1.3:
+    dependencies:
+      globule: 1.3.2
+    dev: true
+    engines:
+      node: '>= 4.0.0'
+    resolution:
+      integrity: sha512-BRdNm8hbWzFzWHERTrejLqwHDfS4GibPoq5wjTPIoJHoBtKGPg3xAFfxmM+9ztbXelxcf2hwQcaz1PtmFeue8g==
   /gensync/1.0.0-beta.2:
     dev: true
     engines:
@@ -3892,6 +3834,16 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-ffdmosjA807y7+lA1NM0jELARVmYul/715xiILEjo3hBLPTcirgQNnXECn5g3mtR8TOLCVbkfua1Hpen25/Xcg==
+  /globule/1.3.2:
+    dependencies:
+      glob: 7.1.6
+      lodash: 4.17.20
+      minimatch: 3.0.4
+    dev: true
+    engines:
+      node: '>= 0.10'
+    resolution:
+      integrity: sha512-7IDTQTIu2xzXkT+6mlluidnWo+BypnbSoEVVQCGfzqnl5Ik8d3e1d4wycb8Rj9tWW+Z39uPWsdlquqiqPCd/pA==
   /got/9.6.0:
     dependencies:
       '@sindresorhus/is': 0.14.0
@@ -3918,12 +3870,6 @@ packages:
     dev: true
     resolution:
       integrity: sha512-nTnJ528pbqxYanhpDYsi4Rd8MAeaBA67+RZ10CM1m3bTAVFEDcd5AuA4a6W5YkGZ1iNXHzZz8T6TBKLeBuNriQ==
-  /grim/2.0.3:
-    dependencies:
-      event-kit: 2.5.3
-    dev: true
-    resolution:
-      integrity: sha512-FM20Ump11qYLK9k9DbL8yzVpy+YBieya1JG15OeH8s+KbHq8kL4SdwRtURwIUHniSxb24EoBUpwKfFjGNVi4/Q==
   /growl/1.10.5:
     dev: true
     engines:
@@ -4446,84 +4392,32 @@ packages:
     dev: true
     resolution:
       integrity: sha1-R+Y/evVa+m+S4VAOaQ64uFKcCZo=
-  /jasmine-core/3.7.1:
+  /jasmine-growl-reporter/2.0.0:
+    dependencies:
+      growl: 1.10.5
     dev: true
     resolution:
-      integrity: sha512-DH3oYDS/AUvvr22+xUBW62m1Xoy7tUlY1tsxKEJvl5JeJ7q8zd1K5bUwiOxdH+erj6l2vAMM3hV25Xs9/WrmuQ==
-  /jasmine-local-storage/1.1.1_jasmine@3.7.0:
+      integrity: sha512-RYwVfPaGgxQQSHDOt6jQ99/KAkFQ/Fiwg/AzBS+uO9A4UhGhxb7hwXaUUSU/Zs0MxBoFNqmIRC+7P4/+5O3lXg==
+  /jasmine-node/3.0.0:
     dependencies:
-      jasmine: 3.7.0
-    dev: true
-    peerDependencies:
-      jasmine: '>=2 <4'
-    resolution:
-      integrity: sha512-GBqtas3l8SBo39NwjbHuzWhQhgHabq/mVVDabGvKLUXRFH8GtPy4jPKRIMDLWC+q7S+q4M6pIY4OHoVuU8hsCQ==
-  /jasmine-pass/1.1.0_jasmine@3.7.0:
-    dependencies:
-      jasmine: 3.7.0
-    dev: true
-    peerDependencies:
-      jasmine: <4
-    resolution:
-      integrity: sha512-gtsHtIj1zNS/90REIpyDH2HRSW7vFwKMau5A2hcfL/RsSwUiKAS8EdOY1Z67m8giyaUMe7I8O7SzJF2oevCX0A==
-  /jasmine-should-fail/1.1.7_jasmine@3.7.0:
-    dependencies:
-      jasmine: 3.7.0
-    dev: true
-    peerDependencies:
-      jasmine: '>=2 <4'
-    resolution:
-      integrity: sha512-MNtae0/NUAU0OknPcM4cTA04JEXmxMH0+hqZxBjdt4+8LvDqm+oYIQcY70OqpRwVhTTcAyG7HxiPw/4AGlxfgw==
-  /jasmine-unspy/1.1.1_jasmine@3.7.0:
-    dependencies:
-      jasmine: 3.7.0
-    dev: true
-    peerDependencies:
-      jasmine: '>=2 <4'
-    resolution:
-      integrity: sha512-hTuMR1ju73BkGG8OCY6ObtimVBqnyThwUuclXW81lOiT/pyBt2W5nZtNAd8N7jzUfjQDd7+m+0DPm5Ecf6T2Pw==
-  /jasmine/3.7.0:
-    dependencies:
-      glob: 7.1.6
-      jasmine-core: 3.7.1
+      coffeescript: 1.12.7
+      gaze: 1.1.3
+      jasmine-growl-reporter: 2.0.0
+      jasmine-reporters: 1.0.2
+      mkdirp: 0.3.5
+      requirejs: 2.3.6
+      underscore: 1.9.2
+      walkdir: 0.0.12
     dev: true
     hasBin: true
     resolution:
-      integrity: sha512-wlzGQ+cIFzMEsI+wDqmOwvnjTvolLFwlcpYLCqSPPH0prOQaW3P+IzMhHYn934l1imNvw07oCyX+vGUv3wmtSQ==
-  /jasmine2-atom-matchers/1.1.8_jasmine@3.7.0:
+      integrity: sha512-vUa5Q7bQYwHHqi6FlJYndiKqZp+d+c3MKe0QUMwwrC4JRmoRV3zkg0buxB/uQ6qLh0NO34TNstpAnvaZ6xGlAA==
+  /jasmine-reporters/1.0.2:
     dependencies:
-      jasmine: 3.7.0
-      jquery: 3.6.0
-      underscore-plus: 1.7.0
+      mkdirp: 0.3.5
     dev: true
-    peerDependencies:
-      jasmine: '>=2 <4'
     resolution:
-      integrity: sha512-dcR7vmEhK79P8PRM5H15DnsiR/QAAEuitK7LBs+9Z2y3RNqZWDS8LE4MiFh05+rHfholS0YltpeWLJheCe4KZw==
-  /jasmine2-focused/1.1.1_jasmine@3.7.0:
-    dependencies:
-      jasmine: 3.7.0
-    dev: true
-    peerDependencies:
-      jasmine: '>=2 <4'
-    resolution:
-      integrity: sha512-2NnQD+Lwqu/0RIVentOiDtdsjhP/4jJooG88rQC3A6lKHxnm2d9Q/wGbQBDZlIA7bDUrQpuHZ6d2A/lACLwfhQ==
-  /jasmine2-json/1.1.1_jasmine@3.7.0:
-    dependencies:
-      jasmine: 3.7.0
-    dev: true
-    peerDependencies:
-      jasmine: '>=2 <4'
-    resolution:
-      integrity: sha512-D8dFHVDsDZpqgYK4eR3SYkMXypRjK0MpnHzVkO38ByXe7R3QaZDsoRt3Kh4rqI1U4iq9hkxHuKr+gy+OzuL+8g==
-  /jasmine2-tagged/1.1.1_jasmine@3.7.0:
-    dependencies:
-      jasmine: 3.7.0
-    dev: true
-    peerDependencies:
-      jasmine: '>=2 <4'
-    resolution:
-      integrity: sha512-PK/83f9hBI6R/gGZ8zEYHt4OUtZu3xpcoUFICMBVsdbbanrhCCNC3EkWldIQgvuSHaUMhVptXAihWjNJI3uiRw==
+      integrity: sha1-q2E+1Zd9x0h+hbPBL2qOqNsq3jE=
   /jest-worker/26.6.2:
     dependencies:
       '@types/node': 14.14.20
@@ -4538,10 +4432,6 @@ packages:
     dev: true
     resolution:
       integrity: sha1-o6vicYryQaKykE+EpiWXDzia4yo=
-  /jquery/3.6.0:
-    dev: true
-    resolution:
-      integrity: sha512-JVzAR/AjBvVt2BmYhxRCSYysDsPcssdmTFnzyLEts9qNwmjmu4JTAMYubEfwVOSwpQ1I1sKKFcxhZCI2buerfw==
   /js-tokens/3.0.2:
     dev: true
     resolution:
@@ -4804,6 +4694,10 @@ packages:
     dev: true
     resolution:
       integrity: sha1-gteb/zCmfEAF/9XiUVMArZyk168=
+  /lodash/4.17.20:
+    dev: true
+    resolution:
+      integrity: sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
   /lodash/4.17.21:
     dev: true
     resolution:
@@ -5024,13 +4918,11 @@ packages:
     dev: true
     resolution:
       integrity: sha512-gKLcREMhtuZRwRAfqP3RFW+TK4JqApVBtOIftVgjuABpAtpxhPGaDcfvbhNvD0B8iD1oUr/txX35NjcaY6Ns/A==
-  /mkdirp/0.5.5:
-    dependencies:
-      minimist: 1.2.5
+  /mkdirp/0.3.5:
+    deprecated: Legacy versions of mkdirp are no longer supported. Please update to mkdirp 1.x. (Note that the API surface has changed to use Promises in 1.x.)
     dev: true
-    hasBin: true
     resolution:
-      integrity: sha512-NKmAlESf6jMGym1++R0Ra7wvhV+wFW63FaSOFPwRahvea0gMUcGUhVeAg/0BC0wiv9ih5NYPB1Wn1UEI1/L+xQ==
+      integrity: sha1-3j5fiWHIjHh+4TaN+EmsRBPsqNc=
   /mkdirp/1.0.4:
     dev: true
     engines:
@@ -5973,6 +5865,13 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==
+  /requirejs/2.3.6:
+    dev: true
+    engines:
+      node: '>=0.4.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-ipEzlWQe6RK3jkzikgCupiTbTvm4S0/CAU5GlgptkN5SO6F3u0UD0K18wy6ErDqiCyP4J4YYe1HuAShvsxePLg==
   /resolve-from/4.0.0:
     dev: true
     engines:
@@ -6023,20 +5922,6 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==
-  /rimraf/2.6.3:
-    dependencies:
-      glob: 7.1.6
-    dev: true
-    hasBin: true
-    resolution:
-      integrity: sha512-mwqeW5XsA2qAejG46gYdENaxXjx9onRNCfn7L0duuP4hCuTIi/QO7PDK07KJfp1d+izWPrzEJDcSqBa0OZQriA==
-  /rimraf/2.7.1:
-    dependencies:
-      glob: 7.1.6
-    dev: true
-    hasBin: true
-    resolution:
-      integrity: sha512-uWjbaKIK3T1OSVptzX7Nl6PvQ3qAGtKEtVRjRuazjfL3Bx5eI409VZSqgND+4UNnmzLVdPj9FqFJNPqBZFve4w==
   /rimraf/3.0.2:
     dependencies:
       glob: 7.1.6
@@ -6681,15 +6566,6 @@ packages:
       node: '>= 10'
     resolution:
       integrity: sha512-DUCttfhsnLCjwoDoFcI+B2iJgYa93vBnDUATYEeRx6sntCTdN01VnqsIuTlALXla/LWooNg0yEGeB+Y8WdFxGA==
-  /temp/0.9.4:
-    dependencies:
-      mkdirp: 0.5.5
-      rimraf: 2.6.3
-    dev: true
-    engines:
-      node: '>=6.0.0'
-    resolution:
-      integrity: sha512-yYrrsWnrXMcdsnu/7YMYAofM1ktpL5By7vZhf15CrXijWWrEYZks5AXBudalfSWJLlnen/QUJUB5aoB0kqZUGA==
   /terser/5.5.1:
     dependencies:
       commander: 2.20.3
@@ -6828,16 +6704,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-tZU/3NqK3dA5gpE1KtyiJUrEB0lxnGkMFHptJ7q6ewdZ8s12QrODwNbhIJStmJkd1QDXa1NRA8aF2A1zk/Ypyw==
-  /underscore-plus/1.7.0:
-    dependencies:
-      underscore: 1.12.1
+  /underscore/1.9.2:
     dev: true
     resolution:
-      integrity: sha512-A3BEzkeicFLnr+U/Q3EyWwJAQPbA19mtZZ4h+lLq3ttm9kn8WC4R3YpuJZEXmWdLjYP47Zc8aLZm9kwdv+zzvA==
-  /underscore/1.12.1:
-    dev: true
-    resolution:
-      integrity: sha512-hEQt0+ZLDVUMhebKxL4x1BTtDY7bavVofhZ9KZ4aI26X9SRaE+Y3m83XUL1UP2jn8ynjndwCCpEHdUG+9pP1Tw==
+      integrity: sha512-D39qtimx0c1fI3ya1Lnhk3E9nONswSKhnffBI0gME9C99fYOkNi04xs8K6pePLhvl1frbDemkaBQ5ikWllR2HQ==
   /unicode-canonical-property-names-ecmascript/1.0.4:
     dev: true
     engines:
@@ -6986,6 +6856,12 @@ packages:
     dev: true
     resolution:
       integrity: sha512-8TEXQxlldWAuIODdukIb+TR5s+9Ds40eSJrw+1iDDA9IFORPjMELarNQE3myz5XIkWWpdprmJjm1/SxMlWOC8A==
+  /walkdir/0.0.12:
+    dev: true
+    engines:
+      node: '>=0.6.0'
+    resolution:
+      integrity: sha512-HFhaD4mMWPzFSqhpyDG48KDdrjfn409YQuVW7ckZYhW4sE87mYtWifdB/+73RA7+p4s4K18n5Jfx1kHthE1gBw==
   /which-boxed-primitive/1.0.2:
     dependencies:
       is-bigint: 1.0.1
@@ -7120,8 +6996,6 @@ packages:
     resolution:
       integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 specifiers:
-  '@types/jasmine': ^3.6.9
-  atom-jasmine3-test-runner: ^5.2.2
   babel-preset-atomic: ^3.0.3
   bindings: ~1.5.0
   cross-env: ^7.0.3
@@ -7130,6 +7004,7 @@ specifiers:
   eslint-config-atomic: ^1.12.4
   fuzzaldrin-plus: ^0.6.0
   growl: '>=1.10.5'
+  jasmine-node: ^3.0.0
   node-addon-api: ~3.1.0
   node-gyp-build: ^4.2.3
   npm-check-updates: 11.3.0
