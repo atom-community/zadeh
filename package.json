@@ -2,8 +2,8 @@
   "name": "zadeh",
   "version": "2.0.2",
   "description": "Blazing fast library for fuzzy filtering, matching, and other fuzzy things!",
-  "main": "./node.js",
-  "node": "./node.js",
+  "main": "./index.js",
+  "node": "./index.js",
   "scripts": {
     "format": "prettier --write . && clang-format -i src/*.h src/binding/*.cc src/binding/*.h",
     "test.format": "prettier . --check",
@@ -19,7 +19,7 @@
     "js.clean": "shx rm -rf dist .parcel-cache",
     "js.dev": "npm run js.types && cross-env NODE_ENV=development rollup -c -w",
     "js.build": "npm run js.types && cross-env NODE_ENV=production rollup -c",
-    "js.types": "tsc -p ./src/binding/tsconfig.json --outDir . --declaration",
+    "js.types": "(tsc -p ./src/binding/tsconfig.json --emitDeclarationOnly) && (shx mv ./src/binding/node.d.ts index.d.ts)",
     "clean": "npm run native.clean && npm run js.clean",
     "install": "node-gyp-build",
     "build": "npm run native.build && npm run js.build",
@@ -37,9 +37,9 @@
   "files": [
     "src",
     "prebuilds",
-    "node.js",
-    "node.d.ts",
-    "node.js.map",
+    "index.js",
+    "index.d.ts",
+    "index.js.map",
     "binding.gyp"
   ],
   "gypfile": true,
