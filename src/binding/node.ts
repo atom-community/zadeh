@@ -1,8 +1,8 @@
 // @ts-ignore
 import nodeGypBuld from "node-gyp-build"
 
-import * as ZadehNode from "./binding"
-const binding = nodeGypBuld(__dirname) as typeof ZadehNode // __dirname relies on Parcel to bundle this file in the root of the package, so __dirname becomes correct
+import * as Binding from "./binding"
+const binding = nodeGypBuld(__dirname) as typeof Binding // __dirname relies on Parcel to bundle this file in the root of the package, so __dirname becomes correct
 
 /*
  ██████  ██████  ████████ ██  ██████  ███    ██ ███████
@@ -116,7 +116,7 @@ export class ArrayFilterer<T extends StringOrObjectArray> {
    * @param candidates An array of tree objects.
    * @param dataKey (optional) if `candidates` is an array of objects, pass the key in the object which holds the data.
    */
-  setCandidates(candidates: Array<T>, dataKey?: string): void {
+  setCandidates(candidates: Array<T>, dataKey?: string) {
     this.candidates = candidates
     let candidateStrings: string[]
     if (dataKey) {
@@ -137,7 +137,7 @@ export class ArrayFilterer<T extends StringOrObjectArray> {
     parseFilterOptions(options)
     const res = this.obj.filter(
       query,
-      options.maxResults,
+      options.maxResults as number /* numberified by parseFilterOptions */,
       Boolean(options.usePathScoring),
       Boolean(options.useExtensionBonus)
     )
@@ -188,7 +188,7 @@ export interface TreeFilterResult {
 /** TreeFilterer is a class that allows to set the `candidates` only once and perform filtering on them multiple times.
  *  This is much more efficient than calling the `filterTree` function directly.
  */
-export class TreeFilterer<T> {
+export class TreeFilterer<T extends Tree = Tree> {
   obj = new binding.Zadeh()
   // @ts-ignore
   candidates: Array<T>
@@ -206,7 +206,7 @@ export class TreeFilterer<T> {
    * @param dataKey the key of the object (and its children) which holds the data (defaults to `"data"`)
    * @param childrenKey the key of the object (and its children) which hold the children (defaults to `"children"`)
    */
-  setCandidates(candidates: Array<T>, dataKey: string = "data", childrenKey: string = "children"): void {
+  setCandidates(candidates: Array<T>, dataKey: string = "data", childrenKey: string = "children") {
     this.candidates = candidates
     return this.obj.setTreeFiltererCandidates(candidates, dataKey, childrenKey)
   }
@@ -220,7 +220,7 @@ export class TreeFilterer<T> {
     parseFilterOptions(options)
     return this.obj.filterTree(
       query,
-      options.maxResults,
+      options.maxResults as number /* numberified by parseFilterOptions */,
       Boolean(options.usePathScoring),
       Boolean(options.useExtensionBonus)
     )
@@ -295,7 +295,7 @@ export function match(str: string, query: string, options: IOptions = {}): numbe
     return Array.from(Array(str.length).keys())
   }
   parseOptions(options)
-  return binding.match(str, query, options.pathSeparator)
+  return binding.match(str, query, options.pathSeparator as string /* stringified by parseOption */)
 }
 
 /*
@@ -314,7 +314,7 @@ export function wrap(str: string, query: string, options: IOptions = {}): string
     return []
   }
   parseOptions(options)
-  return binding.wrap(str, query, options.pathSeparator)
+  return binding.wrap(str, query, options.pathSeparator as string /* stringified by parseOption */)
 }
 
 /*
