@@ -1,6 +1,8 @@
 // @ts-ignore
 import nodeGypBuld from "node-gyp-build"
-const binding = nodeGypBuld(__dirname) // this relies on Parcel to bundle this file in the root of the package, so __dirname becomes correct
+
+import * as ZadehNode from "./binding"
+const binding = nodeGypBuld(__dirname) as typeof ZadehNode // __dirname relies on Parcel to bundle this file in the root of the package, so __dirname becomes correct
 
 /*
  ██████  ██████  ████████ ██  ██████  ███    ██ ███████
