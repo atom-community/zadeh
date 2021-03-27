@@ -2,14 +2,15 @@ node_modules/
 
 build/
 dist/
+dist-test/
 prebuilds/
 
 .parcel-cache
 .rollup.cache
 
-node.js
-node.d.ts
-node.js.map
+index.js
+index.d.ts
+index.js.map
 tsconfig.tsbuildinfo
 
 .scannerwork
