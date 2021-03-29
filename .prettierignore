@@ -13,6 +13,7 @@ prebuilds/
 
 index.js
 index.d.ts
+binding.d.ts
 index.js.map
 tsconfig.tsbuildinfo
 
