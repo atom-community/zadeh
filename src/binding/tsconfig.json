@@ -11,7 +11,7 @@
     "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "incremental": true,
+    "incremental": false,
     "inlineSourceMap": true,
     "inlineSources": true,
     "preserveSymlinks": true,
