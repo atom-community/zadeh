@@ -1,4 +1,4 @@
-import type { Tree, TreeFilterResult } from "./node"
+import type { Tree, TreeFilterResult } from "./index"
 
 export declare class Zadeh {
   constructor()

@@ -9,7 +9,7 @@ prebuilds/
 .rollup.cache
 
 index.js
-index.d.ts
+*.d.ts
 index.js.map
 tsconfig.tsbuildinfo
 
