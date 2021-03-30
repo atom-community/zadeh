@@ -34,17 +34,22 @@ export interface IOptions {
   preparedQuery?: {}
 }
 
-export type IFilterOptions<T extends StringOrObjectArray> = IOptions & {
-  /** @deprecated The key to use when candidates is an object
-   * Deprecated option. Pass the key as a string to the second argument of 'ArrayFilterer.setCandidates' or to the third argument of 'filter'
-   */
-  key?: T extends string ? never : keyof T
-
+export type StringArrayFilterOptions = IOptions & {
   /** The maximum numbers of results to return */
   maxResults?: number
 
   // TODO not implemented
   // maxInners?: number
+}
+
+export type ObjectArrayFilterOptions = StringArrayFilterOptions
+export type TreeFilterOptions = StringArrayFilterOptions
+
+/** @deprecated The key to use when candidates is an object
+ * Deprecated option.
+ */
+export type DeprecatedFilterOptions<T extends StringOrObjectArray> = IOptions & {
+  key?: T extends string ? never : keyof T
 }
 
 const defaultPathSeparator = process.platform === "win32" ? "\\" : "/"
@@ -60,7 +65,7 @@ function parseOptions(options: IOptions) {
   }
 }
 
-function parseFilterOptions<T extends StringOrObjectArray>(filterOptions: IFilterOptions<T>) {
+function parseFilterOptions(filterOptions: StringArrayFilterOptions | ObjectArrayFilterOptions | TreeFilterOptions) {
   // options.optCharRegEx ? = null
   // options.wrap ? = null
   if (!filterOptions.maxResults) {
