@@ -75,21 +75,6 @@ function parseFilterOptions(filterOptions: StringArrayFilterOptions | ObjectArra
   parseOptions(filterOptions)
 }
 
-function getDataKey<T extends StringOrObjectArray>(dataKey: string | IFilterOptions<T>): string | undefined {
-  if (typeof dataKey === "string") {
-    return dataKey
-  } else if (dataKey?.key) {
-    // console.warn(`Zadeh: deprecated option.
-    // Pass the key as a string to the second argument of 'ArrayFilterer.setCandidates'
-    // or to the third argument of 'filter'`)
-    // an object (options) containing the key
-    // @ts-ignore
-    return dataKey.key
-  } else {
-    return undefined
-  }
-}
-
 /*
  █████  ██████  ██████   █████  ██    ██     ███████ ██ ██   ████████ ███████ ██████
 ██   ██ ██   ██ ██   ██ ██   ██  ██  ██      ██      ██ ██      ██    ██      ██   ██
@@ -183,7 +168,12 @@ export class ObjectArrayFilterer {
   }
 }
 
-/** Sort and filter the given candidates by matching them against the given query.
+/** @deprecated */
+type DeprecatedFilterReturn<T> = T extends string ? string[] : ObjectWithKey[]
+
+/**
+ * Sort and filter the given candidates by matching them against the given query.
+ * @deprecated use `StringArrayFilterer` or `ObjectArrayFilterer` instead
  * @param candidates An array of strings or objects.
  * @param query A string query to match each candidate against.
  * @param options options
@@ -192,15 +182,30 @@ export class ObjectArrayFilterer {
 export function filter<T extends StringOrObjectArray>(
   candidates: T[],
   query: string,
-  options: IFilterOptions<T> = {}
-): T[] {
+  options: DeprecatedFilterOptions<T> = {}
+): DeprecatedFilterReturn<T> {
   if (!candidates || !query) {
     console.warn(`Zadeh: bad input to filter candidates: ${candidates}, query: ${query}`)
+    // @ts-ignore: bad input guard which doesn't meet the types
     return []
   }
-  const arrayFilterer = new ArrayFilterer<T>()
-  arrayFilterer.setCandidates(candidates, getDataKey(options))
-  return arrayFilterer.filter(query, options)
+
+  if (typeof candidates[0] === "object" && options.key) {
+    // an object (options) containing the key
+
+    console.warn(`Zadeh: deprecated function. Use 'ObjectArrayFilterer' instead`)
+    const dataKey = options.key
+    const objectArrayFilterer = new ObjectArrayFilterer(candidates as ObjectWithKey[], dataKey)
+    return objectArrayFilterer.filter(query, options) as DeprecatedFilterReturn<T>
+  } else if (typeof candidates[0] === "string") {
+    // string array
+
+    console.warn(`Zadeh: deprecated function. Use 'StringArrayFilterer' instead`)
+    const stringArrayFilterer = new StringArrayFilterer(candidates as string[])
+    return stringArrayFilterer.filter(query, options) as DeprecatedFilterReturn<T>
+  } else {
+    throw new Error(`Zadeh: bad input to filter candidates: ${candidates}, query: ${query}, options: ${options}`)
+  }
 }
 
 /*
