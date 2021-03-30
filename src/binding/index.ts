@@ -221,7 +221,7 @@ export class TreeFilterer<T extends Tree = Tree> {
    *  @param options options
    *  @return An array of candidate objects in form of `{data, index, level}` sorted by best match against the query. Each objects has the address of the object in the tree using `index` and `level`.
    */
-  filter(query: string, options: IFilterOptions<ObjectElement> = {}): TreeFilterResult[] {
+  filter(query: string, options: TreeFilterOptions = {}): TreeFilterResult[] {
     parseFilterOptions(options)
     return this.obj.filterTree(
       query,
@@ -249,7 +249,7 @@ export function filterTree(
   query: string,
   dataKey: string = "data",
   childrenKey: string = "children",
-  options: IFilterOptions<Tree> = {}
+  options: TreeFilterOptions = {}
 ): TreeFilterResult[] {
   if (!candidatesTrees || !query) {
     console.warn(`Zadeh: bad input to filterTree candidatesTrees: ${candidatesTrees}, query: ${query}`)
