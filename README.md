@@ -18,23 +18,6 @@ Zadeh is a blazing fast library for fuzzy filtering, matching, and other fuzzy t
 - Allows setting the candidates only once using `ArrayFilterer` and `TreeFilterer` classes, and then, perform `filter` multiple times, which is much more efficient than calling the `filter` or `filterTree` functions directly every time.
 - Bindings for Nodejs (more to come)
 
-### Table of content
-
-- [Zadeh](#zadeh)
-  - [features](#features)
-- [Usage](#usage)
-  - [Usage from Nodejs](#usage-from-nodejs)
-    - [ArrayFilterer](#arrayfilterer)
-    - [filter](#filter)
-    - [TreeFilterer](#treefilterer)
-    - [filterTree](#filtertree)
-    - [score](#score)
-    - [match](#match)
-    - [wrap](#wrap)
-    - [options](#options)
-- [Comparison with other libraries](#comparison-with-other-libraries)
-  - [Zadeh vs fuzzaldrin and fuzzaldrin-plus](#zadeh-vs-fuzzaldrin-and-fuzzaldrin-plus)
-
 # Usage
 
 ### Usage from C++
