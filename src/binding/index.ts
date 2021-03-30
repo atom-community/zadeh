@@ -98,39 +98,30 @@ function getDataKey<T extends StringOrObjectArray>(dataKey: string | IFilterOpti
 ██   ██ ██   ██ ██   ██ ██   ██    ██        ██      ██ ███████ ██    ███████ ██   ██
 */
 
-export type ObjectElement = object & Record<string, string>
-export type StringOrObjectArray = string | ObjectElement
+export type ObjectWithKey = object & Record<string | number, string>
+export type StringOrObjectArray = string | ObjectWithKey
 
-/** ArrayFilterer is a class that allows to set the `candidates` only once and perform filtering on them multiple times.
- *  This is much more efficient than calling the `filter` function directly.
+/** StringArrayFilterer is a class that performs filtering on an array of strings
  */
-export class ArrayFilterer<T extends StringOrObjectArray> {
+export class StringArrayFilterer {
   obj = new binding.Zadeh()
   // @ts-ignore
-  candidates: Array<T>
+  candidates: Array<string>
 
-  constructor(candidates?: Array<T>, dataKey?: string) {
-    if (candidates) {
-      this.setCandidates(candidates, dataKey)
+  constructor(candidates?: Array<string>) {
+    if (candidates !== undefined) {
+      this.setCandidates(candidates)
     } else {
       this.candidates = []
     }
   }
 
   /** The method to set the candidates that are going to be filtered
-   * @param candidates An array of tree objects.
-   * @param dataKey (optional) if `candidates` is an array of objects, pass the key in the object which holds the data.
+   * @param candidates An array of strings.
    */
-  setCandidates(candidates: Array<T>, dataKey?: string) {
+  setCandidates(candidates: Array<string>) {
     this.candidates = candidates
-    let candidateStrings: string[]
-    if (dataKey) {
-      const validDataKey = getDataKey<T>(dataKey)
-      candidateStrings = (candidates as Array<Record<string, string>>).map((item) => item[validDataKey as string])
-    } else {
-      candidateStrings = candidates as string[]
-    }
-    return this.obj.setArrayFiltererCandidates(candidateStrings)
+    return this.obj.setArrayFiltererCandidates(candidates)
   }
 
   /** The method to perform the filtering on the already set candidates
@@ -138,7 +129,7 @@ export class ArrayFilterer<T extends StringOrObjectArray> {
    *  @param options options
    *  @return returns an array of candidates sorted by best match against the query.
    */
-  filter(query: string, options: IFilterOptions<T> = {}): Array<T> {
+  filter(query: string, options: StringArrayFilterOptions = {}): Array<string> {
     parseFilterOptions(options)
     const res = this.obj.filter(
       query,
@@ -150,10 +141,47 @@ export class ArrayFilterer<T extends StringOrObjectArray> {
   }
 }
 
-/**
- * @deprecated use ArrayFilterer or TreeFilterer classes instead
+/** ObjectArrayFilterer is a class that performs filtering on an array of objects based on a string stored in the given `dataKey` for each object
  */
-export const New = () => new ArrayFilterer()
+export class ObjectArrayFilterer {
+  obj = new binding.Zadeh()
+  // @ts-ignore
+  candidates: Array<ObjectWithKey>
+
+  constructor(candidates?: Array<ObjectWithKey>, dataKey?: string | number) {
+    if (candidates !== undefined && dataKey !== undefined) {
+      this.setCandidates(candidates, dataKey)
+    } else {
+      this.candidates = []
+    }
+  }
+
+  /** The method to set the candidates that are going to be filtered
+   * @param candidates An array of objects.
+   * @param dataKey the key which is indexed for each object, and filtering is done based on the resulting string
+   */
+  setCandidates(candidates: Array<ObjectWithKey>, dataKey: string | number) {
+    this.candidates = candidates
+    const candidatesKeys = candidates.map((item) => item[dataKey])
+    this.obj.setArrayFiltererCandidates(candidatesKeys)
+  }
+
+  /** The method to perform the filtering on the already set candidates
+   *  @param query A string query to match each candidate against.
+   *  @param options options
+   *  @return returns an array of candidates sorted by best match against the query.
+   */
+  filter(query: string, options: ObjectArrayFilterOptions = {}): Array<ObjectWithKey> {
+    parseFilterOptions(options)
+    const res = this.obj.filter(
+      query,
+      options.maxResults as number /* numberified by parseFilterOptions */,
+      Boolean(options.usePathScoring),
+      Boolean(options.useExtensionBonus)
+    )
+    return res.map((ind: number) => this.candidates[ind])
+  }
+}
 
 /** Sort and filter the given candidates by matching them against the given query.
  * @param candidates An array of strings or objects.
