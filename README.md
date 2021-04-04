@@ -8,14 +8,14 @@ Zadeh is a blazing fast library for fuzzy filtering, matching, and other fuzzy t
 
 ### features
 
-- fuzzy filter through an array of candidates (`ArrayFilterer` and `filter`)
+- fuzzy filter through an array of candidates (`StringArrayFilterer` and `filter`)
 - fuzzy filter through a nested tree-like objects (`TreeFilterer` and `filterTree`)
 - Special treatment for strings that have separators (space ` `, hyphen `-`, underline`_`)
 - Special treatment for path-like strings (string separated by `\` or `//`)
 - give an array of indices at which the query matches the given string (`match`)
 - score the given string against the given query (`score`)
 - give an HTML/Markdown string that highlights the range for which the match happens (`wrap`)
-- Allows setting the candidates only once using `ArrayFilterer` and `TreeFilterer` classes, and then, perform `filter` multiple times, which is much more efficient than calling the `filter` or `filterTree` functions directly every time.
+- Allows setting the candidates only once using `StringArrayFilterer` and `TreeFilterer` classes, and then, perform `filter` multiple times, which is much more efficient than calling the `filter` or `filterTree` functions directly every time.
 - Bindings for Nodejs (more to come)
 
 # Usage
@@ -37,8 +37,8 @@ int main() {
   // the data to fuzzy search on
   auto data = vector<string>{"eye", "why", "bi"};
 
-  // setup ArrayFilterer
-  auto arrayFilterer = zadeh::ArrayFilterer<vector<string>, string>{};
+  // setup StringArrayFilterer
+  auto arrayFilterer = zadeh::StringArrayFilterer<vector<string>, string>{};
   arrayFilterer.set_candidates(data);
 
   // filter the indices that match the query
@@ -87,12 +87,12 @@ or
 const zadeh = require("zadeh")
 ```
 
-### ArrayFilterer
+### StringArrayFilterer
 
-ArrayFilterer is a class that allows to set the `candidates` only once and perform filtering on them multiple times. This is much more efficient than calling the `filter` function directly.
+`StringArrayFilterer` is a class that allows to set the `candidates` only once and perform filtering on them multiple times. This is much more efficient than calling the `filter` function directly.
 
 ```typescript
-export class ArrayFilterer<T> {
+export class StringArrayFilterer<T> {
   constructor()
 
   /** The method to set the candidates that are going to be filtered
@@ -113,9 +113,9 @@ export class ArrayFilterer<T> {
 Example:
 
 ```Javascript
-const { ArrayFilterer } = require('zadeh')
+const { StringArrayFilterer } = require('zadeh')
 
-const arrayFilterer = new ArrayFilterer()
+const arrayFilterer = new StringArrayFilterer()
 arrayFilterer.setCandidates(['Call', 'Me', 'Maybe']) // set candidates only once
 // call filter multiple times
 arrayFilterer.filter('me')
@@ -150,7 +150,7 @@ candidates = [
 results = filter(candidates, 'me', {key: 'name'}) // [{name: 'Me', id: 2}, {name: 'Maybe', id: 3}]
 ```
 
-**Performance Note**: use `ArrayFilterer` class if you call the `filter` function multiple times on a certain set of candidates. `filter` internally uses this class, however, in each call it sets the candidates from scratch which can slow down the process.
+**Performance Note**: use `StringArrayFilterer` class if you call the `filter` function multiple times on a certain set of candidates. `filter` internally uses this class, however, in each call it sets the candidates from scratch which can slow down the process.
 
 ### TreeFilterer
 

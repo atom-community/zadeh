@@ -98,7 +98,7 @@ class ZadehNode : public Napi::ObjectWrap<ZadehNode> {
     explicit ZadehNode(const Napi::CallbackInfo &info) : Napi::ObjectWrap<ZadehNode>(info) {}
 
   private:
-    ArrayFilterer<Napi::Array, CandidateString> arrayFilterer{};
+    StringArrayFilterer<Napi::Array, CandidateString> arrayFilterer{};
     TreeFilterer<Napi::Array, Napi::Object> treeFilterer{};
 };
 
