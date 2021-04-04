@@ -172,8 +172,8 @@ export class ObjectArrayFilterer {
 type DeprecatedFilterReturn<T> = T extends string ? string[] : ObjectWithKey[]
 
 /**
- * Sort and filter the given candidates by matching them against the given query.
  * @deprecated use `StringArrayFilterer` or `ObjectArrayFilterer` instead
+ * Sort and filter the given candidates by matching them against the given query.
  * @param candidates An array of strings or objects.
  * @param query A string query to match each candidate against.
  * @param options options
@@ -268,7 +268,9 @@ export class TreeFilterer<T extends Tree = Tree> {
 // TODO better type
 export type Tree = Record<string, string>
 
-/** Sort and filter the given Tree candidates by matching them against the given query.
+/**
+ * @deprecated use `TreeFilterer` instead
+ * Sort and filter the given Tree candidates by matching them against the given query.
  * A tree object is an object in which each entry stores the data in its dataKey and it has (may have) some children (with a similar structure) in its childrenKey
  * @param candidatesTrees An array of tree objects.
  * @param query A string query to match each candidate against.
