@@ -16,3 +16,6 @@ tsconfig.tsbuildinfo
 .scannerwork
 package-lock.json
 cmake-build-*
+
+.ropeproject
+.mypy_cache
