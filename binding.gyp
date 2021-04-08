@@ -88,10 +88,23 @@
             "VCCLCompilerTool": {
               'ExceptionHandling': 2,       # /EHsc
               'BasicRuntimeChecks': 3,        # /RTC1
+              # 0 - MultiThreaded (/MT)
+              # 1 - MultiThreadedDebug (/MTd)
+              # 2 - MultiThreadedDLL (/MD)
+              # 3 - MultiThreadedDebugDLL (/MDd)
+              'RuntimeLibrary': 3,
               'MinimalRebuild': 'false',
               'Optimization': 0,              # /Od /Oy-, no optimization
               "AdditionalOptions": [
                 "/DEBUG",
+
+                # Uncomment to enable address sanitizer
+                # Make sure to add the followings (or what your MSVC use) to the PATH and run `refreshenv`.
+                # # C:/Program Files (x86)/Microsoft Visual Studio/2019/Preview/VC/Tools/MSVC/14.29.29917/lib/x64/
+                # # C:/Program Files (x86)/Microsoft Visual Studio/2019/Preview/VC/Tools/MSVC/14.29.29917/bin/Hostx64/x64/
+                # "/fsanitize=address",
+                # "/Zi",
+                # "/INCREMENTAL:NO",
 
                 # C++ standard
                 "/std:c++17",
