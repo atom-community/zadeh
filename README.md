@@ -128,6 +128,52 @@ strArrFilterer.filter('me')
 strArrFilterer.filter('all')
 ```
 
+### ObjectArrayFilterer
+
+ObjectArrayFilterer is a class that performs filtering on an array of objects based on a string stored in the given `dataKey` for each object
+
+```typescript
+export class ObjectArrayFilterer {
+  /** Make a `ObjectArrayFilterer` for the candidates that are going to be filtered.
+   * @param candidates An array of objects.
+   * @param dataKey the key which is indexed for each object, and filtering is done based on the resulting string
+   */
+  constructor(candidates?: Array<ObjectWithKey>, dataKey?: string | number)
+
+  /** The method to perform the filtering on the already set candidates
+   *  @param query A string query to match each candidate against.
+   *  @param options options
+   *  @return returns an array of candidates sorted by best match against the query.
+   */
+  filter(query: string, options: ObjectArrayFilterOptions = {}): Array<ObjectWithKey>
+
+  /** Allows to set the candidates (if changed or not set in the constructor).
+   * @param candidates An array of objects.
+   * @param dataKey the key which is indexed for each object, and filtering is done based on the resulting string
+   */
+   setCandidates(candidates: Array<ObjectWithKey>, dataKey: string | number)
+}
+```
+
+Example:
+
+```Javascript
+const { ObjectArrayFilterer } = require('zadeh')
+
+const candidates = [
+  {name: 'Call', id: 1},
+  {name: 'Me', id: 2},
+  {name: 'Maybe', id: 3}
+]
+
+// create a class and set the candidates
+const objArrFilterer = new ObjectArrayFilterer(candidates, "name") // filter based on their name
+
+// call filter multiple times
+objArrFilterer.filter('me')   // [{ name: 'Me', id: 2 }, { name: 'Maybe', id: 3}] // finds two objects
+objArrFilterer.filter('all')  // [{ name: 'Call', id: 1 }]
+```
+
 ### TreeFilterer
 
 `TreeFilterer` is a class that allows to set the `candidates` only once and perform filtering on them multiple times. This is much more efficient than calling the `filterTree` function directly.
@@ -270,11 +316,12 @@ let candidates = ['Call', 'Me', 'Maybe']
 let results = filter(candidates, 'me')  // ['Me', 'Maybe']
 
 // With an array of objects
-candidates = [
-  {name: 'Call', id: 1}
-  {name: 'Me', id: 2}
+const candidates = [
+  {name: 'Call', id: 1},
+  {name: 'Me', id: 2},
   {name: 'Maybe', id: 3}
 ]
+
 results = filter(candidates, 'me', {key: 'name'}) // [{name: 'Me', id: 2}, {name: 'Maybe', id: 3}]
 ```
 

@@ -136,6 +136,10 @@ export class ObjectArrayFilterer {
   // @ts-ignore
   candidates: Array<ObjectWithKey>
 
+  /** Make a `ObjectArrayFilterer` for the candidates that are going to be filtered.
+   * @param candidates An array of objects.
+   * @param dataKey the key which is indexed for each object, and filtering is done based on the resulting string
+   */
   constructor(candidates?: Array<ObjectWithKey>, dataKey?: string | number) {
     if (candidates !== undefined && dataKey !== undefined) {
       this.setCandidates(candidates, dataKey)
@@ -144,7 +148,7 @@ export class ObjectArrayFilterer {
     }
   }
 
-  /** The method to set the candidates that are going to be filtered
+  /** Allows to set the candidates (if changed or not set in the constructor).
    * @param candidates An array of objects.
    * @param dataKey the key which is indexed for each object, and filtering is done based on the resulting string
    */
