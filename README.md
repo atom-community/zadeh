@@ -20,7 +20,7 @@ Zadeh is a blazing fast library for fuzzy filtering, matching, and other fuzzy t
 
 # Usage
 
-### Usage from C++
+## Usage from C++
 
 This is a header only library. Include `./src/zadeh.h` and build it in your application.
 
@@ -91,7 +91,7 @@ const zadeh = require("zadeh")
 
 `StringArrayFilterer` is a class that allows to set the `candidates` only once and perform filtering on them multiple times. This is much more efficient than calling the `filter` function directly.
 
-```typescript
+```ts
 export class StringArrayFilterer {
   /**
    * Make a `StringArrayFilterer` for the candidates that are going to be filtered.
@@ -120,25 +120,25 @@ export class StringArrayFilterer {
 
 Example:
 
-```Javascript
-const { StringArrayFilterer } = require('zadeh')
+```js
+const { StringArrayFilterer } = require("zadeh")
 
 // create class
 const strArrFilterer = new StringArrayFilterer()
 
 // set the candidates
-strArrFilterer.setCandidates(['Call', 'Me', 'Maybe'])
+strArrFilterer.setCandidates(["Call", "Me", "Maybe"])
 
 // call filter multiple times
-strArrFilterer.filter('me')
-strArrFilterer.filter('all')
+strArrFilterer.filter("me")
+strArrFilterer.filter("all")
 ```
 
 ### ObjectArrayFilterer
 
 ObjectArrayFilterer is a class that performs filtering on an array of objects based on a string stored in the given `dataKey` for each object
 
-```typescript
+```ts
 export class ObjectArrayFilterer {
   /**
    * Make a `ObjectArrayFilterer` for the candidates that are going to be filtered.
@@ -169,28 +169,28 @@ export class ObjectArrayFilterer {
 
 Example:
 
-```Javascript
-const { ObjectArrayFilterer } = require('zadeh')
+```js
+const { ObjectArrayFilterer } = require("zadeh")
 
 const candidates = [
-  {name: 'Call', id: 1},
-  {name: 'Me', id: 2},
-  {name: 'Maybe', id: 3}
+  { name: "Call", id: 1 },
+  { name: "Me", id: 2 },
+  { name: "Maybe", id: 3 },
 ]
 
 // create a class and set the candidates
 const objArrFilterer = new ObjectArrayFilterer(candidates, "name") // filter based on their name
 
 // call filter multiple times
-objArrFilterer.filter('me')   // [{ name: 'Me', id: 2 }, { name: 'Maybe', id: 3}] // finds two objects
-objArrFilterer.filter('all')  // [{ name: 'Call', id: 1 }]
+objArrFilterer.filter("me") // [{ name: 'Me', id: 2 }, { name: 'Maybe', id: 3}] // finds two objects
+objArrFilterer.filter("all") // [{ name: 'Call', id: 1 }]
 ```
 
 ### TreeFilterer
 
 `TreeFilterer` is a class that allows to set the `candidates` only once and perform filtering on them multiple times. This is much more efficient than calling the `filterTree` function directly.
 
-```typescript
+```ts
 export class TreeFilterer<T> {
   constructor()
 
@@ -217,21 +217,21 @@ export class TreeFilterer<T> {
 
 Example:
 
-```Javascript
-const { TreeFilterer } = require('zadeh')
+```js
+const { TreeFilterer } = require("zadeh")
 
 const treeFilterer = new TreeFilterer()
 
 const candidates = [
-  {data: "bye1", children: [{data: "hello"}]},
-  {data: "Bye2", children: [{data: "_bye4"}, {data: "hel"}]},
-  {data: "eye"},
+  { data: "bye1", children: [{ data: "hello" }] },
+  { data: "Bye2", children: [{ data: "_bye4" }, { data: "hel" }] },
+  { data: "eye" },
 ]
 treeFilterer.setCandidates(candidates, "data", "children") // set candidates only once
 
 // call filter multiple times
-treeFilterer.filter('hello')
-treeFilterer.filter('bye')
+treeFilterer.filter("hello")
+treeFilterer.filter("bye")
 ```
 
 ### score
@@ -286,7 +286,7 @@ wrap("Hello world", "he")
 
 In all the above functions, you can pass an optional object with the following keys
 
-```typescript
+```ts
 {
     /** only for `filter` function */
     /** The key to use when candidates is an object */
@@ -312,6 +312,9 @@ In all the above functions, you can pass an optional object with the following k
 
 These deprecated functions are provided to support the API of `fuzzaldrin` and `fuzzaldrin-plus`.
 However, you should replace their usage with `StringArrayFilterer` or `ObjectArrayFilterer` classes that allow setting the candidates only once and perform filtering on those candidates multiple times. This is much more efficient than `filter` or `filterTree` functions.
+
+<details>
+<summary> `filter` </summary>
 
 ### filter
 
@@ -343,6 +346,11 @@ results = filter(candidates, "me", { key: "name" }) // [{name: 'Me', id: 2}, {na
 ```
 
 **Deprecation Note**: use `StringArrayFilterer` or `ObjectArrayFilterer` class instead. `filter` internally uses this class and in each call, it sets the candidates from scratch which can slow down the process.
+
+</details>
+
+<details>
+<summary> `filterTree` </summary>
 
 ### filterTree
 
@@ -376,6 +384,8 @@ results = filter(candidates, "hello", { key: "name" }) // [ { data: 'hello', ind
 ```
 
 **Deprecation Note**: use `TreeFilterer` class instead. `filterTree` internally uses this class, and in each call, it sets the candidates from scratch which can slow down the process.
+
+</details>
 
 # Comparison with other libraries
 
