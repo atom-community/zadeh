@@ -5,7 +5,7 @@
       "sources": [
         "src/zadeh.h", "src/common.h", "src/data_interface.h",
         "src/options.h", "src/scorer.h", "src/path_scorer.h", "src/filter.h", "src/query.h", "src/matcher.h",
-        "src/ArrayFilterer.h", "src/TreeFilterer.h",
+        "src/StringArrayFilterer.h", "src/TreeFilterer.h",
         "src/binding/node.cc", "src/binding/node.h", "src/binding/node_data_interface.h",
       ],
       "include_dirs": [

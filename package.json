@@ -60,7 +60,7 @@
     "jasmine-node": "^3.0.0",
     "npm-check-updates": "11.3.0",
     "prebuildify": "^4.1.2",
-    "prettier-config-atomic": "^1.0.1",
+    "prettier-config-atomic": "^2.0.1",
     "rollup": "^2.43.1",
     "rollup-plugin-atomic": "^2.1.2",
     "shx": "^0.3.3",

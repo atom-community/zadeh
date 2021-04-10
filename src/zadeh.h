@@ -10,7 +10,7 @@
 #include "./path_scorer.h"
 #include "./query.h"
 #include "./filter.h"
-#include "./ArrayFilterer.h"
+#include "./StringArrayFilterer.h"
 #include "./TreeFilterer.h"
 
 #endif

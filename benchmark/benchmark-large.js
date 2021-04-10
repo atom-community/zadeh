@@ -3,7 +3,7 @@ const fs = require("fs")
 const path = require("path")
 const { elapsed_time, start_timer } = require("./testutils")
 
-const Zadeh = require("../index")
+const { StringArrayFilterer, ObjectArrayFilterer, filter } = require("../index")
 const legacy = require("fuzzaldrin-plus")
 
 const lines = fs.readFileSync(path.join(__dirname, "data-large.txt"), "utf8").trim().split("\n")
@@ -14,8 +14,7 @@ const dict = lines.map((item) => {
   }
 })
 
-const zadeh = Zadeh.New()
-zadeh.setCandidates(lines)
+const arrFilterer = new StringArrayFilterer(lines)
 
 const two_letter_tests = [
   "dp",
@@ -72,7 +71,7 @@ elapsed_time(t1, "TwoLetter _legacy_")
 
 const t2 = start_timer()
 for (const query of two_letter_tests) {
-  Zadeh.filter(lines, query, {
+  filter(lines, query, {
     maxResults: 10,
   })
 }
@@ -80,7 +79,7 @@ elapsed_time(t2, "TwoLetter direct filter")
 
 const t3 = start_timer()
 for (const query of two_letter_tests) {
-  zadeh.filter(query, {
+  arrFilterer.filter(query, {
     maxResults: 10,
   })
 }
@@ -98,7 +97,7 @@ elapsed_time(t4, "ThreeLetter _legacy_")
 
 const t5 = start_timer()
 for (const query of three_letter_tests) {
-  Zadeh.filter(lines, query, {
+  filter(lines, query, {
     maxResults: 10,
   })
 }
@@ -106,7 +105,7 @@ elapsed_time(t5, "ThreeLetter direct filter")
 
 const t6 = start_timer()
 for (const query of three_letter_tests) {
-  zadeh.filter(query, {
+  arrFilterer.filter(query, {
     maxResults: 10,
   })
 }
@@ -116,7 +115,7 @@ console.log("======")
 
 const t7 = start_timer()
 for (const query of two_letter_tests) {
-  Zadeh.filter(dict, query, {
+  filter(dict, query, {
     maxResults: 10,
     key: "key",
   })
@@ -125,7 +124,7 @@ elapsed_time(t7, "TwoLetter keybased filter")
 
 const t8 = start_timer()
 for (const query of three_letter_tests) {
-  Zadeh.filter(dict, query, {
+  filter(dict, query, {
     maxResults: 10,
     key: "key",
   })
@@ -135,8 +134,7 @@ elapsed_time(t8, "ThreeLetter keybased filter")
 console.log("======")
 
 const t9 = start_timer()
-let obj = Zadeh.New()
-obj.setCandidates(lines)
+const obj = new StringArrayFilterer(lines)
 elapsed_time(t9, "setCandidates")
 
 const t10 = start_timer()
@@ -158,26 +156,21 @@ elapsed_time(t11, "ThreeLetter filter")
 console.log("======")
 
 const t12 = start_timer()
-obj = Zadeh.New()
-obj.setCandidates(dict, {
-  key: "key",
-})
+const obj2 = new ObjectArrayFilterer(dict, "key")
 elapsed_time(t12, "setCandidates keybased")
 
 const t13 = start_timer()
 for (const query of two_letter_tests) {
-  obj.filter(query, {
+  obj2.filter(query, {
     maxResults: 10,
-    key: "key",
   })
 }
 elapsed_time(t13, "TwoLetter keybased filter")
 
 const t14 = start_timer()
 for (const query of three_letter_tests) {
-  obj.filter(query, {
+  obj2.filter(query, {
     maxResults: 10,
-    key: "key",
   })
 }
 elapsed_time(t14, "ThreeLetter keybased filter")

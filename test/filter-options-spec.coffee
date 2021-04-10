@@ -88,7 +88,7 @@ describe "filtering", ->
 
   describe "filtering by creating an object", ->
     it "with default options", ->
-      obj = zadeh.New()
+      obj = new zadeh.StringArrayFilterer()
       obj.setCandidates ['ab', 'abc', 'cd', 'de']
       expect(obj.filter('a')).toEqual(['ab', 'abc'])
       expect(obj.filter('b')).toEqual(['ab', 'abc'])
@@ -101,8 +101,8 @@ describe "filtering", ->
         {uri: '/usr/sbin/find', fname: 'find'},
         {uri: '/usr/local/bin/git', fname: 'git'},
       ]
-      obj = zadeh.New()
-      obj.setCandidates candidates, key: 'fname'
+      obj = new zadeh.ObjectArrayFilterer()
+      obj.setCandidates candidates, 'fname'
       expect(obj.filter('i')).toEqual([candidates[3], candidates[2], candidates[1]])
 
     it "candidates with duplicate values when indexed by key are returned properly", ->
@@ -110,6 +110,6 @@ describe "filtering", ->
         {uri: '/usr/bin/ls', fname: 'ls'},
         {uri: '/usr/sbin/ls', fname: 'ls'}
       ]
-      obj = zadeh.New()
-      obj.setCandidates candidates, key: 'fname'
+      obj = new zadeh.ObjectArrayFilterer()
+      obj.setCandidates candidates, 'fname'
       expect(obj.filter('l')).toEqual([candidates[0], candidates[1]])

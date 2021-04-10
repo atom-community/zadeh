@@ -8,15 +8,15 @@
 namespace zadeh {
 
 template<typename ArrayType, typename ElementType = CandidateString>
-class ArrayFilterer {
+class StringArrayFilterer {
   private:
     vector<std::vector<CandidateString>> partitioned_candidates{};
     ArrayType candidates_view;    // TODO use a reference or a raw pointer?
 
   public:
-    ArrayFilterer() = default;
+    StringArrayFilterer() = default;
 
-    ArrayFilterer(ArrayType &&candidates) {
+    StringArrayFilterer(ArrayType &&candidates) {
         set_candidates(forward<ArrayType>(candidates));
     }
 

@@ -8,8 +8,8 @@ int main() {
   // the data to fuzzy search on
   auto data = vector<string>{"eye", "why", "bi"};
 
-  // setup ArrayFilterer
-  auto arrayFilterer = zadeh::ArrayFilterer<vector<string>, string>{};
+  // setup StringArrayFilterer
+  auto arrayFilterer = zadeh::StringArrayFilterer<vector<string>, string>{};
   arrayFilterer.set_candidates(data);
 
   // filter the indices that match the query
