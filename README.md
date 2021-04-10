@@ -93,22 +93,28 @@ const zadeh = require("zadeh")
 
 ```typescript
 export class StringArrayFilterer {
-  /** Make a `StringArrayFilterer` for the candidates that are going to be filtered.
+  /**
+   * Make a `StringArrayFilterer` for the candidates that are going to be filtered.
+   *
    * @param candidates An array of strings.
    */
   constructor(candidates?: Array<string>)
 
-  /** The method to perform the filtering on the already set candidates
-   *  @param query A string query to match each candidate against.
-   *  @param options options
-   *  @return returns an array of candidates sorted by best match against the query.
+  /**
+   * The method to perform the filtering on the already set candidates
+   *
+   * @param query A string query to match each candidate against.
+   * @param options Options
+   * @returns Returns an array of candidates sorted by best match against the query.
    */
   filter(query: string, options: StringArrayFilterOptions = {}): Array<string>
 
-  /** Allows to set the candidates (if changed or not set in the constructor).
+  /**
+   * Allows to set the candidates (if changed or not set in the constructor).
+   *
    * @param candidates An array of strings.
    */
-   setCandidates(candidates: Array<string>)
+  setCandidates(candidates: Array<string>)
 }
 ```
 
@@ -134,24 +140,30 @@ ObjectArrayFilterer is a class that performs filtering on an array of objects ba
 
 ```typescript
 export class ObjectArrayFilterer {
-  /** Make a `ObjectArrayFilterer` for the candidates that are going to be filtered.
+  /**
+   * Make a `ObjectArrayFilterer` for the candidates that are going to be filtered.
+   *
    * @param candidates An array of objects.
-   * @param dataKey the key which is indexed for each object, and filtering is done based on the resulting string
+   * @param dataKey The key which is indexed for each object, and filtering is done based on the resulting string
    */
   constructor(candidates?: Array<ObjectWithKey>, dataKey?: string | number)
 
-  /** The method to perform the filtering on the already set candidates
-   *  @param query A string query to match each candidate against.
-   *  @param options options
-   *  @return returns an array of candidates sorted by best match against the query.
+  /**
+   * The method to perform the filtering on the already set candidates
+   *
+   * @param query A string query to match each candidate against.
+   * @param options Options
+   * @returns Returns an array of candidates sorted by best match against the query.
    */
   filter(query: string, options: ObjectArrayFilterOptions = {}): Array<ObjectWithKey>
 
-  /** Allows to set the candidates (if changed or not set in the constructor).
+  /**
+   * Allows to set the candidates (if changed or not set in the constructor).
+   *
    * @param candidates An array of objects.
-   * @param dataKey the key which is indexed for each object, and filtering is done based on the resulting string
+   * @param dataKey The key which is indexed for each object, and filtering is done based on the resulting string
    */
-   setCandidates(candidates: Array<ObjectWithKey>, dataKey: string | number)
+  setCandidates(candidates: Array<ObjectWithKey>, dataKey: string | number)
 }
 ```
 
@@ -182,17 +194,22 @@ objArrFilterer.filter('all')  // [{ name: 'Call', id: 1 }]
 export class TreeFilterer<T> {
   constructor()
 
-  /** The method to set the candidates that are going to be filtered
+  /**
+   * The method to set the candidates that are going to be filtered
+   *
    * @param candidates An array of tree objects.
-   * @param dataKey the key of the object (and its children) which holds the data (defaults to `"data"`)
-   * @param childrenKey the key of the object (and its children) which hold the children (defaults to `"children"`)
+   * @param dataKey The key of the object (and its children) which holds the data (defaults to `"data"`)
+   * @param childrenKey The key of the object (and its children) which hold the children (defaults to `"children"`)
    */
   setCandidates<T>(candidates: Array<T>, dataKey?: string, childrenKey?: string): void
 
-  /** The method to perform the filtering on the already set candidates
-   *  @param query A string query to match each candidate against.
-   *  @param options options
-   *  @return An array of candidate objects in form of `{data, index, level}` sorted by best match against the query. Each objects has the address of the object in the tree using `index` and `level`.
+  /**
+   * The method to perform the filtering on the already set candidates
+   *
+   * @param query A string query to match each candidate against.
+   * @param options Options
+   * @returns An array of candidate objects in form of `{data, index, level}` sorted by best match against the query.
+   *   Each objects has the address of the object in the tree using `index` and `level`.
    */
   filter(query: string, options: IFilterOptions<object>): TreeFilterResult[]
 }
@@ -309,20 +326,20 @@ Sort and filter the given candidates by matching them against the given query.
 Returns an array of candidates sorted by best match against the query.
 
 ```js
-const { filter } = require('zadeh')
+const { filter } = require("zadeh")
 
 // With an array of strings
-let candidates = ['Call', 'Me', 'Maybe']
-let results = filter(candidates, 'me')  // ['Me', 'Maybe']
+let candidates = ["Call", "Me", "Maybe"]
+let results = filter(candidates, "me") // ['Me', 'Maybe']
 
 // With an array of objects
 const candidates = [
-  {name: 'Call', id: 1},
-  {name: 'Me', id: 2},
-  {name: 'Maybe', id: 3}
+  { name: "Call", id: 1 },
+  { name: "Me", id: 2 },
+  { name: "Maybe", id: 3 },
 ]
 
-results = filter(candidates, 'me', {key: 'name'}) // [{name: 'Me', id: 2}, {name: 'Maybe', id: 3}]
+results = filter(candidates, "me", { key: "name" }) // [{name: 'Me', id: 2}, {name: 'Maybe', id: 3}]
 ```
 
 **Deprecation Note**: use `StringArrayFilterer` or `ObjectArrayFilterer` class instead. `filter` internally uses this class and in each call, it sets the candidates from scratch which can slow down the process.
