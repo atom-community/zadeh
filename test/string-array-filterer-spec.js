@@ -1,7 +1,7 @@
 const { StringArrayFilterer } = require("../index")
 
 describe("StringArrayFilterer", function () {
-  it("is possible to set candidates only once and filter multiple times", function () {
+  it("tilres string arrays", function () {
     const arrayFilterer = new StringArrayFilterer()
     arrayFilterer.setCandidates(["Call", "Me", "Maybe"]) // set candidates only once
     // call filter multiple times
