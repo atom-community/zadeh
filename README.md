@@ -92,21 +92,23 @@ const zadeh = require("zadeh")
 `StringArrayFilterer` is a class that allows to set the `candidates` only once and perform filtering on them multiple times. This is much more efficient than calling the `filter` function directly.
 
 ```typescript
-export class StringArrayFilterer<T> {
-  constructor()
-
-  /** The method to set the candidates that are going to be filtered
-   * @param candidates An array of tree objects.
-   * @param dataKey (optional) if `candidates` is an array of objects, pass the key in the object which holds the data. dataKey can be the options object passed to `filter` method (but this is deprecated).
+export class StringArrayFilterer {
+  /** Make a `StringArrayFilterer` for the candidates that are going to be filtered.
+   * @param candidates An array of strings.
    */
-  setCandidates<T>(candidates: Array<T>, dataKey?: string): void
+  constructor(candidates?: Array<string>)
 
   /** The method to perform the filtering on the already set candidates
    *  @param query A string query to match each candidate against.
    *  @param options options
    *  @return returns an array of candidates sorted by best match against the query.
    */
-  filter(query: string, options: IFilterOptions<T>): Array<T>
+  filter(query: string, options: StringArrayFilterOptions = {}): Array<string>
+
+  /** Allows to set the candidates (if changed or not set in the constructor).
+   * @param candidates An array of strings.
+   */
+   setCandidates(candidates: Array<string>)
 }
 ```
 

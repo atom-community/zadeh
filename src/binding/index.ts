@@ -93,6 +93,9 @@ export class StringArrayFilterer {
   // @ts-ignore
   candidates: Array<string>
 
+  /** Make a `StringArrayFilterer` for the candidates that are going to be filtered.
+   * @param candidates An array of strings.
+   */
   constructor(candidates?: Array<string>) {
     if (candidates !== undefined) {
       this.setCandidates(candidates)
