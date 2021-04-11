@@ -12,12 +12,12 @@ Napi::Object ZadehNode::Init(Napi::Env env, Napi::Object exports) {
       env,
       "Zadeh",
       { // member functions in JS
-        InstanceMethod("filter", &ZadehNode::Filter),
-        InstanceMethod("filterTree", &ZadehNode::FilterTree),
+        InstanceMethod("filter", &ZadehNode::filter),
+        InstanceMethod("filterIndices", &ZadehNode::filterIndices),
+        // InstanceMethod("filterTree", &ZadehNode::filterTree),
+        InstanceMethod("filterIndicesTree", &ZadehNode::filterIndicesTree),
         InstanceMethod("setArrayFiltererCandidates", &ZadehNode::setArrayFiltererCandidates),
-        InstanceMethod("setTreeFiltererCandidates", &ZadehNode::setTreeFiltererCandidates)
-
-      });
+        InstanceMethod("setTreeFiltererCandidates", &ZadehNode::setTreeFiltererCandidates) });
     // export ZadehNode class to JS
     exports.Set("Zadeh", func);
 

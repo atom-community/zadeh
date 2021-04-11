@@ -3,11 +3,12 @@ import type { Tree, TreeFilterResult } from "./index"
 export declare class Zadeh {
   constructor()
 
-  filter(query: string, maxResult: number, usePathScoring: boolean, useExtensionBonus: boolean): Array<number>
+  filter(query: string, maxResult: number, usePathScoring: boolean, useExtensionBonus: boolean): Array<string>
+  filterIndices(query: string, maxResult: number, usePathScoring: boolean, useExtensionBonus: boolean): Array<number>
 
   setArrayFiltererCandidates(candidateStrings: Array<string>): boolean
 
-  filterTree(
+  filterIndicesTree(
     query: string,
     maxResult: number,
     usePathScoring: boolean,
@@ -49,7 +50,7 @@ export function validate_setArrayFiltererCandidates(...args: Parameters<Zadeh["s
   }
 }
 
-export function validate_filterTree(...args: Parameters<Zadeh["filterTree"]>) {
+export function validate_filterTree(...args: Parameters<Zadeh["filterIndicesTree"]>) {
   if (
     !(
       typeof args[0] === "string" &&

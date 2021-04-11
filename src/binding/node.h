@@ -44,7 +44,7 @@ class ZadehNode : public Napi::ObjectWrap<ZadehNode> {
     }
 
     /** (query: string, maxResults: number, usePathScoring: bool, useExtensionBonus: bool) */
-    Napi::Value FilterTree(const Napi::CallbackInfo &info) {
+    Napi::Value filterIndicesTree(const Napi::CallbackInfo &info) {
         const auto filter_indices = treeFilterer.filter_indices(
           info[0].As<Napi::String>(),
           info[1].As<Napi::Number>().Uint32Value(),

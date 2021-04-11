@@ -136,8 +136,9 @@ export class StringArrayFilterer {
     const useExtensionBonus = Boolean(options.useExtensionBonus)
 
     Binding.validate_filter(query, maxResult, usePathScoring, useExtensionBonus)
-    const res = this.obj.filter(query, maxResult, usePathScoring, useExtensionBonus)
-    return res.map((ind: number) => this.candidates[ind])
+    // NOTE calling obj.filter is slower than (obj.filterIndices then map) due to the interop overhead
+    const filteredIndices = this.obj.filterIndices(query, maxResult, usePathScoring, useExtensionBonus)
+    return filteredIndices.map((ind: number) => this.candidates[ind])
   }
 }
 
@@ -193,7 +194,8 @@ export class ObjectArrayFilterer {
     const useExtensionBonus = Boolean(options.useExtensionBonus)
 
     Binding.validate_filter(query, maxResult, usePathScoring, useExtensionBonus)
-    const res = this.obj.filter(query, maxResult, usePathScoring, useExtensionBonus)
+    // get the filtered indices then return the objects on the JS side
+    const res = this.obj.filterIndices(query, maxResult, usePathScoring, useExtensionBonus)
     return res.map((ind: number) => this.candidates[ind])
   }
 }
@@ -307,7 +309,7 @@ export class TreeFilterer<T extends Tree = Tree> {
     const useExtensionBonus = Boolean(options.useExtensionBonus)
 
     Binding.validate_filterTree(query, maxResult, usePathScoring, useExtensionBonus)
-    return this.obj.filterTree(query, maxResult, usePathScoring, useExtensionBonus)
+    return this.obj.filterIndicesTree(query, maxResult, usePathScoring, useExtensionBonus)
   }
 }
 
