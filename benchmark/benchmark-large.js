@@ -75,7 +75,7 @@ for (const query of two_letter_tests) {
     maxResults: 10,
   })
 }
-elapsed_time(t2, "TwoLetter direct filter")
+elapsed_time(t2, "TwoLetter deprecated filter")
 
 const t3 = start_timer()
 for (const query of two_letter_tests) {
@@ -83,7 +83,7 @@ for (const query of two_letter_tests) {
     maxResults: 10,
   })
 }
-elapsed_time(t3, "TwoLetter setCandidates")
+elapsed_time(t3, "TwoLetter StringArrayFilterer.filter")
 
 console.log("======")
 
@@ -101,7 +101,7 @@ for (const query of three_letter_tests) {
     maxResults: 10,
   })
 }
-elapsed_time(t5, "ThreeLetter direct filter")
+elapsed_time(t5, "ThreeLetter deprecated filter")
 
 const t6 = start_timer()
 for (const query of three_letter_tests) {
@@ -109,68 +109,85 @@ for (const query of three_letter_tests) {
     maxResults: 10,
   })
 }
-elapsed_time(t6, "ThreeLetter setCandidates")
+elapsed_time(t6, "ThreeLetter StringArrayFilterer.filter")
 
 console.log("======")
+const obj = new ObjectArrayFilterer(dict, "key")
 
 const t7 = start_timer()
+for (const query of two_letter_tests) {
+  obj.filter(query, {
+    maxResults: 10,
+  })
+}
+elapsed_time(t7, "TwoLetter object filter")
+
+const t8 = start_timer()
+for (const query of three_letter_tests) {
+  obj.filter(query, {
+    maxResults: 10,
+  })
+}
+elapsed_time(t8, "ThreeLetter object filter")
+
+const t71 = start_timer()
 for (const query of two_letter_tests) {
   filter(dict, query, {
     maxResults: 10,
     key: "key",
   })
 }
-elapsed_time(t7, "TwoLetter keybased filter")
+elapsed_time(t71, "TwoLetter object deprecated filter")
 
-const t8 = start_timer()
+const t81 = start_timer()
 for (const query of three_letter_tests) {
   filter(dict, query, {
     maxResults: 10,
     key: "key",
   })
 }
-elapsed_time(t8, "ThreeLetter keybased filter")
+elapsed_time(t81, "ThreeLetter object deprecated filter")
 
 console.log("======")
 
 const t9 = start_timer()
-const obj = new StringArrayFilterer(lines)
-elapsed_time(t9, "setCandidates")
+const obj_1 = new StringArrayFilterer(lines)
+elapsed_time(t9, "StringArrayFilterer constructor")
 
 const t10 = start_timer()
 for (const query of two_letter_tests) {
-  obj.filter(query, {
+  obj_1.filter(query, {
     maxResults: 10,
   })
 }
-elapsed_time(t10, "TwoLetter filter")
+elapsed_time(t10, "TwoLetter StringArrayFilterer.filter")
 
 const t11 = start_timer()
 for (const query of three_letter_tests) {
-  obj.filter(query, {
+  obj_1.filter(query, {
     maxResults: 10,
   })
 }
-elapsed_time(t11, "ThreeLetter filter")
+elapsed_time(t11, "ThreeLetter StringArrayFilterer.filter")
 
 console.log("======")
 
 const t12 = start_timer()
-const obj2 = new ObjectArrayFilterer(dict, "key")
-elapsed_time(t12, "setCandidates keybased")
+const obj_2 = new ObjectArrayFilterer(dict, "key")
+elapsed_time(t12, "ObjectArrayFilterer constructor")
 
 const t13 = start_timer()
 for (const query of two_letter_tests) {
-  obj2.filter(query, {
+  obj_2.filter(query, {
     maxResults: 10,
   })
 }
-elapsed_time(t13, "TwoLetter keybased filter")
+elapsed_time(t13, "TwoLetter ObjectArrayFilterer.filter")
 
 const t14 = start_timer()
 for (const query of three_letter_tests) {
-  obj2.filter(query, {
+  obj_2.filter(query, {
     maxResults: 10,
   })
 }
-elapsed_time(t14, "ThreeLetter keybased filter")
+elapsed_time(t14, "ThreeLetter ObjectArrayFilterer.filter")
