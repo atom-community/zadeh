@@ -9,16 +9,20 @@
 
 namespace zadeh {
 
-
-// Node Array Data Interface
+/** Napi::Array Data Interface */
 template<>
-string get_at(const Napi::Array &candidates, const uint32_t j) {
-    return candidates.Get(j).ToString().Utf8Value();
+Napi::Array init(const size_t len, const Napi::Env &env) {
+    return Napi::Array::New(env, len);
 }
 
 template<>
-Napi::Object get_at(const Napi::Array &candidates, const uint32_t j) {
-    return candidates.Get(j).As<Napi::Object>();
+string get_at(const Napi::Array &candidates, const size_t ind) {
+    return candidates.Get(ind).ToString().Utf8Value();
+}
+
+template<>
+Napi::Object get_at(const Napi::Array &candidates, const uint32_t ind) {
+    return candidates.Get(ind).As<Napi::Object>();
 }
 
 template<>
@@ -26,11 +30,15 @@ size_t get_size(const Napi::Array &candidates) {
     return candidates.Length();
 }
 
-// Node Object Data Interface
 template<>
-CandidateString get_at(const Napi::Object &candidates, const string j) {
-    return candidates.Get(j).ToString().Utf8Value();
+Napi::Reference<Napi::Array> get_ref(const Napi::Array &arr) {
+    return Napi::Persistent(arr);
 }
+
+//template<>
+//void release_ref(Napi::Reference<Napi::Array> &arr) {
+//    arr.Unref();
+//}
 
 
 /** Get the children of a tree_object (Napi::Object) */
