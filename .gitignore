@@ -1,21 +1,24 @@
+# Node
 node_modules/
+package-lock.json
 
+# Caches
+.parcel-cache
+.rollup.cache
+.ropeproject
+.mypy_cache
+cmake-build-*
+.scannerwork
+
+
+# Built Files
 build/
 dist/
 dist-test/
 prebuilds/
-
-.parcel-cache
-.rollup.cache
-
-index.js
-*.d.ts
-index.js.map
+out/
 tsconfig.tsbuildinfo
 
-.scannerwork
-package-lock.json
-cmake-build-*
-
-.ropeproject
-.mypy_cache
+index.js
+index.js.map
+*.d.ts
