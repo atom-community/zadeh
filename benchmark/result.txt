@@ -1,51 +1,54 @@
 
+> zadeh@2.1.0 benchmark C:\Users\aminy\Documents\GitHub\JavaScript\@atom-ide-community\zadeh
+> npm run benchmark.small && npm run benchmark.regular && npm run benchmark.large && npm run benchmark.tree
+
 
 > zadeh@2.1.0 benchmark.small
 > node benchmark/benchmark-small.js
 
 Zadeh: deprecated function. Use 'StringArrayFilterer' instead
 ====== Running test - query:nm ======
-zadeh vs. legacy:                                                    0.19 ms  |   0.46 ms
+zadeh vs. legacy:                                                    0.18 ms  |   0.46 ms
 length of the result: 100, length of the lines: 100
 
 ====== Running test - query:npm ======
-zadeh vs. legacy:                                                    0.14 ms  |   3.36 ms
+zadeh vs. legacy:                                                    0.16 ms  |   4.53 ms
 length of the result: 55, length of the lines: 100
 
 ====== Running test - query:node ======
-zadeh vs. legacy:                                                    0.23 ms  |   1.54 ms
+zadeh vs. legacy:                                                    0.19 ms  |   1.32 ms
 length of the result: 100, length of the lines: 100
 
 ====== Running test - query:grunt ======
-zadeh vs. legacy:                                                    0.14 ms  |   0.26 ms
+zadeh vs. legacy:                                                    0.12 ms  |   0.27 ms
 length of the result: 33, length of the lines: 100
 
 ====== Running test - query:html ======
-zadeh vs. legacy:                                                    0.12 ms  |   0.45 ms
+zadeh vs. legacy:                                                    0.11 ms  |   0.44 ms
 length of the result: 10, length of the lines: 100
 
 ====== Running test - query:doc ======
-zadeh vs. legacy:                                                    0.21 ms  |   3.75 ms
+zadeh vs. legacy:                                                    0.22 ms  |   3.7 ms
 length of the result: 87, length of the lines: 100
 
 ====== Running test - query:cli ======
-zadeh vs. legacy:                                                    0.19 ms  |   1.62 ms
+zadeh vs. legacy:                                                    0.18 ms  |   1.53 ms
 length of the result: 57, length of the lines: 100
 
 ====== Running test - query:js ======
-zadeh vs. legacy:                                                    0.16 ms  |   0.29 ms
+zadeh vs. legacy:                                                    0.17 ms  |   0.29 ms
 length of the result: 60, length of the lines: 100
 
 ====== Running test - query:jas ======
-zadeh vs. legacy:                                                    0.14 ms  |   0.49 ms
+zadeh vs. legacy:                                                    0.13 ms  |   0.49 ms
 length of the result: 19, length of the lines: 100
 
 ====== Running test - query:mine ======
-zadeh vs. legacy:                                                    0.23 ms  |   2.38 ms
+zadeh vs. legacy:                                                    0.43 ms  |   2.36 ms
 length of the result: 65, length of the lines: 100
 
 ====== Running test - query:stream ======
-zadeh vs. legacy:                                                    0.3 ms  |   1.31 ms
+zadeh vs. legacy:                                                    0.14 ms  |   1.23 ms
 length of the result: 19, length of the lines: 100
 
 
@@ -55,92 +58,92 @@ length of the result: 19, length of the lines: 100
 Zadeh: deprecated function. Use 'StringArrayFilterer' instead
 ====== Running test - query:index ======
 ~10% of results are positive, mix exact & fuzzy
-zadeh vs. legacy:                                                    27.9 ms  |   43.44 ms
+zadeh vs. legacy:                                                    28.44 ms  |   43.49 ms
 length of the result: 6168, length of the lines: 66672
 
 ====== Running test - query:indx ======
 ~10% of results are positive, Fuzzy match
-zadeh vs. legacy:                                                    27.48 ms  |   48.62 ms
+zadeh vs. legacy:                                                    28.05 ms  |   48.44 ms
 length of the result: 6192, length of the lines: 66672
 
 ====== Running test - query:walkdr ======
 ~1% of results are positive, fuzzy
-zadeh vs. legacy:                                                    27.39 ms  |   15.43 ms
+zadeh vs. legacy:                                                    25.68 ms  |   15.69 ms
 length of the result: 504, length of the lines: 66672
                                                                             zadeh is SLOWER
 
 ====== Running test - query:node ======
 ~98% of results are positive, mostly Exact match
-zadeh vs. legacy:                                                    46.27 ms  |   66.83 ms
+zadeh vs. legacy:                                                    46.26 ms  |   67.55 ms
 length of the result: 65136, length of the lines: 66672
 
 ====== Running test - query:nm ======
 ~98% of results are positive, Acronym match
-zadeh vs. legacy:                                                    39.87 ms  |   67.65 ms
+zadeh vs. legacy:                                                    40.38 ms  |   66.45 ms
 length of the result: 65208, length of the lines: 66672
 
 ====== Running test - query:nm ======
 ~98% of results + Fuzzy match, [Worst case scenario]
-zadeh vs. legacy:                                                    39.38 ms  |   60.45 ms
+zadeh vs. legacy:                                                    39.3 ms  |   59.24 ms
 length of the result: 65208, length of the lines: 66672
 
 ====== Running test - query:nm ======
 ~98% of results + Fuzzy match, [Mitigation]
-zadeh vs. legacy:                                                    39.45 ms  |   55.41 ms
+zadeh vs. legacy:                                                    39.99 ms  |   55.26 ms
 length of the result: 65208, length of the lines: 66672
 
 ====== Running test - query:ndem ======
 ~98% of results + Fuzzy match, [Worst case but shorter string]
-zadeh vs. legacy:                                                    45.88 ms  |   204.18 ms
+zadeh vs. legacy:                                                    45.26 ms  |   207.97 ms
 length of the result: 65124, length of the lines: 66672
 
 Zadeh: prepareQuery is deprecated. There is no major benefit by precomputing something just for the query.
-Matching 66672 results for 'index' (Prepare in advance) took                           277.77 ms
-Matching 66672 results for 'index' (cache) took                                        277.95 ms
-Matching 66672 results for 'index' (_legacy_) took                                     81.34 ms
+Matching 66672 results for 'index' (Prepare in advance) took                           279.91 ms
+Matching 66672 results for 'index' (cache) took                                        282.02 ms
+Matching 66672 results for 'index' (_legacy_) took                                     83.31 ms
 
 > zadeh@2.1.0 benchmark.large
 > node benchmark/benchmark-large.js
 
-TwoLetter _legacy_ took                                                                10811.35 ms
+TwoLetter _legacy_ took                                                                10756.70 ms
 Zadeh: deprecated function. Use 'StringArrayFilterer' instead
-TwoLetter deprecated filter took                                                       3279.92 ms
-TwoLetter StringArrayFilterer.filter took                                              404.24 ms
+TwoLetter deprecated filter took                                                       3318.05 ms
+TwoLetter StringArrayFilterer.filter took                                              389.90 ms
 ======
-ThreeLetter _legacy_ took                                                              8691.51 ms
-ThreeLetter deprecated filter took                                                     3412.90 ms
-ThreeLetter StringArrayFilterer.filter took                                            387.47 ms
+ThreeLetter _legacy_ took                                                              8667.04 ms
+ThreeLetter deprecated filter took                                                     3382.18 ms
+ThreeLetter StringArrayFilterer.filter took                                            391.64 ms
 ======
-TwoLetter object filter took                                                           406.51 ms
-ThreeLetter object filter took                                                         385.07 ms
+TwoLetter object filter took                                                           395.32 ms
+ThreeLetter object filter took                                                         390.56 ms
 Zadeh: deprecated function. Use 'ObjectArrayFilterer' instead
-TwoLetter object deprecated filter took                                                3931.74 ms
-ThreeLetter object deprecated filter took                                              4513.32 ms
+TwoLetter object deprecated filter took                                                4243.98 ms
+ThreeLetter object deprecated filter took                                              4697.41 ms
 ======
-StringArrayFilterer constructor took                                                   226.46 ms
-TwoLetter StringArrayFilterer.filter took                                              400.51 ms
-ThreeLetter StringArrayFilterer.filter took                                            406.39 ms
+StringArrayFilterer constructor took                                                   224.09 ms
+TwoLetter StringArrayFilterer.filter took                                              407.53 ms
+ThreeLetter StringArrayFilterer.filter took                                            397.28 ms
 ======
-ObjectArrayFilterer constructor took                                                   234.50 ms
-TwoLetter ObjectArrayFilterer.filter took                                              577.28 ms
-ThreeLetter ObjectArrayFilterer.filter took                                            423.06 ms
+ObjectArrayFilterer constructor took                                                   236.27 ms
+TwoLetter ObjectArrayFilterer.filter took                                              410.62 ms
+ThreeLetter ObjectArrayFilterer.filter took                                            393.21 ms
 
 > zadeh@2.1.0 benchmark.tree
 > node benchmark/benchmark-tree.js
 
-TreeFilterer.setCandidates: took                                                       2.21 ms
-TreeFilterer.filter text took                                                          0.78 ms
-TreeFilterer.filter dips took                                                          0.36 ms
-TreeFilterer.filter disp took                                                          0.33 ms
-TreeFilterer.filter txt took                                                           0.45 ms
-TreeFilterer.filter getBuffer took                                                     0.34 ms
+TreeFilterer.setCandidates: took                                                       2.13 ms
+TreeFilterer.filter text took                                                          0.62 ms
+TreeFilterer.filter dips took                                                          0.34 ms
+TreeFilterer.filter disp took                                                          0.26 ms
+TreeFilterer.filter txt took                                                           0.50 ms
+TreeFilterer.filter getBuffer took                                                     0.29 ms
 
-TreeFilterer.filter average:                                                           0.452 ms
+TreeFilterer.filter average:                                                           0.402 ms
 
-filterTree text took                                                                   2.68 ms
-filterTree dips took                                                                   2.44 ms
-filterTree disp took                                                                   2.39 ms
-filterTree txt: took                                                                   3.81 ms
-filterTree getBuffer: took                                                             2.37 ms
+filterTree text took                                                                   2.80 ms
+filterTree dips took                                                                   3.26 ms
+filterTree disp took                                                                   2.30 ms
+filterTree txt: took                                                                   3.80 ms
+filterTree getBuffer: took                                                             2.48 ms
 
-filterTree average:                                                                    2.738 ms
+filterTree average:                                                                    2.928 ms

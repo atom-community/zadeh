@@ -1,4 +1,4 @@
-const zadeh = require("../index")
+const { StringArrayFilterer } = require("../index")
 const legacy = require("fuzzaldrin-plus")
 
 let performance = null
@@ -50,15 +50,17 @@ exports.elapsed_time = elapsed_time
 
 function doFilterTest(test_name, lines, query, params) {
   console.log(`====== Running test - query:${query} ======`)
+  const strArrFilterer = new StringArrayFilterer() // We exclude the class construction time
   const timer_start_time = start_timer()
-  const res_actual = zadeh.filter(lines, query, params)
+  strArrFilterer.setCandidates(lines)
+  const res_actual = strArrFilterer.filter(query, params)
   const elapsed = elapsed_time(timer_start_time)
 
   const timer_start_time_legacy = start_timer()
   const res_expected = legacy.filter(lines, query)
   const elapsed_legacy = elapsed_time(timer_start_time_legacy)
 
-  if (res_actual.length != res_expected.length) {
+  if (res_actual.length !== res_expected.length) {
     console.error(`Results count changed! ${res_actual.length} instead of ${res_expected.length}`)
     process.exit(1)
   }
