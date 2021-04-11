@@ -189,8 +189,8 @@ export class ObjectArrayFilterer {
 /** @deprecated */
 type DeprecatedFilterReturn<T> = T extends string ? string[] : ObjectWithKey[]
 
-let filterObjectArrayFiltererCalled = false
-let filterStringArrayFilterer = false
+let warnStringArrayFilterer = true
+let warnfilterObjectArrayFilterer = true
 
 /**
  * @deprecated Use `StringArrayFilterer` or `ObjectArrayFilterer` instead Sort and filter the given candidates by
@@ -213,18 +213,18 @@ export function filter<T extends StringOrObjectArray>(
 
   if (typeof candidates[0] === "object" && options.key) {
     // an object (options) containing the key
-    if (!filterObjectArrayFiltererCalled) {
+    if (warnfilterObjectArrayFilterer) {
       console.warn(`Zadeh: deprecated function. Use 'ObjectArrayFilterer' instead`)
-      filterObjectArrayFiltererCalled = true
+      warnfilterObjectArrayFilterer = false
     }
     const dataKey = options.key
     const objectArrayFilterer = new ObjectArrayFilterer(candidates as ObjectWithKey[], dataKey)
     return objectArrayFilterer.filter(query, options) as DeprecatedFilterReturn<T>
   } else if (typeof candidates[0] === "string") {
     // string array
-    if (!filterStringArrayFilterer) {
+    if (warnStringArrayFilterer) {
       console.warn(`Zadeh: deprecated function. Use 'StringArrayFilterer' instead`)
-      filterStringArrayFilterer = true
+      warnStringArrayFilterer = false
     }
     const stringArrayFilterer = new StringArrayFilterer(candidates as string[])
     return stringArrayFilterer.filter(query, options) as DeprecatedFilterReturn<T>
