@@ -25,7 +25,7 @@ export interface IOptions {
   useExtensionBonus?: boolean
 
   /**
-   * A path separator which is a string with length 1. Such as "/" or "\". By default, this is chosen based on the
+   * A path separator which is a string with length 1. Such as "/" or "". By default, this is chosen based on the
    * operating system.
    */
   pathSeparator?: "/" | "\\" | stringWithLength1
