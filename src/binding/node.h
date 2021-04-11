@@ -13,10 +13,6 @@ class ZadehNode : public Napi::ObjectWrap<ZadehNode> {
   public:
     Napi::Value Filter(const Napi::CallbackInfo &info) {
         auto res = Napi::Array::New(info.Env());
-        if (info.Length() != 4 || !info[0].IsString() || !info[1].IsNumber() || !info[2].IsBoolean() || !info[3].IsBoolean()) {
-            Napi::TypeError::New(info.Env(), "Invalid arguments for Filter").ThrowAsJavaScriptException();
-            return Napi::Boolean();
-        }
 
         const auto filter_indices = arrayFilterer.filter_indices(
           info[0].As<Napi::String>(),
@@ -32,25 +28,12 @@ class ZadehNode : public Napi::ObjectWrap<ZadehNode> {
 
 
     Napi::Value setArrayFiltererCandidates(const Napi::CallbackInfo &info) {
-        if (info.Length() != 1 || !info[0].IsArray()) {
-            Napi::TypeError::New(info.Env(), "Invalid arguments for setArrayFiltererCandidates").ThrowAsJavaScriptException();
-            return Napi::Boolean();
-        }
-
         arrayFilterer.set_candidates(info[0].As<Napi::Array>());
 
         return Napi::Boolean();
     }
 
     Napi::Value setTreeFiltererCandidates(const Napi::CallbackInfo &info) {
-        // parse arguments
-        if (info.Length() != 3
-            || !info[0].IsArray()
-            || !info[1].IsString() || !info[2].IsString()) {
-            Napi::TypeError::New(info.Env(), "Invalid arguments for setTreeFiltererCandidates").ThrowAsJavaScriptException();
-            return Napi::Boolean();
-        }
-
         // create Tree and set candidates
         treeFilterer.set_candidates(
           info[0].As<Napi::Array>(),
@@ -62,14 +45,6 @@ class ZadehNode : public Napi::ObjectWrap<ZadehNode> {
 
     /** (query: string, maxResults: number, usePathScoring: bool, useExtensionBonus: bool) */
     Napi::Value FilterTree(const Napi::CallbackInfo &info) {
-        // parse arguments
-        if (info.Length() != 4
-            || !info[0].IsString()
-            || !info[1].IsNumber() || !info[2].IsBoolean() || !info[3].IsBoolean()) {
-            Napi::TypeError::New(info.Env(), "Invalid arguments for FilterTree").ThrowAsJavaScriptException();
-            return Napi::Array::New(info.Env());
-        }
-
         const auto filter_indices = treeFilterer.filter_indices(
           info[0].As<Napi::String>(),
           info[1].As<Napi::Number>().Uint32Value(),
@@ -104,9 +79,6 @@ class ZadehNode : public Napi::ObjectWrap<ZadehNode> {
 
 
 Napi::Number score(const Napi::CallbackInfo &info) {
-    if (info.Length() != 4 || !info[0].IsString() || !info[1].IsString() || !info[2].IsBoolean() || !info[3].IsBoolean()) {
-        Napi::TypeError::New(info.Env(), "Invalid arguments for score").ThrowAsJavaScriptException();
-    }
     const std::string candidate = info[0].As<Napi::String>();
     const std::string query = info[1].As<Napi::String>();
     const bool usePathScoring = info[2].As<Napi::Boolean>();
@@ -119,17 +91,11 @@ Napi::Number score(const Napi::CallbackInfo &info) {
 
 Napi::Array match(const Napi::CallbackInfo &info) {
     auto res = Napi::Array::New(info.Env());
-    if (info.Length() != 3 || !info[0].IsString() || !info[1].IsString() || !info[2].IsString()) {
-        Napi::TypeError::New(info.Env(), "Invalid arguments for match").ThrowAsJavaScriptException();
-        return res;
-    }
     std::string candidate = info[0].As<Napi::String>();
     std::string query = info[1].As<Napi::String>();
     std::string pathSeparator = info[2].As<Napi::String>();
-    if (pathSeparator.size() != 1) {
-        Napi::TypeError::New(info.Env(), "Invalid arguments for match").ThrowAsJavaScriptException();
-        return res;
-    }
+    assert(pathSeparator.size() == 1);
+
     Options options(query, pathSeparator[0]);
     auto matches = matcher_match(candidate, query, options);
     for (uint32_t i = 0, len = matches.size(); i < len; i++) {
@@ -139,17 +105,11 @@ Napi::Array match(const Napi::CallbackInfo &info) {
 }
 
 Napi::String wrap(const Napi::CallbackInfo &info) {
-    if (info.Length() != 3 || !info[0].IsString() || !info[1].IsString() || !info[2].IsString()) {
-        Napi::TypeError::New(info.Env(), "Invalid arguments for wrap").ThrowAsJavaScriptException();
-        return Napi::String::New(info.Env(), "");
-    }
     std::string candidate = info[0].As<Napi::String>();
     std::string query = info[1].As<Napi::String>();
     std::string pathSeparator = info[2].As<Napi::String>();
-    if (pathSeparator.size() != 1) {
-        Napi::TypeError::New(info.Env(), "Invalid arguments for wrap").ThrowAsJavaScriptException();
-        return Napi::String::New(info.Env(), "");
-    }
+    assert(pathSeparator.size() == 1);
+
     Options options(query, pathSeparator[0]);
     std::string res;
     get_wrap(candidate, query, options, &res);

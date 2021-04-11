@@ -12,6 +12,8 @@ const binding = nodeGypBuld(__dirname) as typeof Binding // __dirname relies on 
  ██████  ██         ██    ██  ██████  ██   ████ ███████
 */
 
+type stringWithLength1 = string
+
 export interface IOptions {
   /** @default false */
   allowErrors?: boolean
@@ -22,7 +24,11 @@ export interface IOptions {
   /** @default false */
   useExtensionBonus?: boolean
 
-  pathSeparator?: "/" | "\\" | string
+  /**
+   * A path separator which is a string with length 1. Such as "/" or "". By default, this is chosen based on the
+   * operating system.
+   */
+  pathSeparator?: "/" | "\\" | stringWithLength1
 
   // TODO not implemented?
   // optCharRegEx?: RegExp
@@ -110,6 +116,8 @@ export class StringArrayFilterer {
    */
   setCandidates(candidates: Array<string>) {
     this.candidates = candidates
+
+    Binding.validate_setArrayFiltererCandidates(candidates)
     return this.obj.setArrayFiltererCandidates(candidates)
   }
 
@@ -122,12 +130,13 @@ export class StringArrayFilterer {
    */
   filter(query: string, options: StringArrayFilterOptions = {}): Array<string> {
     parseFilterOptions(options)
-    const res = this.obj.filter(
-      query,
-      options.maxResults as number /* numberified by parseFilterOptions */,
-      Boolean(options.usePathScoring),
-      Boolean(options.useExtensionBonus)
-    )
+
+    const maxResult = options.maxResults as number /* numberified by parseFilterOptions */
+    const usePathScoring = Boolean(options.usePathScoring)
+    const useExtensionBonus = Boolean(options.useExtensionBonus)
+
+    Binding.validate_filter(query, maxResult, usePathScoring, useExtensionBonus)
+    const res = this.obj.filter(query, maxResult, usePathScoring, useExtensionBonus)
     return res.map((ind: number) => this.candidates[ind])
   }
 }
@@ -164,6 +173,8 @@ export class ObjectArrayFilterer {
   setCandidates(candidates: Array<ObjectWithKey>, dataKey: string | number) {
     this.candidates = candidates
     const candidatesKeys = candidates.map((item) => item[dataKey])
+
+    Binding.validate_setArrayFiltererCandidates(candidatesKeys)
     this.obj.setArrayFiltererCandidates(candidatesKeys)
   }
 
@@ -176,12 +187,13 @@ export class ObjectArrayFilterer {
    */
   filter(query: string, options: ObjectArrayFilterOptions = {}): Array<ObjectWithKey> {
     parseFilterOptions(options)
-    const res = this.obj.filter(
-      query,
-      options.maxResults as number /* numberified by parseFilterOptions */,
-      Boolean(options.usePathScoring),
-      Boolean(options.useExtensionBonus)
-    )
+
+    const maxResult = options.maxResults as number /* numberified by parseFilterOptions */
+    const usePathScoring = Boolean(options.usePathScoring)
+    const useExtensionBonus = Boolean(options.useExtensionBonus)
+
+    Binding.validate_filter(query, maxResult, usePathScoring, useExtensionBonus)
+    const res = this.obj.filter(query, maxResult, usePathScoring, useExtensionBonus)
     return res.map((ind: number) => this.candidates[ind])
   }
 }
@@ -274,6 +286,8 @@ export class TreeFilterer<T extends Tree = Tree> {
    */
   setCandidates(candidates: Array<T>, dataKey: string = "data", childrenKey: string = "children") {
     this.candidates = candidates
+
+    Binding.validate_setTreeFiltererCandidates(candidates, dataKey, childrenKey)
     return this.obj.setTreeFiltererCandidates(candidates, dataKey, childrenKey)
   }
 
@@ -287,12 +301,13 @@ export class TreeFilterer<T extends Tree = Tree> {
    */
   filter(query: string, options: TreeFilterOptions = {}): TreeFilterResult[] {
     parseFilterOptions(options)
-    return this.obj.filterTree(
-      query,
-      options.maxResults as number /* numberified by parseFilterOptions */,
-      Boolean(options.usePathScoring),
-      Boolean(options.useExtensionBonus)
-    )
+
+    const maxResult = options.maxResults as number /* numberified by parseFilterOptions */
+    const usePathScoring = Boolean(options.usePathScoring)
+    const useExtensionBonus = Boolean(options.useExtensionBonus)
+
+    Binding.validate_filterTree(query, maxResult, usePathScoring, useExtensionBonus)
+    return this.obj.filterTree(query, maxResult, usePathScoring, useExtensionBonus)
   }
 }
 
@@ -348,7 +363,12 @@ export function score(candidate: string, query: string, options: IOptions = {}):
     return 0
   }
   parseOptions(options)
-  return binding.score(candidate, query, Boolean(options.usePathScoring), Boolean(options.useExtensionBonus))
+
+  const usePathScoring = Boolean(options.usePathScoring)
+  const useExtensionBonus = Boolean(options.useExtensionBonus)
+
+  Binding.validate_score(candidate, query, usePathScoring, useExtensionBonus)
+  return binding.score(candidate, query, usePathScoring, useExtensionBonus)
 }
 
 /*
@@ -369,7 +389,11 @@ export function match(str: string, query: string, options: IOptions = {}): numbe
     return Array.from(Array(str.length).keys())
   }
   parseOptions(options)
-  return binding.match(str, query, options.pathSeparator as string /* stringified by parseOption */)
+
+  const pathSeparator = options.pathSeparator as string /* stringified by parseOption */
+
+  Binding.validate_match(str, query, pathSeparator)
+  return binding.match(str, query, pathSeparator)
 }
 
 /*
@@ -388,7 +412,11 @@ export function wrap(str: string, query: string, options: IOptions = {}): string
     return []
   }
   parseOptions(options)
-  return binding.wrap(str, query, options.pathSeparator as string /* stringified by parseOption */)
+
+  const pathSeparator = options.pathSeparator as string /* stringified by parseOption */
+
+  Binding.validate_wrap(str, query, pathSeparator)
+  return binding.wrap(str, query, pathSeparator)
 }
 
 /*
