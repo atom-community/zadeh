@@ -35,6 +35,16 @@ void set_at(ArrayType &candidates, ElementType &&value, const IndexType iCandida
 template<typename ParentType, typename ChildType>
 optional<ChildType> get_children(const ParentType &tree_object, const string &children_key);
 
+
+/** Implementation for vector<E> */
+
+template<>
+vector<CandidateString> init(const size_t len, const std::allocator<CandidateString> &alloc) {
+    auto out = vector<CandidateString>(alloc);
+    out.reserve(len);
+    return out;
+}
+
 template<>
 CandidateString get_at(const vector<CandidateString> &candidates, const unsigned int iCandidate) {
     return candidates[iCandidate];
@@ -45,8 +55,20 @@ size_t get_size(const vector<CandidateString> &candidates) {
     return candidates.size();
 }
 
-template<typename ParentType, typename ChildType>
-optional<ChildType> get_children(const ParentType &tree_object, const string &children_key);
+template<>
+void set_at(vector<CandidateString> &candidates, CandidateString &&value, const size_t iCandidate) {
+    candidates.push_back(move(value));
+}
+
+template<>
+vector<CandidateString> get_ref(const vector<CandidateString> &vect) {
+    return vect;
+}
+
+//template<>
+//void release_ref(vector<CandidateString> vect) {
+//    /* do nothing */
+//}
 
 
 }    // namespace zadeh
