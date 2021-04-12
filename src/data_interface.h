@@ -12,6 +12,9 @@ namespace zadeh {
 template<typename ArrayType, typename AllocatorType, typename SizeType = size_t>
 ArrayType init(const SizeType len, const AllocatorType &alloc);
 
+template<typename ObjectType, typename AllocatorType>
+ObjectType init(const AllocatorType &alloc);
+
 template<typename ReferenceType, typename ValueType>
 ReferenceType get_ref(const ValueType &value);
 

@@ -121,22 +121,22 @@ ObjectArrayFilterer constructor took                                            
 TwoLetter ObjectArrayFilterer.filter took                                              414.06 ms
 ThreeLetter ObjectArrayFilterer.filter took                                            419.60 ms
 
-> zadeh@2.1.0 benchmark.tree
+> zadeh@2.1.0 benchmark.tree C:\Users\aminy\Documents\GitHub\JavaScript\@atom-ide-community\zadeh
 > node benchmark/benchmark-tree.js
 
-TreeFilterer.setCandidates: took                                                       2.18 ms
-TreeFilterer.filter text took                                                          0.62 ms
-TreeFilterer.filter dips took                                                          0.30 ms
-TreeFilterer.filter disp took                                                          0.25 ms
-TreeFilterer.filter txt took                                                           0.43 ms
-TreeFilterer.filter getBuffer took                                                     0.32 ms
+TreeFilterer.setCandidates: took                                                       2.63 ms
+TreeFilterer.filter text took                                                          0.67 ms
+TreeFilterer.filter dips took                                                          0.29 ms
+TreeFilterer.filter disp took                                                          0.26 ms
+TreeFilterer.filter txt took                                                           0.41 ms
+TreeFilterer.filter getBuffer took                                                     0.31 ms
 
-TreeFilterer.filter average:                                                           0.384 ms
+TreeFilterer.filter average:                                                           0.388 ms
 
-filterTree text took                                                                   2.82 ms
-filterTree dips took                                                                   2.48 ms
-filterTree disp took                                                                   2.41 ms
-filterTree txt: took                                                                   3.46 ms
-filterTree getBuffer: took                                                             2.50 ms
+filterTree text took                                                                   2.60 ms
+filterTree dips took                                                                   2.43 ms
+filterTree disp took                                                                   2.26 ms
+filterTree txt: took                                                                   3.26 ms
+filterTree getBuffer: took                                                             2.43 ms
 
-filterTree average:                                                                    2.734 ms
+filterTree average:                                                                    2.596 ms

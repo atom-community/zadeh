@@ -31,6 +31,11 @@ size_t get_size(const Napi::Array &candidates) {
 }
 
 template<>
+void set_at(Napi::Array &candidates, CandidateString &&value, const size_t iCandidate) {
+    candidates.Set(iCandidate, move(value));
+}
+
+template<>
 Napi::Reference<Napi::Array> get_ref(const Napi::Array &arr) {
     return Napi::Persistent(arr);
 }
@@ -43,7 +48,7 @@ Napi::Reference<Napi::Array> get_ref(const Napi::Array &arr) {
 /** Napi::Object Data Interface */
 
 template<>
-Napi::Object init(const size_t len, const Napi::Env &env) {
+Napi::Object init(const Napi::Env &env) {
     return Napi::Object::New(env);
 }
 
@@ -53,8 +58,23 @@ CandidateString get_at(const Napi::Object &candidates, const string ind) {
 }
 
 template<>
-void set_at(Napi::Array &candidates, CandidateString &&value, const size_t iCandidate) {
-    candidates.Set(iCandidate, move(value));
+void set_at(Napi::Object &candidates, string &&value, const string index) {
+    candidates.Set(index, move(value));
+}
+
+template<>
+void set_at(Napi::Object &candidates, size_t &&value, const string index) {
+    candidates.Set(index, move(value));
+}
+
+template<>
+void set_at(Napi::Object &candidates, const string &value, const string index) {
+    candidates.Set(index, value);
+}
+
+template<>
+void set_at(Napi::Object &candidates, const size_t &value, const string index) {
+    candidates.Set(index, value);
 }
 
 template<>

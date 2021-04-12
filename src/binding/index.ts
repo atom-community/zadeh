@@ -263,14 +263,22 @@ export interface TreeFilterResult {
 }
 
 /**
- * TreeFilterer is a class that allows to set the `candidates` only once and perform filtering on them multiple times.
- * This is much more efficient than calling the `filterTree` function directly.
+ * TreeFilterer is a filters the given query in the nodes of the given array of trees, and returns an array of filtered
+ * tree. A tree object is an object in which each entry stores the data in its dataKey and it has (may have) some
+ * children (with a similar structure) in its childrenKey
  */
 export class TreeFilterer<T extends Tree = Tree> {
   obj = new binding.Zadeh()
   // @ts-ignore
   candidates: Array<T>
 
+  /**
+   * The method to set the candidates that are going to be filtered
+   *
+   * @param candidates An array of tree objects.
+   * @param dataKey The key of the object (and its children) which holds the data (defaults to `"data"`)
+   * @param childrenKey The key of the object (and its children) which hold the children (defaults to `"children"`)
+   */
   constructor(candidates?: Array<T>, dataKey: string = "data", childrenKey: string = "children") {
     if (candidates) {
       this.setCandidates(candidates, dataKey, childrenKey)
@@ -311,15 +319,34 @@ export class TreeFilterer<T extends Tree = Tree> {
     Binding.validate_filterTree(query, maxResult, usePathScoring, useExtensionBonus)
     return this.obj.filterIndicesTree(query, maxResult, usePathScoring, useExtensionBonus)
   }
+
+  /**
+   * The method to perform the filtering on the already set candidates
+   *
+   * @param query A string query to match each candidate against.
+   * @param options Options
+   */
+  filterIndices(query: string, options: TreeFilterOptions = {}) {
+    parseOptions(options)
+    return this.obj.filterIndicesTree(
+      query,
+      options.maxResults ?? 0,
+      Boolean(options.usePathScoring),
+      Boolean(options.useExtensionBonus)
+    )
+  }
 }
 
 // TODO better type
 export type Tree = Record<string, string>
 
 /**
- * @deprecated Use `TreeFilterer` instead Sort and filter the given Tree candidates by matching them against the given
- *   query. A tree object is an object in which each entry stores the data in its dataKey and it has (may have) some
- *   children (with a similar structure) in its childrenKey
+ * Sort and filter the given Tree candidates by matching them against the given query. A tree object is an object in
+ * which each entry stores the data in its dataKey and it has (may have) some children (with a similar structure) in its
+ * childrenKey
+ *
+ * @deprecated Use `TreeFilterer` instead. `TreeFilterer` is a class that allows to set the `candidates` only once and
+ *   perform filtering on them multiple times. This is much more efficient than calling the `filterTree` function directly.
  * @param candidatesTrees An array of tree objects.
  * @param query A string query to match each candidate against.
  * @param dataKey The key of the object (and its children) which holds the data (defaults to `"data"`)

@@ -56,26 +56,12 @@ class ZadehNode : public Napi::ObjectWrap<ZadehNode> {
 
     /** (query: string, maxResults: number, usePathScoring: bool, useExtensionBonus: bool) */
     Napi::Value filterIndicesTree(const Napi::CallbackInfo &info) {
-        const auto filter_indices = treeFilterer.filter_indices(
+        return treeFilterer.filter_indices(
           info[0].As<Napi::String>(),
+          info.Env(),
           info[1].As<Napi::Number>().Uint32Value(),
           info[2].As<Napi::Boolean>(),
           info[3].As<Napi::Boolean>());
-
-
-        auto filteredCandidateObjects = Napi::Array::New(info.Env());    // array of candidate objects (with their address in index and level)
-        for (uint32_t i = 0, len = filter_indices.size(); i < len; i++) {
-            auto &entry = treeFilterer.candidates_vector[filter_indices[i]];    //
-
-            // create {data, index, level}
-            auto obj = Napi::Object::New(info.Env());
-            obj.Set("data", entry.data);
-            obj.Set("index", entry.index);
-            obj.Set("level", entry.level);
-
-            filteredCandidateObjects[i] = obj;
-        }
-        return filteredCandidateObjects;
     }
 
 
@@ -85,7 +71,7 @@ class ZadehNode : public Napi::ObjectWrap<ZadehNode> {
 
   private:
     StringArrayFilterer<Napi::Array, Napi::Reference<Napi::Array>, CandidateString, Napi::Env> strArrFilterer{};
-    TreeFilterer<Napi::Array, Napi::Object> treeFilterer{};
+    TreeFilterer<Napi::Array, Napi::Object, Napi::Reference<Napi::Object>, Napi::Env> treeFilterer{};
 };
 
 
