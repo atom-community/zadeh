@@ -9,6 +9,11 @@
 
 namespace zadeh {
 
+template<>
+Napi::Number init(const size_t value, const Napi::Env &env) {
+    return Napi::Number::New(env, value);
+}
+
 /** Napi::Array Data Interface */
 template<>
 Napi::Array init(const size_t len, const Napi::Env &env) {
@@ -33,6 +38,21 @@ size_t get_size(const Napi::Array &candidates) {
 template<>
 void set_at(Napi::Array &candidates, CandidateString &&value, const size_t iCandidate) {
     candidates.Set(iCandidate, move(value));
+}
+
+template<>
+void set_at(Napi::Array &candidates, Napi::Number &&value, const uint32_t iCandidate) {
+    candidates.Set(iCandidate, move(value));
+}
+
+template<>
+void set_at(Napi::Array &candidates, Napi::Object &&value, const size_t iCandidate) {
+    candidates.Set(iCandidate, move(value));
+}
+
+template<>
+void set_at(Napi::Array &candidates, Napi::Object &&value, const string ind) {
+    candidates.Set(ind, move(value));
 }
 
 template<>
@@ -75,6 +95,11 @@ void set_at(Napi::Object &candidates, const string &value, const string index) {
 template<>
 void set_at(Napi::Object &candidates, const size_t &value, const string index) {
     candidates.Set(index, value);
+}
+
+template<>
+void set_at(Napi::Object &candidates, Napi::Array &&value, const string ind) {
+    candidates.Set(ind, move(value));
 }
 
 template<>

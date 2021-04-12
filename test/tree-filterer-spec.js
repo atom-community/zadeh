@@ -6,205 +6,268 @@ const path = require("path")
 describe("TreeFilterer", function () {
   const outlineData = JSON.parse(fs.readFileSync(path.join(path.dirname(__dirname), "benchmark", "tree.json"), "utf8"))
 
-  it("is possible to set candidates only once and filter multiple times", function () {
-    const arrayFilterer = new TreeFilterer()
+  describe("TreeFilterer.filterIndices", () => {
+    it("can fuzzy search in an array tree objects", () => {
+      const treeFilterer = new TreeFilterer()
 
-    const candidates = [
-      { data: "bye1", children: [{ data: "hello" }] },
-      { data: "Bye2", children: [{ data: "_bye4" }, { data: "hel" }] },
-      { data: "eye" },
-    ]
-    arrayFilterer.setCandidates(candidates, "data", "children") // set candidates only once
+      const candidates = [
+        { data: "bye1", children: [{ data: "hello" }] },
+        { data: "Bye2", children: [{ data: "_bye4" }, { data: "hel" }] },
+        { data: "eye" },
+      ]
 
-    // call filter multiple times
+      treeFilterer.setCandidates(candidates, "data", "children") // set candidates only once
 
-    expect(DeepEqual(arrayFilterer.filter("hello"), [{ data: "hello", index: 0, level: 1 }])).toBe(true)
+      // console.log(treeFilterer.filterIndices("hello"))
+      expect(DeepEqual(treeFilterer.filterIndices("hello"), [{ data: "hello", index: 0, parent_indices: [0] }])).toBe(
+        true
+      )
 
-    expect(
-      DeepEqual(arrayFilterer.filter("bye"), [
-        { data: "bye1", index: 0, level: 0 },
-        { data: "_bye4", index: 0, level: 1 },
-        { data: "Bye2", index: 1, level: 0 },
-      ])
-    ).toBe(true)
-  })
-
-  // answers are os dependant because of slight differences
-  it("can search in outline data", () => {
-    const treeFilterer = new TreeFilterer()
-    treeFilterer.setCandidates(outlineData, "plainText", "children")
-
-    // console.log(treeFilterer.filter("text"))
-    if (process.platform === "win32") {
+      // console.log(treeFilterer.filterIndices("hel"))
       expect(
-        DeepEqual(treeFilterer.filter("text"), [
-          { data: "text", index: 0, level: 4 },
-          { data: "text", index: 0, level: 4 },
-          { data: "text", index: 0, level: 5 },
-          { data: "text", index: 0, level: 5 },
-          { data: "text", index: 2, level: 4 },
-          { data: "text", index: 2, level: 5 },
-          { data: "textEditor", index: 3, level: 3 },
-          { data: "textEditor", index: 3, level: 4 },
-          { data: "textToDuplicate", index: 10, level: 5 },
-          { data: "textToDuplicate", index: 10, level: 4 },
-          { data: "getText", index: 119, level: 2 },
-          { data: "setText", index: 146, level: 2 },
-          { data: "setText", index: 146, level: 3 },
-          { data: "getText", index: 119, level: 3 },
-          { data: "lineText", index: 3, level: 3 },
-          { data: "lineText", index: 3, level: 4 },
-          { data: "TextEditor", index: 0, level: 2 },
-          { data: "TextBuffer", index: 8, level: 1 },
-          { data: "TextEditor", index: 31, level: 1 },
-          { data: "pasteText", index: 353, level: 3 },
-          { data: "pasteText", index: 353, level: 2 },
-          { data: "insertText", index: 148, level: 3 },
-          { data: "insertText", index: 148, level: 2 },
-          { data: "getTabText", index: 323, level: 3 },
-          { data: "getTabText", index: 323, level: 2 },
-          { data: "lineTextIndex", index: 1, level: 3 },
-          { data: "lineTextIndex", index: 1, level: 4 },
-          { data: "getTextInRange", index: 141, level: 2 },
-          { data: "getTextInRange", index: 141, level: 3 },
-          { data: "clipboardText", index: 0, level: 4 },
-          { data: "clipboardText", index: 0, level: 3 },
-          { data: "TextEditorElement", index: 20, level: 1 },
-          { data: "TextEditorComponent", index: 19, level: 1 },
-          { data: "onDidInsertText", index: 67, level: 2 },
-          { data: "onDidInsertText", index: 67, level: 3 },
-          { data: "getSelectedText", index: 252, level: 2 },
-          { data: "cutSelectedText", index: 352, level: 2 },
-          { data: "cutSelectedText", index: 352, level: 3 },
-          { data: "getSelectedText", index: 252, level: 3 },
-          { data: "TextMateLanguageMode", index: 15, level: 1 },
-          { data: "onWillInsertText", index: 66, level: 2 },
-          { data: "onWillInsertText", index: 66, level: 3 },
-          { data: "copySelectedText", index: 350, level: 2 },
-          { data: "copySelectedText", index: 350, level: 3 },
-          { data: "TextMateScopeSelector", index: 17, level: 1 },
-          { data: "getTextInBufferRange", index: 120, level: 3 },
-          { data: "setTextInBufferRange", index: 147, level: 2 },
-          { data: "setTextInBufferRange", index: 147, level: 3 },
-          { data: "getTextInBufferRange", index: 120, level: 2 },
-          { data: "lineTextForBufferRow", index: 126, level: 3 },
-          { data: "lineTextForScreenRow", index: 127, level: 2 },
-          { data: "lineTextForBufferRow", index: 126, level: 2 },
-          { data: "lineTextForScreenRow", index: 127, level: 3 },
-          { data: "mutateSelectedText", index: 152, level: 2 },
-          { data: "mutateSelectedText", index: 152, level: 3 },
-          { data: "getPlaceholderText", index: 402, level: 3 },
-          { data: "setPlaceholderText", index: 403, level: 3 },
-          { data: "getPlaceholderText", index: 402, level: 2 },
-          { data: "setPlaceholderText", index: 403, level: 2 },
-          { data: "replaceSelectedText", index: 158, level: 3 },
-          { data: "replaceSelectedText", index: 158, level: 2 },
-          { data: "copyOnlySelectedText", index: 351, level: 2 },
-          { data: "copyOnlySelectedText", index: 351, level: 3 },
-          { data: "updatePlaceholderText", index: 33, level: 3 },
-          { data: "updatePlaceholderText", index: 33, level: 2 },
-          { data: "charTextToLeftOfSelection", index: 2, level: 5 },
-          { data: "charTextToLeftOfSelection", index: 2, level: 4 },
-          { data: "emitWillInsertTextEvent", index: 450, level: 3 },
-          { data: "emitWillInsertTextEvent", index: 450, level: 2 },
-          { data: "charTextToRightOfSelection", index: 2, level: 5 },
-          { data: "charTextToRightOfSelection", index: 2, level: 4 },
-          { data: "onDidChangePlaceholderText", index: 80, level: 3 },
-          { data: "onDidChangePlaceholderText", index: 80, level: 2 },
-          { data: "deleteToNextWordBoundary", index: 169, level: 3 },
-          { data: "deleteToNextWordBoundary", index: 169, level: 2 },
-          { data: "moveToNextWordBoundary", index: 238, level: 3 },
-          { data: "moveToNextWordBoundary", index: 238, level: 2 },
-          { data: "moveToNextSubwordBoundary", index: 240, level: 2 },
-          { data: "moveToNextSubwordBoundary", index: 240, level: 3 },
-          { data: "selectToNextWordBoundary", index: 282, level: 2 },
-          { data: "selectToNextWordBoundary", index: 282, level: 3 },
-          { data: "selectToNextSubwordBoundary", index: 278, level: 2 },
-          { data: "selectToNextSubwordBoundary", index: 278, level: 3 },
-          { data: "moveToBeginningOfNextWord", index: 236, level: 3 },
-          { data: "moveToBeginningOfNextWord", index: 236, level: 2 },
-          { data: "selectToBeginningOfNextWord", index: 283, level: 2 },
-          { data: "selectToBeginningOfNextWord", index: 283, level: 3 },
-          { data: "moveToBeginningOfNextParagraph", index: 241, level: 3 },
-          { data: "moveToBeginningOfNextParagraph", index: 241, level: 2 },
-          { data: "selectToBeginningOfNextParagraph", index: 284, level: 3 },
-          { data: "selectToBeginningOfNextParagraph", index: 284, level: 2 },
-          { data: "firstExistingFoldRange", index: 4, level: 4 },
-          { data: "firstExistingFoldRange", index: 4, level: 3 },
-          { data: "updateMaxScreenLineLength", index: 29, level: 3 },
-          { data: "updateMaxScreenLineLength", index: 29, level: 2 },
+        DeepEqual(treeFilterer.filterIndices("hel"), [
+          { data: "hel", index: 1, parent_indices: [1] },
+          { data: "hello", index: 0, parent_indices: [0] },
         ])
       ).toBe(true)
-    }
 
-    // console.log(treeFilterer.filter("disp"))
-    if (process.platform !== "linux") {
+      // console.log(treeFilterer.filterIndices("he"))
       expect(
-        DeepEqual(treeFilterer.filter("disp"), [
-          { data: "disposable", index: 3, level: 4 },
-          { data: "disposable", index: 3, level: 3 },
-          { data: "displayLayer", index: 0, level: 4 },
-          { data: "displayLayer", index: 0, level: 3 },
-          { data: "displayBuffer", index: 9, level: 3 },
-          { data: "displayBuffer", index: 9, level: 2 },
-          { data: "displayLayerParams", index: 5, level: 4 },
-          { data: "displayLayerParams", index: 0, level: 4 },
-          { data: "displayLayerParams", index: 5, level: 3 },
-          { data: "displayLayerParams", index: 0, level: 3 },
-          { data: "Disposable", index: 6, level: 1 },
-          { data: "CompositeDisposable", index: 5, level: 1 },
-          { data: "subscribeToDisplayLayer", index: 50, level: 3 },
-          { data: "subscribeToDisplayLayer", index: 50, level: 2 },
-          { data: "onDidStopChanging", index: 57, level: 3 },
-          { data: "onDidStopChanging", index: 57, level: 2 },
-          { data: "onDidChangeScrollTop", index: 81, level: 3 },
-          { data: "onDidChangeScrollTop", index: 81, level: 2 },
-          { data: "onDidChangeSoftWrapped", index: 60, level: 3 },
-          { data: "onDidChangeSoftWrapped", index: 60, level: 2 },
-          { data: "onDidChangeCursorPosition", index: 58, level: 3 },
-          { data: "onDidChangeCursorPosition", index: 58, level: 2 },
+        DeepEqual(treeFilterer.filterIndices("he"), [
+          { data: "hel", index: 1, parent_indices: [1] },
+          { data: "hello", index: 0, parent_indices: [0] },
         ])
       ).toBe(true)
-    }
 
-    // console.log(treeFilterer.filter("dips"))
-    if (process.platform !== "linux") {
+      // console.log(treeFilterer.filterIndices("bye"))
       expect(
-        DeepEqual(treeFilterer.filter("dips"), [
-          { data: "didUpdateStyles", index: 2, level: 3 },
-          { data: "didUpdateStyles", index: 2, level: 2 },
-          { data: "displayLayerParams", index: 5, level: 4 },
-          { data: "displayLayerParams", index: 0, level: 4 },
-          { data: "displayLayerParams", index: 5, level: 3 },
-          { data: "displayLayerParams", index: 0, level: 3 },
-          { data: "disposable", index: 3, level: 4 },
-          { data: "disposable", index: 3, level: 3 },
-          { data: "didUpdateScrollbarStyles", index: 3, level: 3 },
-          { data: "didUpdateScrollbarStyles", index: 3, level: 2 },
-          { data: "onDidTerminatePendingState", index: 49, level: 3 },
-          { data: "onDidTerminatePendingState", index: 49, level: 2 },
-          { data: "Disposable", index: 6, level: 1 },
-          { data: "onDidChangeCursorPosition", index: 58, level: 3 },
-          { data: "onDidChangeCursorPosition", index: 58, level: 2 },
-          { data: "onDidUpdateDecorations", index: 85, level: 3 },
-          { data: "onDidUpdateDecorations", index: 85, level: 2 },
-          { data: "CompositeDisposable", index: 5, level: 1 },
-          { data: "getSaveDialogOptions", index: 118, level: 3 },
-          { data: "getSaveDialogOptions", index: 118, level: 2 },
-          { data: "openEditorPathSegmentsWithSameFilename", index: 2, level: 4 },
-          { data: "openEditorPathSegmentsWithSameFilename", index: 2, level: 3 },
-          { data: "scopeDescriptorForBufferPosition", index: 342, level: 3 },
-          { data: "scopeDescriptorForBufferPosition", index: 342, level: 2 },
-          { data: "syntaxTreeScopeDescriptorForBufferPosition", index: 343, level: 3 },
-          { data: "syntaxTreeScopeDescriptorForBufferPosition", index: 343, level: 2 },
-          { data: "updateAutoIndentOnPaste", index: 18, level: 3 },
-          { data: "updateAutoIndentOnPaste", index: 18, level: 2 },
-          { data: "shouldAutoIndentOnPaste", index: 392, level: 3 },
-          { data: "shouldAutoIndentOnPaste", index: 392, level: 2 },
-          { data: "destroyFoldsContainingBufferPositions", index: 373, level: 3 },
-          { data: "destroyFoldsContainingBufferPositions", index: 373, level: 2 },
+        DeepEqual(treeFilterer.filterIndices("bye"), [
+          { data: "bye1", index: 0, parent_indices: [] },
+          { data: "_bye4", index: 0, parent_indices: [1] },
+          { data: "Bye2", index: 1, parent_indices: [] },
         ])
       ).toBe(true)
-    }
+
+      // console.log(treeFilterer.filterIndices("ye"))
+      expect(
+        DeepEqual(treeFilterer.filterIndices("ye"), [
+          { data: "eye", index: 2, parent_indices: [] },
+          { data: "bye1", index: 0, parent_indices: [] },
+          { data: "Bye2", index: 1, parent_indices: [] },
+          { data: "_bye4", index: 0, parent_indices: [1] },
+        ])
+      ).toBe(true)
+
+      // test maxResults
+      // console.log(treeFilterer.filterIndices("bye", { maxResults: 2 }))
+      expect(
+        DeepEqual(treeFilterer.filterIndices("bye", { maxResults: 2 }), [
+          { data: "bye1", index: 0, parent_indices: [] },
+          { data: "Bye2", index: 1, parent_indices: [] },
+        ])
+      ).toBe(true)
+
+      // console.log(treeFilterer.filterIndices("ye", { maxResults: 3 }))
+      expect(
+        DeepEqual(treeFilterer.filterIndices("ye", { maxResults: 3 }), [
+          { data: "bye1", index: 0, parent_indices: [] },
+          { data: "Bye2", index: 1, parent_indices: [] },
+          { data: "_bye4", index: 0, parent_indices: [1] },
+        ])
+      ).toBe(true)
+    })
+
+    it("can search in an array of children-less objects", () => {
+      const treeFilterer = new TreeFilterer()
+      const candidates = [{ data: "helloworld" }, { data: "bye" }, { data: "hello" }]
+      treeFilterer.setCandidates(candidates, "data", "children") // set candidates only once
+
+      // console.log(treeFilterer.filterIndices("hello"))
+      expect(
+        DeepEqual(treeFilterer.filterIndices("hello"), [
+          { data: "hello", index: 2, parent_indices: [] },
+          { data: "helloworld", index: 0, parent_indices: [] },
+        ])
+      ).toBe(true)
+    })
+
+    // answers are os dependant because of slight differences
+    it("can search in outline data", () => {
+      const treeFilterer = new TreeFilterer()
+      treeFilterer.setCandidates(outlineData, "plainText", "children")
+
+      // console.log(treeFilterer.filterIndices("text"))
+      if (process.platform === "win32") {
+        expect(
+          DeepEqual(treeFilterer.filterIndices("text"), [
+            { data: "text", index: 0, parent_indices: [0, 31, 160, 0] },
+            { data: "text", index: 0, parent_indices: [0, 31, 158, 0] },
+            { data: "text", index: 0, parent_indices: [0, 30, 0, 160, 0] },
+            { data: "text", index: 0, parent_indices: [0, 30, 0, 158, 0] },
+            { data: "text", index: 2, parent_indices: [0, 31, 353, 2] },
+            { data: "text", index: 2, parent_indices: [0, 30, 0, 353, 2] },
+            { data: "textEditor", index: 3, parent_indices: [0, 31, 107] },
+            { data: "textEditor", index: 3, parent_indices: [0, 30, 0, 107] },
+            { data: "textToDuplicate", index: 10, parent_indices: [0, 30, 0, 157, 0] },
+            { data: "textToDuplicate", index: 10, parent_indices: [0, 31, 157, 0] },
+            { data: "getText", index: 119, parent_indices: [0, 31] },
+            { data: "setText", index: 146, parent_indices: [0, 31] },
+            { data: "setText", index: 146, parent_indices: [0, 30, 0] },
+            { data: "getText", index: 119, parent_indices: [0, 30, 0] },
+            { data: "lineText", index: 3, parent_indices: [0, 31, 129] },
+            { data: "lineText", index: 3, parent_indices: [0, 30, 0, 129] },
+            { data: "TextEditor", index: 0, parent_indices: [0, 30] },
+            { data: "TextBuffer", index: 8, parent_indices: [0] },
+            { data: "TextEditor", index: 31, parent_indices: [0] },
+            { data: "pasteText", index: 353, parent_indices: [0, 30, 0] },
+            { data: "pasteText", index: 353, parent_indices: [0, 31] },
+            { data: "insertText", index: 148, parent_indices: [0, 30, 0] },
+            { data: "insertText", index: 148, parent_indices: [0, 31] },
+            { data: "getTabText", index: 323, parent_indices: [0, 30, 0] },
+            { data: "getTabText", index: 323, parent_indices: [0, 31] },
+            { data: "lineTextIndex", index: 1, parent_indices: [0, 31, 129] },
+            { data: "lineTextIndex", index: 1, parent_indices: [0, 30, 0, 129] },
+            { data: "getTextInRange", index: 141, parent_indices: [0, 31] },
+            { data: "getTextInRange", index: 141, parent_indices: [0, 30, 0] },
+            { data: "clipboardText", index: 0, parent_indices: [0, 30, 0, 353] },
+            { data: "clipboardText", index: 0, parent_indices: [0, 31, 353] },
+            { data: "TextEditorElement", index: 20, parent_indices: [0] },
+            { data: "TextEditorComponent", index: 19, parent_indices: [0] },
+            { data: "onDidInsertText", index: 67, parent_indices: [0, 31] },
+            { data: "onDidInsertText", index: 67, parent_indices: [0, 30, 0] },
+            { data: "getSelectedText", index: 252, parent_indices: [0, 31] },
+            { data: "cutSelectedText", index: 352, parent_indices: [0, 31] },
+            { data: "cutSelectedText", index: 352, parent_indices: [0, 30, 0] },
+            { data: "getSelectedText", index: 252, parent_indices: [0, 30, 0] },
+            { data: "TextMateLanguageMode", index: 15, parent_indices: [0] },
+            { data: "onWillInsertText", index: 66, parent_indices: [0, 31] },
+            { data: "onWillInsertText", index: 66, parent_indices: [0, 30, 0] },
+            { data: "copySelectedText", index: 350, parent_indices: [0, 31] },
+            { data: "copySelectedText", index: 350, parent_indices: [0, 30, 0] },
+            { data: "TextMateScopeSelector", index: 17, parent_indices: [0] },
+            { data: "getTextInBufferRange", index: 120, parent_indices: [0, 30, 0] },
+            { data: "setTextInBufferRange", index: 147, parent_indices: [0, 31] },
+            { data: "setTextInBufferRange", index: 147, parent_indices: [0, 30, 0] },
+            { data: "getTextInBufferRange", index: 120, parent_indices: [0, 31] },
+            { data: "lineTextForBufferRow", index: 126, parent_indices: [0, 30, 0] },
+            { data: "lineTextForScreenRow", index: 127, parent_indices: [0, 31] },
+            { data: "lineTextForBufferRow", index: 126, parent_indices: [0, 31] },
+            { data: "lineTextForScreenRow", index: 127, parent_indices: [0, 30, 0] },
+            { data: "mutateSelectedText", index: 152, parent_indices: [0, 31] },
+            { data: "mutateSelectedText", index: 152, parent_indices: [0, 30, 0] },
+            { data: "getPlaceholderText", index: 402, parent_indices: [0, 30, 0] },
+            { data: "setPlaceholderText", index: 403, parent_indices: [0, 30, 0] },
+            { data: "getPlaceholderText", index: 402, parent_indices: [0, 31] },
+            { data: "setPlaceholderText", index: 403, parent_indices: [0, 31] },
+            { data: "replaceSelectedText", index: 158, parent_indices: [0, 30, 0] },
+            { data: "replaceSelectedText", index: 158, parent_indices: [0, 31] },
+            { data: "copyOnlySelectedText", index: 351, parent_indices: [0, 31] },
+            { data: "copyOnlySelectedText", index: 351, parent_indices: [0, 30, 0] },
+            { data: "updatePlaceholderText", index: 33, parent_indices: [0, 30, 0] },
+            { data: "updatePlaceholderText", index: 33, parent_indices: [0, 31] },
+            { data: "charTextToLeftOfSelection", index: 2, parent_indices: [0, 30, 0, 155, 4] },
+            { data: "charTextToLeftOfSelection", index: 2, parent_indices: [0, 31, 155, 4] },
+            { data: "emitWillInsertTextEvent", index: 450, parent_indices: [0, 30, 0] },
+            { data: "emitWillInsertTextEvent", index: 450, parent_indices: [0, 31] },
+            { data: "charTextToRightOfSelection", index: 2, parent_indices: [0, 30, 0, 156, 4] },
+            { data: "charTextToRightOfSelection", index: 2, parent_indices: [0, 31, 156, 4] },
+            { data: "onDidChangePlaceholderText", index: 80, parent_indices: [0, 30, 0] },
+            { data: "onDidChangePlaceholderText", index: 80, parent_indices: [0, 31] },
+            { data: "deleteToNextWordBoundary", index: 169, parent_indices: [0, 30, 0] },
+            { data: "deleteToNextWordBoundary", index: 169, parent_indices: [0, 31] },
+            { data: "moveToNextWordBoundary", index: 238, parent_indices: [0, 30, 0] },
+            { data: "moveToNextWordBoundary", index: 238, parent_indices: [0, 31] },
+            { data: "moveToNextSubwordBoundary", index: 240, parent_indices: [0, 31] },
+            { data: "moveToNextSubwordBoundary", index: 240, parent_indices: [0, 30, 0] },
+            { data: "selectToNextWordBoundary", index: 282, parent_indices: [0, 31] },
+            { data: "selectToNextWordBoundary", index: 282, parent_indices: [0, 30, 0] },
+            { data: "selectToNextSubwordBoundary", index: 278, parent_indices: [0, 31] },
+            { data: "selectToNextSubwordBoundary", index: 278, parent_indices: [0, 30, 0] },
+            { data: "moveToBeginningOfNextWord", index: 236, parent_indices: [0, 30, 0] },
+            { data: "moveToBeginningOfNextWord", index: 236, parent_indices: [0, 31] },
+            { data: "selectToBeginningOfNextWord", index: 283, parent_indices: [0, 31] },
+            { data: "selectToBeginningOfNextWord", index: 283, parent_indices: [0, 30, 0] },
+            { data: "moveToBeginningOfNextParagraph", index: 241, parent_indices: [0, 30, 0] },
+            { data: "moveToBeginningOfNextParagraph", index: 241, parent_indices: [0, 31] },
+            { data: "selectToBeginningOfNextParagraph", index: 284, parent_indices: [0, 30, 0] },
+            { data: "selectToBeginningOfNextParagraph", index: 284, parent_indices: [0, 31] },
+            { data: "firstExistingFoldRange", index: 4, parent_indices: [0, 30, 0, 358] },
+            { data: "firstExistingFoldRange", index: 4, parent_indices: [0, 31, 358] },
+            { data: "updateMaxScreenLineLength", index: 29, parent_indices: [0, 30, 0] },
+            { data: "updateMaxScreenLineLength", index: 29, parent_indices: [0, 31] },
+          ])
+        ).toBe(true)
+      }
+
+      // console.log(treeFilterer.filter("disp"))
+      if (process.platform !== "linux") {
+        expect(
+          DeepEqual(treeFilterer.filterIndices("disp"), [
+            { data: "disposable", index: 3, parent_indices: [0, 30, 0, 5] },
+            { data: "disposable", index: 3, parent_indices: [0, 31, 5] },
+            { data: "displayLayer", index: 0, parent_indices: [0, 30, 0, 87] },
+            { data: "displayLayer", index: 0, parent_indices: [0, 31, 87] },
+            { data: "displayBuffer", index: 9, parent_indices: [0, 30, 0] },
+            { data: "displayBuffer", index: 9, parent_indices: [0, 31] },
+            { data: "displayLayerParams", index: 5, parent_indices: [0, 30, 0, 6] },
+            { data: "displayLayerParams", index: 0, parent_indices: [0, 30, 0, 15] },
+            { data: "displayLayerParams", index: 5, parent_indices: [0, 31, 6] },
+            { data: "displayLayerParams", index: 0, parent_indices: [0, 31, 15] },
+            { data: "Disposable", index: 6, parent_indices: [0] },
+            { data: "CompositeDisposable", index: 5, parent_indices: [0] },
+            { data: "subscribeToDisplayLayer", index: 50, parent_indices: [0, 30, 0] },
+            { data: "subscribeToDisplayLayer", index: 50, parent_indices: [0, 31] },
+            { data: "onDidStopChanging", index: 57, parent_indices: [0, 30, 0] },
+            { data: "onDidStopChanging", index: 57, parent_indices: [0, 31] },
+            { data: "onDidChangeScrollTop", index: 81, parent_indices: [0, 30, 0] },
+            { data: "onDidChangeScrollTop", index: 81, parent_indices: [0, 31] },
+            { data: "onDidChangeSoftWrapped", index: 60, parent_indices: [0, 30, 0] },
+            { data: "onDidChangeSoftWrapped", index: 60, parent_indices: [0, 31] },
+            { data: "onDidChangeCursorPosition", index: 58, parent_indices: [0, 30, 0] },
+            { data: "onDidChangeCursorPosition", index: 58, parent_indices: [0, 31] },
+          ])
+        ).toBe(true)
+      }
+
+      // console.log(treeFilterer.filter("dips"))
+      if (process.platform !== "linux") {
+        expect(
+          DeepEqual(treeFilterer.filterIndices("dips"), [
+            { data: "didUpdateStyles", index: 2, parent_indices: [0, 30, 0] },
+            { data: "didUpdateStyles", index: 2, parent_indices: [0, 31] },
+            { data: "displayLayerParams", index: 5, parent_indices: [0, 30, 0, 6] },
+            { data: "displayLayerParams", index: 0, parent_indices: [0, 30, 0, 15] },
+            { data: "displayLayerParams", index: 5, parent_indices: [0, 31, 6] },
+            { data: "displayLayerParams", index: 0, parent_indices: [0, 31, 15] },
+            { data: "disposable", index: 3, parent_indices: [0, 30, 0, 5] },
+            { data: "disposable", index: 3, parent_indices: [0, 31, 5] },
+            { data: "didUpdateScrollbarStyles", index: 3, parent_indices: [0, 30, 0] },
+            { data: "didUpdateScrollbarStyles", index: 3, parent_indices: [0, 31] },
+            { data: "onDidTerminatePendingState", index: 49, parent_indices: [0, 30, 0] },
+            { data: "onDidTerminatePendingState", index: 49, parent_indices: [0, 31] },
+            { data: "Disposable", index: 6, parent_indices: [0] },
+            { data: "onDidChangeCursorPosition", index: 58, parent_indices: [0, 30, 0] },
+            { data: "onDidChangeCursorPosition", index: 58, parent_indices: [0, 31] },
+            { data: "onDidUpdateDecorations", index: 85, parent_indices: [0, 30, 0] },
+            { data: "onDidUpdateDecorations", index: 85, parent_indices: [0, 31] },
+            { data: "CompositeDisposable", index: 5, parent_indices: [0] },
+            { data: "getSaveDialogOptions", index: 118, parent_indices: [0, 30, 0] },
+            { data: "getSaveDialogOptions", index: 118, parent_indices: [0, 31] },
+            { data: "openEditorPathSegmentsWithSameFilename", index: 2, parent_indices: [0, 30, 0, 107] },
+            { data: "openEditorPathSegmentsWithSameFilename", index: 2, parent_indices: [0, 31, 107] },
+            { data: "scopeDescriptorForBufferPosition", index: 342, parent_indices: [0, 30, 0] },
+            { data: "scopeDescriptorForBufferPosition", index: 342, parent_indices: [0, 31] },
+            { data: "syntaxTreeScopeDescriptorForBufferPosition", index: 343, parent_indices: [0, 30, 0] },
+            { data: "syntaxTreeScopeDescriptorForBufferPosition", index: 343, parent_indices: [0, 31] },
+            { data: "updateAutoIndentOnPaste", index: 18, parent_indices: [0, 30, 0] },
+            { data: "updateAutoIndentOnPaste", index: 18, parent_indices: [0, 31] },
+            { data: "shouldAutoIndentOnPaste", index: 392, parent_indices: [0, 30, 0] },
+            { data: "shouldAutoIndentOnPaste", index: 392, parent_indices: [0, 31] },
+            { data: "destroyFoldsContainingBufferPositions", index: 373, parent_indices: [0, 30, 0] },
+            { data: "destroyFoldsContainingBufferPositions", index: 373, parent_indices: [0, 31] },
+          ])
+        ).toBe(true)
+      }
+    })
   })
 })

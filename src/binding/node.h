@@ -71,7 +71,7 @@ class ZadehNode : public Napi::ObjectWrap<ZadehNode> {
 
   private:
     StringArrayFilterer<Napi::Array, Napi::Reference<Napi::Array>, CandidateString, Napi::Env> strArrFilterer{};
-    TreeFilterer<Napi::Array, Napi::Object, Napi::Reference<Napi::Object>, Napi::Env> treeFilterer{};
+    TreeFilterer<Napi::Array, Napi::Object, Napi::Number, Napi::Reference<Napi::Object>, Napi::Env> treeFilterer{};
 };
 
 
