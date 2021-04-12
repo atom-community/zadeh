@@ -16,7 +16,7 @@
       'configurations': {
         # Release Settings
         'Release': {
-          'defines': [ 'Zadeh_NODE_BINDING', 'NAPI_DISABLE_CPP_EXCEPTIONS', 'NDEBUG' ],
+          'defines': [ 'Zadeh_NODE_BINDING', 'NODE_ADDON_API_DISABLE_DEPRECATED', 'NAPI_DISABLE_CPP_EXCEPTIONS', 'NDEBUG' ],
           "cflags": [ "-fno-exceptions", "-Ofast" ],
           "cflags_cc": [ "-fno-exceptions", "-Ofast", "-std=c++17" ],
           "xcode_settings": {
@@ -58,7 +58,7 @@
         },
         # Debug Settings
         'Debug': {
-          'defines': [ 'Zadeh_NODE_BINDING', 'DEBUG', 'NAPI_CPP_EXCEPTIONS' ],
+          'defines': [ 'Zadeh_NODE_BINDING', 'NODE_ADDON_API_DISABLE_DEPRECATED', 'DEBUG', 'NAPI_CPP_EXCEPTIONS' ],
           'cflags': [ '-g', '-O0', '-ldl' ],
           "cflags_cc": [
             '-g',
