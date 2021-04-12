@@ -350,42 +350,6 @@ results = filter(candidates, "me", { key: "name" }) // [{name: 'Me', id: 2}, {na
 </details>
 
 <details>
-<summary> `filterTree` </summary>
-
-### filterTree
-
-    filterTree(candidates, query, dataKey, childrenKey, options = {})
-
-Sort and filter the given Tree candidates by matching them against the given query.
-
-A **tree object** is an object in which each entry stores the data in its dataKey and it has (may have) some children (with a similar structure) in its childrenKey. See the following example.
-
-- `candidates` An array of tree objects.
-- `query` A string query to match each candidate against.
-- `dataKey` the key of the object (and its children) which holds the data
-- `childrenKey` the key of the object (and its children) which hold the children
-- `options` options
-- `returns` An array of candidate objects in form of `{data, index, level}` sorted by best match against the query. Each objects has the address of the object in the tree using `index` and `level`.
-
-```js
-const { filterTree } = require("zadeh")
-
-candidates = [
-  { data: "bye1", children: [{ data: "hello" }] },
-  { data: "Bye2", children: [{ data: "_bye4" }, { data: "hel" }] },
-  { data: "eye" },
-]
-
-filterTree(candidates, "he", "data", "children") // [ { data: 'hel', index: 1, level: 1 },  { data: 'hello', index: 0, level: 1 }]
-
-// With an array of objects (similar to providing `key` to `filter` function)
-const candidates = [{ data: "helloworld" }, { data: "bye" }, { data: "hello" }]
-results = filter(candidates, "hello", { key: "name" }) // [ { data: 'hello', index: 2, level: 0 }, { data: 'helloworld', index: 0, level: 0 } ]
-```
-
-**Deprecation Note**: use `TreeFilterer` class instead. `filterTree` internally uses this class, and in each call, it sets the candidates from scratch which can slow down the process.
-
-</details>
 
 # Comparison with other libraries
 

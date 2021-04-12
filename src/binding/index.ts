@@ -340,37 +340,6 @@ export class TreeFilterer<T extends Tree = Tree> {
 // TODO better type
 export type Tree = Record<string, string>
 
-/**
- * Sort and filter the given Tree candidates by matching them against the given query. A tree object is an object in
- * which each entry stores the data in its dataKey and it has (may have) some children (with a similar structure) in its
- * childrenKey
- *
- * @deprecated Use `TreeFilterer` instead. `TreeFilterer` is a class that allows to set the `candidates` only once and
- *   perform filtering on them multiple times. This is much more efficient than calling the `filterTree` function directly.
- * @param candidatesTrees An array of tree objects.
- * @param query A string query to match each candidate against.
- * @param dataKey The key of the object (and its children) which holds the data (defaults to `"data"`)
- * @param childrenKey The key of the object (and its children) which hold the children (defaults to `"children"`)
- * @param options Options
- * @returns An array of candidate objects in form of `{data, index, level}` sorted by best match against the query. Each
- *   objects has the address of the object in the tree using `index` and `level`.
- */
-export function filterTree(
-  candidatesTrees: Tree[],
-  query: string,
-  dataKey: string = "data",
-  childrenKey: string = "children",
-  options: TreeFilterOptions = {}
-): TreeFilterResult[] {
-  if (!candidatesTrees || !query) {
-    console.warn(`Zadeh: bad input to filterTree candidatesTrees: ${candidatesTrees}, query: ${query}`)
-    return []
-  }
-  const treeFilterer = new TreeFilterer()
-  treeFilterer.setCandidates(candidatesTrees, dataKey, childrenKey)
-  return treeFilterer.filter(query, options)
-}
-
 /*
 ███████  ██████  ██████  ██████  ███████
 ██      ██      ██    ██ ██   ██ ██
