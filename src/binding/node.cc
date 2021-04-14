@@ -14,7 +14,7 @@ Napi::Object ZadehNode::Init(Napi::Env env, Napi::Object exports) {
       { // member functions in JS
         InstanceMethod("filter", &ZadehNode::filter),
         InstanceMethod("filterIndices", &ZadehNode::filterIndices),
-        // InstanceMethod("filterTree", &ZadehNode::filterTree),
+        InstanceMethod("filterTree", &ZadehNode::filterTree),
         InstanceMethod("filterIndicesTree", &ZadehNode::filterIndicesTree),
         InstanceMethod("setArrayFiltererCandidates", &ZadehNode::setArrayFiltererCandidates),
         InstanceMethod("setTreeFiltererCandidates", &ZadehNode::setTreeFiltererCandidates) });

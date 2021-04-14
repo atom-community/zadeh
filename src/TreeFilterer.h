@@ -18,7 +18,6 @@ struct TreeNode {
       : data{ move(data_) }, index{ index_ }, parent_indices{ parent_indices_ } {}
 };
 
-
 template<typename ArrayType, typename NodeType, typename IndexType = size_t, typename ReferenceType = ArrayType, typename AllocatorType = std::allocator<NodeType>>
 class TreeFilterer {
   private:
@@ -58,7 +57,7 @@ class TreeFilterer {
 
         if (keepReference) {
             // store a view of candidates in case filter was called
-            candidates_view = get_ref<ReferenceType, NodeType>(candidates_);
+            candidates_view = get_ref<ReferenceType, ArrayType>(candidates_);
         }
     }
 
@@ -93,8 +92,8 @@ class TreeFilterer {
 
             // copy vector<size_t> to ArrayType // TODO is this needed?
             auto parent_indices_array = init<ArrayType, AllocatorType>(parent_indices_len, env);
-            for (uint32_t i_parent_indix = 0, parent_indices_len = parent_indices.size(); i_parent_indix < parent_indices_len; i_parent_indix++) {
-                set_at(parent_indices_array, init<IndexType, AllocatorType>(parent_indices[i_parent_indix], env), i_parent_indix);
+            for (uint32_t i_parent_index = 0; i_parent_index < parent_indices_len; i_parent_index++) {
+                set_at(parent_indices_array, init<IndexType, AllocatorType>(parent_indices[i_parent_index], env), i_parent_index);
             }
             set_at(node, move(parent_indices_array), "parent_indices"s);
             set_at(res, move(node), i_candidate);
@@ -102,30 +101,68 @@ class TreeFilterer {
         return res;
     }
 
-    // auto filter(const std::string &query, const AllocatorType &env, const size_t maxResults = 0, const bool usePathScoring = true, const bool useExtensionBonus = false) {
-    //     // optimization for no candidates
-    //     if (partitioned_candidates.empty()) {
-    //         return init<ArrayType, AllocatorType>(static_cast<size_t>(0), env);    // return an empty vector (should we throw?)
-    //     }
-    //
-    //     const Options options(query, maxResults, usePathScoring, useExtensionBonus);
-    //     const auto filtered_indices = zadeh::filter(partitioned_candidates, query, options);
-    //     const auto filter_indices_length = filtered_indices.size();
-    //
-    //     auto res = init<ArrayType, AllocatorType>(filter_indices_length, env);    // array of candidate objects (with their address in index and level)
-    //     auto candidates = candidates_view.Value();
-    //     for (uint32_t i = 0; i < filter_indices_length; i++) {
-    //         auto entry = candidates_vector[filtered_indices[i]];
-    //
-    //         // create {data, index, level}
-    //         auto obj = init<NodeType, AllocatorType>(env);
-    //         set_at(obj, entry.data, "data"s);
-    //         set_at(obj, entry.index, "index"s);
-    //         set_at(obj, entry.level, "level"s);
-    //         res[i] = obj;
-    //     }
-    //     return res;
-    // }
+    auto filter(const std::string &query, const AllocatorType &env, const size_t maxResults = 0, const bool usePathScoring = true, const bool useExtensionBonus = false) {
+        // optimization for no candidates
+        if (partitioned_candidates.empty()) {
+            return init<ArrayType, AllocatorType>(static_cast<size_t>(0), env);    // return an empty vector (should we throw?)
+        }
+
+        const Options options(query, maxResults, usePathScoring, useExtensionBonus);
+        const auto filtered_indices = zadeh::filter(partitioned_candidates, query, options);
+        const auto filter_indices_length = filtered_indices.size();
+
+        auto res = init<ArrayType, AllocatorType>(filter_indices_length, env);    // array of TreeNode
+        auto candidates = candidates_view.Value();
+        for (size_t i_candidate = 0; i_candidate < filter_indices_length; i_candidate++) {
+            auto entry = candidates_vector[filtered_indices[i_candidate]];
+
+            const auto index = entry.index;
+
+            const auto parent_indices = entry.parent_indices;
+            auto parent_indices_len = parent_indices.size();
+
+            // final filtered tree
+            NodeType filteredTree;
+
+            // We create a tree with the filtered data being the last level (if it has children, they are not included in the filered tree)
+            // we construct a filtered tree from top to bottom
+            if (parent_indices_len == 0) {
+                // if no parent index, then just set the filteredTree to candidates[index]
+                filteredTree = get_at<ArrayType, NodeType>(candidates, index);
+            } else {
+                NodeType temp_parent;    // the temp parent that is processed in each iteration
+                auto temp_children = candidates;
+                for (uint32_t i_parent_index = 0, parent_indices_len = parent_indices.size(); i_parent_index < parent_indices_len; i_parent_index++) {
+                    const auto parent_index = parent_indices[i_parent_index];
+                    if (i_parent_index != parent_indices_len) {
+                        // for each parent index get the original object at that index
+                        temp_parent = get_at<ArrayType, NodeType>(temp_children, index);
+                    } else {
+                        // once parent indices finished, we get the index instead of the last parent
+                        // last parent
+                        temp_parent = get_at<ArrayType, NodeType>(temp_children, parent_index);
+                        auto may_children = get_children<NodeType, ArrayType>(temp_parent, children_key);
+                        if (may_children.has_value()) {    // always have children?
+                            temp_children = may_children.value();
+                        }
+                    }
+                    // unset_children<NodeType, ArrayType, AllocatorType>(temp_parent, children_key, env);
+                    if (i_parent_index == 0) {
+                        filteredTree = temp_parent;
+                    } else {
+                        // children: [filtered_node]
+                        auto filtered_children = init<ArrayType, AllocatorType>(static_cast<size_t>(1u), env);
+                        set_at(filtered_children, move(temp_parent), static_cast<size_t>(0u));
+
+                        set_at(filteredTree, move(filtered_children), children_key);
+                    }
+                }
+            }
+            set_at(res, move(filteredTree), i_candidate);
+        }
+
+        return res;
+    }
 
   private:
     /**

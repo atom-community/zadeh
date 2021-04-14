@@ -31,6 +31,11 @@ Napi::Object get_at(const Napi::Array &candidates, const uint32_t ind) {
 }
 
 template<>
+Napi::Object get_at(const Napi::Array &candidates, const size_t ind) {
+    return candidates.Get(ind).As<Napi::Object>();
+}
+
+template<>
 size_t get_size(const Napi::Array &candidates) {
     return candidates.Length();
 }

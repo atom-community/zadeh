@@ -54,7 +54,15 @@ class ZadehNode : public Napi::ObjectWrap<ZadehNode> {
         return Napi::Boolean();
     }
 
-    /** (query: string, maxResults: number, usePathScoring: bool, useExtensionBonus: bool) */
+    Napi::Value filterTree(const Napi::CallbackInfo &info) {
+        return treeFilterer.filter(
+          info[0].As<Napi::String>(),
+          info.Env(),
+          info[1].As<Napi::Number>().Uint32Value(),
+          info[2].As<Napi::Boolean>(),
+          info[3].As<Napi::Boolean>());
+    }
+
     Napi::Value filterIndicesTree(const Napi::CallbackInfo &info) {
         return treeFilterer.filter_indices(
           info[0].As<Napi::String>(),
@@ -64,14 +72,13 @@ class ZadehNode : public Napi::ObjectWrap<ZadehNode> {
           info[3].As<Napi::Boolean>());
     }
 
-
     // NAPI entry functions:
     static Napi::Object Init(Napi::Env env, Napi::Object exports);
     explicit ZadehNode(const Napi::CallbackInfo &info) : Napi::ObjectWrap<ZadehNode>(info) {}
 
   private:
     StringArrayFilterer<Napi::Array, Napi::Reference<Napi::Array>, CandidateString, Napi::Env> strArrFilterer{};
-    TreeFilterer<Napi::Array, Napi::Object, Napi::Number, Napi::Reference<Napi::Object>, Napi::Env> treeFilterer{};
+    TreeFilterer<Napi::Array, Napi::Object, Napi::Number, Napi::Reference<Napi::Array>, Napi::Env> treeFilterer{};
 };
 
 

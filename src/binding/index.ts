@@ -317,7 +317,7 @@ export class TreeFilterer<T extends Tree = Tree> {
     const useExtensionBonus = Boolean(options.useExtensionBonus)
 
     Binding.validate_filterTree(query, maxResult, usePathScoring, useExtensionBonus)
-    return this.obj.filterIndicesTree(query, maxResult, usePathScoring, useExtensionBonus)
+    return this.obj.filterTree(query, maxResult, usePathScoring, useExtensionBonus)
   }
 
   /**

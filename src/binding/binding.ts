@@ -8,6 +8,13 @@ export declare class Zadeh {
 
   setArrayFiltererCandidates(candidateStrings: Array<string>): boolean
 
+  filterTree(
+    query: string,
+    maxResult: number,
+    usePathScoring: boolean,
+    useExtensionBonus: boolean
+  ): Array<TreeFilterResult>
+
   filterIndicesTree(
     query: string,
     maxResult: number,
