@@ -168,6 +168,17 @@ Napi::Array get_children(const Napi::Object &tree_object, const string &children
     }
 }
 
+/** console.log function to use for debugging */
+auto print(const Napi::Env &env, const std::initializer_list<napi_value> &args) {
+    env.Global().Get("console").As<Napi::Object>().Get("log").As<Napi::Function>().Call(args);
+}
+
+/** printLn function to use for debugging */
+auto println(std::string name, const Napi::Env &env, const std::initializer_list<napi_value> &args) {
+    cout << name << '\n';
+    print(env, args);
+}
+
 }    // namespace zadeh
 #endif
 #endif
