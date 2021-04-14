@@ -78,6 +78,20 @@ Napi::Object init(const Napi::Env &env) {
 }
 
 template<>
+Napi::Object copy(const Napi::Object &obj, const Napi::Env &env) {
+    auto obj_copy = Napi::Object::New(env);
+    env.Global().Get("Object").As<Napi::Object>().Get("assign").As<Napi::Function>().Call({ obj_copy, obj });
+    return obj_copy;
+}
+
+template<>
+Napi::Array copy(const Napi::Array &arr, const Napi::Env &env) {
+    auto arr_copy = Napi::Array::New(env);
+    env.Global().Get("Object").As<Napi::Object>().Get("assign").As<Napi::Function>().Call({ arr_copy, arr });
+    return arr_copy;
+}
+
+template<>
 CandidateString get_at(const Napi::Object &candidates, const string ind) {
     return candidates.Get(ind).ToString().Utf8Value();
 }

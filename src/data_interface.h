@@ -15,6 +15,9 @@ ArrayType init(const SizeType len, const AllocatorType &alloc);
 template<typename ObjectType, typename AllocatorType>
 ObjectType init(const AllocatorType &alloc);
 
+template<typename ObjectType, typename AllocatorType>
+ObjectType copy(const ObjectType &obj, const AllocatorType &alloc);
+
 template<typename ReferenceType, typename ValueType>
 ReferenceType get_ref(const ValueType &value);
 
