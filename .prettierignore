@@ -1,23 +1,30 @@
-test/*.coffee
-benchmark/result.md
-
+# Node
 node_modules/
+package-lock.json
+pnpm-lock.yaml
 
+# Caches
+.parcel-cache
+.rollup.cache
+.ropeproject
+.mypy_cache
+cmake-build-*
+.scannerwork
+
+
+# Built Files
 build/
 dist/
 dist-test/
 prebuilds/
-
-.parcel-cache
-.rollup.cache
-
-index.js
-index.d.ts
-index.js.map
+out/
 tsconfig.tsbuildinfo
 
-.scannerwork
-package-lock.json
-pnpm-lock.yaml
-cmake-build-*
-.mypy_cache
+index.js
+index.js.map
+*.d.ts
+
+
+# Extra files
+test/*.coffee
+benchmark/result.md
