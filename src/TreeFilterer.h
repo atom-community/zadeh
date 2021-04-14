@@ -167,8 +167,8 @@ class TreeFilterer {
   private:
     /**
         Recursive function that fills the candidates_vector from the given children_nodes that have a common parent node
-        @param children_nodes: an array of trees
-        @param parent_indices: the indices of the parent node
+        @param children_nodes an array of trees
+        @param parent_indices the indices of the parent node
     */
     void make_candidates_vector(const ArrayType &children_nodes, vector<size_t> parent_indices) {
         const auto children_num = get_size(children_nodes);
@@ -179,9 +179,9 @@ class TreeFilterer {
 
     /**
         Recursive function that fills the candidates_vector from the given node
-        @param node: a tree node
-        @param index: the index of the child in the parent node
-        @param parent_indices: the indices of the parent node
+        @param node a tree node
+        @param index the index of the child in the parent node
+        @param parent_indices the indices of the parent node
     */
     void make_candidates_vector(const NodeType &node, size_t index, vector<size_t> parent_indices) {
         // make the TreeNode and push it back
@@ -191,7 +191,7 @@ class TreeFilterer {
           parent_indices);
 
         // add children if any
-        auto may_children = get_children<NodeType, ArrayType>(node, children_key);
+        auto may_children = may_get_children<NodeType, ArrayType>(node, children_key);
         if (may_children.has_value()) {
             // copy parent_indices and add the current index // TODO use a pointer?
             auto new_parent_indices = vector<size_t>();

@@ -38,9 +38,11 @@ template<typename ArrayType, typename ElementType, typename IndexType = size_t>
 void set_at(ArrayType &candidates, ElementType &&value, const IndexType iCandidate);
 
 /** Get children of a tree */
-template<typename ParentType, typename ChildType>
-optional<ChildType> get_children(const ParentType &tree_object, const string &children_key);
+template<typename ParentType, typename ChildType, typename AllocatorType>
+ChildType get_children(const ParentType &tree_object, const string &children_key, const AllocatorType &env);
 
+template<typename ParentType, typename ChildType>
+optional<ChildType> may_get_children(const ParentType &tree_object, const string &children_key);
 
 /** Implementation for vector<E> */
 

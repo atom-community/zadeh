@@ -143,7 +143,7 @@ Napi::Reference<Napi::Object> get_ref(const Napi::Object &obj) {
 
 /** Get the children of a tree_object (Napi::Object) */
 template<>
-optional<Napi::Array> get_children(const Napi::Object &tree_object, const string &children_key) {
+optional<Napi::Array> may_get_children(const Napi::Object &tree_object, const string &children_key) {
     // determine if it has children
     if (tree_object.HasOwnProperty(children_key)) {
         const auto childrenRaw = tree_object.Get(children_key);
@@ -157,6 +157,16 @@ optional<Napi::Array> get_children(const Napi::Object &tree_object, const string
     return {};
 }
 
+template<>
+Napi::Array get_children(const Napi::Object &tree_object, const string &children_key, const Napi::Env &env) {
+    auto may_children = may_get_children<Napi::Object, Napi::Array>(tree_object, children_key);
+    if (may_children.has_value()) {
+        return may_children.value();
+    } else {
+        // empty array
+        return init<Napi::Array, Napi::Env>(static_cast<size_t>(0u), env);
+    }
+}
 
 }    // namespace zadeh
 #endif
