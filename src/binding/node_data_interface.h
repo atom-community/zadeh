@@ -56,6 +56,11 @@ void set_at(Napi::Array &candidates, Napi::Object &&value, const size_t iCandida
 }
 
 template<>
+void set_at(Napi::Array &candidates, Napi::Object &value, const size_t iCandidate) {
+    candidates.Set(iCandidate, value);
+}
+
+template<>
 void set_at(Napi::Array &candidates, Napi::Object &&value, const string ind) {
     candidates.Set(ind, move(value));
 }
@@ -97,6 +102,11 @@ CandidateString get_at(const Napi::Object &candidates, const string ind) {
 }
 
 template<>
+Napi::Array get_at(const Napi::Object &candidates, const string ind) {
+    return candidates.Get(ind).As<Napi::Array>();
+}
+
+template<>
 void set_at(Napi::Object &candidates, string &&value, const string index) {
     candidates.Set(index, move(value));
 }
@@ -119,6 +129,11 @@ void set_at(Napi::Object &candidates, const size_t &value, const string index) {
 template<>
 void set_at(Napi::Object &candidates, Napi::Array &&value, const string ind) {
     candidates.Set(ind, move(value));
+}
+
+template<>
+void set_at(Napi::Object &candidates, Napi::Array &value, const string ind) {
+    candidates.Set(ind, value);
 }
 
 template<>
