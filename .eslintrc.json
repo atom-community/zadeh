@@ -1,0 +1,4 @@
+{
+  "extends": "eslint-config-atomic",
+  "ignorePatterns": ["index.js", "index.d.ts", "build/", "node_modules/", "dist-test/"]
+}

@@ -9,15 +9,15 @@ namespace zadeh {
 // Data Interface
 
 template<typename ArrayType, typename ElementType, typename IndexType = size_t>
-ElementType get_at(const ArrayType &candidates, const IndexType j);
+ElementType get_at(const ArrayType &candidates, const IndexType iCandidate);
 
 template<typename ArrayType, typename SizeType = size_t>
 SizeType get_size(const ArrayType &candidates);
 
 // vector<E>
 template<>
-CandidateString get_at(const vector<CandidateString> &candidates, const size_t j) {
-    return candidates[j];
+CandidateString get_at(const vector<CandidateString> &candidates, const unsigned int iCandidate) {
+    return candidates[iCandidate];
 }
 
 template<>

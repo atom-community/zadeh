@@ -2,7 +2,7 @@
 *.h     text diff=cpp
 
 # Exclude from the language detection of the repository
-spec/filter-options-spec.coffee linguist-vendored
-spec/filter-spec.coffee linguist-vendored
-spec/match-spec.coffee linguist-vendored
-spec/score-spec.coffee linguist-vendored
+test/filter-options-spec.coffee linguist-vendored
+test/filter-spec.coffee linguist-vendored
+test/match-spec.coffee linguist-vendored
+test/score-spec.coffee linguist-vendored

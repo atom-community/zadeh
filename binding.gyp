@@ -6,7 +6,7 @@
         "src/zadeh.h", "src/common.h", "src/data_interface.h",
         "src/options.h", "src/scorer.h", "src/path_scorer.h", "src/filter.h", "src/query.h", "src/matcher.h",
         "src/ArrayFilterer.h", "src/TreeFilterer.h",
-        "src/binding/node.cc", "src/binding/node.h"
+        "src/binding/node.cc", "src/binding/node.h", "src/binding/node_data_interface.h",
       ],
       "include_dirs": [
         "<!@(node -p \"require('node-addon-api').include\")"
@@ -16,7 +16,7 @@
       'configurations': {
         # Release Settings
         'Release': {
-          'defines': [ 'NAPI_DISABLE_CPP_EXCEPTIONS', 'NDEBUG' ],
+          'defines': [ 'Zadeh_NODE_BINDING', 'NAPI_DISABLE_CPP_EXCEPTIONS', 'NDEBUG' ],
           "cflags": [ "-fno-exceptions", "-Ofast" ],
           "cflags_cc": [ "-fno-exceptions", "-Ofast", "-std=c++17" ],
           "xcode_settings": {
@@ -58,7 +58,7 @@
         },
         # Debug Settings
         'Debug': {
-          'defines': [ 'DEBUG', 'NAPI_CPP_EXCEPTIONS' ],
+          'defines': [ 'Zadeh_NODE_BINDING', 'DEBUG', 'NAPI_CPP_EXCEPTIONS' ],
           'cflags': [ '-g', '-O0', '-ldl' ],
           "cflags_cc": [
             '-g',

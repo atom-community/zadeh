@@ -3,7 +3,7 @@ const fs = require("fs")
 const path = require("path")
 const testutils = require("./testutils")
 
-const Zadeh = require("../node-dist")
+const Zadeh = require("../index")
 const legacy = require("fuzzaldrin-plus")
 
 const lines = fs.readFileSync(path.join(__dirname, "data-small.txt"), "utf8").trim().split("\n")

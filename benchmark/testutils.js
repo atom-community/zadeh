@@ -1,4 +1,4 @@
-const zadeh = require("../node-dist")
+const zadeh = require("../index")
 const legacy = require("fuzzaldrin-plus")
 
 let performance = null
@@ -22,9 +22,13 @@ try {
 function areArraysEqual(a, b) {
   a = new Set(a)
   b = new Set(b)
-  if (a.size !== b.size) return false
+  if (a.size !== b.size) {
+    return false
+  }
   for (const a_item of a) {
-    if (!b.has(a_item)) return false
+    if (!b.has(a_item)) {
+      return false
+    }
   }
   return true
 }

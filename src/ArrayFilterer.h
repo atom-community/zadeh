@@ -30,15 +30,15 @@ class ArrayFilterer {
         partitioned_candidates.resize(num_chunks);
 
         auto cur_start = 0u;
-        for (auto i = 0u; i < num_chunks; i++) {
+        for (auto iChunk = 0u; iChunk < num_chunks; iChunk++) {
 
             auto chunk_size = N / num_chunks;
             // Distribute remainder among the chunks.
-            if (i < N % num_chunks) {
+            if (iChunk < N % num_chunks) {
                 chunk_size++;
             }
-            for (auto j = cur_start; j < cur_start + chunk_size; j++) {
-                partitioned_candidates[i].emplace_back(get_at<ArrayType, ElementType>(candidates, j));
+            for (auto iCandidate = cur_start; iCandidate < cur_start + chunk_size; iCandidate++) {
+                partitioned_candidates[iChunk].emplace_back(get_at<ArrayType, ElementType>(candidates, iCandidate));
             }
             cur_start += chunk_size;
         }

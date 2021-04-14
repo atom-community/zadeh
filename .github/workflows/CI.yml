@@ -30,8 +30,7 @@ jobs:
       - name: Cache node_modules
         uses: actions/cache@v2
         env:
-          cache-name: |
-            node_modules
+          cache-name: node_modules
         with:
           path: node_modules
           key: ${{ runner.os }}-${{ matrix.node_version }}-${{ matrix.node_arch }}-${{ hashFiles('package.json') }}
@@ -61,11 +60,11 @@ jobs:
 
       - name: Prebuildify x64
         if: ${{ contains(matrix.node_version, '12') && contains(matrix.node_arch, 'x64') }}
-        run: npm run native:prebuild
+        run: npm run native.prebuild
 
       - name: Prebuildify x86
         if: ${{ contains(matrix.node_version, '12') && contains(matrix.node_arch, 'x86') }}
-        run: npm run native:prebuild-ia32
+        run: npm run native.prebuild-ia32
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2.0.1
@@ -103,8 +102,7 @@ jobs:
       - name: Cache node_modules
         uses: actions/cache@v2
         env:
-          cache-name: |
-            node_modules
+          cache-name: node_modules
         with:
           path: node_modules
           key: ${{ runner.os }}-${{ matrix.node_version }}-${{ matrix.node_arch }}-${{ hashFiles('package.json') }}
@@ -118,7 +116,7 @@ jobs:
       - name: Install dependencies only
         run: |
           npm install --ignore-scripts
-          npm run js:build
+          npm run js.build
 
       - name: Download articats
         uses: actions/download-artifact@v2
@@ -137,6 +135,33 @@ jobs:
       - name: Run benchmarks
         if: ${{ !contains(matrix.node_arch, 'x86') }} # https://github.com/npm/npm-lifecycle/issues/54
         run: npm run benchmark
+
+  Lint:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Commit lint ✨
+        uses: wagoid/commitlint-github-action@v2
+
+      - uses: UziTech/action-setup-atom@v1
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v1.2.1
+        with:
+          version: latest
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Format ✨
+        run: pnpm test.format
+
+      - name: Lint ✨
+        run: pnpm test.lint
 
   Skip:
     if: contains(github.event.head_commit.message, '[skip ci]')
