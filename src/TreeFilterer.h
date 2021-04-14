@@ -122,43 +122,47 @@ class TreeFilterer {
             auto parent_indices_len = parent_indices.size();
 
             // final filtered tree
-            NodeType filteredTree;
+            NodeType filtered_tree;
 
             // We create a tree with the filtered data being the last level (if it has children, they are not included in the filered tree)
             // we construct a filtered tree from top to bottom
-            if (parent_indices_len == 0) {
-                // if no parent index, then just set the filteredTree to candidates[index]
-                filteredTree = get_at<ArrayType, NodeType>(candidates, index);
-            } else {
+            auto temp_children = candidates;
+            for (uint32_t i_parent_index = 0; i_parent_index < parent_indices_len + 1; i_parent_index++) {
+#ifdef Zadeh_NODE_BINDING
+                assert(temp_children.IsArray());
+#endif
                 NodeType temp_parent;    // the temp parent that is processed in each iteration
-                auto temp_children = candidates;
-                for (uint32_t i_parent_index = 0, parent_indices_len = parent_indices.size(); i_parent_index < parent_indices_len; i_parent_index++) {
+                if (i_parent_index < parent_indices_len) {
                     const auto parent_index = parent_indices[i_parent_index];
-                    if (i_parent_index != parent_indices_len) {
-                        // for each parent index get the original object at that index
-                        temp_parent = get_at<ArrayType, NodeType>(temp_children, index);
-                    } else {
-                        // once parent indices finished, we get the index instead of the last parent
-                        // last parent
-                        temp_parent = get_at<ArrayType, NodeType>(temp_children, parent_index);
-                        auto may_children = get_children<NodeType, ArrayType>(temp_parent, children_key);
-                        if (may_children.has_value()) {    // always have children?
-                            temp_children = may_children.value();
-                        }
-                    }
-                    // unset_children<NodeType, ArrayType, AllocatorType>(temp_parent, children_key, env);
-                    if (i_parent_index == 0) {
-                        filteredTree = temp_parent;
-                    } else {
-                        // children: [filtered_node]
-                        auto filtered_children = init<ArrayType, AllocatorType>(static_cast<size_t>(1u), env);
-                        set_at(filtered_children, move(temp_parent), static_cast<size_t>(0u));
-
-                        set_at(filteredTree, move(filtered_children), children_key);
-                    }
+                    // for each parent index get the original object at that index
+                    temp_parent = get_at<ArrayType, NodeType>(temp_children, parent_index);
+                    // update the children for the next iteration
+                    temp_children = get_children<NodeType, ArrayType, AllocatorType>(temp_parent, children_key, env);
+                } else {
+                    assert(i_parent_index == parent_indices_len);
+                    assert(index < get_size(temp_children));
+                    // once parent indices finished, we get the index instead of the last parent
+                    temp_parent = get_at<ArrayType, NodeType>(temp_children, index);
                 }
+#ifdef Zadeh_NODE_BINDING
+                assert(temp_parent.IsObject());
+#endif
+                if (i_parent_index == 0) {
+                    // Copy temp parent!
+                    filtered_tree = temp_parent;
+                }
+                auto filtered_children = init<ArrayType, AllocatorType>(static_cast<size_t>(1u), env);
+                set_at(filtered_children, copy(temp_parent, env), static_cast<size_t>(0u));
+#ifdef DEBUG #ifdef Zadeh_data_interface_h_
+                println("filtered_children", env, { filtered_children });
+#endif #endif
+                // add to the final tree
+                set_at(filtered_tree, filtered_children, children_key);
+#ifdef DEBUG #ifdef Zadeh_data_interface_h_
+                println("filtered_children", env, { filtered_children });
+#endif #endif
             }
-            set_at(res, move(filteredTree), i_candidate);
+            set_at(res, move(filtered_tree), i_candidate);
         }
 
         return res;
