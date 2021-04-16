@@ -24,6 +24,9 @@ jobs:
           - os: windows-2016
             node_version: 12
             node_arch: x86
+          # - os: macos-11.0
+          #   node_version: 15
+          #   node_arch: arm64
     steps:
       - uses: actions/checkout@v2
 
@@ -66,6 +69,10 @@ jobs:
         if: ${{ contains(matrix.node_version, '12') && contains(matrix.node_arch, 'x86') }}
         run: npm run native.prebuild-ia32
 
+      # - name: Prebuildify arm64
+      #   if: ${{ contains(matrix.node_version, '15') && contains(matrix.node_arch, 'arm64') }}
+      #   run: npm run native.prebuild-arm64
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v2.0.1
         with:
@@ -96,6 +103,10 @@ jobs:
             node_version: 12
           - os: macos-10.15
             node_version: 12
+          # Node arm64 doesn't exist yet
+          # - os: macos-11.0
+          #   node_version: 15
+          #   node_arch: arm64
     steps:
       - uses: actions/checkout@v2
 
