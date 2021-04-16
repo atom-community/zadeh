@@ -1,0 +1,482 @@
+[
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "didUpdateStyles",
+        "startPosition": { "row": 84, "column": 2 },
+        "endPosition": { "row": 89, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "didUpdateStyles",
+        "startPosition": { "row": 84, "column": 2 },
+        "endPosition": { "row": 89, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "constant",
+        "plainText": "displayLayerParams",
+        "startPosition": { "row": 243, "column": 12 },
+        "endPosition": { "row": 257, "column": 7 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "constant",
+        "plainText": "displayLayerParams",
+        "startPosition": { "row": 392, "column": 10 },
+        "endPosition": { "row": 392, "column": 33 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "constant",
+        "plainText": "displayLayerParams",
+        "startPosition": { "row": 243, "column": 12 },
+        "endPosition": { "row": 257, "column": 7 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "constant",
+        "plainText": "displayLayerParams",
+        "startPosition": { "row": 392, "column": 10 },
+        "endPosition": { "row": 392, "column": 33 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "constant",
+        "plainText": "disposable",
+        "startPosition": { "row": 130, "column": 12 },
+        "endPosition": { "row": 130, "column": 64 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "constant",
+        "plainText": "disposable",
+        "startPosition": { "row": 130, "column": 12 },
+        "endPosition": { "row": 130, "column": 64 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "didUpdateScrollbarStyles",
+        "startPosition": { "row": 91, "column": 2 },
+        "endPosition": { "row": 96, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "didUpdateScrollbarStyles",
+        "startPosition": { "row": 91, "column": 2 },
+        "endPosition": { "row": 96, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "onDidTerminatePendingState",
+        "startPosition": { "row": 842, "column": 2 },
+        "endPosition": { "row": 844, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "onDidTerminatePendingState",
+        "startPosition": { "row": 842, "column": 2 },
+        "endPosition": { "row": 844, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "constant",
+        "plainText": "Disposable",
+        "startPosition": { "row": 5, "column": 29 },
+        "endPosition": { "row": 5, "column": 39 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "onDidChangeCursorPosition",
+        "startPosition": { "row": 961, "column": 2 },
+        "endPosition": { "row": 963, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "onDidChangeCursorPosition",
+        "startPosition": { "row": 961, "column": 2 },
+        "endPosition": { "row": 963, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "onDidUpdateDecorations",
+        "startPosition": { "row": 1221, "column": 2 },
+        "endPosition": { "row": 1223, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "onDidUpdateDecorations",
+        "startPosition": { "row": 1221, "column": 2 },
+        "endPosition": { "row": 1223, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "constant",
+        "plainText": "CompositeDisposable",
+        "startPosition": { "row": 5, "column": 8 },
+        "endPosition": { "row": 5, "column": 27 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "getSaveDialogOptions",
+        "startPosition": { "row": 1510, "column": 2 },
+        "endPosition": { "row": 1512, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "getSaveDialogOptions",
+        "startPosition": { "row": 1510, "column": 2 },
+        "endPosition": { "row": 1512, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "constant",
+        "plainText": "openEditorPathSegmentsWithSameFilename",
+        "startPosition": { "row": 1396, "column": 12 },
+        "endPosition": { "row": 1396, "column": 55 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "constant",
+        "plainText": "openEditorPathSegmentsWithSameFilename",
+        "startPosition": { "row": 1396, "column": 12 },
+        "endPosition": { "row": 1396, "column": 55 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "scopeDescriptorForBufferPosition",
+        "startPosition": { "row": 4535, "column": 2 },
+        "endPosition": { "row": 4540, "column": 3 },
+        "children": [
+          {
+            "kind": "constant",
+            "plainText": "languageMode",
+            "startPosition": { "row": 4536, "column": 10 },
+            "endPosition": { "row": 4536, "column": 54 },
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "scopeDescriptorForBufferPosition",
+        "startPosition": { "row": 4535, "column": 2 },
+        "endPosition": { "row": 4540, "column": 3 },
+        "children": [
+          {
+            "kind": "constant",
+            "plainText": "languageMode",
+            "startPosition": { "row": 4536, "column": 10 },
+            "endPosition": { "row": 4536, "column": 54 },
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "syntaxTreeScopeDescriptorForBufferPosition",
+        "startPosition": { "row": 4557, "column": 2 },
+        "endPosition": { "row": 4562, "column": 3 },
+        "children": [
+          {
+            "kind": "constant",
+            "plainText": "languageMode",
+            "startPosition": { "row": 4558, "column": 10 },
+            "endPosition": { "row": 4558, "column": 54 },
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "syntaxTreeScopeDescriptorForBufferPosition",
+        "startPosition": { "row": 4557, "column": 2 },
+        "endPosition": { "row": 4562, "column": 3 },
+        "children": [
+          {
+            "kind": "constant",
+            "plainText": "languageMode",
+            "startPosition": { "row": 4558, "column": 10 },
+            "endPosition": { "row": 4558, "column": 54 },
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "updateAutoIndentOnPaste",
+        "startPosition": { "row": 543, "column": 2 },
+        "endPosition": { "row": 546, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "updateAutoIndentOnPaste",
+        "startPosition": { "row": 543, "column": 2 },
+        "endPosition": { "row": 546, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "shouldAutoIndentOnPaste",
+        "startPosition": { "row": 5134, "column": 2 },
+        "endPosition": { "row": 5136, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "shouldAutoIndentOnPaste",
+        "startPosition": { "row": 5134, "column": 2 },
+        "endPosition": { "row": 5136, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "destroyFoldsContainingBufferPositions",
+        "startPosition": { "row": 4950, "column": 2 },
+        "endPosition": { "row": 4955, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "destroyFoldsContainingBufferPositions",
+        "startPosition": { "row": 4950, "column": 2 },
+        "endPosition": { "row": 4955, "column": 3 },
+        "children": []
+      }
+    ]
+  }
+]

@@ -13,7 +13,7 @@ async function main() {
     { data: "Bye2", children: [{ data: "_bye4" }, { data: "hel" }] },
     { data: "eye" },
   ]
-  const condidatesCopy = {...candidates}
+  const condidatesCopy = { ...candidates }
 
   treeFilterer.setCandidates(candidates, "data", "children") // set candidates only once
   // console.log(treeFilterer.filter("hello"))
