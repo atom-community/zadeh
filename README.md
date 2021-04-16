@@ -91,6 +91,9 @@ const zadeh = require("zadeh")
 
 `StringArrayFilterer` is a class that allows to set the `candidates` only once and perform filtering on them multiple times. This is much more efficient than calling the `filter` function directly.
 
+<details>
+<summary>`StringArrayFilterer` API</summary>
+
 ```ts
 export class StringArrayFilterer {
   /**
@@ -127,6 +130,9 @@ export class StringArrayFilterer {
 }
 ```
 
+</details>
+<br/>
+
 **Example**:
 
 ```js
@@ -146,6 +152,9 @@ strArrFilterer.filter("all")
 ### ObjectArrayFilterer
 
 ObjectArrayFilterer is a class that performs filtering on an array of objects based on a string stored in the given `dataKey` for each object
+
+<details>
+<summary>`ObjectArrayFilterer` API</summary>
 
 ```ts
 export class ObjectArrayFilterer {
@@ -185,6 +194,9 @@ export class ObjectArrayFilterer {
 }
 ```
 
+</details>
+<br/>
+
 **Example**:
 
 ```js
@@ -209,6 +221,9 @@ objArrFilterer.filter("all") // [{ name: 'Call', id: 1 }]
 TreeFilterer is a filters the given query in the nodes of the given array of trees, and returns an array of filtered
 trees (or the indices of the filter candidates). A tree object is an object in which each entry stores the data in its `dataKey` and it has (may have) some
 children (with a similar structure) in its `childrenKey`
+
+<details>
+<summary>`TreeFilterer` API</summary>
 
 ```ts
 export class TreeFilterer<T extends Tree = Tree> {
@@ -251,6 +266,9 @@ export class TreeFilterer<T extends Tree = Tree> {
   filterIndices(query: string, options: TreeFilterOptions = {}): TreeFilterIndicesResult[]
 }
 ```
+
+</details>
+<br/>
 
 **Example**:
 
@@ -388,7 +406,7 @@ These deprecated functions are provided to support the API of `fuzzaldrin` and `
 However, you should replace their usage with `StringArrayFilterer` or `ObjectArrayFilterer` classes that allow setting the candidates only once and perform filtering on those candidates multiple times. This is much more efficient than `filter` or `filterTree` functions.
 
 <details>
-<summary> `filter` </summary>
+<summary> `filter` function </summary>
 
 ### filter
 
@@ -422,8 +440,6 @@ results = filter(candidates, "me", { key: "name" }) // [{name: 'Me', id: 2}, {na
 **Deprecation Note**: use `StringArrayFilterer` or `ObjectArrayFilterer` class instead. `filter` internally uses this class and in each call, it sets the candidates from scratch which can slow down the process.
 
 </details>
-
-<details>
 
 # Comparison with other libraries
 
