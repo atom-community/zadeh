@@ -50,12 +50,10 @@ void set_at(Napi::Array &candidates, CandidateString &&value, const size_t iCand
     candidates.Set(iCandidate, move(value));
 }
 
-#ifndef ENV32BIT    // only enable if size_t is not unint32_t
 template<>
 void set_at(Napi::Array &candidates, Napi::Number &&value, const uint32_t iCandidate) {
     candidates.Set(iCandidate, move(value));
 }
-#endif
 
 template<>
 void set_at(Napi::Array &candidates, Napi::Object &&value, const size_t iCandidate) {
