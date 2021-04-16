@@ -21,10 +21,10 @@ async function main() {
   const x1 = treeFilterer.filter("hel")
   console.log("x1 ", JSON.stringify(x1))
   console.log("candidates ", JSON.stringify(candidates))
-  assert(DeepEqual(candidates, condidatesCopy))
-  // console.log("candidates ", JSON.stringify(candidates))
-  // const x2 = treeFilterer.filter("he")
-  // console.log("x2 ", JSON.stringify(x2))
+
+  console.log("candidates ", JSON.stringify(candidates))
+  const x2 = treeFilterer.filter("he")
+  console.log("x2 ", JSON.stringify(x2))
 }
 
 main().catch((e) => {
