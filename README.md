@@ -110,6 +110,15 @@ export class StringArrayFilterer {
   filter(query: string, options: StringArrayFilterOptions = {}): Array<string>
 
   /**
+   * Filter the already set array of objects and get the indices of the chosen candidate
+   *
+   * @param query A string query to match the dataKey of each candidate against.
+   * @param options Options
+   * @returns Returns an array of numbers indicating the index of the chosen candidate sorted by best match against the query.
+   */
+  filterIndices(query: string, options: StringArrayFilterOptions = {}): Array<number>
+
+  /**
    * Allows to set the candidates (if changed or not set in the constructor).
    *
    * @param candidates An array of strings.
@@ -156,6 +165,15 @@ export class ObjectArrayFilterer {
    * @returns Returns an array of objects sorted by best match against the query.
    */
   filter(query: string, options: ObjectArrayFilterOptions = {}): Array<ObjectWithKey>
+
+  /**
+   * Filter the already set array of strings and get the indices of the chosen candidate
+   *
+   * @param query A string query to match each candidate against.
+   * @param options Options
+   * @returns Returns an array of numbers indicating the index of the chosen candidate sorted by best match against the query.
+   */
+  filterIndices(query: string, options: StringArrayFilterOptions = {}): Array<number>
 
   /**
    * Allows to set the candidates (if changed or not set in the constructor).

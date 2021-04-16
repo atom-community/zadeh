@@ -129,6 +129,17 @@ export class StringArrayFilterer {
    * @returns Returns an array of candidates sorted by best match against the query.
    */
   filter(query: string, options: StringArrayFilterOptions = {}): Array<string> {
+    return this.filterIndices(query, options).map((ind: number) => this.candidates[ind])
+  }
+
+  /**
+   * Filter the already set array of strings and get the indices of the chosen candidate
+   *
+   * @param query A string query to match each candidate against.
+   * @param options Options
+   * @returns Returns an array of numbers indicating the index of the chosen candidate sorted by best match against the query.
+   */
+  filterIndices(query: string, options: StringArrayFilterOptions = {}): Array<number> {
     parseFilterOptions(options)
 
     const maxResult = options.maxResults as number /* numberified by parseFilterOptions */
@@ -137,8 +148,7 @@ export class StringArrayFilterer {
 
     Binding.validate_filter(query, maxResult, usePathScoring, useExtensionBonus)
     // NOTE calling obj.filter is slower than (obj.filterIndices then map) due to the interop overhead
-    const filteredIndices = this.obj.filterIndices(query, maxResult, usePathScoring, useExtensionBonus)
-    return filteredIndices.map((ind: number) => this.candidates[ind])
+    return this.obj.filterIndices(query, maxResult, usePathScoring, useExtensionBonus)
   }
 }
 
@@ -187,6 +197,17 @@ export class ObjectArrayFilterer {
    * @returns Returns an array of objects sorted by best match against the query.
    */
   filter(query: string, options: ObjectArrayFilterOptions = {}): Array<ObjectWithKey> {
+    return this.filterIndices(query, options).map((ind: number) => this.candidates[ind])
+  }
+
+  /**
+   * Filter the already set array of objects and get the indices of the chosen candidate
+   *
+   * @param query A string query to match the dataKey of each candidate against.
+   * @param options Options
+   * @returns Returns an array of numbers indicating the index of the chosen candidate sorted by best match against the query.
+   */
+  filterIndices(query: string, options: StringArrayFilterOptions = {}): Array<number> {
     parseFilterOptions(options)
 
     const maxResult = options.maxResults as number /* numberified by parseFilterOptions */
@@ -194,9 +215,8 @@ export class ObjectArrayFilterer {
     const useExtensionBonus = Boolean(options.useExtensionBonus)
 
     Binding.validate_filter(query, maxResult, usePathScoring, useExtensionBonus)
-    // get the filtered indices then return the objects on the JS side
-    const res = this.obj.filterIndices(query, maxResult, usePathScoring, useExtensionBonus)
-    return res.map((ind: number) => this.candidates[ind])
+    // NOTE calling obj.filter is slower than (obj.filterIndices then map) due to the interop overhead
+    return this.obj.filterIndices(query, maxResult, usePathScoring, useExtensionBonus)
   }
 }
 
