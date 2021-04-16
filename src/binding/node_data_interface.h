@@ -173,10 +173,19 @@ auto print(const Napi::Env &env, const std::initializer_list<napi_value> &args) 
     env.Global().Get("console").As<Napi::Object>().Get("log").As<Napi::Function>().Call(args);
 }
 
+/** JSON.stringify function to use for debugging */
+auto stringify(const Napi::Env &env, const std::initializer_list<napi_value> &args) {
+    return env.Global().Get("JSON").As<Napi::Object>().Get("stringify").As<Napi::Function>().Call(args);
+}
+
 /** printLn function to use for debugging */
-auto println(std::string name, const Napi::Env &env, const std::initializer_list<napi_value> &args) {
+auto println(std::string name, const Napi::Env &env, const std::initializer_list<napi_value> &args, bool strinfigy = true) {
     cout << name << '\n';
-    print(env, args);
+    if (strinfigy) {
+        return print(env, { stringify(env, args) });
+    } else {
+        return print(env, args);
+    }
 }
 
 }    // namespace zadeh
