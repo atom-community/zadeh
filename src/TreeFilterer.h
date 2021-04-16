@@ -153,14 +153,19 @@ class TreeFilterer {
                 }
                 auto filtered_children = init<ArrayType, AllocatorType>(static_cast<size_t>(1u), env);
                 set_at(filtered_children, copy(temp_parent, env), static_cast<size_t>(0u));
-#ifdef DEBUG #ifdef Zadeh_data_interface_h_
-                println("filtered_children", env, { filtered_children });
-#endif #endif
+#ifdef DEBUG
+#ifdef Zadeh_data_interface_h_
+                println("temp_parent", env, { temp_parent });
+#endif
+#endif
                 // add to the final tree
                 set_at(filtered_tree, filtered_children, children_key);
-#ifdef DEBUG #ifdef Zadeh_data_interface_h_
+#ifdef DEBUG
+#ifdef Zadeh_data_interface_h_
                 println("filtered_children", env, { filtered_children });
-#endif #endif
+                println("filtered_tree", env, { filtered_tree });
+#endif
+#endif
             }
             set_at(res, move(filtered_tree), i_candidate);
         }
