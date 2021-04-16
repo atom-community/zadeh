@@ -148,8 +148,15 @@ class TreeFilterer {
                 assert(temp_parent.IsObject());
 #endif
                 if (i_parent_index == 0) {
-                    // for the first round we just use temp_parent
-                    filtered_tree = copy(temp_parent, env);
+                    if (parent_indices_len == 0) {
+                        // if the first level is chosen, set the children to an empty array
+                        auto filtered_parent = copy(temp_parent, env);
+                        set_at(filtered_parent, init<ArrayType, AllocatorType>(static_cast<size_t>(0u), env), children_key);
+                        filtered_tree = filtered_parent;
+                    } else {
+                        // for the first round we just use temp_parent
+                        filtered_tree = copy(temp_parent, env);
+                    }
                 } else {
                     // get the previous chosen children (current temp_parent) and place it in filtered_children
                     // so the previous children only has the chosen ones
