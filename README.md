@@ -157,14 +157,14 @@ ObjectArrayFilterer is a class that performs filtering on an array of objects ba
 <summary>`ObjectArrayFilterer` API</summary>
 
 ```ts
-export class ObjectArrayFilterer {
+export class ObjectArrayFilterer<DataKey extends string | number = string> {
   /**
    * Make a `ObjectArrayFilterer` for the candidates that are going to be filtered.
    *
    * @param candidates An array of objects.
    * @param dataKey The key which is indexed for each object, and filtering is done based on the resulting string
    */
-  constructor(candidates?: Array<ObjectWithKey>, dataKey?: string | number)
+  constructor(candidates?: Array<ObjectWithKey<DataKey>>, dataKey?: DataKey)
 
   /**
    * Filter the already set objects
@@ -190,7 +190,7 @@ export class ObjectArrayFilterer {
    * @param candidates An array of objects.
    * @param dataKey The key which is indexed for each object, and filtering is done based on the resulting string
    */
-  setCandidates(candidates: Array<ObjectWithKey>, dataKey: string | number)
+  setCandidates(candidates: Array<ObjectWithKey<DataKey>>, dataKey: DataKey)
 }
 ```
 
@@ -226,7 +226,7 @@ children (with a similar structure) in its `childrenKey`
 <summary>`TreeFilterer` API</summary>
 
 ```ts
-export class TreeFilterer<T extends Tree = Tree> {
+export class TreeFilterer<DataKey extends string, ChildrenKey extends string> {
   /**
    * The method to set an array of trees that are going to be filtered
    *
@@ -234,7 +234,11 @@ export class TreeFilterer<T extends Tree = Tree> {
    * @param dataKey The key of the object (and its children) which holds the data (defaults to `"data"`)
    * @param childrenKey The key of the object (and its children) which hold the children (defaults to `"children"`)
    */
-  constructor(candidates?: Array<T>, dataKey: string = "data", childrenKey: string = "children")
+  constructor(
+    candidates?: Tree<DataKey, ChildrenKey>[],
+    dataKey: DataKey = "data",
+    childrenKey: ChildrenKey = "children"
+  )
 
   /**
    * The method to set an array of trees that are going to be filtered
@@ -243,7 +247,11 @@ export class TreeFilterer<T extends Tree = Tree> {
    * @param dataKey The key of the object (and its children) which holds the data (defaults to `"data"`)
    * @param childrenKey The key of the object (and its children) which hold the children (defaults to `"children"`)
    */
-  setCandidates(candidates: Array<T>, dataKey: string = "data", childrenKey: string = "children")
+  setCandidates(
+    candidates: Tree<DataKey, ChildrenKey>[],
+    dataKey: DataKey = "data",
+    childrenKey: ChildrenKey = "children"
+  )
 
   /**
    * Filter the already set trees
@@ -253,7 +261,7 @@ export class TreeFilterer<T extends Tree = Tree> {
    * @returns {Tree[]} An array of filtered trees. In a tree, the filtered data is at the last level (if it has
    *   children, they are not included in the filered tree)
    */
-  filter(query: string, options: TreeFilterOptions = {}): Tree[]
+  filter(query: string, options: TreeFilterOptions = {}): Tree<DataKey, ChildrenKey>[]
 
   /**
    * The method to perform the filtering on the already set candidates

@@ -87,14 +87,20 @@ function parseFilterOptions(filterOptions: StringArrayFilterOptions | ObjectArra
 ██   ██ ██   ██ ██   ██ ██   ██    ██        ██      ██ ███████ ██    ███████ ██   ██
 */
 
-export type ObjectWithKey = object & Record<string | number, string>
+/** An object that stores its `dataKey` in `DataKey` */
+export type ObjectWithKey<DataKey extends string | number = string | number> = {
+  [dk in DataKey]: string
+} &
+  Record<string | number, string>
+
 export type StringOrObjectArray = string | ObjectWithKey
 
 /** StringArrayFilterer is a class that performs filtering on an array of strings */
 export class StringArrayFilterer {
   obj = new binding.Zadeh()
+  // typescript cannot detect that candidates is definitely assigned
   // @ts-ignore
-  candidates: Array<string>
+  private candidates: Array<string>
 
   /**
    * Make a `StringArrayFilterer` for the candidates that are going to be filtered.
@@ -156,10 +162,11 @@ export class StringArrayFilterer {
  * ObjectArrayFilterer is a class that performs filtering on an array of objects based on a string stored in the given
  * `dataKey` for each object
  */
-export class ObjectArrayFilterer {
+export class ObjectArrayFilterer<DataKey extends string | number = string> {
   obj = new binding.Zadeh()
+  // typescript cannot detect that candidates is definitely assigned
   // @ts-ignore
-  candidates: Array<ObjectWithKey>
+  private candidates: ObjectWithKey<DataKey>[]
 
   /**
    * Make a `ObjectArrayFilterer` for the candidates that are going to be filtered.
@@ -167,7 +174,7 @@ export class ObjectArrayFilterer {
    * @param candidates An array of objects.
    * @param dataKey The key which is indexed for each object, and filtering is done based on the resulting string
    */
-  constructor(candidates?: Array<ObjectWithKey>, dataKey?: string | number) {
+  constructor(candidates?: ObjectWithKey<DataKey>[], dataKey?: DataKey) {
     if (candidates !== undefined && dataKey !== undefined) {
       this.setCandidates(candidates, dataKey)
     } else {
@@ -181,7 +188,7 @@ export class ObjectArrayFilterer {
    * @param candidates An array of objects.
    * @param dataKey The key which is indexed for each object, and filtering is done based on the resulting string
    */
-  setCandidates(candidates: Array<ObjectWithKey>, dataKey: string | number) {
+  setCandidates(candidates: ObjectWithKey<DataKey>[], dataKey: DataKey) {
     this.candidates = candidates
     const candidatesKeys = candidates.map((item) => item[dataKey])
 
@@ -196,7 +203,7 @@ export class ObjectArrayFilterer {
    * @param options Options
    * @returns Returns an array of objects sorted by best match against the query.
    */
-  filter(query: string, options: ObjectArrayFilterOptions = {}): Array<ObjectWithKey> {
+  filter(query: string, options: ObjectArrayFilterOptions = {}): ObjectWithKey<DataKey>[] {
     return this.filterIndices(query, options).map((ind: number) => this.candidates[ind])
   }
 
@@ -252,7 +259,10 @@ export function filter<T extends StringOrObjectArray>(
       warnfilterObjectArrayFilterer = false
     }
     const dataKey = options.key
-    const objectArrayFilterer = new ObjectArrayFilterer(candidates as ObjectWithKey[], dataKey)
+    const objectArrayFilterer = new ObjectArrayFilterer(
+      candidates as ObjectWithKey<T extends string ? never : keyof T>[],
+      dataKey
+    )
     return objectArrayFilterer.filter(query, options) as DeprecatedFilterReturn<T>
   } else if (typeof candidates[0] === "string") {
     // string array
@@ -287,10 +297,11 @@ export interface TreeFilterIndicesResult {
  * tree. A tree object is an object in which each entry stores the data in its dataKey and it has (may have) some
  * children (with a similar structure) in its childrenKey
  */
-export class TreeFilterer<T extends Tree = Tree> {
+export class TreeFilterer<DataKey extends string = string, ChildrenKey extends string = string> {
   obj = new binding.Zadeh()
+  // typescript cannot detect that candidates is definitely assigned
   // @ts-ignore
-  candidates: Array<T>
+  private candidates: Tree<DataKey, ChildrenKey>[]
 
   /**
    * The method to set an array of trees that are going to be filtered
@@ -299,7 +310,11 @@ export class TreeFilterer<T extends Tree = Tree> {
    * @param dataKey The key of the object (and its children) which holds the data (defaults to `"data"`)
    * @param childrenKey The key of the object (and its children) which hold the children (defaults to `"children"`)
    */
-  constructor(candidates?: Array<T>, dataKey: string = "data", childrenKey: string = "children") {
+  constructor(
+    candidates?: Tree<DataKey, ChildrenKey>[],
+    dataKey: DataKey = "data" as DataKey,
+    childrenKey: ChildrenKey = "children" as ChildrenKey
+  ) {
     if (candidates) {
       this.setCandidates(candidates, dataKey, childrenKey)
     } else {
@@ -314,7 +329,11 @@ export class TreeFilterer<T extends Tree = Tree> {
    * @param dataKey The key of the object (and its children) which holds the data (defaults to `"data"`)
    * @param childrenKey The key of the object (and its children) which hold the children (defaults to `"children"`)
    */
-  setCandidates(candidates: Array<T>, dataKey: string = "data", childrenKey: string = "children") {
+  setCandidates(
+    candidates: Tree<DataKey, ChildrenKey>[],
+    dataKey: DataKey = "data" as DataKey,
+    childrenKey: ChildrenKey = "children" as ChildrenKey
+  ) {
     this.candidates = candidates
 
     Binding.validate_setTreeFiltererCandidates(candidates, dataKey, childrenKey)
@@ -329,7 +348,7 @@ export class TreeFilterer<T extends Tree = Tree> {
    * @returns {Tree[]} An array of filtered trees. In a tree, the filtered data is at the last level (if it has
    *   children, they are not included in the filered tree)
    */
-  filter(query: string, options: TreeFilterOptions = {}): Tree[] {
+  filter(query: string, options: TreeFilterOptions = {}): Tree<DataKey, ChildrenKey>[] {
     parseFilterOptions(options)
 
     const maxResult = options.maxResults as number /* numberified by parseFilterOptions */
@@ -359,8 +378,18 @@ export class TreeFilterer<T extends Tree = Tree> {
   }
 }
 
-// TODO better type
-export type Tree = Record<string, string>
+export type TreeDataProperty<DataKey extends string> = {
+  [dk in DataKey]: string
+}
+export type TreeChildrenProperty<ChildrenKey extends string> = {
+  [ck in ChildrenKey]?: string[] // children is either an array or not provided
+}
+/**
+ * A {Tree} object is an object in which each entry stores the data in its dataKey and it has (may have) some children
+ * (with a similar structure) in its childrenKey
+ */
+export type Tree<DataKey extends string = string, ChildrenKey extends string = string> = TreeDataProperty<DataKey> &
+  TreeChildrenProperty<ChildrenKey>
 
 /*
 ███████  ██████  ██████  ██████  ███████

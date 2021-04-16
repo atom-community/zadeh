@@ -17,6 +17,7 @@ export declare class Zadeh {
     useExtensionBonus: boolean
   ): Array<TreeFilterIndicesResult>
 
+  // TODO use generic Tree type
   setTreeFiltererCandidates(candidateTrees: Array<Tree>, dataKey: string, childrenKey: string): boolean
 }
 
