@@ -23,7 +23,7 @@
     "clean": "npm run native.clean && npm run js.clean",
     "install": "node-gyp-build",
     "build": "npm run native.build && npm run js.build",
-    "test": "shx rm -rf dist-test && shx cp -r test dist-test && coffee --compile dist-test && shx rm -rf dist-test/*.coffee && jasmine dist-test/*.js",
+    "test": "shx rm -rf dist-test && shx cp -r test dist-test && coffee --compile dist-test && shx rm -rf dist-test/*.coffee && jasmine dist-test/*-spec.js",
     "benchmark.regular": "node benchmark/benchmark.js",
     "benchmark.large": "node benchmark/benchmark-large.js",
     "benchmark.small": "node benchmark/benchmark-small.js",
