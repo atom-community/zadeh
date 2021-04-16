@@ -101,7 +101,7 @@ export class StringArrayFilterer {
   constructor(candidates?: Array<string>)
 
   /**
-   * The method to perform the filtering on the already set candidates
+   * Filter the already set array of strings
    *
    * @param query A string query to match each candidate against.
    * @param options Options
@@ -118,7 +118,7 @@ export class StringArrayFilterer {
 }
 ```
 
-Example:
+**Example**:
 
 ```js
 const { StringArrayFilterer } = require("zadeh")
@@ -149,11 +149,11 @@ export class ObjectArrayFilterer {
   constructor(candidates?: Array<ObjectWithKey>, dataKey?: string | number)
 
   /**
-   * The method to perform the filtering on the already set candidates
+   * Filter the already set objects
    *
-   * @param query A string query to match each candidate against.
+   * @param query A string query to match the dataKey of each candidate against.
    * @param options Options
-   * @returns Returns an array of candidates sorted by best match against the query.
+   * @returns Returns an array of objects sorted by best match against the query.
    */
   filter(query: string, options: ObjectArrayFilterOptions = {}): Array<ObjectWithKey>
 
@@ -167,7 +167,7 @@ export class ObjectArrayFilterer {
 }
 ```
 
-Example:
+**Example**:
 
 ```js
 const { ObjectArrayFilterer } = require("zadeh")
@@ -188,34 +188,53 @@ objArrFilterer.filter("all") // [{ name: 'Call', id: 1 }]
 
 ### TreeFilterer
 
-`TreeFilterer` is a class that allows to set the `candidates` only once and perform filtering on them multiple times. This is much more efficient than calling the `filterTree` function directly.
+TreeFilterer is a filters the given query in the nodes of the given array of trees, and returns an array of filtered
+trees (or the indices of the filter candidates). A tree object is an object in which each entry stores the data in its `dataKey` and it has (may have) some
+children (with a similar structure) in its `childrenKey`
 
 ```ts
-export class TreeFilterer<T> {
-  constructor()
-
+export class TreeFilterer<T extends Tree = Tree> {
   /**
-   * The method to set the candidates that are going to be filtered
+   * The method to set an array of trees that are going to be filtered
    *
    * @param candidates An array of tree objects.
    * @param dataKey The key of the object (and its children) which holds the data (defaults to `"data"`)
    * @param childrenKey The key of the object (and its children) which hold the children (defaults to `"children"`)
    */
-  setCandidates<T>(candidates: Array<T>, dataKey?: string, childrenKey?: string): void
+  constructor(candidates?: Array<T>, dataKey: string = "data", childrenKey: string = "children")
+
+  /**
+   * The method to set an array of trees that are going to be filtered
+   *
+   * @param candidates An array of tree objects.
+   * @param dataKey The key of the object (and its children) which holds the data (defaults to `"data"`)
+   * @param childrenKey The key of the object (and its children) which hold the children (defaults to `"children"`)
+   */
+  setCandidates(candidates: Array<T>, dataKey: string = "data", childrenKey: string = "children")
+
+  /**
+   * Filter the already set trees
+   *
+   * @param query A string query to match the dataKey of each candidate against.
+   * @param options Options
+   * @returns {Tree[]} An array of filtered trees. In a tree, the filtered data is at the last level (if it has
+   *   children, they are not included in the filered tree)
+   */
+  filter(query: string, options: TreeFilterOptions = {}): Tree[]
 
   /**
    * The method to perform the filtering on the already set candidates
    *
-   * @param query A string query to match each candidate against.
+   * @param query A string query to match the dataKey of each candidate against.
    * @param options Options
-   * @returns An array of candidate objects in form of `{data, index, level}` sorted by best match against the query.
-   *   Each objects has the address of the object in the tree using `index` and `level`.
+   * @returns {TreeFilterIndicesResult[]} An array candidate objects in form of `{data, index, parentIndices}` sorted by
+   *   best match against the query. Each objects has the address of the object in the tree using `index` and `parent_indices`
    */
-  filter(query: string, options: IFilterOptions<object>): TreeFilterResult[]
+  filterIndices(query: string, options: TreeFilterOptions = {}): TreeFilterIndicesResult[]
 }
 ```
 
-Example:
+**Example**:
 
 ```js
 const { TreeFilterer } = require("zadeh")
@@ -227,11 +246,48 @@ const candidates = [
   { data: "Bye2", children: [{ data: "_bye4" }, { data: "hel" }] },
   { data: "eye" },
 ]
-treeFilterer.setCandidates(candidates, "data", "children") // set candidates only once
+treeFilterer.setCandidates(candidates, "data", "children")
+```
 
-// call filter multiple times
-treeFilterer.filter("hello")
+```ts
+treeFilterer.filter("hel")
+```
+
+returns
+
+```ts
+;[
+  { data: "Bye2", children: [{ data: "hel" }] },
+  { data: "bye1", children: [{ data: "hello" }] },
+]
+```
+
+```ts
 treeFilterer.filter("bye")
+```
+
+returns
+
+```ts
+;[
+  { data: "bye1", children: [] },
+  { data: "Bye2", children: [{ data: "_bye4" }] },
+  { data: "Bye2", children: [] },
+]
+```
+
+```ts
+treeFilterer.filterIndices("bye")
+```
+
+returns
+
+```ts
+;[
+  { data: "bye1", index: 0, parent_indices: [] },
+  { data: "_bye4", index: 0, parent_indices: [1] },
+  { data: "Bye2", index: 1, parent_indices: [] },
+]
 ```
 
 ### score

@@ -122,7 +122,7 @@ export class StringArrayFilterer {
   }
 
   /**
-   * The method to perform the filtering on the already set candidates
+   * Filter the already set array of strings
    *
    * @param query A string query to match each candidate against.
    * @param options Options
@@ -180,11 +180,11 @@ export class ObjectArrayFilterer {
   }
 
   /**
-   * The method to perform the filtering on the already set candidates
+   * Filter the already set objects
    *
-   * @param query A string query to match each candidate against.
+   * @param query A string query to match the dataKey of each candidate against.
    * @param options Options
-   * @returns Returns an array of candidates sorted by best match against the query.
+   * @returns Returns an array of objects sorted by best match against the query.
    */
   filter(query: string, options: ObjectArrayFilterOptions = {}): Array<ObjectWithKey> {
     parseFilterOptions(options)
@@ -255,11 +255,11 @@ export function filter<T extends StringOrObjectArray>(
    ██    ██   ██ ███████ ███████     ██      ██ ███████ ██    ███████ ██   ██
 */
 
-// The object (an element of the array) returned from filtering trees. It has the address of the object in the tree using `index` and `level`.
-export interface TreeFilterResult {
+// The object (an element of the array) returned from filtering trees. It has the address of the object in the tree using `index` and `parent_indices`.
+export interface TreeFilterIndicesResult {
   data: string
   index: number
-  level: number
+  parent_indices: Array<number>
 }
 
 /**
@@ -273,7 +273,7 @@ export class TreeFilterer<T extends Tree = Tree> {
   candidates: Array<T>
 
   /**
-   * The method to set the candidates that are going to be filtered
+   * The method to set an array of trees that are going to be filtered
    *
    * @param candidates An array of tree objects.
    * @param dataKey The key of the object (and its children) which holds the data (defaults to `"data"`)
@@ -288,7 +288,7 @@ export class TreeFilterer<T extends Tree = Tree> {
   }
 
   /**
-   * The method to set the candidates that are going to be filtered
+   * The method to set an array of trees that are going to be filtered
    *
    * @param candidates An array of tree objects.
    * @param dataKey The key of the object (and its children) which holds the data (defaults to `"data"`)
@@ -302,14 +302,14 @@ export class TreeFilterer<T extends Tree = Tree> {
   }
 
   /**
-   * The method to perform the filtering on the already set candidates
+   * Filter the already set trees
    *
-   * @param query A string query to match each candidate against.
+   * @param query A string query to match the dataKey of each candidate against.
    * @param options Options
-   * @returns An array of candidate objects in form of `{data, index, level}` sorted by best match against the query.
-   *   Each objects has the address of the object in the tree using `index` and `level`.
+   * @returns {Tree[]} An array of filtered trees. In a tree, the filtered data is at the last level (if it has
+   *   children, they are not included in the filered tree)
    */
-  filter(query: string, options: TreeFilterOptions = {}): TreeFilterResult[] {
+  filter(query: string, options: TreeFilterOptions = {}): Tree[] {
     parseFilterOptions(options)
 
     const maxResult = options.maxResults as number /* numberified by parseFilterOptions */
@@ -323,10 +323,12 @@ export class TreeFilterer<T extends Tree = Tree> {
   /**
    * The method to perform the filtering on the already set candidates
    *
-   * @param query A string query to match each candidate against.
+   * @param query A string query to match the dataKey of each candidate against.
    * @param options Options
+   * @returns {TreeFilterIndicesResult[]} An array candidate objects in form of `{data, index, parentIndices}` sorted by
+   *   best match against the query. Each objects has the address of the object in the tree using `index` and `parent_indices`
    */
-  filterIndices(query: string, options: TreeFilterOptions = {}) {
+  filterIndices(query: string, options: TreeFilterOptions = {}): TreeFilterIndicesResult[] {
     parseOptions(options)
     return this.obj.filterIndicesTree(
       query,

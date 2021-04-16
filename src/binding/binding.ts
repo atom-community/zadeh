@@ -1,4 +1,4 @@
-import type { Tree, TreeFilterResult } from "./index"
+import type { Tree, TreeFilterIndicesResult } from "./index"
 
 export declare class Zadeh {
   constructor()
@@ -8,19 +8,14 @@ export declare class Zadeh {
 
   setArrayFiltererCandidates(candidateStrings: Array<string>): boolean
 
-  filterTree(
-    query: string,
-    maxResult: number,
-    usePathScoring: boolean,
-    useExtensionBonus: boolean
-  ): Array<TreeFilterResult>
+  filterTree(query: string, maxResult: number, usePathScoring: boolean, useExtensionBonus: boolean): Array<Tree>
 
   filterIndicesTree(
     query: string,
     maxResult: number,
     usePathScoring: boolean,
     useExtensionBonus: boolean
-  ): Array<TreeFilterResult>
+  ): Array<TreeFilterIndicesResult>
 
   setTreeFiltererCandidates(candidateTrees: Array<Tree>, dataKey: string, childrenKey: string): boolean
 }
