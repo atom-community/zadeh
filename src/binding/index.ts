@@ -93,6 +93,7 @@ export type StringOrObjectArray = string | ObjectWithKey
 /** StringArrayFilterer is a class that performs filtering on an array of strings */
 export class StringArrayFilterer {
   obj = new binding.Zadeh()
+  // typescript cannot detect that candidates is definitely assigned
   // @ts-ignore
   candidates: Array<string>
 
@@ -158,6 +159,7 @@ export class StringArrayFilterer {
  */
 export class ObjectArrayFilterer {
   obj = new binding.Zadeh()
+  // typescript cannot detect that candidates is definitely assigned
   // @ts-ignore
   candidates: Array<ObjectWithKey>
 
@@ -287,10 +289,11 @@ export interface TreeFilterIndicesResult {
  * tree. A tree object is an object in which each entry stores the data in its dataKey and it has (may have) some
  * children (with a similar structure) in its childrenKey
  */
-export class TreeFilterer<T extends Tree = Tree> {
+export class TreeFilterer<DataKey extends string = string, ChildrenKey extends string = string> {
   obj = new binding.Zadeh()
+  // typescript cannot detect that candidates is definitely assigned
   // @ts-ignore
-  candidates: Array<T>
+  private candidates: Tree<DataKey, ChildrenKey>[]
 
   /**
    * The method to set an array of trees that are going to be filtered
@@ -299,7 +302,11 @@ export class TreeFilterer<T extends Tree = Tree> {
    * @param dataKey The key of the object (and its children) which holds the data (defaults to `"data"`)
    * @param childrenKey The key of the object (and its children) which hold the children (defaults to `"children"`)
    */
-  constructor(candidates?: Array<T>, dataKey: string = "data", childrenKey: string = "children") {
+  constructor(
+    candidates?: Tree<DataKey, ChildrenKey>[],
+    dataKey: DataKey = "data" as DataKey,
+    childrenKey: ChildrenKey = "children" as ChildrenKey
+  ) {
     if (candidates) {
       this.setCandidates(candidates, dataKey, childrenKey)
     } else {
@@ -314,7 +321,11 @@ export class TreeFilterer<T extends Tree = Tree> {
    * @param dataKey The key of the object (and its children) which holds the data (defaults to `"data"`)
    * @param childrenKey The key of the object (and its children) which hold the children (defaults to `"children"`)
    */
-  setCandidates(candidates: Array<T>, dataKey: string = "data", childrenKey: string = "children") {
+  setCandidates(
+    candidates: Tree<DataKey, ChildrenKey>[],
+    dataKey: DataKey = "data" as DataKey,
+    childrenKey: ChildrenKey = "children" as ChildrenKey
+  ) {
     this.candidates = candidates
 
     Binding.validate_setTreeFiltererCandidates(candidates, dataKey, childrenKey)
@@ -329,7 +340,7 @@ export class TreeFilterer<T extends Tree = Tree> {
    * @returns {Tree[]} An array of filtered trees. In a tree, the filtered data is at the last level (if it has
    *   children, they are not included in the filered tree)
    */
-  filter(query: string, options: TreeFilterOptions = {}): Tree[] {
+  filter(query: string, options: TreeFilterOptions = {}): Tree<DataKey, ChildrenKey>[] {
     parseFilterOptions(options)
 
     const maxResult = options.maxResults as number /* numberified by parseFilterOptions */
@@ -359,8 +370,16 @@ export class TreeFilterer<T extends Tree = Tree> {
   }
 }
 
-// TODO better type
-export type Tree = Record<string, string>
+export type TreeDataProperty<DataKey extends string> = {
+  [dk in DataKey]: string
+}
+export type TreeChildrenProperty<ChildrenKey extends string> = {
+  [ck in ChildrenKey]?: string[] // children is either an array or not provided
+}
+/** A {Tree} object is an object in which each entry stores the data in its dataKey and it has (may have) some
+* children (with a similar structure) in its childrenKey */
+export type Tree<DataKey extends string = string, ChildrenKey extends string = string> = TreeDataProperty<DataKey> &
+  TreeChildrenProperty<ChildrenKey>
 
 /*
 ███████  ██████  ██████  ██████  ███████
