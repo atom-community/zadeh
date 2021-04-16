@@ -87,7 +87,12 @@ function parseFilterOptions(filterOptions: StringArrayFilterOptions | ObjectArra
 ██   ██ ██   ██ ██   ██ ██   ██    ██        ██      ██ ███████ ██    ███████ ██   ██
 */
 
-export type ObjectWithKey = object & Record<string | number, string>
+/** An object that stores its `dataKey` in `DataKey` */
+export type ObjectWithKey<DataKey extends string | number = string | number> = {
+  [dk in DataKey]: string
+} &
+  Record<string | number, string>
+
 export type StringOrObjectArray = string | ObjectWithKey
 
 /** StringArrayFilterer is a class that performs filtering on an array of strings */
@@ -157,11 +162,11 @@ export class StringArrayFilterer {
  * ObjectArrayFilterer is a class that performs filtering on an array of objects based on a string stored in the given
  * `dataKey` for each object
  */
-export class ObjectArrayFilterer {
+export class ObjectArrayFilterer<DataKey extends string | number = string> {
   obj = new binding.Zadeh()
   // typescript cannot detect that candidates is definitely assigned
   // @ts-ignore
-  candidates: Array<ObjectWithKey>
+  private candidates: ObjectWithKey<DataKey>[]
 
   /**
    * Make a `ObjectArrayFilterer` for the candidates that are going to be filtered.
@@ -169,7 +174,7 @@ export class ObjectArrayFilterer {
    * @param candidates An array of objects.
    * @param dataKey The key which is indexed for each object, and filtering is done based on the resulting string
    */
-  constructor(candidates?: Array<ObjectWithKey>, dataKey?: string | number) {
+  constructor(candidates?: ObjectWithKey<DataKey>[], dataKey?: DataKey) {
     if (candidates !== undefined && dataKey !== undefined) {
       this.setCandidates(candidates, dataKey)
     } else {
@@ -183,7 +188,7 @@ export class ObjectArrayFilterer {
    * @param candidates An array of objects.
    * @param dataKey The key which is indexed for each object, and filtering is done based on the resulting string
    */
-  setCandidates(candidates: Array<ObjectWithKey>, dataKey: string | number) {
+  setCandidates(candidates: ObjectWithKey<DataKey>[], dataKey: DataKey) {
     this.candidates = candidates
     const candidatesKeys = candidates.map((item) => item[dataKey])
 
@@ -198,7 +203,7 @@ export class ObjectArrayFilterer {
    * @param options Options
    * @returns Returns an array of objects sorted by best match against the query.
    */
-  filter(query: string, options: ObjectArrayFilterOptions = {}): Array<ObjectWithKey> {
+  filter(query: string, options: ObjectArrayFilterOptions = {}): ObjectWithKey<DataKey>[] {
     return this.filterIndices(query, options).map((ind: number) => this.candidates[ind])
   }
 
@@ -254,7 +259,10 @@ export function filter<T extends StringOrObjectArray>(
       warnfilterObjectArrayFilterer = false
     }
     const dataKey = options.key
-    const objectArrayFilterer = new ObjectArrayFilterer(candidates as ObjectWithKey[], dataKey)
+    const objectArrayFilterer = new ObjectArrayFilterer(
+      candidates as ObjectWithKey<T extends string ? never : keyof T>[],
+      dataKey
+    )
     return objectArrayFilterer.filter(query, options) as DeprecatedFilterReturn<T>
   } else if (typeof candidates[0] === "string") {
     // string array
@@ -376,8 +384,10 @@ export type TreeDataProperty<DataKey extends string> = {
 export type TreeChildrenProperty<ChildrenKey extends string> = {
   [ck in ChildrenKey]?: string[] // children is either an array or not provided
 }
-/** A {Tree} object is an object in which each entry stores the data in its dataKey and it has (may have) some
-* children (with a similar structure) in its childrenKey */
+/**
+ * A {Tree} object is an object in which each entry stores the data in its dataKey and it has (may have) some children
+ * (with a similar structure) in its childrenKey
+ */
 export type Tree<DataKey extends string = string, ChildrenKey extends string = string> = TreeDataProperty<DataKey> &
   TreeChildrenProperty<ChildrenKey>
 

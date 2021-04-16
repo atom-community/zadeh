@@ -157,14 +157,14 @@ ObjectArrayFilterer is a class that performs filtering on an array of objects ba
 <summary>`ObjectArrayFilterer` API</summary>
 
 ```ts
-export class ObjectArrayFilterer {
+export class ObjectArrayFilterer<DataKey extends string | number = string> {
   /**
    * Make a `ObjectArrayFilterer` for the candidates that are going to be filtered.
    *
    * @param candidates An array of objects.
    * @param dataKey The key which is indexed for each object, and filtering is done based on the resulting string
    */
-  constructor(candidates?: Array<ObjectWithKey>, dataKey?: string | number)
+  constructor(candidates?: Array<ObjectWithKey<DataKey>>, dataKey?: DataKey)
 
   /**
    * Filter the already set objects
@@ -190,7 +190,7 @@ export class ObjectArrayFilterer {
    * @param candidates An array of objects.
    * @param dataKey The key which is indexed for each object, and filtering is done based on the resulting string
    */
-  setCandidates(candidates: Array<ObjectWithKey>, dataKey: string | number)
+  setCandidates(candidates: Array<ObjectWithKey<DataKey>>, dataKey: DataKey)
 }
 ```
 
