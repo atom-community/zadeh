@@ -100,7 +100,7 @@ export class StringArrayFilterer {
   obj = new binding.Zadeh()
   // typescript cannot detect that candidates is definitely assigned
   // @ts-ignore
-  candidates: Array<string>
+  private candidates: Array<string>
 
   /**
    * Make a `StringArrayFilterer` for the candidates that are going to be filtered.
