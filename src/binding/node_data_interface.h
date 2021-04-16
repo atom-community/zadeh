@@ -1,3 +1,5 @@
+// TODO remove duplicate implementations
+
 #ifdef Zadeh_NODE_BINDING    // only defined for building the Node-js binding
 
 #ifndef Zadeh_Node_DATA_INTERFACE_H
@@ -6,6 +8,7 @@
 #include <napi.h>
 
 #include "../data_interface.h"
+#include "./windows_detect_arch.h"
 
 namespace zadeh {
 
@@ -25,10 +28,12 @@ string get_at(const Napi::Array &candidates, const size_t ind) {
     return candidates.Get(ind).ToString().Utf8Value();
 }
 
+#ifndef ENV32BIT    // only enable if size_t is not unint32_t
 template<>
 Napi::Object get_at(const Napi::Array &candidates, const uint32_t ind) {
     return candidates.Get(ind).As<Napi::Object>();
 }
+#endif
 
 template<>
 Napi::Object get_at(const Napi::Array &candidates, const size_t ind) {
@@ -45,10 +50,12 @@ void set_at(Napi::Array &candidates, CandidateString &&value, const size_t iCand
     candidates.Set(iCandidate, move(value));
 }
 
+#ifndef ENV32BIT    // only enable if size_t is not unint32_t
 template<>
 void set_at(Napi::Array &candidates, Napi::Number &&value, const uint32_t iCandidate) {
     candidates.Set(iCandidate, move(value));
 }
+#endif
 
 template<>
 void set_at(Napi::Array &candidates, Napi::Object &&value, const size_t iCandidate) {
