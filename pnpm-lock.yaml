@@ -15,8 +15,8 @@ specifiers:
   node-gyp-build: ^4.2.3
   npm-check-updates: 11.4.1
   prebuildify: ^4.1.2
-  prettier-config-atomic: ^2.0.1
-  rollup: ^2.45.1
+  prettier-config-atomic: ^2.0.2
+  rollup: ^2.45.2
   rollup-plugin-atomic: ^2.3.0
   shx: ^0.3.3
   typescript: ^4.2.4
@@ -38,8 +38,8 @@ devDependencies:
   jasmine-node: 3.0.0
   npm-check-updates: 11.4.1
   prebuildify: 4.1.2
-  prettier-config-atomic: 2.0.1
-  rollup: 2.45.1
+  prettier-config-atomic: 2.0.2
+  rollup: 2.45.2
   rollup-plugin-atomic: 2.3.0
   shx: 0.3.3
   typescript: 4.2.4
@@ -3909,17 +3909,17 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /prettier-config-atomic/2.0.1:
-    resolution: {integrity: sha512-3hdjHvfVrEoMBPmUF8r/cIvaoSyMO4kO4HmD+sr6EpkxhuEMl6ubKkIz2VTJgpdmGel4mECLgiQb3ZUrBcUvzA==}
+  /prettier-config-atomic/2.0.2:
+    resolution: {integrity: sha512-wnDfuHUKZrtsR4iOnDax2Ty6VgKueqIs9Xbl0s8ci1Aap0RI/UH/2hNWnUjn2EVeMsufpAO9ezq8LdZtgAnmEQ==}
     dependencies:
       prettier: 2.2.1
-      prettier-plugin-jsdoc: 0.3.18_prettier@2.2.1
+      prettier-plugin-jsdoc: 0.3.19_prettier@2.2.1
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /prettier-plugin-jsdoc/0.3.18_prettier@2.2.1:
-    resolution: {integrity: sha512-O6hx2Xzn2iGhU+olyyw0OEJ9JOuWNj17FdDW54U1qX7M6BRI5gcidtJQ6e76wWO65ppXXK/VFgdEH+iacOFrRw==}
+  /prettier-plugin-jsdoc/0.3.19_prettier@2.2.1:
+    resolution: {integrity: sha512-pkzQSmQX9tXGScRGjXC1eV9YZ+Ze0nsZwRaFQ6T0pLzeopOJ+fkEapNiA5PK+3DLezZMzwPMAb2dB5fCqHItbQ==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       prettier: '>=2.1.2'
@@ -4405,6 +4405,14 @@ packages:
 
   /rollup/2.45.1:
     resolution: {integrity: sha512-vPD+JoDj3CY8k6m1bLcAFttXMe78P4CMxoau0iLVS60+S9kLsv2379xaGy4NgYWu+h2WTlucpoLPAoUoixFBag==}
+    engines: {node: '>=10.0.0'}
+    hasBin: true
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: true
+
+  /rollup/2.45.2:
+    resolution: {integrity: sha512-kRRU7wXzFHUzBIv0GfoFFIN3m9oteY4uAsKllIpQDId5cfnkWF2J130l+27dzDju0E6MScKiV0ZM5Bw8m4blYQ==}
     engines: {node: '>=10.0.0'}
     hasBin: true
     optionalDependencies:
