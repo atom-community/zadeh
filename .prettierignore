@@ -28,3 +28,6 @@ index.js.map
 # Extra files
 test/*.coffee
 benchmark/result.md
+
+test/fixtures/*.json
+benchmark/tree.json

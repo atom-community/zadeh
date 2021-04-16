@@ -11,25 +11,36 @@ namespace zadeh {
 
 class ZadehNode : public Napi::ObjectWrap<ZadehNode> {
   public:
-    Napi::Value Filter(const Napi::CallbackInfo &info) {
-        auto res = Napi::Array::New(info.Env());
+    Napi::Value filter(const Napi::CallbackInfo &info) {
+        // NOTE: not used, as it seems slower than using `ZadehNode::filterIndices` and then filter based on the indices on the JavaScript side.
+        // Currently, it is disabled and so `set_candidates` doens't store a reference. If you want to use this function,
+        // you should call `strArrFilterer.set_candidates` with the second argument set to `true`
+        return strArrFilterer.filter(
+          info[0].As<Napi::String>(),
+          info.Env(),
+          info[1].As<Napi::Number>().Uint32Value(),
+          info[2].As<Napi::Boolean>(),
+          info[3].As<Napi::Boolean>());
+    }
 
-        const auto filter_indices = arrayFilterer.filter_indices(
+    Napi::Value filterIndices(const Napi::CallbackInfo &info) {
+        const auto env = info.Env();
+        const auto filter_indices = strArrFilterer.filter_indices(
           info[0].As<Napi::String>(),
           info[1].As<Napi::Number>().Uint32Value(),
           info[2].As<Napi::Boolean>(),
           info[3].As<Napi::Boolean>());
 
-        for (uint32_t i = 0, len = filter_indices.size(); i < len; i++) {
-            res[i] = Napi::Number::New(info.Env(), filter_indices[i]);
+        const auto indices_num = filter_indices.size();
+        auto res = Napi::Array::New(env, indices_num);
+        for (uint32_t i = 0; i < indices_num; i++) {
+            res[i] = Napi::Number::New(env, filter_indices[i]);
         }
         return res;
     }
 
-
     Napi::Value setArrayFiltererCandidates(const Napi::CallbackInfo &info) {
-        arrayFilterer.set_candidates(info[0].As<Napi::Array>());
-
+        strArrFilterer.set_candidates(info[0].As<Napi::Array>(), false);
         return Napi::Boolean();
     }
 
@@ -43,38 +54,31 @@ class ZadehNode : public Napi::ObjectWrap<ZadehNode> {
         return Napi::Boolean();
     }
 
-    /** (query: string, maxResults: number, usePathScoring: bool, useExtensionBonus: bool) */
-    Napi::Value FilterTree(const Napi::CallbackInfo &info) {
-        const auto filter_indices = treeFilterer.filter_indices(
+    Napi::Value filterTree(const Napi::CallbackInfo &info) {
+        return treeFilterer.filter(
           info[0].As<Napi::String>(),
+          info.Env(),
           info[1].As<Napi::Number>().Uint32Value(),
           info[2].As<Napi::Boolean>(),
           info[3].As<Napi::Boolean>());
-
-
-        auto filteredCandidateObjects = Napi::Array::New(info.Env());    // array of candidate objects (with their address in index and level)
-        for (uint32_t i = 0, len = filter_indices.size(); i < len; i++) {
-            auto &entry = treeFilterer.candidates_vector[filter_indices[i]];    //
-
-            // create {data, index, level}
-            auto obj = Napi::Object::New(info.Env());
-            obj.Set("data", entry.data);
-            obj.Set("index", entry.index);
-            obj.Set("level", entry.level);
-
-            filteredCandidateObjects[i] = obj;
-        }
-        return filteredCandidateObjects;
     }
 
+    Napi::Value filterIndicesTree(const Napi::CallbackInfo &info) {
+        return treeFilterer.filter_indices(
+          info[0].As<Napi::String>(),
+          info.Env(),
+          info[1].As<Napi::Number>().Uint32Value(),
+          info[2].As<Napi::Boolean>(),
+          info[3].As<Napi::Boolean>());
+    }
 
     // NAPI entry functions:
     static Napi::Object Init(Napi::Env env, Napi::Object exports);
     explicit ZadehNode(const Napi::CallbackInfo &info) : Napi::ObjectWrap<ZadehNode>(info) {}
 
   private:
-    StringArrayFilterer<Napi::Array, CandidateString> arrayFilterer{};
-    TreeFilterer<Napi::Array, Napi::Object> treeFilterer{};
+    StringArrayFilterer<Napi::Array, Napi::Reference<Napi::Array>, CandidateString, Napi::Env> strArrFilterer{};
+    TreeFilterer<Napi::Array, Napi::Object, Napi::Number, Napi::Reference<Napi::Array>, Napi::Env> treeFilterer{};
 };
 
 

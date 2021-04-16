@@ -122,13 +122,24 @@ export class StringArrayFilterer {
   }
 
   /**
-   * The method to perform the filtering on the already set candidates
+   * Filter the already set array of strings
    *
    * @param query A string query to match each candidate against.
    * @param options Options
    * @returns Returns an array of candidates sorted by best match against the query.
    */
   filter(query: string, options: StringArrayFilterOptions = {}): Array<string> {
+    return this.filterIndices(query, options).map((ind: number) => this.candidates[ind])
+  }
+
+  /**
+   * Filter the already set array of strings and get the indices of the chosen candidate
+   *
+   * @param query A string query to match each candidate against.
+   * @param options Options
+   * @returns Returns an array of numbers indicating the index of the chosen candidate sorted by best match against the query.
+   */
+  filterIndices(query: string, options: StringArrayFilterOptions = {}): Array<number> {
     parseFilterOptions(options)
 
     const maxResult = options.maxResults as number /* numberified by parseFilterOptions */
@@ -136,8 +147,8 @@ export class StringArrayFilterer {
     const useExtensionBonus = Boolean(options.useExtensionBonus)
 
     Binding.validate_filter(query, maxResult, usePathScoring, useExtensionBonus)
-    const res = this.obj.filter(query, maxResult, usePathScoring, useExtensionBonus)
-    return res.map((ind: number) => this.candidates[ind])
+    // NOTE calling obj.filter is slower than (obj.filterIndices then map) due to the interop overhead
+    return this.obj.filterIndices(query, maxResult, usePathScoring, useExtensionBonus)
   }
 }
 
@@ -179,13 +190,24 @@ export class ObjectArrayFilterer {
   }
 
   /**
-   * The method to perform the filtering on the already set candidates
+   * Filter the already set objects
    *
-   * @param query A string query to match each candidate against.
+   * @param query A string query to match the dataKey of each candidate against.
    * @param options Options
-   * @returns Returns an array of candidates sorted by best match against the query.
+   * @returns Returns an array of objects sorted by best match against the query.
    */
   filter(query: string, options: ObjectArrayFilterOptions = {}): Array<ObjectWithKey> {
+    return this.filterIndices(query, options).map((ind: number) => this.candidates[ind])
+  }
+
+  /**
+   * Filter the already set array of objects and get the indices of the chosen candidate
+   *
+   * @param query A string query to match the dataKey of each candidate against.
+   * @param options Options
+   * @returns Returns an array of numbers indicating the index of the chosen candidate sorted by best match against the query.
+   */
+  filterIndices(query: string, options: StringArrayFilterOptions = {}): Array<number> {
     parseFilterOptions(options)
 
     const maxResult = options.maxResults as number /* numberified by parseFilterOptions */
@@ -193,8 +215,8 @@ export class ObjectArrayFilterer {
     const useExtensionBonus = Boolean(options.useExtensionBonus)
 
     Binding.validate_filter(query, maxResult, usePathScoring, useExtensionBonus)
-    const res = this.obj.filter(query, maxResult, usePathScoring, useExtensionBonus)
-    return res.map((ind: number) => this.candidates[ind])
+    // NOTE calling obj.filter is slower than (obj.filterIndices then map) due to the interop overhead
+    return this.obj.filterIndices(query, maxResult, usePathScoring, useExtensionBonus)
   }
 }
 
@@ -253,22 +275,30 @@ export function filter<T extends StringOrObjectArray>(
    ██    ██   ██ ███████ ███████     ██      ██ ███████ ██    ███████ ██   ██
 */
 
-// The object (an element of the array) returned from filtering trees. It has the address of the object in the tree using `index` and `level`.
-export interface TreeFilterResult {
+// The object (an element of the array) returned from filtering trees. It has the address of the object in the tree using `index` and `parent_indices`.
+export interface TreeFilterIndicesResult {
   data: string
   index: number
-  level: number
+  parent_indices: Array<number>
 }
 
 /**
- * TreeFilterer is a class that allows to set the `candidates` only once and perform filtering on them multiple times.
- * This is much more efficient than calling the `filterTree` function directly.
+ * TreeFilterer is a filters the given query in the nodes of the given array of trees, and returns an array of filtered
+ * tree. A tree object is an object in which each entry stores the data in its dataKey and it has (may have) some
+ * children (with a similar structure) in its childrenKey
  */
 export class TreeFilterer<T extends Tree = Tree> {
   obj = new binding.Zadeh()
   // @ts-ignore
   candidates: Array<T>
 
+  /**
+   * The method to set an array of trees that are going to be filtered
+   *
+   * @param candidates An array of tree objects.
+   * @param dataKey The key of the object (and its children) which holds the data (defaults to `"data"`)
+   * @param childrenKey The key of the object (and its children) which hold the children (defaults to `"children"`)
+   */
   constructor(candidates?: Array<T>, dataKey: string = "data", childrenKey: string = "children") {
     if (candidates) {
       this.setCandidates(candidates, dataKey, childrenKey)
@@ -278,7 +308,7 @@ export class TreeFilterer<T extends Tree = Tree> {
   }
 
   /**
-   * The method to set the candidates that are going to be filtered
+   * The method to set an array of trees that are going to be filtered
    *
    * @param candidates An array of tree objects.
    * @param dataKey The key of the object (and its children) which holds the data (defaults to `"data"`)
@@ -292,14 +322,14 @@ export class TreeFilterer<T extends Tree = Tree> {
   }
 
   /**
-   * The method to perform the filtering on the already set candidates
+   * Filter the already set trees
    *
-   * @param query A string query to match each candidate against.
+   * @param query A string query to match the dataKey of each candidate against.
    * @param options Options
-   * @returns An array of candidate objects in form of `{data, index, level}` sorted by best match against the query.
-   *   Each objects has the address of the object in the tree using `index` and `level`.
+   * @returns {Tree[]} An array of filtered trees. In a tree, the filtered data is at the last level (if it has
+   *   children, they are not included in the filered tree)
    */
-  filter(query: string, options: TreeFilterOptions = {}): TreeFilterResult[] {
+  filter(query: string, options: TreeFilterOptions = {}): Tree[] {
     parseFilterOptions(options)
 
     const maxResult = options.maxResults as number /* numberified by parseFilterOptions */
@@ -309,38 +339,28 @@ export class TreeFilterer<T extends Tree = Tree> {
     Binding.validate_filterTree(query, maxResult, usePathScoring, useExtensionBonus)
     return this.obj.filterTree(query, maxResult, usePathScoring, useExtensionBonus)
   }
+
+  /**
+   * The method to perform the filtering on the already set candidates
+   *
+   * @param query A string query to match the dataKey of each candidate against.
+   * @param options Options
+   * @returns {TreeFilterIndicesResult[]} An array candidate objects in form of `{data, index, parentIndices}` sorted by
+   *   best match against the query. Each objects has the address of the object in the tree using `index` and `parent_indices`
+   */
+  filterIndices(query: string, options: TreeFilterOptions = {}): TreeFilterIndicesResult[] {
+    parseOptions(options)
+    return this.obj.filterIndicesTree(
+      query,
+      options.maxResults ?? 0,
+      Boolean(options.usePathScoring),
+      Boolean(options.useExtensionBonus)
+    )
+  }
 }
 
 // TODO better type
 export type Tree = Record<string, string>
-
-/**
- * @deprecated Use `TreeFilterer` instead Sort and filter the given Tree candidates by matching them against the given
- *   query. A tree object is an object in which each entry stores the data in its dataKey and it has (may have) some
- *   children (with a similar structure) in its childrenKey
- * @param candidatesTrees An array of tree objects.
- * @param query A string query to match each candidate against.
- * @param dataKey The key of the object (and its children) which holds the data (defaults to `"data"`)
- * @param childrenKey The key of the object (and its children) which hold the children (defaults to `"children"`)
- * @param options Options
- * @returns An array of candidate objects in form of `{data, index, level}` sorted by best match against the query. Each
- *   objects has the address of the object in the tree using `index` and `level`.
- */
-export function filterTree(
-  candidatesTrees: Tree[],
-  query: string,
-  dataKey: string = "data",
-  childrenKey: string = "children",
-  options: TreeFilterOptions = {}
-): TreeFilterResult[] {
-  if (!candidatesTrees || !query) {
-    console.warn(`Zadeh: bad input to filterTree candidatesTrees: ${candidatesTrees}, query: ${query}`)
-    return []
-  }
-  const treeFilterer = new TreeFilterer()
-  treeFilterer.setCandidates(candidatesTrees, dataKey, childrenKey)
-  return treeFilterer.filter(query, options)
-}
 
 /*
 ███████  ██████  ██████  ██████  ███████

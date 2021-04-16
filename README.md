@@ -91,6 +91,9 @@ const zadeh = require("zadeh")
 
 `StringArrayFilterer` is a class that allows to set the `candidates` only once and perform filtering on them multiple times. This is much more efficient than calling the `filter` function directly.
 
+<details>
+<summary>`StringArrayFilterer` API</summary>
+
 ```ts
 export class StringArrayFilterer {
   /**
@@ -101,13 +104,22 @@ export class StringArrayFilterer {
   constructor(candidates?: Array<string>)
 
   /**
-   * The method to perform the filtering on the already set candidates
+   * Filter the already set array of strings
    *
    * @param query A string query to match each candidate against.
    * @param options Options
    * @returns Returns an array of candidates sorted by best match against the query.
    */
   filter(query: string, options: StringArrayFilterOptions = {}): Array<string>
+
+  /**
+   * Filter the already set array of objects and get the indices of the chosen candidate
+   *
+   * @param query A string query to match the dataKey of each candidate against.
+   * @param options Options
+   * @returns Returns an array of numbers indicating the index of the chosen candidate sorted by best match against the query.
+   */
+  filterIndices(query: string, options: StringArrayFilterOptions = {}): Array<number>
 
   /**
    * Allows to set the candidates (if changed or not set in the constructor).
@@ -118,7 +130,10 @@ export class StringArrayFilterer {
 }
 ```
 
-Example:
+</details>
+<br/>
+
+**Example**:
 
 ```js
 const { StringArrayFilterer } = require("zadeh")
@@ -138,6 +153,9 @@ strArrFilterer.filter("all")
 
 ObjectArrayFilterer is a class that performs filtering on an array of objects based on a string stored in the given `dataKey` for each object
 
+<details>
+<summary>`ObjectArrayFilterer` API</summary>
+
 ```ts
 export class ObjectArrayFilterer {
   /**
@@ -149,13 +167,22 @@ export class ObjectArrayFilterer {
   constructor(candidates?: Array<ObjectWithKey>, dataKey?: string | number)
 
   /**
-   * The method to perform the filtering on the already set candidates
+   * Filter the already set objects
+   *
+   * @param query A string query to match the dataKey of each candidate against.
+   * @param options Options
+   * @returns Returns an array of objects sorted by best match against the query.
+   */
+  filter(query: string, options: ObjectArrayFilterOptions = {}): Array<ObjectWithKey>
+
+  /**
+   * Filter the already set array of strings and get the indices of the chosen candidate
    *
    * @param query A string query to match each candidate against.
    * @param options Options
-   * @returns Returns an array of candidates sorted by best match against the query.
+   * @returns Returns an array of numbers indicating the index of the chosen candidate sorted by best match against the query.
    */
-  filter(query: string, options: ObjectArrayFilterOptions = {}): Array<ObjectWithKey>
+  filterIndices(query: string, options: StringArrayFilterOptions = {}): Array<number>
 
   /**
    * Allows to set the candidates (if changed or not set in the constructor).
@@ -167,7 +194,10 @@ export class ObjectArrayFilterer {
 }
 ```
 
-Example:
+</details>
+<br/>
+
+**Example**:
 
 ```js
 const { ObjectArrayFilterer } = require("zadeh")
@@ -188,34 +218,59 @@ objArrFilterer.filter("all") // [{ name: 'Call', id: 1 }]
 
 ### TreeFilterer
 
-`TreeFilterer` is a class that allows to set the `candidates` only once and perform filtering on them multiple times. This is much more efficient than calling the `filterTree` function directly.
+TreeFilterer is a filters the given query in the nodes of the given array of trees, and returns an array of filtered
+trees (or the indices of the filter candidates). A tree object is an object in which each entry stores the data in its `dataKey` and it has (may have) some
+children (with a similar structure) in its `childrenKey`
+
+<details>
+<summary>`TreeFilterer` API</summary>
 
 ```ts
-export class TreeFilterer<T> {
-  constructor()
-
+export class TreeFilterer<T extends Tree = Tree> {
   /**
-   * The method to set the candidates that are going to be filtered
+   * The method to set an array of trees that are going to be filtered
    *
    * @param candidates An array of tree objects.
    * @param dataKey The key of the object (and its children) which holds the data (defaults to `"data"`)
    * @param childrenKey The key of the object (and its children) which hold the children (defaults to `"children"`)
    */
-  setCandidates<T>(candidates: Array<T>, dataKey?: string, childrenKey?: string): void
+  constructor(candidates?: Array<T>, dataKey: string = "data", childrenKey: string = "children")
+
+  /**
+   * The method to set an array of trees that are going to be filtered
+   *
+   * @param candidates An array of tree objects.
+   * @param dataKey The key of the object (and its children) which holds the data (defaults to `"data"`)
+   * @param childrenKey The key of the object (and its children) which hold the children (defaults to `"children"`)
+   */
+  setCandidates(candidates: Array<T>, dataKey: string = "data", childrenKey: string = "children")
+
+  /**
+   * Filter the already set trees
+   *
+   * @param query A string query to match the dataKey of each candidate against.
+   * @param options Options
+   * @returns {Tree[]} An array of filtered trees. In a tree, the filtered data is at the last level (if it has
+   *   children, they are not included in the filered tree)
+   */
+  filter(query: string, options: TreeFilterOptions = {}): Tree[]
 
   /**
    * The method to perform the filtering on the already set candidates
    *
-   * @param query A string query to match each candidate against.
+   * @param query A string query to match the dataKey of each candidate against.
    * @param options Options
-   * @returns An array of candidate objects in form of `{data, index, level}` sorted by best match against the query.
-   *   Each objects has the address of the object in the tree using `index` and `level`.
+   * @returns {TreeFilterIndicesResult[]} An array candidate objects in form of `{data, index, parentIndices}` sorted by
+   *   best match against the query. Each objects has the address of the object in the tree using `index` and `parent_indices`
    */
-  filter(query: string, options: IFilterOptions<object>): TreeFilterResult[]
+  filterIndices(query: string, options: TreeFilterOptions = {}): TreeFilterIndicesResult[]
 }
 ```
 
-Example:
+</details>
+<br/>
+
+**Example**:
 
 ```js
 const { TreeFilterer } = require("zadeh")
@@ -227,11 +282,48 @@ const candidates = [
   { data: "Bye2", children: [{ data: "_bye4" }, { data: "hel" }] },
   { data: "eye" },
 ]
-treeFilterer.setCandidates(candidates, "data", "children") // set candidates only once
+treeFilterer.setCandidates(candidates, "data", "children")
+```
 
-// call filter multiple times
-treeFilterer.filter("hello")
+```ts
+treeFilterer.filter("hel")
+```
+
+returns
+
+```ts
+;[
+  { data: "Bye2", children: [{ data: "hel" }] },
+  { data: "bye1", children: [{ data: "hello" }] },
+]
+```
+
+```ts
 treeFilterer.filter("bye")
+```
+
+returns
+
+```ts
+;[
+  { data: "bye1", children: [] },
+  { data: "Bye2", children: [{ data: "_bye4" }] },
+  { data: "Bye2", children: [] },
+]
+```
+
+```ts
+treeFilterer.filterIndices("bye")
+```
+
+returns
+
+```ts
+;[
+  { data: "bye1", index: 0, parent_indices: [] },
+  { data: "_bye4", index: 0, parent_indices: [1] },
+  { data: "Bye2", index: 1, parent_indices: [] },
+]
 ```
 
 ### score
@@ -314,7 +406,7 @@ These deprecated functions are provided to support the API of `fuzzaldrin` and `
 However, you should replace their usage with `StringArrayFilterer` or `ObjectArrayFilterer` classes that allow setting the candidates only once and perform filtering on those candidates multiple times. This is much more efficient than `filter` or `filterTree` functions.
 
 <details>
-<summary> `filter` </summary>
+<summary> `filter` function </summary>
 
 ### filter
 
@@ -346,44 +438,6 @@ results = filter(candidates, "me", { key: "name" }) // [{name: 'Me', id: 2}, {na
 ```
 
 **Deprecation Note**: use `StringArrayFilterer` or `ObjectArrayFilterer` class instead. `filter` internally uses this class and in each call, it sets the candidates from scratch which can slow down the process.
-
-</details>
-
-<details>
-<summary> `filterTree` </summary>
-
-### filterTree
-
-    filterTree(candidates, query, dataKey, childrenKey, options = {})
-
-Sort and filter the given Tree candidates by matching them against the given query.
-
-A **tree object** is an object in which each entry stores the data in its dataKey and it has (may have) some children (with a similar structure) in its childrenKey. See the following example.
-
-- `candidates` An array of tree objects.
-- `query` A string query to match each candidate against.
-- `dataKey` the key of the object (and its children) which holds the data
-- `childrenKey` the key of the object (and its children) which hold the children
-- `options` options
-- `returns` An array of candidate objects in form of `{data, index, level}` sorted by best match against the query. Each objects has the address of the object in the tree using `index` and `level`.
-
-```js
-const { filterTree } = require("zadeh")
-
-candidates = [
-  { data: "bye1", children: [{ data: "hello" }] },
-  { data: "Bye2", children: [{ data: "_bye4" }, { data: "hel" }] },
-  { data: "eye" },
-]
-
-filterTree(candidates, "he", "data", "children") // [ { data: 'hel', index: 1, level: 1 },  { data: 'hello', index: 0, level: 1 }]
-
-// With an array of objects (similar to providing `key` to `filter` function)
-const candidates = [{ data: "helloworld" }, { data: "bye" }, { data: "hello" }]
-results = filter(candidates, "hello", { key: "name" }) // [ { data: 'hello', index: 2, level: 0 }, { data: 'helloworld', index: 0, level: 0 } ]
-```
-
-**Deprecation Note**: use `TreeFilterer` class instead. `filterTree` internally uses this class, and in each call, it sets the candidates from scratch which can slow down the process.
 
 </details>
 

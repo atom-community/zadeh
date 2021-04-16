@@ -1,0 +1,370 @@
+[
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "constant",
+        "plainText": "disposable",
+        "startPosition": { "row": 130, "column": 12 },
+        "endPosition": { "row": 130, "column": 64 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "constant",
+        "plainText": "disposable",
+        "startPosition": { "row": 130, "column": 12 },
+        "endPosition": { "row": 130, "column": 64 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "constant",
+        "plainText": "displayLayer",
+        "startPosition": { "row": 1232, "column": 10 },
+        "endPosition": { "row": 1232, "column": 49 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "constant",
+        "plainText": "displayLayer",
+        "startPosition": { "row": 1232, "column": 10 },
+        "endPosition": { "row": 1232, "column": 49 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "property",
+        "plainText": "displayBuffer",
+        "startPosition": { "row": 333, "column": 2 },
+        "endPosition": { "row": 341, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "property",
+        "plainText": "displayBuffer",
+        "startPosition": { "row": 333, "column": 2 },
+        "endPosition": { "row": 341, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "constant",
+        "plainText": "displayLayerParams",
+        "startPosition": { "row": 243, "column": 12 },
+        "endPosition": { "row": 257, "column": 7 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "constant",
+        "plainText": "displayLayerParams",
+        "startPosition": { "row": 392, "column": 10 },
+        "endPosition": { "row": 392, "column": 33 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "constant",
+        "plainText": "displayLayerParams",
+        "startPosition": { "row": 243, "column": 12 },
+        "endPosition": { "row": 257, "column": 7 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "constant",
+        "plainText": "displayLayerParams",
+        "startPosition": { "row": 392, "column": 10 },
+        "endPosition": { "row": 392, "column": 33 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "constant",
+        "plainText": "Disposable",
+        "startPosition": { "row": 5, "column": 29 },
+        "endPosition": { "row": 5, "column": 39 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "constant",
+        "plainText": "CompositeDisposable",
+        "startPosition": { "row": 5, "column": 8 },
+        "endPosition": { "row": 5, "column": 27 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "subscribeToDisplayLayer",
+        "startPosition": { "row": 846, "column": 2 },
+        "endPosition": { "row": 874, "column": 3 },
+        "children": [
+          {
+            "kind": "function",
+            "plainText": "<function>",
+            "startPosition": { "row": 848, "column": 36 },
+            "endPosition": { "row": 855, "column": 7 },
+            "children": [
+              {
+                "kind": "function",
+                "plainText": "<function>",
+                "startPosition": { "row": 853, "column": 22 },
+                "endPosition": { "row": 853, "column": 55 },
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "function",
+            "plainText": "<function>",
+            "startPosition": { "row": 858, "column": 35 },
+            "endPosition": { "row": 862, "column": 7 },
+            "children": []
+          },
+          {
+            "kind": "function",
+            "plainText": "<function>",
+            "startPosition": { "row": 868, "column": 45 },
+            "endPosition": { "row": 871, "column": 21 },
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "subscribeToDisplayLayer",
+        "startPosition": { "row": 846, "column": 2 },
+        "endPosition": { "row": 874, "column": 3 },
+        "children": [
+          {
+            "kind": "function",
+            "plainText": "<function>",
+            "startPosition": { "row": 848, "column": 36 },
+            "endPosition": { "row": 855, "column": 7 },
+            "children": [
+              {
+                "kind": "function",
+                "plainText": "<function>",
+                "startPosition": { "row": 853, "column": 22 },
+                "endPosition": { "row": 853, "column": 55 },
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "function",
+            "plainText": "<function>",
+            "startPosition": { "row": 858, "column": 35 },
+            "endPosition": { "row": 862, "column": 7 },
+            "children": []
+          },
+          {
+            "kind": "function",
+            "plainText": "<function>",
+            "startPosition": { "row": 868, "column": 45 },
+            "endPosition": { "row": 871, "column": 21 },
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "onDidStopChanging",
+        "startPosition": { "row": 944, "column": 2 },
+        "endPosition": { "row": 946, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "onDidStopChanging",
+        "startPosition": { "row": 944, "column": 2 },
+        "endPosition": { "row": 946, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "onDidChangeScrollTop",
+        "startPosition": { "row": 1198, "column": 2 },
+        "endPosition": { "row": 1203, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "onDidChangeScrollTop",
+        "startPosition": { "row": 1198, "column": 2 },
+        "endPosition": { "row": 1203, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "onDidChangeSoftWrapped",
+        "startPosition": { "row": 985, "column": 2 },
+        "endPosition": { "row": 987, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "onDidChangeSoftWrapped",
+        "startPosition": { "row": 985, "column": 2 },
+        "endPosition": { "row": 987, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "onDidChangeCursorPosition",
+        "startPosition": { "row": 961, "column": 2 },
+        "endPosition": { "row": 963, "column": 3 },
+        "children": []
+      }
+    ]
+  },
+  {
+    "plainText": "<global>",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 5844, "column": 3 },
+    "children": [
+      {
+        "kind": "method",
+        "plainText": "onDidChangeCursorPosition",
+        "startPosition": { "row": 961, "column": 2 },
+        "endPosition": { "row": 963, "column": 3 },
+        "children": []
+      }
+    ]
+  }
+]
