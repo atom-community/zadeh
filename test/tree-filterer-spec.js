@@ -294,7 +294,7 @@ describe("TreeFilterer", function () {
         ])
       ).toBe(true)
 
-      console.log(JSON.stringify(treeFilterer.filter("he")))
+      // console.log(JSON.stringify(treeFilterer.filter("he")))
       expect(
         DeepEqual(treeFilterer.filter("he"), [
           { data: "Bye2", children: [null] },

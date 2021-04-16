@@ -129,10 +129,7 @@ class TreeFilterer {
             auto temp_children = candidates;
             for (uint32_t i_parent_index = 0; i_parent_index < parent_indices_len + 1; i_parent_index++) {
 #ifdef Zadeh_NODE_BINDING
-#ifdef DEBUG
-                println("candidates", env, { candidates });
                 assert(temp_children.IsArray());
-#endif
 #endif
                 NodeType temp_parent;    // the temp parent that is processed in each iteration
                 if (i_parent_index < parent_indices_len) {
@@ -158,20 +155,8 @@ class TreeFilterer {
                     // so the previous children only has the chosen ones
                     auto filtered_children = init<ArrayType, AllocatorType>(static_cast<size_t>(1u), env);
                     set_at(filtered_children, copy(temp_parent, env), static_cast<size_t>(0u));
-
-                    #ifdef DEBUG
-                    #ifdef Zadeh_data_interface_h_
-                                    println("temp_parent", env, { temp_parent });
-                    #endif
-                    #endif
-                                    // finally store it in the global tree
-                                    set_at(filtered_tree, filtered_children, children_key);
-                    #ifdef DEBUG
-                    #ifdef Zadeh_data_interface_h_
-                                    println("filtered_children", env, { filtered_children });
-                                    println("filtered_tree", env, { filtered_tree });
-                    #endif
-                    #endif
+                    // finally store it in the global tree
+                    set_at(filtered_tree, filtered_children, children_key);
                 }
             }
             set_at(res, move(filtered_tree), i_candidate);
