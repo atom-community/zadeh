@@ -139,11 +139,19 @@ class TreeFilterer {
                 if (i_parent_index < parent_indices_len) {
                     const auto parent_index = parent_indices[i_parent_index];
                     // for each parent index get the original object at that index
+                    // BUG this check shouldn't be required
+                    if (parent_index >= get_size(temp_children)) {
+                        continue;
+                    }
                     assert(parent_index < get_size(temp_children));
                     temp_parent = get_at<ArrayType, NodeType>(temp_children, parent_index);
                     // update the children for the next iteration
                     temp_children = get_children<NodeType, ArrayType, AllocatorType>(temp_parent, children_key, env);
                 } else {
+                    // BUG this check shouldn't be required
+                    if (index >= get_size(temp_children)) {
+                        continue;
+                    }
                     assert(i_parent_index == parent_indices_len);
                     assert(index < get_size(temp_children));
                     // once parent indices finished, we get the index instead of the last parent
