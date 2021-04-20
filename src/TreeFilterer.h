@@ -147,6 +147,7 @@ class TreeFilterer {
 #ifdef Zadeh_NODE_BINDING
                 assert(temp_parent.IsObject());
 #endif
+                // TODO refactor!
                 if (i_parent_index == 0) {
                     if (parent_indices_len == 0) {
                         // if the first level is chosen, set the children to an empty array
@@ -160,8 +161,16 @@ class TreeFilterer {
                 } else {
                     // get the previous chosen children (current temp_parent) and place it in filtered_children
                     // so the previous children only has the chosen ones
+                    NodeType filtered_parent;
+                    if (i_parent_index != parent_indices_len) {
+                        filtered_parent = copy(temp_parent, env);
+                    } else {
+                        auto filtered_parent = copy(temp_parent, env);
+                        // unset children in the last step
+                        set_at(filtered_parent, init<ArrayType, AllocatorType>(static_cast<size_t>(0u), env), children_key);
+                    }
                     auto filtered_children = init<ArrayType, AllocatorType>(static_cast<size_t>(1u), env);
-                    set_at(filtered_children, copy(temp_parent, env), static_cast<size_t>(0u));
+                    set_at(filtered_children, filtered_parent, static_cast<size_t>(0u));
                     // finally store it in the global tree
                     set_at(filtered_tree, filtered_children, children_key);
                 }
