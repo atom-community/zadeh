@@ -144,21 +144,23 @@ describe("TreeFilterer", function () {
       treeFilterer.setCandidates(candidates, "data", "children") // set candidates only once
 
       // console.log(JSON.stringify(treeFilterer.filter("hello")))
-      expect(DeepEqual(treeFilterer.filter("hello"), [{ data: "bye1", children: [{ data: "hello" }] }])).toBe(true)
+      expect(
+        DeepEqual(treeFilterer.filter("hello"), [{ data: "bye1", children: [{ data: "hello", children: [] }] }])
+      ).toBe(true)
 
       // console.log(JSON.stringify(treeFilterer.filter("hel")))
       expect(
         DeepEqual(treeFilterer.filter("hel"), [
-          { data: "Bye2", children: [{ data: "hel" }] },
-          { data: "bye1", children: [{ data: "hello" }] },
+          { data: "Bye2", children: [{ data: "hel", children: [] }] },
+          { data: "bye1", children: [{ data: "hello", children: [] }] },
         ])
       ).toBe(true)
 
       // console.log(JSON.stringify(treeFilterer.filter("he")))
       expect(
         DeepEqual(treeFilterer.filter("he"), [
-          { data: "Bye2", children: [{ data: "hel" }] },
-          { data: "bye1", children: [{ data: "hello" }] },
+          { data: "Bye2", children: [{ data: "hel", children: [] }] },
+          { data: "bye1", children: [{ data: "hello", children: [] }] },
         ])
       ).toBe(true)
 
@@ -166,7 +168,7 @@ describe("TreeFilterer", function () {
       expect(
         DeepEqual(treeFilterer.filter("bye"), [
           { data: "bye1", children: [] },
-          { data: "Bye2", children: [{ data: "_bye4" }] },
+          { data: "Bye2", children: [{ data: "_bye4", children: [] }] },
           { data: "Bye2", children: [] },
         ])
       ).toBe(true)
@@ -177,7 +179,7 @@ describe("TreeFilterer", function () {
           { data: "eye", children: [] },
           { data: "bye1", children: [] },
           { data: "Bye2", children: [] },
-          { data: "Bye2", children: [{ data: "_bye4" }] },
+          { data: "Bye2", children: [{ data: "_bye4", children: [] }] },
         ])
       ).toBe(true)
 
@@ -195,7 +197,7 @@ describe("TreeFilterer", function () {
         DeepEqual(treeFilterer.filter("ye", { maxResults: 3 }), [
           { data: "bye1", children: [] },
           { data: "Bye2", children: [] },
-          { data: "Bye2", children: [{ data: "_bye4" }] },
+          { data: "Bye2", children: [{ data: "_bye4", children: [] }] },
         ])
       ).toBe(true)
     })

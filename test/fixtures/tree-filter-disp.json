@@ -177,37 +177,7 @@
         "plainText": "subscribeToDisplayLayer",
         "startPosition": { "row": 846, "column": 2 },
         "endPosition": { "row": 874, "column": 3 },
-        "children": [
-          {
-            "kind": "function",
-            "plainText": "<function>",
-            "startPosition": { "row": 848, "column": 36 },
-            "endPosition": { "row": 855, "column": 7 },
-            "children": [
-              {
-                "kind": "function",
-                "plainText": "<function>",
-                "startPosition": { "row": 853, "column": 22 },
-                "endPosition": { "row": 853, "column": 55 },
-                "children": []
-              }
-            ]
-          },
-          {
-            "kind": "function",
-            "plainText": "<function>",
-            "startPosition": { "row": 858, "column": 35 },
-            "endPosition": { "row": 862, "column": 7 },
-            "children": []
-          },
-          {
-            "kind": "function",
-            "plainText": "<function>",
-            "startPosition": { "row": 868, "column": 45 },
-            "endPosition": { "row": 871, "column": 21 },
-            "children": []
-          }
-        ]
+        "children": []
       }
     ]
   },
@@ -221,37 +191,7 @@
         "plainText": "subscribeToDisplayLayer",
         "startPosition": { "row": 846, "column": 2 },
         "endPosition": { "row": 874, "column": 3 },
-        "children": [
-          {
-            "kind": "function",
-            "plainText": "<function>",
-            "startPosition": { "row": 848, "column": 36 },
-            "endPosition": { "row": 855, "column": 7 },
-            "children": [
-              {
-                "kind": "function",
-                "plainText": "<function>",
-                "startPosition": { "row": 853, "column": 22 },
-                "endPosition": { "row": 853, "column": 55 },
-                "children": []
-              }
-            ]
-          },
-          {
-            "kind": "function",
-            "plainText": "<function>",
-            "startPosition": { "row": 858, "column": 35 },
-            "endPosition": { "row": 862, "column": 7 },
-            "children": []
-          },
-          {
-            "kind": "function",
-            "plainText": "<function>",
-            "startPosition": { "row": 868, "column": 45 },
-            "endPosition": { "row": 871, "column": 21 },
-            "children": []
-          }
-        ]
+        "children": []
       }
     ]
   },
