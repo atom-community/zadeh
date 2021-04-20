@@ -317,15 +317,7 @@
         "plainText": "scopeDescriptorForBufferPosition",
         "startPosition": { "row": 4535, "column": 2 },
         "endPosition": { "row": 4540, "column": 3 },
-        "children": [
-          {
-            "kind": "constant",
-            "plainText": "languageMode",
-            "startPosition": { "row": 4536, "column": 10 },
-            "endPosition": { "row": 4536, "column": 54 },
-            "children": []
-          }
-        ]
+        "children": []
       }
     ]
   },
@@ -339,15 +331,7 @@
         "plainText": "scopeDescriptorForBufferPosition",
         "startPosition": { "row": 4535, "column": 2 },
         "endPosition": { "row": 4540, "column": 3 },
-        "children": [
-          {
-            "kind": "constant",
-            "plainText": "languageMode",
-            "startPosition": { "row": 4536, "column": 10 },
-            "endPosition": { "row": 4536, "column": 54 },
-            "children": []
-          }
-        ]
+        "children": []
       }
     ]
   },
@@ -361,15 +345,7 @@
         "plainText": "syntaxTreeScopeDescriptorForBufferPosition",
         "startPosition": { "row": 4557, "column": 2 },
         "endPosition": { "row": 4562, "column": 3 },
-        "children": [
-          {
-            "kind": "constant",
-            "plainText": "languageMode",
-            "startPosition": { "row": 4558, "column": 10 },
-            "endPosition": { "row": 4558, "column": 54 },
-            "children": []
-          }
-        ]
+        "children": []
       }
     ]
   },
@@ -383,15 +359,7 @@
         "plainText": "syntaxTreeScopeDescriptorForBufferPosition",
         "startPosition": { "row": 4557, "column": 2 },
         "endPosition": { "row": 4562, "column": 3 },
-        "children": [
-          {
-            "kind": "constant",
-            "plainText": "languageMode",
-            "startPosition": { "row": 4558, "column": 10 },
-            "endPosition": { "row": 4558, "column": 54 },
-            "children": []
-          }
-        ]
+        "children": []
       }
     ]
   },

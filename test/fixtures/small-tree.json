@@ -1,0 +1,42 @@
+[
+  {
+    "kind": "module",
+    "plainText": "\"rollup.config\"",
+    "startPosition": { "row": 0, "column": 0 },
+    "endPosition": { "row": 18, "column": 3 },
+    "children": [
+      {
+        "kind": "variable",
+        "plainText": "createPlugins",
+        "startPosition": { "row": 0, "column": 9 },
+        "endPosition": { "row": 0, "column": 22 },
+        "landingPosition": { "row": 0, "column": 9 },
+        "children": []
+      },
+      {
+        "kind": "constant",
+        "plainText": "plugins",
+        "startPosition": { "row": 2, "column": 6 },
+        "endPosition": { "row": 2, "column": 96 },
+        "landingPosition": { "row": 2, "column": 6 },
+        "children": [
+          {
+            "kind": "property",
+            "plainText": "tsconfig",
+            "startPosition": { "row": 2, "column": 40 },
+            "endPosition": { "row": 2, "column": 71 },
+            "landingPosition": { "row": 2, "column": 40 },
+            "children": []
+          }
+        ]
+      },
+      {
+        "kind": "constant",
+        "plainText": "default",
+        "startPosition": { "row": 4, "column": 0 },
+        "endPosition": { "row": 18, "column": 1 },
+        "children": []
+      }
+    ]
+  }
+]

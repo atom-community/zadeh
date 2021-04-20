@@ -1,6 +1,6 @@
 const { TreeFilterer } = require("../index")
-const DeepEqual = require("fast-deep-equal")
-const assert = require("assert")
+const fs = require("fs")
+const path = require("path")
 
 async function main() {
   // await sleep()
@@ -8,23 +8,15 @@ async function main() {
 
   const treeFilterer = new TreeFilterer()
 
-  const candidates = [
-    { data: "bye1", children: [{ data: "hello" }] },
-    { data: "Bye2", children: [{ data: "_bye4" }, { data: "hel" }] },
-    { data: "eye" },
-  ]
-  const condidatesCopy = { ...candidates }
+  const candidates = JSON.parse(fs.readFileSync(path.join(__dirname, "fixtures", "small-tree.json"), "utf8"))
 
-  treeFilterer.setCandidates(candidates, "data", "children") // set candidates only once
-  // console.log(treeFilterer.filter("hello"))
-  console.log("candidates ", JSON.stringify(candidates))
-  const x1 = treeFilterer.filter("hel")
-  console.log("x1 ", JSON.stringify(x1))
-  console.log("candidates ", JSON.stringify(candidates))
+  treeFilterer.setCandidates(candidates, "plainText", "children") // set candidates only once
+  const filteredIndices = treeFilterer.filterIndices("pl")
+  const filtered = treeFilterer.filter("pl")
 
-  console.log("candidates ", JSON.stringify(candidates))
-  const x2 = treeFilterer.filter("he")
-  console.log("x2 ", JSON.stringify(x2))
+  console.log("candidates", candidates)
+  console.log("filteredIndices ", filteredIndices)
+  console.log(JSON.stringify(filtered, undefined, " "))
 }
 
 main().catch((e) => {
