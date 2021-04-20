@@ -67,7 +67,7 @@ export function validate_filterTree(...args: Parameters<Zadeh["filterIndicesTree
 }
 
 export function validate_setTreeFiltererCandidates(...args: Parameters<Zadeh["setTreeFiltererCandidates"]>) {
-  if (!Array.isArray(args[0])) {
+  if (!(Array.isArray(args[0]) && typeof args[1] === "string" && typeof args[2] === "string")) {
     throw new Error(`Invalid arguments for setTreeFiltererCandidates: ${args}`)
   }
 }
