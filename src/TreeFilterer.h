@@ -165,7 +165,7 @@ class TreeFilterer {
                     if (i_parent_index != parent_indices_len) {
                         filtered_parent = copy(temp_parent, env);
                     } else {
-                        auto filtered_parent = copy(temp_parent, env);
+                        filtered_parent = copy(temp_parent, env);
                         // unset children in the last step
                         set_at(filtered_parent, init<ArrayType, AllocatorType>(static_cast<size_t>(0u), env), children_key);
                     }
@@ -187,7 +187,7 @@ class TreeFilterer {
         @param children_nodes an array of trees
         @param parent_indices the indices of the parent node
     */
-    void make_candidates_vector(const ArrayType &children_nodes, vector<size_t> parent_indices) {
+    void make_candidates_vector(const ArrayType &children_nodes, const vector<size_t> &parent_indices) {
         const auto children_num = get_size(children_nodes);
         for (auto i_child = 0u; i_child < children_num; i_child++) {
             make_candidates_vector(get_at<ArrayType, NodeType>(children_nodes, i_child), i_child, parent_indices);
@@ -200,7 +200,7 @@ class TreeFilterer {
         @param index the index of the child in the parent node
         @param parent_indices the indices of the parent node
     */
-    void make_candidates_vector(const NodeType &node, size_t index, vector<size_t> parent_indices) {
+    void make_candidates_vector(const NodeType &node, size_t index, const vector<size_t> &parent_indices) {
         // make the TreeNode and push it back
         candidates_vector.emplace_back(
           get_at<NodeType, CandidateString, string>(node, data_key),    // first, get the current data
@@ -210,9 +210,10 @@ class TreeFilterer {
         // add children if any
         auto may_children = may_get_children<NodeType, ArrayType>(node, children_key);
         if (may_children.has_value()) {
-            // copy parent_indices and add the current index // TODO use a pointer?
+            // copy parent_indices
             auto new_parent_indices = vector<size_t>();
             new_parent_indices = parent_indices;
+            // add the current index
             new_parent_indices.emplace_back(index);
             make_candidates_vector(may_children.value(), new_parent_indices);
         }
@@ -220,10 +221,8 @@ class TreeFilterer {
 
 
     auto set_partitioned_candidates() {
-
         const auto N = candidates_vector.size();
         const auto num_chunks = get_num_chunks(N);
-
 
         partitioned_candidates.clear();
         partitioned_candidates.resize(num_chunks);
