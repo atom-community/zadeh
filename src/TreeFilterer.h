@@ -56,6 +56,10 @@ class TreeFilterer {
 
 
         if (keepReference) {
+            if (candidates_view != nullptr) {
+                // release the already kept reference
+                candidates_view.Unref();
+            }
             // store a view of candidates in case filter was called
             candidates_view = get_ref<ReferenceType, ArrayType>(candidates_);
         }
