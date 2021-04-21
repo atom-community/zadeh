@@ -222,6 +222,10 @@ export class ObjectArrayFilterer<DataKey extends string | number = string> {
     const useExtensionBonus = Boolean(options.useExtensionBonus)
 
     Binding.validate_filter(query, maxResult, usePathScoring, useExtensionBonus)
+    if (query.length === 0) {
+      // optimization for query === ""
+      return []
+    }
     // NOTE calling obj.filter is slower than (obj.filterIndices then map) due to the interop overhead
     return this.obj.filterIndices(query, maxResult, usePathScoring, useExtensionBonus)
   }
@@ -356,6 +360,10 @@ export class TreeFilterer<DataKey extends string = string, ChildrenKey extends s
     const useExtensionBonus = Boolean(options.useExtensionBonus)
 
     Binding.validate_filterTree(query, maxResult, usePathScoring, useExtensionBonus)
+    if (query.length === 0) {
+      // optimization for query === ""
+      return []
+    }
     return this.obj.filterTree(query, maxResult, usePathScoring, useExtensionBonus)
   }
 
@@ -369,6 +377,10 @@ export class TreeFilterer<DataKey extends string = string, ChildrenKey extends s
    */
   filterIndices(query: string, options: TreeFilterOptions = {}): TreeFilterIndicesResult[] {
     parseOptions(options)
+    if (query.length === 0) {
+      // optimization for query === ""
+      return []
+    }
     return this.obj.filterIndicesTree(
       query,
       options.maxResults ?? 0,
