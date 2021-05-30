@@ -11,7 +11,7 @@ specifiers:
   growl: '>=1.10.5'
   jasmine: ^3.7.0
   jasmine-node: ^3.0.0
-  node-addon-api: ~3.1.0
+  node-addon-api: ~3.2.1
   node-gyp-build: ^4.2.3
   npm-check-updates: 11.4.1
   prebuildify: ^4.1.2
@@ -23,7 +23,7 @@ specifiers:
 
 dependencies:
   bindings: 1.5.0
-  node-addon-api: 3.1.0
+  node-addon-api: 3.2.1
   node-gyp-build: 4.2.3
 
 devDependencies:
@@ -3412,8 +3412,8 @@ packages:
       semver: 5.7.1
     dev: true
 
-  /node-addon-api/3.1.0:
-    resolution: {integrity: sha512-flmrDNB06LIl5lywUz7YlNGZH/5p0M7W28k8hzd9Lshtdh1wshD2Y+U4h9LD6KObOy1f+fEVdgprPrEymjM5uw==}
+  /node-addon-api/3.2.1:
+    resolution: {integrity: sha512-mmcei9JghVNDYydghQmeDX8KoAm0FAiYyIcUt/N4nhyAipB17pllZQDOJD2fotxABnt4Mdz+dKTO7eftLg4d0A==}
     dev: false
 
   /node-gyp-build/4.2.3:
