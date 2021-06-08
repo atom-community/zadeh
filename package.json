@@ -1,6 +1,6 @@
 {
   "name": "zadeh",
-  "version": "3.0.0-beta.2",
+  "version": "3.0.0-beta.3",
   "description": "Blazing fast library for fuzzy filtering, matching, and other fuzzy things!",
   "main": "./index.js",
   "node": "./index.js",
