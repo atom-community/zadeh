@@ -6,6 +6,7 @@
   "description": "Blazing fast library for fuzzy filtering, matching, and other fuzzy things!",
   "main": "./index.js",
   "node": "./index.js",
+  "source": "./src/binding/index.ts",
   "scripts": {
     "format": "prettier --write . && clang-format -i src/*.h src/binding/*.cc src/binding/*.h",
     "test.format": "prettier . --check",
@@ -19,8 +20,8 @@
     "native.prebuild": "prebuildify --napi -t 12.0.0 -t electron@6.0.0 -t electron@9.3.5 --strip --tag-libc",
     "native.prebuild-ia32": "prebuildify --napi --arch=ia32 -t 12.0.0 -t electron@6.0.0 -t electron@9.3.5 --strip --tag-libc",
     "js.clean": "shx rm -rf dist dist-test .rollup.cache .parcel-cache **/tsconfig.tsbuildinfo ./index.* ./*.d.ts",
-    "js.dev": "npm run js.types && cross-env NODE_ENV=development rollup -c -w",
-    "js.build": "npm run js.types && cross-env NODE_ENV=production rollup -c",
+    "js.dev": "npm run js.types && cross-env NODE_ENV=development parcel watch --target main ./src/binding/index.ts",
+    "js.build": "npm run js.types && cross-env NODE_ENV=production parcel build --target main ./src/binding/index.ts",
     "js.types": "tsc -p ./src/binding/tsconfig.json --emitDeclarationOnly && shx mv ./src/binding/*.d.ts .",
     "clean": "npm run native.clean && npm run js.clean",
     "install": "node-gyp-build",
@@ -58,13 +59,27 @@
     "jasmine": "^3.7.0",
     "jasmine-node": "^3.0.0",
     "npm-check-updates": "11.7.1",
+    "parcel": "2.0.0-nightly.733",
     "prebuildify": "^4.1.2",
     "prettier-config-atomic": "^2.0.5",
-    "rollup": "^2.52.2",
-    "rollup-plugin-atomic": "^2.3.2",
     "shx": "^0.3.3",
     "terser-config-atomic": "^0.1.1",
     "typescript": "^4.3.4"
+  },
+  "targets": {
+    "main": {
+      "context": "node",
+      "includeNodeModules": {
+        "node-gyp-build": false
+      },
+      "outputFormat": "commonjs",
+      "isLibrary": true
+    }
+  },
+  "engines": {
+    "atom": ">=1.52.0 <2.0.0",
+    "electron": ">=6.0.0",
+    "node": ">=12.0.0"
   },
   "repository": {
     "type": "git",
