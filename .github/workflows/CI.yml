@@ -63,15 +63,15 @@ jobs:
 
       - name: Prebuildify x64
         if: ${{ contains(matrix.node_version, '12') && contains(matrix.node_arch, 'x64') }}
-        run: npm run native.prebuild
+        run: npm run prebuild.native
 
       - name: Prebuildify x86
         if: ${{ contains(matrix.node_version, '12') && contains(matrix.node_arch, 'x86') }}
-        run: npm run native.prebuild-ia32
+        run: npm run prebuild.native.ia32
 
       # - name: Prebuildify arm64
       #   if: ${{ contains(matrix.node_version, '15') && contains(matrix.node_arch, 'arm64') }}
-      #   run: npm run native.prebuild-arm64
+      #   run: npm run prebuild.native-arm64
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2.0.1
@@ -127,7 +127,7 @@ jobs:
       - name: Install dependencies only
         run: |
           npm install --ignore-scripts
-          npm run js.build
+          npm run build.js
 
       - name: Download articats
         uses: actions/download-artifact@v2
