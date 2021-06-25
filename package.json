@@ -63,6 +63,7 @@
     "rollup": "^2.52.2",
     "rollup-plugin-atomic": "^2.3.2",
     "shx": "^0.3.3",
+    "terser-config-atomic": "^0.1.1",
     "typescript": "^4.3.4"
   },
   "repository": {

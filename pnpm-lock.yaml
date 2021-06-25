@@ -17,6 +17,7 @@ specifiers:
   rollup: ^2.52.2
   rollup-plugin-atomic: ^2.3.2
   shx: ^0.3.3
+  terser-config-atomic: ^0.1.1
   typescript: ^4.3.4
 
 dependencies:
@@ -38,6 +39,7 @@ devDependencies:
   rollup: 2.52.2
   rollup-plugin-atomic: 2.3.2
   shx: 0.3.3
+  terser-config-atomic: 0.1.1
   typescript: 4.3.4
 
 packages:
@@ -4829,6 +4831,10 @@ packages:
       minizlib: 2.1.2
       mkdirp: 1.0.4
       yallist: 4.0.0
+    dev: true
+
+  /terser-config-atomic/0.1.1:
+    resolution: {integrity: sha512-HRAHqjCFq990eFbLpy54joStSsUMZQoD73XMk2/Akquqm7vI0AOggfO9GMvSFGEucRRNZUfLQdDjotGGsZxCtA==}
     dev: true
 
   /terser/5.5.1:

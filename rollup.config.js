@@ -1,6 +1,6 @@
 import { createPlugins } from "rollup-plugin-atomic"
 
-const plugins = createPlugins(["ts", "js"])
+const plugins = createPlugins(["ts", "js", ["terser", require("./.terserrc.js")]])
 
 const RollupConfig = [
   {
