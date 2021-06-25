@@ -23,7 +23,7 @@
             'GCC_OPTIMIZATION_LEVEL': '3', # stop gyp from defaulting to -Os
             "CLANG_CXX_LIBRARY": "libc++",
             "CLANG_CXX_LANGUAGE_STANDARD":"c++17",
-            'MACOSX_DEPLOYMENT_TARGET': '10.15',
+            'MACOSX_DEPLOYMENT_TARGET': '10.13',
             'OTHER_CFLAGS': [
               '-arch x86_64',
               '-arch arm64'
@@ -141,7 +141,7 @@
             'GCC_ENABLE_CPP_EXCEPTIONS': 'YES',
             "CLANG_CXX_LIBRARY": "libc++",
             "CLANG_CXX_LANGUAGE_STANDARD":"c++17",
-            'MACOSX_DEPLOYMENT_TARGET': '10.15',
+            'MACOSX_DEPLOYMENT_TARGET': '10.13',
             'OTHER_CFLAGS': [
               '-arch x86_64',
               '-arch arm64'
