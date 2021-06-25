@@ -1,5 +1,5 @@
 const { TreeFilterer } = require("../index")
-const DeepEqual = require("fast-deep-equal")
+const { deepEqual } = require("fast-equals")
 const fs = require("fs")
 const path = require("path")
 
@@ -19,13 +19,13 @@ describe("TreeFilterer", function () {
       treeFilterer.setCandidates(candidates, "data", "children") // set candidates only once
 
       // console.log(treeFilterer.filterIndices("hello"))
-      expect(DeepEqual(treeFilterer.filterIndices("hello"), [{ data: "hello", index: 0, parent_indices: [0] }])).toBe(
+      expect(deepEqual(treeFilterer.filterIndices("hello"), [{ data: "hello", index: 0, parent_indices: [0] }])).toBe(
         true
       )
 
       // console.log(treeFilterer.filterIndices("hel"))
       expect(
-        DeepEqual(treeFilterer.filterIndices("hel"), [
+        deepEqual(treeFilterer.filterIndices("hel"), [
           { data: "hel", index: 1, parent_indices: [1] },
           { data: "hello", index: 0, parent_indices: [0] },
         ])
@@ -33,7 +33,7 @@ describe("TreeFilterer", function () {
 
       // console.log(treeFilterer.filterIndices("he"))
       expect(
-        DeepEqual(treeFilterer.filterIndices("he"), [
+        deepEqual(treeFilterer.filterIndices("he"), [
           { data: "hel", index: 1, parent_indices: [1] },
           { data: "hello", index: 0, parent_indices: [0] },
         ])
@@ -41,7 +41,7 @@ describe("TreeFilterer", function () {
 
       // console.log(treeFilterer.filterIndices("bye"))
       expect(
-        DeepEqual(treeFilterer.filterIndices("bye"), [
+        deepEqual(treeFilterer.filterIndices("bye"), [
           { data: "bye1", index: 0, parent_indices: [] },
           { data: "_bye4", index: 0, parent_indices: [1] },
           { data: "Bye2", index: 1, parent_indices: [] },
@@ -50,7 +50,7 @@ describe("TreeFilterer", function () {
 
       // console.log(treeFilterer.filterIndices("ye"))
       expect(
-        DeepEqual(treeFilterer.filterIndices("ye"), [
+        deepEqual(treeFilterer.filterIndices("ye"), [
           { data: "eye", index: 2, parent_indices: [] },
           { data: "bye1", index: 0, parent_indices: [] },
           { data: "Bye2", index: 1, parent_indices: [] },
@@ -61,7 +61,7 @@ describe("TreeFilterer", function () {
       // test maxResults
       // console.log(treeFilterer.filterIndices("bye", { maxResults: 2 }))
       expect(
-        DeepEqual(treeFilterer.filterIndices("bye", { maxResults: 2 }), [
+        deepEqual(treeFilterer.filterIndices("bye", { maxResults: 2 }), [
           { data: "bye1", index: 0, parent_indices: [] },
           { data: "Bye2", index: 1, parent_indices: [] },
         ])
@@ -69,7 +69,7 @@ describe("TreeFilterer", function () {
 
       // console.log(treeFilterer.filterIndices("ye", { maxResults: 3 }))
       expect(
-        DeepEqual(treeFilterer.filterIndices("ye", { maxResults: 3 }), [
+        deepEqual(treeFilterer.filterIndices("ye", { maxResults: 3 }), [
           { data: "bye1", index: 0, parent_indices: [] },
           { data: "Bye2", index: 1, parent_indices: [] },
           { data: "_bye4", index: 0, parent_indices: [1] },
@@ -84,7 +84,7 @@ describe("TreeFilterer", function () {
 
       // console.log(treeFilterer.filterIndices("hello"))
       expect(
-        DeepEqual(treeFilterer.filterIndices("hello"), [
+        deepEqual(treeFilterer.filterIndices("hello"), [
           { data: "hello", index: 2, parent_indices: [] },
           { data: "helloworld", index: 0, parent_indices: [] },
         ])
@@ -104,7 +104,7 @@ describe("TreeFilterer", function () {
         const treeFilterIndicesText = JSON.parse(
           fs.readFileSync(path.join(__dirname, "fixtures", "tree-filterIndices-text.json"), "utf8")
         )
-        expect(DeepEqual(treeFilterer.filterIndices("text"), treeFilterIndicesText)).toBe(true)
+        expect(deepEqual(treeFilterer.filterIndices("text"), treeFilterIndicesText)).toBe(true)
       }
 
       // fs.writeFileSync(
@@ -115,7 +115,7 @@ describe("TreeFilterer", function () {
         const treeFilterIndicesDisp = JSON.parse(
           fs.readFileSync(path.join(__dirname, "fixtures", "tree-filterIndices-disp.json"), "utf8")
         )
-        expect(DeepEqual(treeFilterer.filterIndices("disp"), treeFilterIndicesDisp)).toBe(true)
+        expect(deepEqual(treeFilterer.filterIndices("disp"), treeFilterIndicesDisp)).toBe(true)
       }
 
       // fs.writeFileSync(
@@ -126,7 +126,7 @@ describe("TreeFilterer", function () {
         const treeFilterIndicesDips = JSON.parse(
           fs.readFileSync(path.join(__dirname, "fixtures", "tree-filterIndices-dips.json"), "utf8")
         )
-        expect(DeepEqual(treeFilterer.filterIndices("dips"), treeFilterIndicesDips)).toBe(true)
+        expect(deepEqual(treeFilterer.filterIndices("dips"), treeFilterIndicesDips)).toBe(true)
       }
     })
   })
@@ -145,12 +145,12 @@ describe("TreeFilterer", function () {
 
       // console.log(JSON.stringify(treeFilterer.filter("hello")))
       expect(
-        DeepEqual(treeFilterer.filter("hello"), [{ data: "bye1", children: [{ data: "hello", children: [] }] }])
+        deepEqual(treeFilterer.filter("hello"), [{ data: "bye1", children: [{ data: "hello", children: [] }] }])
       ).toBe(true)
 
       // console.log(JSON.stringify(treeFilterer.filter("hel")))
       expect(
-        DeepEqual(treeFilterer.filter("hel"), [
+        deepEqual(treeFilterer.filter("hel"), [
           { data: "Bye2", children: [{ data: "hel", children: [] }] },
           { data: "bye1", children: [{ data: "hello", children: [] }] },
         ])
@@ -158,7 +158,7 @@ describe("TreeFilterer", function () {
 
       // console.log(JSON.stringify(treeFilterer.filter("he")))
       expect(
-        DeepEqual(treeFilterer.filter("he"), [
+        deepEqual(treeFilterer.filter("he"), [
           { data: "Bye2", children: [{ data: "hel", children: [] }] },
           { data: "bye1", children: [{ data: "hello", children: [] }] },
         ])
@@ -166,7 +166,7 @@ describe("TreeFilterer", function () {
 
       // console.log(JSON.stringify(treeFilterer.filter("bye")))
       expect(
-        DeepEqual(treeFilterer.filter("bye"), [
+        deepEqual(treeFilterer.filter("bye"), [
           { data: "bye1", children: [] },
           { data: "Bye2", children: [{ data: "_bye4", children: [] }] },
           { data: "Bye2", children: [] },
@@ -175,7 +175,7 @@ describe("TreeFilterer", function () {
 
       // console.log(JSON.stringify(treeFilterer.filter("ye")))
       expect(
-        DeepEqual(treeFilterer.filter("ye"), [
+        deepEqual(treeFilterer.filter("ye"), [
           { data: "eye", children: [] },
           { data: "bye1", children: [] },
           { data: "Bye2", children: [] },
@@ -186,7 +186,7 @@ describe("TreeFilterer", function () {
       // test maxResults
       // console.log(JSON.stringify(treeFilterer.filter("bye", { maxResults: 2 })))
       expect(
-        DeepEqual(treeFilterer.filter("bye", { maxResults: 2 }), [
+        deepEqual(treeFilterer.filter("bye", { maxResults: 2 }), [
           { data: "bye1", children: [] },
           { data: "Bye2", children: [] },
         ])
@@ -194,7 +194,7 @@ describe("TreeFilterer", function () {
 
       // console.log(JSON.stringify(treeFilterer.filter("ye", { maxResults: 3 })))
       expect(
-        DeepEqual(treeFilterer.filter("ye", { maxResults: 3 }), [
+        deepEqual(treeFilterer.filter("ye", { maxResults: 3 }), [
           { data: "bye1", children: [] },
           { data: "Bye2", children: [] },
           { data: "Bye2", children: [{ data: "_bye4", children: [] }] },
@@ -209,7 +209,7 @@ describe("TreeFilterer", function () {
 
       // console.log(JSON.stringify(treeFilterer.filter("hello")))
       expect(
-        DeepEqual(treeFilterer.filter("hello"), [
+        deepEqual(treeFilterer.filter("hello"), [
           { data: "hello", children: [] },
           { data: "helloworld", children: [] },
         ])
@@ -226,7 +226,7 @@ describe("TreeFilterer", function () {
         fs.readFileSync(path.join(__dirname, "fixtures", "tree-filter-text.json"), "utf8")
       )
       if (process.platform === "win32") {
-        expect(DeepEqual(treeFilterer.filter("text"), treeFilterText)).toBe(true)
+        expect(deepEqual(treeFilterer.filter("text"), treeFilterText)).toBe(true)
       }
 
       // fs.writeFileSync(path.join(__dirname, "fixtures", "tree-filter-disp.json"), JSON.stringify(treeFilterer.filter("disp")))
@@ -234,7 +234,7 @@ describe("TreeFilterer", function () {
         const treeFilterDisp = JSON.parse(
           fs.readFileSync(path.join(__dirname, "fixtures", "tree-filter-disp.json"), "utf8")
         )
-        expect(DeepEqual(treeFilterer.filter("disp"), treeFilterDisp)).toBe(true)
+        expect(deepEqual(treeFilterer.filter("disp"), treeFilterDisp)).toBe(true)
       }
 
       // fs.writeFileSync(path.join(__dirname, "fixtures", "tree-filter-dips.json"), JSON.stringify(treeFilterer.filter("dips")))
@@ -242,7 +242,7 @@ describe("TreeFilterer", function () {
         const treeFilterDips = JSON.parse(
           fs.readFileSync(path.join(__dirname, "fixtures", "tree-filter-dips.json"), "utf8")
         )
-        expect(DeepEqual(treeFilterer.filter("dips"), treeFilterDips)).toBe(true)
+        expect(deepEqual(treeFilterer.filter("dips"), treeFilterDips)).toBe(true)
       }
     })
   })
