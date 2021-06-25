@@ -38,17 +38,31 @@ jobs:
           - ubuntu-20.04
           - macos-11.0
           - windows-latest
-        node_version:
+        node:
           - 12
-        node_arch:
+        arch:
           - x64
+        prebuild_cmd:
+          - npm run prebuild.native
+        docker:
+          - ""
         include:
           - os: windows-2016
-            node_version: 12
-            node_arch: x86
+            node: 12
+            arch: x86
+            prebuild_cmd: npm run prebuild.native.ia32
+          - os: ubuntu-20.04
+            docker: node:12-alpine
+            arch: x64
+            apk: python3 make gcc g++ musl-dev
+            node: 12
+            prebuild_cmd: npm run prebuild.native
           # - os: macos-11.0
-          #   node_version: 15
-          #   node_arch: arm64
+          #   node: 15
+          #   arch: arm64
+          #   prebuild_cmd: npm run prebuild.native-arm64
+
+    name: ${{ matrix.os }}-${{ matrix.arch }}-${{ matrix.docker }}-${{ matrix.node }}
     steps:
       - uses: actions/checkout@v2
 
@@ -58,7 +72,14 @@ jobs:
           cache-name: node_modules
         with:
           path: node_modules
-          key: ${{ runner.os }}-${{ matrix.node_version }}-${{ matrix.node_arch }}-${{ hashFiles('package.json') }}
+          key: ${{ runner.os }}-${{ matrix.node }}-${{ matrix.arch }}-${{ hashFiles('package.json') }}
+
+      - name: Install Docker
+        if: ${{ matrix.docker }}
+        run: |
+          docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} ghcr.io
+          docker pull ${{ matrix.docker }}
+          docker tag ${{ matrix.docker }} builder
 
       # - name: Install Compiler for Ubuntu 16.04
       #   if: ${{ contains(matrix.os, 'ubuntu-16.04') }}
@@ -75,30 +96,29 @@ jobs:
       #     echo "CXX=clang++" >> $GITHUB_ENV
 
       - name: Install Node
-        uses: actions/setup-node@v2.1.3
+        if: ${{ !matrix.docker }}
+        uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node_version }}
-          architecture: ${{ matrix.node_arch }}
+          node-version: ${{ matrix.node }}
+          architecture: ${{ matrix.arch }}
 
-      - name: Install dependencies and build native
-        run: |
-          npm install --ignore-scripts
-          npm run build.native
+      - name: Install dependencies
+        run: npm install --ignore-scripts
 
-      - name: Prebuildify x64
-        if: ${{ contains(matrix.node_version, '12') && contains(matrix.node_arch, 'x64') }}
-        run: npm run prebuild.native
+      - name: Build native
+        if: ${{ !matrix.docker }}
+        run: npm run build.native
 
-      - name: Prebuildify x86
-        if: ${{ contains(matrix.node_version, '12') && contains(matrix.node_arch, 'x86') }}
-        run: npm run prebuild.native.ia32
+      - name: Prebuildify
+        if: ${{ !matrix.docker }}
+        run: ${{ matrix.prebuild_cmd }}
 
-      # - name: Prebuildify arm64
-      #   if: ${{ contains(matrix.node_version, '15') && contains(matrix.node_arch, 'arm64') }}
-      #   run: npm run prebuild.native-arm64
+      - name: Prebuildify Docker
+        if: ${{ matrix.docker }}
+        run: docker run --volume ${{ github.workspace }}:/projectdir --workdir /projectdir --privileged builder sh -c "apk add --no-cache ${{ matrix.apk }} && ${{ matrix.prebuild_cmd }}"
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v2.0.1
+        uses: actions/upload-artifact@v2
         with:
           path: ./prebuilds
 
@@ -113,24 +133,24 @@ jobs:
           - ubuntu-20.04
           - macos-11.0
           - windows-latest
-        node_version:
+        node:
           - 10
           - 12
           - 14
-        node_arch:
+        arch:
           - x64
         include:
           - os: windows-2016
-            node_version: 12
-            node_arch: x86
+            node: 12
+            arch: x86
           - os: ubuntu-16.04
-            node_version: 12
+            node: 12
           - os: macos-10.15
-            node_version: 12
+            node: 12
           # Node arm64 doesn't exist yet
           # - os: macos-11.0
-          #   node_version: 15
-          #   node_arch: arm64
+          #   node: 15
+          #   arch: arm64
     steps:
       - uses: actions/checkout@v2
 
@@ -140,13 +160,13 @@ jobs:
           cache-name: node_modules
         with:
           path: node_modules
-          key: ${{ runner.os }}-${{ matrix.node_version }}-${{ matrix.node_arch }}-${{ hashFiles('package.json') }}
+          key: ${{ runner.os }}-${{ matrix.node }}-${{ matrix.arch }}-${{ hashFiles('package.json') }}
 
       - name: Install Node
-        uses: actions/setup-node@v2.1.3
+        uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node_version }}
-          architecture: ${{ matrix.node_arch }}
+          node-version: ${{ matrix.node }}
+          architecture: ${{ matrix.arch }}
 
       - name: Install dependencies only
         run: |
@@ -168,7 +188,7 @@ jobs:
         run: npm run test
 
       - name: Run benchmarks
-        if: ${{ !contains(matrix.node_arch, 'x86') }} # https://github.com/npm/npm-lifecycle/issues/54
+        if: ${{ !contains(matrix.arch, 'x86') }} # https://github.com/npm/npm-lifecycle/issues/54
         run: npm run benchmark
 
   Lint:
