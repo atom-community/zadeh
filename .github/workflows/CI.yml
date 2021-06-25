@@ -6,7 +6,29 @@ on:
       - master
 
 jobs:
-  Build:
+  JS_BUILD:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies and build JS
+        run: |
+          npm install
+          npm run build.js
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          path: |
+            ./*.js
+            ./*.d.ts
+
+  NATIVE_Build:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ${{ matrix.os }}
     strategy:
@@ -58,8 +80,10 @@ jobs:
           node-version: ${{ matrix.node_version }}
           architecture: ${{ matrix.node_arch }}
 
-      - name: Install dependencies and build
-        run: npm install
+      - name: Install dependencies and build native
+        run: |
+          npm install --ignore-scripts
+          npm run build.native
 
       - name: Prebuildify x64
         if: ${{ contains(matrix.node_version, '12') && contains(matrix.node_arch, 'x64') }}
@@ -79,7 +103,7 @@ jobs:
           path: ./prebuilds
 
   Test:
-    needs: Build
+    needs: [NATIVE_Build, JS_BUILD]
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ${{ matrix.os }}
     strategy:
@@ -127,7 +151,6 @@ jobs:
       - name: Install dependencies only
         run: |
           npm install --ignore-scripts
-          npm run build.js
 
       - name: Download articats
         uses: actions/download-artifact@v2
@@ -137,8 +160,9 @@ jobs:
         run: |
           rm -rf build
           mkdir prebuilds
+          mv ./artifact/*.js .
+          mv ./artifact/*.d.ts .
           mv artifact/* prebuilds/
-          ls prebuilds
 
       - name: Run tests
         run: npm run test
@@ -156,6 +180,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+
       - name: Commit lint ✨
         uses: wagoid/commitlint-github-action@v2
 
@@ -167,10 +192,3 @@ jobs:
 
       - name: Lint ✨
         run: npm run test.lint
-
-  Skip:
-    if: contains(github.event.head_commit.message, '[skip ci]')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Skip CI 🚫
-        run: echo skip ci
