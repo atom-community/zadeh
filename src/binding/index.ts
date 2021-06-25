@@ -37,7 +37,7 @@ export interface IOptions {
   // wrap?: { tagOpen?: string; tagClass?: string; tagClose?: string }
 
   /** @deprecated: there is no major benefit by precomputing something just for the query. */
-  preparedQuery?: {}
+  preparedQuery?: never
 }
 
 export type StringArrayFilterOptions = IOptions & {
@@ -60,11 +60,11 @@ const defaultPathSeparator = process.platform === "win32" ? "\\" : "/"
 
 function parseOptions(options: IOptions) {
   // options.allowErrors ? = false
-  if (options.usePathScoring === undefined || options.usePathScoring === null) {
+  if (options.usePathScoring === undefined) {
     options.usePathScoring = true
   }
   // options.useExtensionBonus ? = false
-  if (!options.pathSeparator) {
+  if (options.pathSeparator === undefined) {
     options.pathSeparator = defaultPathSeparator
   }
 }
@@ -72,7 +72,7 @@ function parseOptions(options: IOptions) {
 function parseFilterOptions(filterOptions: StringArrayFilterOptions | ObjectArrayFilterOptions | TreeFilterOptions) {
   // options.optCharRegEx ? = null
   // options.wrap ? = null
-  if (!filterOptions.maxResults) {
+  if (filterOptions.maxResults === undefined) {
     filterOptions.maxResults = 0
   }
   // parse common options
