@@ -1,5 +1,7 @@
 {
   "name": "zadeh",
+  "author": "Amin Yahyaabadi, Rajendran T",
+  "homepage": "https://github.com/atom-ide-community/zadeh",
   "version": "3.0.0-beta.3",
   "description": "Blazing fast library for fuzzy filtering, matching, and other fuzzy things!",
   "main": "./index.js",
@@ -43,36 +45,32 @@
   ],
   "gypfile": true,
   "dependencies": {
-    "bindings": "~1.5.0",
-    "node-addon-api": "~3.2.1",
+    "node-addon-api": "~4.0.0",
     "node-gyp-build": "^4.2.3"
   },
   "devDependencies": {
     "coffeescript": "^2.5.1",
     "cross-env": "^7.0.3",
-    "eslint": "^7.28.0",
-    "eslint-config-atomic": "^1.15.3",
-    "fast-deep-equal": "^3.1.3",
+    "eslint-config-atomic": "^1.16.1",
+    "fast-equals": "^2.0.3",
     "fuzzaldrin-plus": "^0.6.0",
     "growl": ">=1.10.5",
     "jasmine": "^3.7.0",
     "jasmine-node": "^3.0.0",
-    "npm-check-updates": "11.6.0",
+    "npm-check-updates": "11.7.1",
     "prebuildify": "^4.1.2",
     "prettier-config-atomic": "^2.0.5",
-    "rollup": "^2.51.1",
+    "rollup": "^2.52.2",
     "rollup-plugin-atomic": "^2.3.2",
     "shx": "^0.3.3",
-    "typescript": "^4.3.2"
+    "typescript": "^4.3.4"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/atom-ide-community/zadeh.git"
   },
-  "author": "Amin Yahyaabadi, Rajendran T",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/atom-ide-community/zadeh/issues"
-  },
-  "homepage": "https://github.com/atom-ide-community/zadeh"
+  }
 }
