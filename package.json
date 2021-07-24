@@ -44,10 +44,10 @@
     "*.d.ts",
     "binding.gyp"
   ],
-  "gypfile": true,
   "dependencies": {
     "node-addon-api": "~4.0.0",
-    "node-gyp-build": "^4.2.3"
+    "node-gyp-build": "^4.2.3",
+    "cmake-ts": "link:C:/Users/aminy/Documents/GitHub/JavaScript/cmake-ts"
   },
   "devDependencies": {
     "coffeescript": "^2.5.1",
@@ -77,6 +77,20 @@
     "atom": ">=1.52.0 <2.0.0",
     "electron": ">=6.0.0",
     "node": ">=12.0.0"
+  },
+  "cmake-ts": {
+    "nodeAPI": "node-addon-api",
+    "configurations": [
+      {
+        "os": "win32",
+        "arch": "x64",
+        "runtime": "node",
+        "runtimeVersion": "16.0.0"
+      }
+    ],
+    "targetDirectory": "build",
+    "buildType": "Release",
+    "projectName": "zadeh"
   },
   "repository": {
     "type": "git",
