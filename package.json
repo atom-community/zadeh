@@ -56,7 +56,7 @@
     "fast-equals": "^2.0.3",
     "fuzzaldrin-plus": "^0.6.0",
     "jasmine": "^3.7.0",
-    "parcel": "2.0.0-nightly.790",
+    "parcel": "2.0.0-nightly.792",
     "prebuildify": "^4.1.2",
     "prettier-config-atomic": "^2.0.5",
     "shx": "^0.3.3",
