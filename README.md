@@ -4,18 +4,18 @@ Blazing fast library for fuzzy filtering, matching, and other fuzzy things!
 
 # Zadeh
 
-Zadeh is a blazing fast library for fuzzy filtering, matching, and other fuzzy things. Zadeh is a multi-threaded library written in C++ with the goal to search through a dataset with 1M entries in a few hundred milliseconds.
+Zadeh is a blazing fast library for fuzzy filtering, matching, and other fuzzy things. Zadeh is a multithreaded library written in C++ with the goal to search through a dataset with 1M entries in a few hundred milliseconds.
 
 ### features
 
-- fuzzy filter through an array of candidates (`StringArrayFilterer`)
-- fuzzy filter through nested tree-like objects (`TreeFilterer`)
+- Fuzzy filter through an array of candidates (`StringArrayFilterer`)
+- Fuzzy filter through nested tree-like objects (`TreeFilterer`)
 - Special treatment for strings that have separators (space ` `, hyphen `-`, underline`_`)
 - Special treatment for path-like strings (string separated by `\` or `//`)
 - give an array of indices at which the query matches the given string (`match`)
 - score the given string against the given query (`score`)
 - give an HTML/Markdown string that highlights the range for which the match happens (`wrap`)
-- Allows setting the candidates only once using `StringArrayFilterer` and `TreeFilterer` classes, and then, perform `filter` multiple times, which is much more efficient than calling the `filter` or `filterTree` functions directly every time.
+- Allows setting the candidates only once using `StringArrayFilterer` and `TreeFilterer` classes, and then perform `filter` multiple times, which is much more efficient than calling the `filter` or `filterTree` functions directly every time.
 - Bindings for Nodejs (more to come)
 
 # Usage
@@ -340,7 +340,7 @@ returns
 
 Score the given string against the given query.
 
-- `string` - The string the score.
+- `string` - the string to score.
 - `query` - The query to score the string against.
 
 ```js
@@ -424,7 +424,7 @@ Sort and filter the given candidates by matching them against the given query.
 
 - `candidates` - An array of strings or objects.
 - `query` - A string query to match each candidate against.
-- `options` options. You should provide a `key` in the options if an array of objects are passed.
+- `options` - the options. You should provide a `key` in the options if an array of objects is passed.
 
 Returns an array of candidates sorted by best match against the query.
 
@@ -451,7 +451,7 @@ results = filter(candidates, "me", { key: "name" }) // [{name: 'Me', id: 2}, {na
 
 # Comparison with other libraries
 
-### Zadeh vs fuzzaldrin and fuzzaldrin-plus
+### Zadeh vs Fuzzaldrin and Fuzzaldrin-plus
 
 API is backward compatible with Fuzzaldrin and Fuzzaldrin-plus. Additional functions are provided to achieve better performance that could suit your needs
 
