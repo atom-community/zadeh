@@ -46,22 +46,22 @@
   ],
   "gypfile": true,
   "dependencies": {
-    "node-addon-api": "~4.0.0",
-    "node-gyp-build": "^4.2.3"
+    "node-addon-api": "~4.2.0",
+    "node-gyp-build": "^4.3.0"
   },
   "devDependencies": {
-    "coffeescript": "^2.5.1",
+    "coffeescript": "^2.6.0",
     "cross-env": "^7.0.3",
-    "eslint-config-atomic": "^1.16.1",
+    "eslint-config-atomic": "^1.16.2",
     "fast-equals": "^2.0.3",
     "fuzzaldrin-plus": "^0.6.0",
-    "jasmine": "^3.7.0",
+    "jasmine": "^3.9.0",
     "parcel": "2.0.0-rc.0",
-    "prebuildify": "^4.1.2",
+    "prebuildify": "^4.2.0",
     "prettier-config-atomic": "^2.0.5",
     "shx": "^0.3.3",
     "terser-config-atomic": "^0.1.1",
-    "typescript": "^4.3.4"
+    "typescript": "^4.4.3"
   },
   "targets": {
     "main": {
