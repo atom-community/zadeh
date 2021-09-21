@@ -143,7 +143,7 @@ export class StringArrayFilterer {
    *
    * @param query A string query to match each candidate against.
    * @param options Options
-   * @returns Returns an array of numbers indicating the index of the chosen candidate sorted by best match against the query.
+   * @returns Returns an array of numbers indicating the index of the chosen candidate sorted by the best match against the query.
    */
   filterIndices(query: string, options: StringArrayFilterOptions = {}): Array<number> {
     parseFilterOptions(options)
@@ -169,7 +169,7 @@ export class ObjectArrayFilterer<DataKey extends string | number = string> {
   private candidates: ObjectWithKey<DataKey>[]
 
   /**
-   * Make a `ObjectArrayFilterer` for the candidates that are going to be filtered.
+   * Make an `ObjectArrayFilterer` for the candidates that are going to be filtered.
    *
    * @param candidates An array of objects.
    * @param dataKey The key which is indexed for each object, and filtering is done based on the resulting string
@@ -183,7 +183,7 @@ export class ObjectArrayFilterer<DataKey extends string | number = string> {
   }
 
   /**
-   * Allows to set the candidates (if changed or not set in the constructor).
+   * Allows setting the candidates (if changed or not set in the constructor).
    *
    * @param candidates An array of objects.
    * @param dataKey The key which is indexed for each object, and filtering is done based on the resulting string
@@ -212,7 +212,7 @@ export class ObjectArrayFilterer<DataKey extends string | number = string> {
    *
    * @param query A string query to match the dataKey of each candidate against.
    * @param options Options
-   * @returns Returns an array of numbers indicating the index of the chosen candidate sorted by best match against the query.
+   * @returns Returns an array of numbers indicating the index of the chosen candidate sorted by the best match against the query.
    */
   filterIndices(query: string, options: StringArrayFilterOptions = {}): Array<number> {
     parseFilterOptions(options)
@@ -297,9 +297,9 @@ export interface TreeFilterIndicesResult {
 }
 
 /**
- * TreeFilterer is a filters the given query in the nodes of the given array of trees, and returns an array of filtered
- * tree. A tree object is an object in which each entry stores the data in its dataKey and it has (may have) some
- * children (with a similar structure) in its childrenKey
+ * TreeFilterer filters the given query in the nodes of the given array of trees and returns an array of filtered trees
+ * (or the indices of the filter candidates). A tree object is an object in which each entry stores the data in its
+ * `dataKey`, and it has (may have) some children (with a similar structure) in its `childrenKey`
  */
 export class TreeFilterer<DataKey extends string = string, ChildrenKey extends string = string> {
   obj = new binding.Zadeh()
@@ -350,7 +350,7 @@ export class TreeFilterer<DataKey extends string = string, ChildrenKey extends s
    * @param query A string query to match the dataKey of each candidate against.
    * @param options Options
    * @returns {Tree[]} An array of filtered trees. In a tree, the filtered data is at the last level (if it has
-   *   children, they are not included in the filered tree)
+   *   children, they are not included in the filtered tree)
    */
   filter(query: string, options: TreeFilterOptions = {}): Tree<DataKey, ChildrenKey>[] {
     parseFilterOptions(options)
@@ -373,7 +373,7 @@ export class TreeFilterer<DataKey extends string = string, ChildrenKey extends s
    * @param query A string query to match the dataKey of each candidate against.
    * @param options Options
    * @returns {TreeFilterIndicesResult[]} An array candidate objects in form of `{data, index, parentIndices}` sorted by
-   *   best match against the query. Each objects has the address of the object in the tree using `index` and `parent_indices`
+   *   best match against the query. Each object has the address of the object in the tree using `index` and `parent_indices`
    */
   filterIndices(query: string, options: TreeFilterOptions = {}): TreeFilterIndicesResult[] {
     parseOptions(options)

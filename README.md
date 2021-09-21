@@ -9,7 +9,7 @@ Zadeh is a blazing fast library for fuzzy filtering, matching, and other fuzzy t
 ### features
 
 - fuzzy filter through an array of candidates (`StringArrayFilterer`)
-- fuzzy filter through a nested tree-like objects (`TreeFilterer`)
+- fuzzy filter through nested tree-like objects (`TreeFilterer`)
 - Special treatment for strings that have separators (space ` `, hyphen `-`, underline`_`)
 - Special treatment for path-like strings (string separated by `\` or `//`)
 - give an array of indices at which the query matches the given string (`match`)
@@ -22,7 +22,7 @@ Zadeh is a blazing fast library for fuzzy filtering, matching, and other fuzzy t
 
 ## Usage from C++
 
-This is a header only library. Include `./src/zadeh.h` and build it in your application.
+This is a header-only library. Include `./src/zadeh.h` and build it in your application.
 
 `examples/example1.cpp`:
 
@@ -89,7 +89,7 @@ const zadeh = require("zadeh")
 
 ### StringArrayFilterer
 
-`StringArrayFilterer` is a class that allows to set the `candidates` only once and perform filtering on them multiple times. This is much more efficient than calling the `filter` function directly.
+`StringArrayFilterer` is a class that allows setting the `candidates` only once and perform filtering on them multiple times. This is much more efficient than calling the `filter` function directly.
 
 <details>
 <summary>`StringArrayFilterer` API</summary>
@@ -117,12 +117,12 @@ export class StringArrayFilterer {
    *
    * @param query A string query to match the dataKey of each candidate against.
    * @param options Options
-   * @returns Returns an array of numbers indicating the index of the chosen candidate sorted by best match against the query.
+   * @returns Returns an array of numbers indicating the index of the chosen candidate sorted by the best match against the query.
    */
   filterIndices(query: string, options: StringArrayFilterOptions = {}): Array<number>
 
   /**
-   * Allows to set the candidates (if changed or not set in the constructor).
+   * Allows setting the candidates (if changed or not set in the constructor).
    *
    * @param candidates An array of strings.
    */
@@ -159,7 +159,7 @@ ObjectArrayFilterer is a class that performs filtering on an array of objects ba
 ```ts
 export class ObjectArrayFilterer<DataKey extends string | number = string> {
   /**
-   * Make a `ObjectArrayFilterer` for the candidates that are going to be filtered.
+   * Make an `ObjectArrayFilterer` for the candidates that are going to be filtered.
    *
    * @param candidates An array of objects.
    * @param dataKey The key which is indexed for each object, and filtering is done based on the resulting string
@@ -171,7 +171,7 @@ export class ObjectArrayFilterer<DataKey extends string | number = string> {
    *
    * @param query A string query to match the dataKey of each candidate against.
    * @param options Options
-   * @returns Returns an array of objects sorted by best match against the query.
+   * @returns Returns an array of objects sorted by the best match against the query.
    */
   filter(query: string, options: ObjectArrayFilterOptions = {}): Array<ObjectWithKey>
 
@@ -180,12 +180,12 @@ export class ObjectArrayFilterer<DataKey extends string | number = string> {
    *
    * @param query A string query to match each candidate against.
    * @param options Options
-   * @returns Returns an array of numbers indicating the index of the chosen candidate sorted by best match against the query.
+   * @returns Returns an array of numbers indicating the index of the chosen candidate sorted by the best match against the query.
    */
   filterIndices(query: string, options: StringArrayFilterOptions = {}): Array<number>
 
   /**
-   * Allows to set the candidates (if changed or not set in the constructor).
+   * Allows setting the candidates (if changed or not set in the constructor).
    *
    * @param candidates An array of objects.
    * @param dataKey The key which is indexed for each object, and filtering is done based on the resulting string
@@ -218,8 +218,8 @@ objArrFilterer.filter("all") // [{ name: 'Call', id: 1 }]
 
 ### TreeFilterer
 
-TreeFilterer is a filters the given query in the nodes of the given array of trees, and returns an array of filtered
-trees (or the indices of the filter candidates). A tree object is an object in which each entry stores the data in its `dataKey` and it has (may have) some
+TreeFilterer filters the given query in the nodes of the given array of trees and returns an array of filtered
+trees (or the indices of the filter candidates). A tree object is an object in which each entry stores the data in its `dataKey`, and it has (may have) some
 children (with a similar structure) in its `childrenKey`
 
 <details>
@@ -259,7 +259,7 @@ export class TreeFilterer<DataKey extends string, ChildrenKey extends string> {
    * @param query A string query to match the dataKey of each candidate against.
    * @param options Options
    * @returns {Tree[]} An array of filtered trees. In a tree, the filtered data is at the last level (if it has
-   *   children, they are not included in the filered tree)
+   *   children, they are not included in the filtered tree)
    */
   filter(query: string, options: TreeFilterOptions = {}): Tree<DataKey, ChildrenKey>[]
 
@@ -269,7 +269,7 @@ export class TreeFilterer<DataKey extends string, ChildrenKey extends string> {
    * @param query A string query to match the dataKey of each candidate against.
    * @param options Options
    * @returns {TreeFilterIndicesResult[]} An array candidate objects in form of `{data, index, parentIndices}` sorted by
-   *   best match against the query. Each objects has the address of the object in the tree using `index` and `parent_indices`
+   *   best match against the query. Each object has the address of the object in the tree using `index` and `parent_indices`
    */
   filterIndices(query: string, options: TreeFilterOptions = {}): TreeFilterIndicesResult[]
 }
@@ -445,7 +445,7 @@ const candidates = [
 results = filter(candidates, "me", { key: "name" }) // [{name: 'Me', id: 2}, {name: 'Maybe', id: 3}]
 ```
 
-**Deprecation Note**: use `StringArrayFilterer` or `ObjectArrayFilterer` class instead. `filter` internally uses this class and in each call, it sets the candidates from scratch which can slow down the process.
+**Deprecation Note**: use `StringArrayFilterer` or `ObjectArrayFilterer` class instead. `filter` internally uses this class, and in each call, it sets the candidates from scratch, which can slow down the process.
 
 </details>
 
@@ -457,9 +457,9 @@ API is backward compatible with Fuzzaldrin and Fuzzaldrin-plus. Additional funct
 
 Zadeh achieves 10x-20x performance improvement over Fuzzaldrin plus for chromium project with 300K files. This high performance is achieved using the following techniques.
 
-- Uses native C++ bindings that provides `~4x` performance benefit.
+- Uses native C++ bindings that provide `~4x` performance benefit.
 - Use multiple threads to parallelize computation to achieve another `~4x` performance benefit.
-- Some miscellaneous improvements provide additional benefit.
+- Some miscellaneous improvements provide additional benefits.
 
 This project potentially solves the following Atom fuzzy-finder issues if used.
 https://github.com/atom/fuzzy-finder/issues/271 and https://github.com/atom/fuzzy-finder/issues/88
