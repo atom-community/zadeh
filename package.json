@@ -1,42 +1,19 @@
 {
   "name": "zadeh",
-  "author": "Amin Yahyaabadi, Rajendran T",
-  "homepage": "https://github.com/atom-ide-community/zadeh",
   "version": "3.0.0-beta.4",
   "description": "Blazing fast library for fuzzy filtering, matching, and other fuzzy things!",
-  "main": "./index.js",
-  "node": "./index.js",
-  "source": "./src/binding/index.ts",
-  "scripts": {
-    "format": "prettier --write . && clang-format -i src/*.h src/binding/*.cc src/binding/*.h",
-    "test.format": "prettier . --check",
-    "lint": "eslint . --fix",
-    "test.lint": "eslint .",
-    "tidy": "clang-tidy src/*.cc src/*.h",
-    "tidy.fix": "clang-tidy src/*.cc src/*.h --fix --fix-errors",
-    "clean.native": "shx rm -rf build prebuilds",
-    "build.native": "node-gyp configure --release && node-gyp build --release",
-    "build.native.debug": "node-gyp configure --debug && node-gyp build --debug",
-    "prebuild.native": "prebuildify --napi -t 12.0.0 -t electron@6.0.0 -t electron@9.3.5 --strip --tag-libc",
-    "prebuild.native.ia32": "prebuildify --napi --arch=ia32 -t 12.0.0 -t electron@6.0.0 -t electron@9.3.5 --strip --tag-libc",
-    "clean.js": "shx rm -rf dist dist-test .rollup.cache .parcel-cache **/tsconfig.tsbuildinfo ./index.* ./*.d.ts",
-    "dev.js": "npm run types.js && cross-env NODE_ENV=development parcel watch --target main ./src/binding/index.ts",
-    "build.js": "npm run types.js && cross-env NODE_ENV=production parcel build --target main ./src/binding/index.ts",
-    "types.js": "tsc -p ./src/binding/tsconfig.json --emitDeclarationOnly && shx mv ./src/binding/*.d.ts .",
-    "clean": "npm run clean.native && npm run clean.js",
-    "install": "node-gyp-build",
-    "build": "npm run build.native && npm run build.js",
-    "test": "shx rm -rf dist-test && shx cp -r test dist-test && coffee --compile dist-test && shx rm -rf dist-test/*.coffee && jasmine dist-test/*-spec.js",
-    "benchmark.regular": "node benchmark/benchmark.js",
-    "benchmark.large": "node benchmark/benchmark-large.js",
-    "benchmark.small": "node benchmark/benchmark-small.js",
-    "benchmark.tree": "node benchmark/benchmark-tree.js",
-    "benchmark": "npm run benchmark.small && npm run benchmark.regular && npm run benchmark.large && npm run benchmark.tree",
-    "examples.cpp": "cmake -S . -B ./build && cmake --build ./build --config Debug",
-    "bump": "ncu -u && ncu -u /parcel/ --greatest",
-    "prepare": "npm run clean.js && npm run build"
+  "homepage": "https://github.com/atom-ide-community/zadeh",
+  "bugs": {
+    "url": "https://github.com/atom-ide-community/zadeh/issues"
   },
-  "prettier": "prettier-config-atomic",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/atom-ide-community/zadeh.git"
+  },
+  "license": "MIT",
+  "author": "Amin Yahyaabadi, Rajendran T",
+  "main": "./index.js",
+  "source": "./src/binding/index.ts",
   "files": [
     "src",
     "prebuilds",
@@ -44,7 +21,36 @@
     "*.d.ts",
     "binding.gyp"
   ],
-  "gypfile": true,
+  "scripts": {
+    "benchmark": "npm run benchmark.small && npm run benchmark.regular && npm run benchmark.large && npm run benchmark.tree",
+    "benchmark.large": "node benchmark/benchmark-large.js",
+    "benchmark.regular": "node benchmark/benchmark.js",
+    "benchmark.small": "node benchmark/benchmark-small.js",
+    "benchmark.tree": "node benchmark/benchmark-tree.js",
+    "build": "npm run build.native && npm run build.js",
+    "build.js": "npm run types.js && cross-env NODE_ENV=production parcel build --target main ./src/binding/index.ts",
+    "prebuild.native": "prebuildify --napi -t 12.0.0 -t electron@6.0.0 -t electron@9.3.5 --strip --tag-libc",
+    "build.native": "node-gyp configure --release && node-gyp build --release",
+    "build.native.debug": "node-gyp configure --debug && node-gyp build --debug",
+    "bump": "ncu -u && ncu -u /parcel/ --greatest",
+    "clean": "npm run clean.native && npm run clean.js",
+    "clean.js": "shx rm -rf dist dist-test .rollup.cache .parcel-cache **/tsconfig.tsbuildinfo ./index.* ./*.d.ts",
+    "clean.native": "shx rm -rf build prebuilds",
+    "dev.js": "npm run types.js && cross-env NODE_ENV=development parcel watch --target main ./src/binding/index.ts",
+    "examples.cpp": "cmake -S . -B ./build && cmake --build ./build --config Debug",
+    "format": "prettier --write . && clang-format -i src/*.h src/binding/*.cc src/binding/*.h",
+    "install": "node-gyp-build",
+    "lint": "eslint . --fix",
+    "prebuild.native.ia32": "prebuildify --napi --arch=ia32 -t 12.0.0 -t electron@6.0.0 -t electron@9.3.5 --strip --tag-libc",
+    "prepare": "npm run clean.js && npm run build",
+    "test": "shx rm -rf dist-test && shx cp -r test dist-test && coffee --compile dist-test && shx rm -rf dist-test/*.coffee && jasmine dist-test/*-spec.js",
+    "test.format": "prettier . --check",
+    "test.lint": "eslint .",
+    "tidy": "clang-tidy src/*.cc src/*.h",
+    "tidy.fix": "clang-tidy src/*.cc src/*.h --fix --fix-errors",
+    "types.js": "tsc -p ./src/binding/tsconfig.json --emitDeclarationOnly && shx mv ./src/binding/*.d.ts ."
+  },
+  "prettier": "prettier-config-atomic",
   "dependencies": {
     "node-addon-api": "~4.2.0",
     "node-gyp-build": "^4.3.0"
@@ -52,7 +58,7 @@
   "devDependencies": {
     "coffeescript": "^2.6.1",
     "cross-env": "^7.0.3",
-    "eslint-config-atomic": "^1.16.3",
+    "eslint-config-atomic": "^1.16.4",
     "fast-equals": "^2.0.3",
     "fuzzaldrin-plus": "^0.6.0",
     "jasmine": "^3.10.0",
@@ -63,6 +69,13 @@
     "terser-config-atomic": "^0.1.1",
     "typescript": "^4.4.4"
   },
+  "engines": {
+    "atom": ">=1.52.0 <2.0.0",
+    "electron": ">=6.0.0",
+    "node": ">=12.0.0"
+  },
+  "gypfile": true,
+  "node": "./index.js",
   "targets": {
     "main": {
       "context": "node",
@@ -72,18 +85,5 @@
       "outputFormat": "commonjs",
       "isLibrary": true
     }
-  },
-  "engines": {
-    "atom": ">=1.52.0 <2.0.0",
-    "electron": ">=6.0.0",
-    "node": ">=12.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/atom-ide-community/zadeh.git"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/atom-ide-community/zadeh/issues"
   }
 }

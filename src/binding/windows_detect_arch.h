@@ -1,4 +1,4 @@
-#ifdef Zadeh_NODE_BINDING    // only defined for building the Node-js binding
+#ifdef Zadeh_NODE_BINDING // only defined for building the Node-js binding
 
 // Check windows
 #if _WIN32 || _WIN64
@@ -17,6 +17,5 @@
 #define ENV32BIT
 #endif
 #endif
-
 
 #endif

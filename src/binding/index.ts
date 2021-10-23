@@ -90,8 +90,7 @@ function parseFilterOptions(filterOptions: StringArrayFilterOptions | ObjectArra
 /** An object that stores its `dataKey` in `DataKey` */
 export type ObjectWithKey<DataKey extends string | number = string | number> = {
   [dk in DataKey]: string
-} &
-  Record<string | number, string>
+} & Record<string | number, string>
 
 export type StringOrObjectArray = string | ObjectWithKey
 

@@ -1,7 +1,6 @@
 #ifndef Zadeh_H
 #define Zadeh_H
 
-
 #include "./common.h"
 #include "./data_interface.h"
 #include "./options.h"
