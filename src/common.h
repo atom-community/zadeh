@@ -34,8 +34,8 @@ public:
 using Element = SafeString;
 using CandidateString = SafeString;
 #else
-using Element = string;
-using CandidateString = string;
+using Element = string_view;
+using CandidateString = string_view;
 #endif
 
 using CandidateIndex = size_t;
