@@ -19,8 +19,8 @@ template <> Napi::Number init(const size_t value, const Napi::Env &env) {
 /** Napi::Array Data Interface */
 template <> Napi::Array init(const size_t len, const Napi::Env &env) { return Napi::Array::New(env, len); }
 
-template <> string_view get_at(const Napi::Array &candidates, const size_t ind) {
-  return string_view(candidates.Get(ind).ToString().Utf8Value());
+template <> string get_at(const Napi::Array &candidates, const size_t ind) {
+  return candidates.Get(ind).ToString().Utf8Value();
 }
 
 #ifndef ENV32BIT // only enable if size_t is not unint32_t
@@ -78,7 +78,7 @@ template <> Napi::Array copy(const Napi::Array &arr, const Napi::Env &env) {
   return arr_copy;
 }
 
-template <> CandidateString get_at(const Napi::Object &candidates, const string ind) {
+template <> string get_at(const Napi::Object &candidates, const string ind) {
   return candidates.Get(ind).ToString().Utf8Value();
 }
 

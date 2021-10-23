@@ -10,7 +10,7 @@ namespace zadeh {
 // Optional chars
 // Those char improve the score if present, but will not block the match (score=0) if absent.
 
-Element coreChars(string query) {
+auto coreChars(string query) {
   for (const auto ch : " _-:/\\") {
     query.erase(std::remove(query.begin(), query.end(), ch), query.end());
   }

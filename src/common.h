@@ -44,10 +44,10 @@ using Score = float;
 
 struct PreparedQuery {
   Element query;
-  Element query_lw;
-  Element core;
-  Element core_lw;
-  Element core_up;
+  string query_lw;
+  string core;
+  string core_lw;
+  string core_up;
   int depth = 0;
   Element ext;
   std::set<char> charCodes{};
@@ -55,13 +55,13 @@ struct PreparedQuery {
   explicit PreparedQuery(const Element &q, const char pathSeparator);
 };
 
-Element ToLower(const Element &s) {
+string ToLower(const Element &s) {
   auto snew = string(s.size(), ' '); // new string
   std::transform(s.begin(), s.end(), snew.begin(), ::tolower);
   return snew;
 }
 
-Element ToUpper(const Element &s) {
+string ToUpper(const Element &s) {
   auto snew = string(s.size(), ' '); // new string
   std::transform(s.begin(), s.end(), snew.begin(), ::toupper);
   return snew;
