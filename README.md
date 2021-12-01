@@ -6,6 +6,8 @@ Blazing fast library for fuzzy filtering, matching, and other fuzzy things!
 
 Zadeh is a blazing fast library for fuzzy filtering, matching, and other fuzzy things. Zadeh is a multithreaded library written in C++ with the goal to search through a dataset with 1M entries in a few hundred milliseconds.
 
+The name "Zadeh" refers to [Lofti Zadeh](https://en.wikipedia.org/wiki/Lotfi_A._Zadeh), the creator of fuzzy logic and fuzzy systems.
+
 ### features
 
 - Fuzzy filter through an array of candidates (`StringArrayFilterer`)
