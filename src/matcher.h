@@ -246,7 +246,7 @@ void get_wrap(const CandidateString &string, const Element &query, const Options
   const auto tagClose = "</strong>"s;
 
   if (string == query) {
-    *out = tagOpen + string + tagClose;
+    *out = tagOpen + std::string(string) + tagClose;
     return;
   }
 
