@@ -12,7 +12,7 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -64,7 +64,7 @@ jobs:
 
     name: ${{ matrix.os }}-${{ matrix.arch }}-${{ matrix.docker }}-${{ matrix.node }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Cache node_modules
         uses: actions/cache@v2
@@ -152,7 +152,7 @@ jobs:
           #   node: 15
           #   arch: arm64
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Cache node_modules
         uses: actions/cache@v2
@@ -197,7 +197,7 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
