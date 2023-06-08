@@ -63,7 +63,7 @@
     "fuzzaldrin-plus": "^0.6.0",
     "jasmine": "^3.10.0",
     "parcel": "2.0.0",
-    "prebuildify": "^4.2.1",
+    "prebuildify": "^5",
     "prettier-config-atomic": "^3.0.1",
     "shx": "^0.3.3",
     "terser-config-atomic": "^0.1.1",

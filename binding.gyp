@@ -1,5 +1,8 @@
 # Note: C++ standard is repeated in configurations multiple times for different configurations
 {
+  "variables" : {
+    "openssl_fips": "",
+  },
   "targets": [{
       "target_name": "zadeh",
       "sources": [
