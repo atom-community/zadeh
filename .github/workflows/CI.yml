@@ -22,7 +22,7 @@ jobs:
           npm run build.js
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           path: |
             ./*.js
@@ -118,7 +118,7 @@ jobs:
         run: docker run --volume ${{ github.workspace }}:/projectdir --workdir /projectdir --privileged builder sh -c "apk add --no-cache ${{ matrix.apk }} && ${{ matrix.prebuild_cmd }}"
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           path: ./prebuilds
 
